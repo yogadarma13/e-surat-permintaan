@@ -50,7 +50,7 @@ data class DataDetailSP(
 	val namaProyek: String? = null,
 
 	@field:SerializedName("items")
-	val items: List<DataDetailSP?>? = null,
+	val items: List<DataDetailItemSP?>? = null,
 
 	@field:SerializedName("id_lp")
 	val idLp: String? = null

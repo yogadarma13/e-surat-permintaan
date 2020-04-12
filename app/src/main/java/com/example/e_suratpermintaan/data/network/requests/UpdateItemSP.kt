@@ -1,5 +1,7 @@
 package com.example.e_suratpermintaan.data.network.requests
 
+import com.google.gson.annotations.SerializedName
+
 data class UpdateItemSP (
     val kode: String?,
     val kode_pekerjaan: String?,
@@ -13,7 +15,10 @@ data class UpdateItemSP (
     val merk: String?,
     val waktu_pemakaian: String?,
     val waktu_pelaksanaan: String?,
-    val persyaratan: List<String?>?,
+
+    @field:SerializedName("persyaratan[]")
+    val persyaratan: ArrayList<String?>?,
+
     val id_user: String?,
     val id_sp: String?
 )

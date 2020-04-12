@@ -25,15 +25,15 @@ interface NetworkApi {
     // Surat Permintaan
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @FormUrlEncoded
-    @POST("MyData")
-    fun getMyData(
+    @POST("DataAll")
+    fun getDataAll(
         @Field("id_user") id_user: String
     ): Observable<MyDataResponse>
 
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @FormUrlEncoded
     @POST("MyData")
-    fun getDataAll(
+    fun getMyData(
         @Field("id_user") id_user: String
     ): Observable<MyDataResponse>
 
@@ -56,7 +56,7 @@ interface NetworkApi {
     fun editSP(
         @Part("id") id : RequestBody,
         @Part file : MultipartBody.Part,
-        @Part("id_user") id_user: String
+        @Part("id_user") id_user: RequestBody
     ) : Observable<CreateEditSPResponse>
 
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
@@ -88,6 +88,7 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<AjukanSPResponse>
 
+
     // Master
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @FormUrlEncoded
@@ -105,7 +106,7 @@ interface NetworkApi {
 
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @FormUrlEncoded
-    @POST("datajenis")
+    @POST("datacostcode")
     fun getMasterCostCode(
         @Field("id") id: String
     ): Observable<MasterCCResponse>
