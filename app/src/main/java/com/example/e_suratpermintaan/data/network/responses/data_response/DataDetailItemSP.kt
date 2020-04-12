@@ -1,11 +1,11 @@
-package com.example.e_suratpermintaan.data.network.responses
+package com.example.e_suratpermintaan.data.network.responses.data_response
 
 import com.google.gson.annotations.SerializedName
 
-data class DataDeleteItemSP(
+data class DataDetailItemSP(
 
 	@field:SerializedName("persyaratan")
-	val persyaratan: String? = null,
+	val persyaratan: Any? = null,
 
 	@field:SerializedName("id_satuan")
 	val idSatuan: String? = null,
@@ -16,9 +16,6 @@ data class DataDeleteItemSP(
 	@field:SerializedName("merk")
 	val merk: String? = null,
 
-	@field:SerializedName("created_at")
-	val createdAt: String? = null,
-
 	@field:SerializedName("waktu_pelaksanaan")
 	val waktuPelaksanaan: String? = null,
 
@@ -28,20 +25,11 @@ data class DataDeleteItemSP(
 	@field:SerializedName("waktu_pemakaian")
 	val waktuPemakaian: String? = null,
 
-	@field:SerializedName("created_by")
-	val createdBy: String? = null,
-
 	@field:SerializedName("target")
 	val target: String? = null,
 
-	@field:SerializedName("updated_at")
-	val updatedAt: String? = null,
-
 	@field:SerializedName("id_barang")
 	val idBarang: String? = null,
-
-	@field:SerializedName("kode")
-	val kode: String? = null,
 
 	@field:SerializedName("qty")
 	val qty: String? = null,
@@ -53,8 +41,5 @@ data class DataDeleteItemSP(
 	val kodePekerjaan: String? = null,
 
 	@field:SerializedName("kapasitas")
-	val kapasitas: String? = null,
-
-	@field:SerializedName("status")
-	val status: String? = null
+	val kapasitas: String? = null
 )

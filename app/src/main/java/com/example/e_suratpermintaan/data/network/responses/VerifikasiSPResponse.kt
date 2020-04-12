@@ -1,12 +1,15 @@
 package com.example.e_suratpermintaan.data.network.responses
 
-import com.example.e_suratpermintaan.data.network.responses.data_response.DataMaterJenisProyek
+import com.example.e_suratpermintaan.data.network.responses.data_response.DataVerifikasiSP
 import com.google.gson.annotations.SerializedName
 
-data class MasterJenisProyekResponse(
+data class VerifikasiSPResponse(
+
+    @field:SerializedName("api_code")
+	val apiCode: String? = null,
 
     @field:SerializedName("data")
-	val data: List<DataMaterJenisProyek?>? = null,
+	val dataVerifikasiSP: DataVerifikasiSP? = null,
 
     @field:SerializedName("message")
 	val message: String? = null,

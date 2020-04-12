@@ -1,12 +1,12 @@
 package com.example.e_suratpermintaan.data.network.responses
 
-import com.example.e_suratpermintaan.data.network.responses.data_response.DataMaterJenisProyek
+import com.example.e_suratpermintaan.data.network.responses.data_response.DataMyData
 import com.google.gson.annotations.SerializedName
 
-data class MasterJenisProyekResponse(
+data class MyDataResponse(
 
     @field:SerializedName("data")
-	val data: List<DataMaterJenisProyek?>? = null,
+	val data: List<DataMyData?>? = null,
 
     @field:SerializedName("message")
 	val message: String? = null,

@@ -1,15 +1,16 @@
 package com.example.e_suratpermintaan.data.network.responses
 
+import com.example.e_suratpermintaan.data.network.responses.data_response.DataDetailItemSP
 import com.google.gson.annotations.SerializedName
 
 data class DetailItemSPResponse(
 
-	@field:SerializedName("data")
+    @field:SerializedName("data")
 	val data: List<DataDetailItemSP?>? = null,
 
-	@field:SerializedName("message")
+    @field:SerializedName("message")
 	val message: String? = null,
 
-	@field:SerializedName("status")
+    @field:SerializedName("status")
 	val status: Boolean? = null
 )
