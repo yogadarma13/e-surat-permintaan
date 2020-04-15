@@ -1,15 +1,12 @@
 package com.example.e_suratpermintaan.data.network.responses
 
-import com.example.e_suratpermintaan.data.network.responses.data_response.DataCreateSP
+import com.example.e_suratpermintaan.data.network.responses.data_response.DataMasterPersyaratan
 import com.google.gson.annotations.SerializedName
 
-data class CreateEditSPResponse(
-
-    @field:SerializedName("api_code")
-	val apiCode: String? = null,
+data class MasterPersyaratanResponse(
 
     @field:SerializedName("data")
-	val dataCreateSP: DataCreateSP? = null,
+	val data: List<DataMasterPersyaratan?>? = null,
 
     @field:SerializedName("message")
 	val message: String? = null,

@@ -13,6 +13,9 @@ data class DataLogin(
 	@field:SerializedName("created_by")
 	val createdBy: String? = null,
 
+	@field:SerializedName("token")
+	val token: String? = null,
+
 	@field:SerializedName("password")
 	val password: String? = null,
 

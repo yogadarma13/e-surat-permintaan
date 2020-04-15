@@ -12,7 +12,7 @@ interface NetworkApi {
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @POST("login")
     fun loginUser(
-        @Body Login: Login
+        @Body login: Login
     ): Observable<LoginResponse>
 
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
@@ -48,7 +48,7 @@ interface NetworkApi {
     @POST("create_sp")
     fun createSP(
         @Body createSP: CreateSP
-    ) : Observable<CreateEditSPResponse>
+    ) : Observable<CreateSPResponse>
 
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @Multipart
@@ -57,7 +57,7 @@ interface NetworkApi {
         @Part("id") id : RequestBody,
         @Part file : MultipartBody.Part,
         @Part("id_user") id_user: RequestBody
-    ) : Observable<CreateEditSPResponse>
+    ) : Observable<EditSPResponse>
 
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
     @FormUrlEncoded
@@ -111,6 +111,12 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<MasterCCResponse>
 
+    @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")
+    @FormUrlEncoded
+    @POST("datapersyaratan")
+    fun getMasterPersyaratan(
+        @Field("id") id: String
+    ): Observable<MasterPersyaratanResponse>
 
     // Surat Permintaan (Item)
     @Headers("x-sm-key: 35d3d08c3d7b7f445ceb8e726a87b26c")

@@ -2,28 +2,22 @@ package com.example.e_suratpermintaan.data.network.responses.data_response
 
 import com.google.gson.annotations.SerializedName
 
-data class DataMasterCC(
+data class DataMasterPersyaratan(
 
-	@field:SerializedName("uom")
-	val uom: String? = null,
-
-	@field:SerializedName("kode_costcontrol")
-	val kodeCostcontrol: String? = null,
+	@field:SerializedName("nama")
+	val nama: String? = null,
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String? = null,
+
+	@field:SerializedName("kode")
+	val kode: String? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null,
-
-	@field:SerializedName("kode_kategori")
-	val kodeKategori: String? = null,
-
-	@field:SerializedName("deskripsi")
-	val deskripsi: String? = null,
 
 	@field:SerializedName("created_by")
 	val createdBy: String? = null,

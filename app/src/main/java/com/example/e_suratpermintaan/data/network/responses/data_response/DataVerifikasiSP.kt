@@ -8,7 +8,7 @@ data class DataVerifikasiSP(
 	val idPm: String? = null,
 
 	@field:SerializedName("catatan")
-	val catatan: Any? = null,
+	val catatan: String? = null,
 
 	@field:SerializedName("status_permintaan")
 	val statusPermintaan: Int? = null
