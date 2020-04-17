@@ -1,2 +1,3 @@
 rootProject.name='E-Surat Permintaan'
 include ':app'
+include ':core'
