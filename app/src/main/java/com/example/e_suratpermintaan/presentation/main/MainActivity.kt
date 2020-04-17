@@ -3,8 +3,8 @@ package com.example.e_suratpermintaan.presentation.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.e_suratpermintaan.core.data.entities.responses.MyDataResponse
-import com.e_suratpermintaan.core.data.entities.responses.data_response.DataMyData
+import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
+import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData
 import com.example.e_suratpermintaan.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers

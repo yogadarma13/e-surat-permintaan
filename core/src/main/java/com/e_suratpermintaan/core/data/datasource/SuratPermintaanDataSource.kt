@@ -1,9 +1,9 @@
 package com.e_suratpermintaan.core.data.datasource
 
-import com.e_suratpermintaan.core.data.entities.requests.CreateSP
-import com.e_suratpermintaan.core.data.entities.responses.CreateSPResponse
-import com.e_suratpermintaan.core.data.entities.responses.DeleteSPResponse
-import com.e_suratpermintaan.core.data.entities.responses.MyDataResponse
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
+import com.e_suratpermintaan.core.domain.entities.responses.CreateSPResponse
+import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
+import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
 import io.reactivex.rxjava3.core.Observable
 
 interface SuratPermintaanDataSource {

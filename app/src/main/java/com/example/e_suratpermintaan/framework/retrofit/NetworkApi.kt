@@ -1,7 +1,7 @@
 package com.example.e_suratpermintaan.framework.retrofit
 
-import com.e_suratpermintaan.core.data.entities.requests.*
-import com.e_suratpermintaan.core.data.entities.responses.*
+import com.e_suratpermintaan.core.domain.entities.requests.*
+import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
