@@ -5,6 +5,6 @@ import com.e_suratpermintaan.core.domain.entities.responses.CreateSPResponse
 import com.e_suratpermintaan.core.data.repository.SuratPermintaanRepository
 import io.reactivex.rxjava3.core.Observable
 
-class AddSuratPermintaan(private val suratPermintaanRepository: SuratPermintaanRepository){
+class AddSuratPermintaanUseCase(private val suratPermintaanRepository: SuratPermintaanRepository){
     fun invoke(sp: CreateSP): Observable<CreateSPResponse> = suratPermintaanRepository.add(sp);
 }
