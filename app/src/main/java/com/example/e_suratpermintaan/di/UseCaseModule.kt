@@ -16,12 +16,18 @@ val useCaseModule = module {
         AddSuratPermintaanUseCase(
             get() as SuratPermintaanRepository
         )
+    }
+    single {
         ReadAllDataSuratPermintaanUseCase(
             get() as SuratPermintaanRepository
         )
+    }
+    single {
         ReadMyDataSuratPermintaanUseCase(
             get() as SuratPermintaanRepository
         )
+    }
+    single {
         RemoveSuratPermintaanUseCase(
             get() as SuratPermintaanRepository
         )

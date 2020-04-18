@@ -8,7 +8,6 @@ class BasicAuthInterceptor(user: String, password: String) : Interceptor {
 
     private var credentials = Credentials.basic(user, password)
 
-
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         var authenticatedRequest = request.newBuilder()

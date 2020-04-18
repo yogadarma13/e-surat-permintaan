@@ -6,9 +6,9 @@ import com.e_suratpermintaan.domain.usecases.suratpermintaan.AddSuratPermintaanU
 import com.e_suratpermintaan.domain.usecases.suratpermintaan.ReadAllDataSuratPermintaanUseCase
 import com.e_suratpermintaan.domain.usecases.suratpermintaan.ReadMyDataSuratPermintaanUseCase
 import com.e_suratpermintaan.domain.usecases.suratpermintaan.RemoveSuratPermintaanUseCase
-import com.example.e_suratpermintaan.presentation.viewmodels.AuthViewModel
-import com.example.e_suratpermintaan.presentation.viewmodels.SuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodels.ProfileViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,9 +20,13 @@ val viewModelModule = module {
             get() as ReadMyDataSuratPermintaanUseCase,
             get() as RemoveSuratPermintaanUseCase
         )
+    }
+    viewModel {
         AuthViewModel(
             get() as DoLoginUseCase
         )
+    }
+    viewModel {
         ProfileViewModel(
             get() as GetProfileUseCase
         )

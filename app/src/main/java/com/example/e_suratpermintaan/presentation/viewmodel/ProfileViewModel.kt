@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.presentation.viewmodels
+package com.example.e_suratpermintaan.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.ProfileDataSource

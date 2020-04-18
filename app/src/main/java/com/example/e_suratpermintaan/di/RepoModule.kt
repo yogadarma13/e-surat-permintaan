@@ -13,9 +13,13 @@ val repoModule = module {
         SuratPermintaanRepository(
             get() as SuratPermintaanDataSource
         )
+    }
+    single {
         AuthRepository(
             get() as AuthDataSource
         )
+    }
+    single {
         ProfileRepository(
             get() as ProfileDataSource
         )
