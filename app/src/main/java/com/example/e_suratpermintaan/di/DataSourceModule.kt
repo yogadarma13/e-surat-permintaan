@@ -1,5 +1,7 @@
 package com.example.e_suratpermintaan.di
 
+import com.e_suratpermintaan.core.data.datasource.AuthDataSource
+import com.e_suratpermintaan.core.data.datasource.ProfileDataSource
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
 import com.example.e_suratpermintaan.framework.datasourceimpl.AuthDataSourceImpl
 import com.example.e_suratpermintaan.framework.datasourceimpl.ProfileDataSourceImpl
@@ -11,9 +13,9 @@ val dataSourceModule = module {
         SuratPermintaanDataSourceImpl(get()) as SuratPermintaanDataSource
     }
     single {
-        AuthDataSourceImpl(get())
+        AuthDataSourceImpl(get()) as AuthDataSource
     }
     single {
-        ProfileDataSourceImpl(get())
+        ProfileDataSourceImpl(get()) as ProfileDataSource
     }
 }
