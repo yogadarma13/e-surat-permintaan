@@ -1,16 +1,14 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
-import android.app.Activity
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.*
-import android.view.View.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
 import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataProfile
@@ -23,8 +21,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
-
 
 /**
  * A simple [Fragment] subclass.
@@ -66,29 +62,42 @@ class LoginFragment : Fragment() {
 
     private fun loginResponse(response: LoginResponse) {
         val dataLogin = response.dataLogin
-        dataLogin?.id?.let {
-            profileViewModel.getProfile(it)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                    {
-                        var dataProfile: DataProfile? = DataProfile()
 
-                        it.data?.forEach {
-                            dataProfile = it
-                        }
+        profilePreference.saveProfile(
+            DataProfile(
+                id = dataLogin?.id,
+                name = dataLogin?.name,
+                email = dataLogin?.email
+            )
+        )
 
-                        if (dataProfile != null){
-                            profilePreference.saveProfile(dataProfile)
-                        } else {
-                            Toast.makeText(context, "Terjadi kesalahan saat mengambil data profile", Toast.LENGTH_LONG).show()
-                        }
-                    },
-                    {
-                        Toast.makeText(context, it.message.toString(), Toast.LENGTH_LONG).show()
-                    }
-                )
-        }
+        view?.findNavController()?.navigate(R.id.action_loginFragment_to_mainFragment)
+
+        Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+
+//        dataLogin?.id?.let {
+//            profileViewModel.getProfile(it)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(
+//                    {
+//                        var dataProfile: DataProfile? = DataProfile()
+//
+//                        it.data?.forEach {
+//                            dataProfile = it
+//                        }
+//
+//                        if (dataProfile != null){
+//                            profilePreference.saveProfile(dataProfile)
+//                        } else {
+//                            Toast.makeText(context, "Terjadi kesalahan saat mengambil data profile", Toast.LENGTH_LONG).show()
+//                        }
+//                    },
+//                    {
+//                        Toast.makeText(context, it.message.toString(), Toast.LENGTH_LONG).show()
+//                    }
+//                )
+//        }
     }
 
     private fun handleError(error: Throwable) {
