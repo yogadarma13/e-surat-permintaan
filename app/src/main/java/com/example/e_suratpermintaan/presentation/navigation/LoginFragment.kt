@@ -1,10 +1,13 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,6 +16,7 @@ import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
 import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataProfile
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.helpers.NavigationHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -52,55 +56,64 @@ class LoginFragment : Fragment() {
         }
 
         btnSignin.setOnClickListener {
-            authViewModel
-                .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::loginResponse, this::handleError)
+            progressBarOverlay.visibility = VISIBLE
+            Handler().postDelayed({
+                authViewModel
+                    .doLogin(Login("arvin", "arvin"))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::loginResponse, this::handleError)
+            }, 2000)
         }
     }
 
     private fun loginResponse(response: LoginResponse) {
         val dataLogin = response.dataLogin
 
-        profilePreference.saveProfile(
-            DataProfile(
-                id = dataLogin?.id,
-                name = dataLogin?.name,
-                email = dataLogin?.email
-            )
-        )
+        dataLogin?.id?.let {
+            profileViewModel.getProfile(it)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        var dataProfile: DataProfile? = DataProfile()
 
-        view?.findNavController()?.navigate(R.id.action_loginFragment_to_mainFragment)
+                        it.data?.forEach {
+                            dataProfile = it
+                        }
 
-        Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+                        progressBarOverlay.visibility = GONE
 
-//        dataLogin?.id?.let {
-//            profileViewModel.getProfile(it)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(
-//                    {
-//                        var dataProfile: DataProfile? = DataProfile()
-//
-//                        it.data?.forEach {
-//                            dataProfile = it
-//                        }
-//
-//                        if (dataProfile != null){
-//                            profilePreference.saveProfile(dataProfile)
-//                        } else {
-//                            Toast.makeText(context, "Terjadi kesalahan saat mengambil data profile", Toast.LENGTH_LONG).show()
-//                        }
-//                    },
-//                    {
-//                        Toast.makeText(context, it.message.toString(), Toast.LENGTH_LONG).show()
-//                    }
-//                )
-//        }
+                        if (dataProfile != null) {
+                            profilePreference.saveProfile(dataProfile)
+
+                            view?.findNavController()
+                                ?.navigate(
+                                    R.id.action_loginFragment_to_mainFragment,
+                                    null,
+                                    NavigationHelper.getNavOptions()
+                                )
+
+                            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Terjadi kesalahan saat mengambil data profile",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    },
+                    {
+                        progressBarOverlay.visibility = GONE
+                        Toast.makeText(context, it.message.toString(), Toast.LENGTH_LONG).show()
+                    }
+                )
+        }
     }
 
     private fun handleError(error: Throwable) {
+        progressBarOverlay.visibility = GONE
         Toast.makeText(context, error.message.toString(), Toast.LENGTH_LONG).show()
     }
 

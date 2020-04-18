@@ -11,11 +11,13 @@ import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
 import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavigationHelper
+import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -26,6 +28,7 @@ class MainFragment : Fragment() {
 
     lateinit var spDisposable: Disposable
     val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
+    val profilePreference: ProfilePreference by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +46,8 @@ class MainFragment : Fragment() {
             .subscribeOn(Schedulers.io())
             .subscribe(this::handleResponse, this::handleError)
 
-        btnSplash.setOnClickListener{
+        btnLogout.setOnClickListener{
+            profilePreference.removeProfile()
             it.findNavController().navigate(R.id.action_mainFragment_to_splashScreen, null, NavigationHelper.getNavOptions())
         }
     }
@@ -51,9 +55,7 @@ class MainFragment : Fragment() {
     private fun handleResponse(response: MyDataResponse) {
         val mySuratPermintaanList: List<DataMyData?>? = response.data
 
-        mySuratPermintaanList?.forEach {
-             Toast.makeText(context, it?.namaProyek + "", Toast.LENGTH_LONG).show()
-        }
+
     }
 
     private fun handleError(error: Throwable) {
