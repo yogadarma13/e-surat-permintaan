@@ -16,7 +16,7 @@ import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
 import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataProfile
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.helpers.NavigationHelper
+import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
             progressBarOverlay.visibility = VISIBLE
             Handler().postDelayed({
                 authViewModel
-                    .doLogin(Login("arvin", "arvin"))
+                    .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::loginResponse, this::handleError)
@@ -87,11 +87,13 @@ class LoginFragment : Fragment() {
                         if (dataProfile != null) {
                             profilePreference.saveProfile(dataProfile)
 
+                            val navOptions =
+                                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.loginFragment).build()
                             view?.findNavController()
                                 ?.navigate(
                                     R.id.action_loginFragment_to_mainFragment,
                                     null,
-                                    NavigationHelper.getNavOptions()
+                                    navOptions
                                 )
 
                             Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()

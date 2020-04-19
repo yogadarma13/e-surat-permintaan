@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
 import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.helpers.NavigationHelper
+import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -46,9 +46,12 @@ class MainFragment : Fragment() {
             .subscribeOn(Schedulers.io())
             .subscribe(this::handleResponse, this::handleError)
 
-        btnLogout.setOnClickListener{
+        btnLogout.setOnClickListener {
             profilePreference.removeProfile()
-            it.findNavController().navigate(R.id.action_mainFragment_to_splashScreen, null, NavigationHelper.getNavOptions())
+            val navOptions =
+                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.mainFragment).build()
+            it.findNavController()
+                .navigate(R.id.action_mainFragment_to_splashScreen, null, navOptions)
         }
     }
 
