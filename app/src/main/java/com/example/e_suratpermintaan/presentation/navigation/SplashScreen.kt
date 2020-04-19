@@ -25,7 +25,7 @@ class SplashScreen : Fragment() {
 
     val runnable = Runnable {
         if (profilePreference.getProfile() == null) {
-            view?.findNavController()?.navigate(R.id.action_splashScreen_to_loginFragment, null, NavigationHelper.getNavOptions())
+            view?.findNavController()?.navigate(R.id.action_splashScreen_to_welcomeScreen, null, NavigationHelper.getNavOptions())
         } else {
             view?.findNavController()?.navigate(R.id.action_splashScreen_to_mainFragment, null, NavigationHelper.getNavOptions())
         }
