@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
             progressBarOverlay.visibility = VISIBLE
             Handler().postDelayed({
                 authViewModel
-                    .doLogin(Login("arvin", "arvin"))
+                    .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(this::loginResponse, this::handleError)
