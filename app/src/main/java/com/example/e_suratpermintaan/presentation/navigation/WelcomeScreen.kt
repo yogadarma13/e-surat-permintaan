@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.helpers.NavigationHelper
+import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import kotlinx.android.synthetic.main.fragment_welcome_screen.*
 
 /**
@@ -28,7 +28,9 @@ class WelcomeScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnNext.setOnClickListener {
-            it.findNavController().navigate(R.id.action_welcomeScreen_to_loginFragment, null, NavigationHelper.getNavOptions())
+            val navOptions =
+                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.welcomeScreen).build()
+            it.findNavController().navigate(R.id.action_welcomeScreen_to_loginFragment, null, navOptions)
         }
     }
 

@@ -12,16 +12,10 @@
         tools:layout="@layout/fragment_splash_screen">
         <action
             android:id="@+id/action_splashScreen_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/splashScreen"
-            app:popUpToInclusive="true" />
+            app:destination="@id/mainFragment" />
         <action
             android:id="@+id/action_splashScreen_to_welcomeScreen"
-            app:destination="@id/welcomeScreen"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/splashScreen"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/welcomeScreen" />
     </fragment>
 
     <fragment
@@ -31,10 +25,7 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_splashScreen"
-            app:destination="@id/splashScreen"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/splashScreen" />
     </fragment>
 
     <fragment
@@ -44,10 +35,7 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/mainFragment" />
     </fragment>
 
     <fragment
@@ -57,7 +45,7 @@
         tools:layout="@layout/fragment_welcome_screen" >
         <action
             android:id="@+id/action_welcomeScreen_to_loginFragment"
-            app:destination="@id/loginFragment"/>
+            app:destination="@id/loginFragment" />
     </fragment>
 
 </navigation>

@@ -3,13 +3,13 @@ package com.example.e_suratpermintaan.presentation.navigation
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.helpers.NavigationHelper
+import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.external.helpers.WindowHelper.transparentStatusBar
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import org.koin.android.ext.android.inject
@@ -25,9 +25,21 @@ class SplashScreen : Fragment() {
 
     val runnable = Runnable {
         if (profilePreference.getProfile() == null) {
-            view?.findNavController()?.navigate(R.id.action_splashScreen_to_welcomeScreen, null, NavigationHelper.getNavOptions())
+            val navOptions =
+                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.splashScreen).build()
+            view?.findNavController()?.navigate(
+                R.id.action_splashScreen_to_welcomeScreen,
+                null,
+                navOptions
+            )
         } else {
-            view?.findNavController()?.navigate(R.id.action_splashScreen_to_mainFragment, null, NavigationHelper.getNavOptions())
+            val navOptions =
+                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.splashScreen).build()
+            view?.findNavController()?.navigate(
+                R.id.action_splashScreen_to_mainFragment,
+                null,
+                navOptions
+            )
         }
     }
 
@@ -45,7 +57,7 @@ class SplashScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-            handler.postDelayed(runnable, 2000)
+        handler.postDelayed(runnable, 2000)
     }
 
     override fun onResume() {
