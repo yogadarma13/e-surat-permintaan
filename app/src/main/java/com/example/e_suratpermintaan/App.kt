@@ -17,7 +17,8 @@ class App : Application() {
                 dataSourceModule,
                 repoModule,
                 useCaseModule,
-                viewModelModule
+                viewModelModule,
+                providerModule
             )
         }
     }

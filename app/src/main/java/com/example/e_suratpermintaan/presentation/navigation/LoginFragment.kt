@@ -60,8 +60,6 @@ class LoginFragment : Fragment() {
             Handler().postDelayed({
                 authViewModel
                     .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
                     .subscribe(this::loginResponse, this::handleError)
             }, 2000)
         }
@@ -72,8 +70,6 @@ class LoginFragment : Fragment() {
 
         dataLogin?.id?.let {
             profileViewModel.getProfile(it)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
                 .subscribe(
                     {
                         var dataProfile: DataProfile? = DataProfile()

@@ -13,9 +13,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,11 +38,11 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        spDisposable = suratPermintaanViewModel
-            .readMyData("21")
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(this::handleResponse, this::handleError)
+        val profileId = profilePreference.getProfile()?.id
+        if (profileId != null) {
+            spDisposable = suratPermintaanViewModel.readMyData(profileId)
+                .subscribe(this::handleResponse, this::handleError)
+        }
 
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
