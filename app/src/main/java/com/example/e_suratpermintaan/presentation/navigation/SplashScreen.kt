@@ -3,30 +3,31 @@ package com.example.e_suratpermintaan.presentation.navigation
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.external.helpers.WindowHelper.transparentStatusBar
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import org.koin.android.ext.android.inject
 
 /**
  * A simple [Fragment] subclass.
  */
 
-class SplashScreen : Fragment() {
+class SplashScreen : BaseFragment() {
 
     lateinit var handler: Handler
     val profilePreference: ProfilePreference by inject()
 
+    override fun layoutId(): Int = R.layout.fragment_splash_screen
+
     val runnable = Runnable {
         if (profilePreference.getProfile() == null) {
             val navOptions =
-                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.splashScreen).build()
+                NavOptionsHelper.getInstance().addAppStarterAnim().clearBackStack(R.id.splashScreen)
+                    .build()
             view?.findNavController()?.navigate(
                 R.id.action_splashScreen_to_welcomeScreen,
                 null,
@@ -34,7 +35,8 @@ class SplashScreen : Fragment() {
             )
         } else {
             val navOptions =
-                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.splashScreen).build()
+                NavOptionsHelper.getInstance().addLoginToMainAnim()
+                    .clearBackStack(R.id.splashScreen).build()
             view?.findNavController()?.navigate(
                 R.id.action_splashScreen_to_mainFragment,
                 null,
@@ -48,15 +50,9 @@ class SplashScreen : Fragment() {
         handler = Handler()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_splash_screen, container, false)
-    }
+    override fun onStart() {
+        super.onStart()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         handler.postDelayed(runnable, 2000)
     }
 

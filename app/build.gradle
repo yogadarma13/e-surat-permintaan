@@ -32,6 +32,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    defaultConfig {
+        buildConfigField "String", "BASE_URL", BASE_URL
+        buildConfigField "String", "API_KEY", API_KEY
+        buildConfigField "String", "BASIC_AUTH_USER", BASIC_AUTH_USER
+        buildConfigField "String", "BASIC_AUTH_PASS", BASIC_AUTH_PASS
+    }
 }
 
 dependencies {

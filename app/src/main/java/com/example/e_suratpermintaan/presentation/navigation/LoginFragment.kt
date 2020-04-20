@@ -1,15 +1,14 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.LayoutInflater
+import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.requests.Login
@@ -18,10 +17,9 @@ import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataPr
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,24 +28,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * A simple [Fragment] subclass.
  */
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
-    val profileViewModel: ProfileViewModel by viewModel()
-    val authViewModel: AuthViewModel by viewModel()
-    val profilePreference: ProfilePreference by inject()
+    private val profileViewModel: ProfileViewModel by viewModel()
+    private val authViewModel: AuthViewModel by viewModel()
+    private val profilePreference: ProfilePreference by inject()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+    override fun layoutId(): Int = R.layout.fragment_login
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        passwordSeek.setOnCheckedChangeListener { buttonView, isChecked ->
+        passwordSeek.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
             } else {
@@ -55,26 +47,45 @@ class LoginFragment : Fragment() {
             }
         }
 
+        etPassword.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+            // Ketika tombol enter di keyboard ditekan
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                etPassword.clearFocus()
+                closeKeyboard(activity as Activity)
+                doLogin()
+                return@OnKeyListener true
+            }
+            false
+        })
+
         btnSignin.setOnClickListener {
-            progressBarOverlay.visibility = VISIBLE
-            Handler().postDelayed({
-                authViewModel
-                    .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
-                    .subscribe(this::loginResponse, this::handleError)
-            }, 2000)
+            doLogin()
         }
+    }
+
+    private fun doLogin() {
+        progressBarOverlay.visibility = VISIBLE
+        Handler().postDelayed({
+            disposable = authViewModel
+                .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
+                .subscribe(this::loginResponse, this::handleError)
+        }, 2000)
+
+        closeKeyboard(activity as Activity)
     }
 
     private fun loginResponse(response: LoginResponse) {
         val dataLogin = response.dataLogin
 
-        dataLogin?.id?.let {
-            profileViewModel.getProfile(it)
+        dataLogin?.id?.let { id ->
+
+            disposable = profileViewModel.getProfile(id)
                 .subscribe(
-                    {
+                    { profileResponse ->
+
                         var dataProfile: DataProfile? = DataProfile()
 
-                        it.data?.forEach {
+                        profileResponse.data?.forEach { it ->
                             dataProfile = it
                         }
 
@@ -84,7 +95,8 @@ class LoginFragment : Fragment() {
                             profilePreference.saveProfile(dataProfile)
 
                             val navOptions =
-                                NavOptionsHelper.getInstance().addAnim().clearBackStack(R.id.loginFragment).build()
+                                NavOptionsHelper.getInstance().addLoginToMainAnim()
+                                    .clearBackStack(R.id.mainFragment).build()
                             view?.findNavController()
                                 ?.navigate(
                                     R.id.action_loginFragment_to_mainFragment,
@@ -92,27 +104,22 @@ class LoginFragment : Fragment() {
                                     navOptions
                                 )
 
-                            Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+                            toastNotify(response.message)
                         } else {
-                            Toast.makeText(
-                                context,
-                                "Terjadi kesalahan saat mengambil data profile",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            toastNotify(getString(R.string.profile_get_error_message))
                         }
 
                     },
-                    {
+                    { error ->
                         progressBarOverlay.visibility = GONE
-                        Toast.makeText(context, it.message.toString(), Toast.LENGTH_LONG).show()
+                        toastNotify(error.message.toString())
                     }
                 )
         }
     }
 
     private fun handleError(error: Throwable) {
-        progressBarOverlay.visibility = GONE
-        Toast.makeText(context, error.message.toString(), Toast.LENGTH_LONG).show()
+        toastNotify(error.message.toString())
     }
 
 }

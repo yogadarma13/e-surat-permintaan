@@ -11,10 +11,26 @@ class NavOptionsHelper {
         fun getInstance(): NavOptionsHelper = NavOptionsHelper()
     }
 
-    fun addAnim(): NavOptionsHelper {
+    fun addAppStarterAnim(): NavOptionsHelper {
         builder = builder
             .setEnterAnim(R.anim.slide_in_from_right)
             .setExitAnim(R.anim.slide_out_to_left)
+            .setPopEnterAnim(R.anim.slide_in_from_left)
+            .setPopExitAnim(R.anim.slide_out_to_right)
+        return this
+    }
+
+    fun addBackToSplashAnim(): NavOptionsHelper {
+        builder = builder
+            .setEnterAnim(R.anim.slide_in_from_left)
+            .setExitAnim(R.anim.slide_out_to_right)
+        return this
+    }
+
+    fun addLoginToMainAnim(): NavOptionsHelper {
+        builder = builder
+            .setEnterAnim(R.anim.slide_in_from_right)
+            .setExitAnim(R.anim.slide_out_login_to_main)
             .setPopEnterAnim(R.anim.slide_in_from_left)
             .setPopExitAnim(R.anim.slide_out_to_right)
         return this
