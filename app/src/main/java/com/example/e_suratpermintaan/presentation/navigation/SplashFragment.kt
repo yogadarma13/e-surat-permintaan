@@ -16,17 +16,17 @@ import org.koin.android.ext.android.inject
  * A simple [Fragment] subclass.
  */
 
-class SplashScreen : BaseFragment() {
+class SplashFragment : BaseFragment() {
 
-    lateinit var handler: Handler
-    val profilePreference: ProfilePreference by inject()
+    private lateinit var handler: Handler
+    private val profilePreference: ProfilePreference by inject()
 
-    override fun layoutId(): Int = R.layout.fragment_splash_screen
+    override fun layoutId(): Int = R.layout.fragment_splash
 
-    val runnable = Runnable {
+    private val runnable = Runnable {
         if (profilePreference.getProfile() == null) {
             val navOptions =
-                NavOptionsHelper.getInstance().addAppStarterAnim().clearBackStack(R.id.splashScreen)
+                NavOptionsHelper.getInstance().addAppStarterAnim().clearBackStack(R.id.splashFragment)
                     .build()
             view?.findNavController()?.navigate(
                 R.id.action_splashScreen_to_welcomeScreen,
@@ -36,7 +36,7 @@ class SplashScreen : BaseFragment() {
         } else {
             val navOptions =
                 NavOptionsHelper.getInstance().addLoginToMainAnim()
-                    .clearBackStack(R.id.splashScreen).build()
+                    .clearBackStack(R.id.splashFragment).build()
             view?.findNavController()?.navigate(
                 R.id.action_splashScreen_to_mainFragment,
                 null,
@@ -58,12 +58,12 @@ class SplashScreen : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        transparentStatusBar(activity as Activity, true, false)
+        transparentStatusBar(activity as Activity, isTransparent = true, fullscreen = false)
     }
 
     override fun onStop() {
         super.onStop()
-        transparentStatusBar(activity as Activity, false, false)
+        transparentStatusBar(activity as Activity, isTransparent = false, fullscreen = false)
     }
 
     override fun onDestroy() {

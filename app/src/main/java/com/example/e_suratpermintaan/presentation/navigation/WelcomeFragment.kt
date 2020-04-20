@@ -8,14 +8,14 @@ import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_welcome_screen.*
+import kotlinx.android.synthetic.main.fragment_welcome.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class WelcomeScreen : BaseFragment() {
+class WelcomeFragment : BaseFragment() {
 
-    override fun layoutId(): Int = R.layout.fragment_welcome_screen
+    override fun layoutId(): Int = R.layout.fragment_welcome
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

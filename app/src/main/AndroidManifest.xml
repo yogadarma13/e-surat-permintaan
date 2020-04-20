@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="stateHidden">
+        android:windowSoftInputMode="stateHidden"
+        android:fullBackupContent="true">
         <activity
             android:name="com.example.e_suratpermintaan.presentation.activity.MainActivity">
             <intent-filter>
