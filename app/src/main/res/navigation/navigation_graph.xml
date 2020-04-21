@@ -48,4 +48,10 @@
             app:destination="@id/loginFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/detailSuratPermintaanFragment"
+        android:name="com.example.e_suratpermintaan.presentation.navigation.DetailSuratPermintaanFragment"
+        android:label="fragment_detail_surat_permintaan"
+        tools:layout="@layout/fragment_detail_surat_permintaan" />
+
 </navigation>

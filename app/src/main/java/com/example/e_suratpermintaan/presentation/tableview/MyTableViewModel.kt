@@ -1,7 +1,6 @@
 package com.example.e_suratpermintaan.presentation.tableview
 
 import android.view.Gravity
-import com.e_suratpermintaan.core.domain.entities.responses.DataAll
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
 import com.example.e_suratpermintaan.presentation.tableview.model.CellModel
 import com.example.e_suratpermintaan.presentation.tableview.model.ColumnHeaderModel
@@ -55,13 +54,13 @@ class MyTableViewModel {
         return list
     }
 
-    private fun createCellModelList(dataList: List<DataAll>): List<List<CellModel>> {
+    private fun createCellModelList(dataList: List<DataMyData>): List<List<CellModel>> {
         val lists: MutableList<List<CellModel>> = ArrayList()
 
         // Creating cell model list from _root_ide_package_.com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData list for Cell Items
         // In this example, _root_ide_package_.com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData list is populated from web service
         for (i in dataList.indices) {
-            val data: DataAll = dataList[i]
+            val data: DataMyData = dataList[i]
             val list: MutableList<CellModel> = ArrayList()
 
             // The order should be same with column header list;
@@ -97,7 +96,7 @@ class MyTableViewModel {
     val cellModelList: List<List<Any>>?
         get() = mCellModelList
 
-    fun generateListForTableView(users: List<DataAll>) {
+    fun generateListForTableView(users: List<DataMyData>) {
         mColumnHeaderModelList = createColumnHeaderModelList()
         mCellModelList = createCellModelList(users)
         mRowHeaderModelList = createRowHeaderList(users.size)

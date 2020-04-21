@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.e_suratpermintaan.core.domain.entities.responses.DataAll
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractSorterViewHolder
@@ -89,9 +88,9 @@ class MyTableAdapter(val mContext: Context?) :
      * This method is not a generic Adapter method. It helps to generate lists from single user
      * list for this adapter.
      */
-    fun setDataList(userList: List<DataAll?>?) {
+    fun setDataList(userList: List<DataMyData?>?) {
         // Generate the lists that are used to TableViewAdapter
-        myTableViewModel.generateListForTableView(userList as List<DataAll>)
+        myTableViewModel.generateListForTableView(userList as List<DataMyData>)
 
         // Now we got what we need to show on TableView.
         setAllItems(

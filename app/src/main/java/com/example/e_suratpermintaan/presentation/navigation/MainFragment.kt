@@ -3,10 +3,10 @@ package com.example.e_suratpermintaan.presentation.navigation
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.evrencoskun.tableview.pagination.Pagination
 import com.example.e_suratpermintaan.R
@@ -34,14 +34,16 @@ class MainFragment : BaseFragment() {
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
-    private lateinit var mTableAdapter: MyTableAdapter
-    private lateinit var mPagination: Pagination
 
-    private var id_proyek: String? = null
-    private var nama_jenis: String? = null
+    private lateinit var idUser: String
+    private lateinit var idProyek: String
+    private lateinit var namaJenis: String
 
     private val proyekList: ArrayList<DataMasterProyek> = ArrayList()
     private val jenisList: ArrayList<DataMasterJenis> = ArrayList()
+
+    private lateinit var mTableAdapter: MyTableAdapter
+    private lateinit var mPagination: Pagination
 
     override fun layoutId(): Int = R.layout.fragment_main
 
@@ -80,7 +82,9 @@ class MainFragment : BaseFragment() {
         val profileId = profilePreference.getProfile()?.id
 
         if (profileId != null) {
-            val spObservable = suratPermintaanViewModel.readAllData(profileId)
+            idUser = profileId
+
+            val spObservable = suratPermintaanViewModel.readMyData(profileId)
             val proyekObservable = masterViewModel.getProyekList(profileId)
             val jenisObservable = masterViewModel.getJenisList(profileId)
 
@@ -91,9 +95,9 @@ class MainFragment : BaseFragment() {
 
     private fun handleResponse(response: Any) {
         when (response) {
-            is DataAllResponse -> {
+            is MyDataResponse -> {
 
-                val suratPermintaanList: List<DataAll?>? = response.data
+                val suratPermintaanList: List<DataMyData?>? = response.data
                 mTableAdapter.setDataList(suratPermintaanList)
                 mPagination.goToPage(1)
 
@@ -117,6 +121,11 @@ class MainFragment : BaseFragment() {
 
                 startShowDialog()
             }
+            is CreateSPResponse -> {
+
+                toastNotify(response.message)
+
+            }
         }
     }
 
@@ -126,8 +135,9 @@ class MainFragment : BaseFragment() {
 
     private fun startShowDialog() {
 
-        val alertDialogBuilder = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
-            .setTitle("Ajukan Surat Permintaan")
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+                .setTitle("Ajukan Surat Permintaan")
 
         var alertDialog = alertDialogBuilder.create()
 
@@ -144,16 +154,23 @@ class MainFragment : BaseFragment() {
             val selectedProyek = dialogRootView.spinnerProyek.text.toString()
             val selectedJenis = dialogRootView.spinnerJenis.text.toString()
 
-            id_proyek = proyekList.find { it.nama == selectedProyek } ?.id.toString()
-            nama_jenis = selectedJenis
+            idProyek = proyekList.find { it.nama == selectedProyek }?.id.toString()
+            namaJenis = jenisList.find { it.nama == selectedJenis}?.id.toString()
 
             alertDialog.hide()
 
             alertDialog = alertDialogBuilder
                 .setMessage("Apakah Anda yakin ingin mengajukan?")
                 .setPositiveButton("Ya") { _, _ ->
-                    toastNotify("ID PROYEK : $id_proyek \nNama Jenis : $nama_jenis")
+
+                    val createSP = CreateSP(idProyek, namaJenis, idUser)
+                    disposable = suratPermintaanViewModel.add(createSP)
+                        .subscribe(this::handleResponse, this::handleError)
+
+                    toastNotify("ID PROYEK : $idProyek \nNama Jenis : $namaJenis \nID USER : $idUser")
+
                     alertDialog.hide()
+
                 }.create()
 
             alertDialog.show()
