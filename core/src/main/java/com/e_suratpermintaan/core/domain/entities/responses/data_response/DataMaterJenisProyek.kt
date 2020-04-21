@@ -9,4 +9,5 @@ data class DataMaterJenisProyek(
 
 	@field:SerializedName("id")
 	val id: String? = null
+
 )
