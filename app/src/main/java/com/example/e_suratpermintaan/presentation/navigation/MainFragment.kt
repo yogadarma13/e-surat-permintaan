@@ -2,19 +2,24 @@ package com.example.e_suratpermintaan.presentation.navigation
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
-import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData
+import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMasterJenisProyek
 import com.evrencoskun.tableview.pagination.Pagination
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
+import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.tableview.MyTableAdapter
 import com.example.e_suratpermintaan.presentation.tableview.MyTableViewListener
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import io.reactivex.rxjava3.core.Observable
+import kotlinx.android.synthetic.main.ajukan_sp_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,15 +31,23 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainFragment : BaseFragment() {
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
+    private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
     private lateinit var mTableAdapter: MyTableAdapter
     private lateinit var mPagination: Pagination
+
+    private val proyekList: ArrayList<MyDataResponse> = ArrayList()
+    private val jenisList: ArrayList<MyDataResponse> = ArrayList()
 
     override fun layoutId(): Int = R.layout.fragment_main
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.clearFocus()
+
+
+        setupDialog()
+
 
         // Implementasi Data Table di android menggunakan library TableView
         mTableAdapter = MyTableAdapter(context)
@@ -67,16 +80,39 @@ class MainFragment : BaseFragment() {
         val profileId = profilePreference.getProfile()?.id
 
         if (profileId != null) {
-            toastNotify(profileId + "")
-            disposable = suratPermintaanViewModel.readAllData(profileId)
+            val spObservable = suratPermintaanViewModel.readAllData(profileId)
+            val proyekObservable = masterViewModel.getProyekList(profileId)
+            val jenisObservable = masterViewModel.getJenisList(profileId)
+
+            disposable = Observable.concat(spObservable, proyekObservable, jenisObservable)
                 .subscribe(this::handleResponse, this::handleError)
         }
     }
 
-    private fun handleResponse(response: MyDataResponse) {
-        val suratPermintaanList: List<DataMyData?>? = response.data
-        mTableAdapter.setDataList(suratPermintaanList)
-        mPagination.goToPage(1)
+    private fun setupDialog() {
+        val dialogRootView =
+            requireActivity().layoutInflater.inflate(R.layout.ajukan_sp_dialog, null)
+
+        val dows = arrayOf("A", "B", "C")
+        val adapter = ArrayAdapter(requireContext(), R.layout.material_spinner_item, dows)
+        val adapter2 = ArrayAdapter(requireContext(), R.layout.material_spinner_item, dows)
+
+        dialogRootView.spinnerDropdown.setAdapter(adapter)
+        dialogRootView.spinnerDropdown2.setAdapter(adapter2)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Judul")
+            .setView(dialogRootView)
+            .create()
+            .show()
+    }
+
+    private fun handleResponse(response: Any) {
+        if (response is MyDataResponse){
+            //asdasd
+        } else if (response is DataMasterJenisProyek){
+            //asdasd
+        }
     }
 
     private fun handleError(error: Throwable) {

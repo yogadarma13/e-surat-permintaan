@@ -1,0 +1,50 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp">
+    <!--
+    Clearly not a Spinner at all. Google has decided there should no
+    longer be any such thing. If we want a Spinner, we need to hack one
+    together by defining a TextInputLayout that wraps an AutoCompleteTextView.
+    Of course, TextInputLayout looks and behaves NOTHING like a Spinner, so
+    we're now forced to implement a complex style to force our TextInputLayout
+    to look and behave like the Spinner we wanted in the first place...
+    Let see this :
+    https://medium.com/@rmirabelle/there-is-no-material-design-spinner-for-android-3261b7c77da8
+    https://github.com/material-components/material-components-android/issues/1001
+     -->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/my_spinner_which_isnt_a_spinner"
+        style="@style/AppTheme.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <AutoCompleteTextView
+            android:id="@+id/spinnerDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/AppTheme.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_spinner_which_isnt_a_spinner">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <AutoCompleteTextView
+            android:id="@+id/spinnerDropdown2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

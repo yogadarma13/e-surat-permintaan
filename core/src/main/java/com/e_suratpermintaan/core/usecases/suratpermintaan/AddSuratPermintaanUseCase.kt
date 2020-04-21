@@ -1,4 +1,4 @@
-package com.e_suratpermintaan.domain.usecases.suratpermintaan
+package com.e_suratpermintaan.core.usecases.suratpermintaan
 
 import com.e_suratpermintaan.core.data.repository.SuratPermintaanRepository
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP

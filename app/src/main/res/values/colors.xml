@@ -13,4 +13,5 @@
     <color name="unselected_text_color">#000000</color>
     <color name="selected_text_color">#ffffff</color>
     <color name="popup_menu_item_text_color">#88a5c9</color>
+    <color name="colorPrimaryVariant">#FBC02D</color>
 </resources>

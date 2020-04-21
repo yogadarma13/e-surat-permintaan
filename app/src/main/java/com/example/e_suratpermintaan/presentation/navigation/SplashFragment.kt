@@ -6,8 +6,8 @@ import android.os.Handler
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
-import com.example.e_suratpermintaan.external.helpers.WindowHelper.transparentStatusBar
+import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
+import com.example.e_suratpermintaan.framework.helpers.WindowHelper.transparentStatusBar
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import org.koin.android.ext.android.inject

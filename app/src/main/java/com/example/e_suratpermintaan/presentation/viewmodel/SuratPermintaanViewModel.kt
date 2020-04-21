@@ -6,10 +6,10 @@ import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
-import com.e_suratpermintaan.domain.usecases.suratpermintaan.AddSuratPermintaanUseCase
-import com.e_suratpermintaan.domain.usecases.suratpermintaan.ReadAllDataSuratPermintaanUseCase
-import com.e_suratpermintaan.domain.usecases.suratpermintaan.ReadMyDataSuratPermintaanUseCase
-import com.e_suratpermintaan.domain.usecases.suratpermintaan.RemoveSuratPermintaanUseCase
+import com.e_suratpermintaan.core.usecases.suratpermintaan.AddSuratPermintaanUseCase
+import com.e_suratpermintaan.core.usecases.suratpermintaan.ReadAllDataSuratPermintaanUseCase
+import com.e_suratpermintaan.core.usecases.suratpermintaan.ReadMyDataSuratPermintaanUseCase
+import com.e_suratpermintaan.core.usecases.suratpermintaan.RemoveSuratPermintaanUseCase
 import io.reactivex.rxjava3.core.Observable
 
 class SuratPermintaanViewModel(
