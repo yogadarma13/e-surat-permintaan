@@ -1,7 +1,7 @@
 package com.example.e_suratpermintaan.framework.sharedpreference
 
 import android.content.Context
-import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataProfile
+import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.example.e_suratpermintaan.external.constants.PreferenceConstants.PROFILE_PREFS_NAME
 import com.example.e_suratpermintaan.external.constants.PreferenceConstants.PROFILE_PREFS_STRING_KEY
 import com.google.gson.Gson

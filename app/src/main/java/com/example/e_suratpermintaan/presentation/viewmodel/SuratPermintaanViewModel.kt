@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateSPResponse
+import com.e_suratpermintaan.core.domain.entities.responses.DataAllResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
 import com.e_suratpermintaan.core.usecases.suratpermintaan.AddSuratPermintaanUseCase
@@ -21,7 +22,7 @@ class SuratPermintaanViewModel(
 
     override fun add(sp: CreateSP): Observable<CreateSPResponse> = addSuratPermintaanUseCase.invoke(sp)
 
-    override fun readAllData(id_user: String): Observable<MyDataResponse> =
+    override fun readAllData(id_user: String): Observable<DataAllResponse> =
         readAllDataSuratPermintaanUseCase.invoke(id_user)
 
     override fun readMyData(id_user: String): Observable<MyDataResponse> =

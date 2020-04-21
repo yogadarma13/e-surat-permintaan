@@ -1,6 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="24dp">
@@ -25,13 +26,15 @@
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <AutoCompleteTextView
-            android:id="@+id/spinnerDropdown"
+            android:id="@+id/spinnerProyek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Pilih Proyek"
             android:editable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
         style="@style/AppTheme.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,11 +43,21 @@
         app:layout_constraintTop_toBottomOf="@+id/my_spinner_which_isnt_a_spinner">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <AutoCompleteTextView
-            android:id="@+id/spinnerDropdown2"
+            android:id="@+id/spinnerJenis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:editable="false" />
+            android:editable="false"
+            android:hint="Pilih Jenis" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnAjukan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Ajukan"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

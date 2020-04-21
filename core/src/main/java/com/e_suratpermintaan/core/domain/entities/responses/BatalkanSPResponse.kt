@@ -2,13 +2,13 @@ package com.e_suratpermintaan.core.domain.entities.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class VerifikasiSPResponse(
+data class BatalkanSPResponse(
 
 	@field:SerializedName("api_code")
 	val apiCode: String? = null,
 
 	@field:SerializedName("data")
-	val data: DataVerifikasi? = null,
+	val data: DataBatalkanSP? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -17,13 +17,7 @@ data class VerifikasiSPResponse(
 	val status: Boolean? = null
 )
 
-data class DataVerifikasi(
-
-	@field:SerializedName("id_pm")
-	val idPm: String? = null,
-
-	@field:SerializedName("catatan")
-	val catatan: Any? = null,
+data class DataBatalkanSP(
 
 	@field:SerializedName("status_permintaan")
 	val statusPermintaan: Int? = null

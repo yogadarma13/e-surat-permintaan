@@ -13,15 +13,15 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.requests.Login
+import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
-import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataProfile
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.ajukan_sp_dialog.*
+import kotlinx.android.synthetic.main.dialog_ajukan_sp.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -77,7 +77,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun loginResponse(response: LoginResponse) {
-        val dataLogin = response.dataLogin
+        val dataLogin = response.data
 
         dataLogin?.id?.let { id ->
 

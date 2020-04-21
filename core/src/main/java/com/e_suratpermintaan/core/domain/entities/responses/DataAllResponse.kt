@@ -1,8 +1,20 @@
-package com.e_suratpermintaan.core.domain.entities.responses.data_response
+package com.e_suratpermintaan.core.domain.entities.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class DataMyData(
+data class DataAllResponse(
+
+	@field:SerializedName("data")
+	val data: List<DataAll?>? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null,
+
+	@field:SerializedName("status")
+	val status: Boolean? = null
+)
+
+data class DataAll(
 
 	@field:SerializedName("id_proyek")
 	val idProyek: String? = null,
