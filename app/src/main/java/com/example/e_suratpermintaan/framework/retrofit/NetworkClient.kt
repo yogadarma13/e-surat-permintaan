@@ -1,6 +1,8 @@
 package com.example.e_suratpermintaan.framework.retrofit
 
+import com.example.e_suratpermintaan.BuildConfig
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,25 +10,33 @@ import retrofit2.converter.gson.GsonConverterFactory
 class NetworkClient {
 
     companion object {
-        val BASE_URL = "https://dev.karyastudio.com/e-spb/api/surat_permintaan/"
-        var retrofit: Retrofit? = null
+        private var retrofit: Retrofit? = null
 
         fun provideRetrofit(): Retrofit? {
             if (retrofit == null) {
-                var okHttpClient = OkHttpClient.Builder()
+                val httpClient = OkHttpClient.Builder()
+                    .addInterceptor(Interceptor {chain ->
+                        val original = chain.request()
+
+                        val request = original.newBuilder()
+                            .header("x-sm-key", BuildConfig.API_KEY)
+                            .build()
+
+                        return@Interceptor chain.proceed(request)
+                    })
                     .addInterceptor(
                         BasicAuthInterceptor(
-                            "sm4rts0ft",
-                            "?zwMAxBnS9jj"
+                            BuildConfig.BASIC_AUTH_USER,
+                            BuildConfig.BASIC_AUTH_PASS
                         )
                     )
-                    .build()
 
+                val client = httpClient.build()
                 retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BuildConfig.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                    .client(okHttpClient)
+                    .client(client)
                     .build()
             }
 

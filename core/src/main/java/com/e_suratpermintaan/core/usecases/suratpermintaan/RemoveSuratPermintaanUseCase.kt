@@ -1,9 +1,16 @@
 package com.e_suratpermintaan.domain.usecases.suratpermintaan
 
-import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
 import com.e_suratpermintaan.core.data.repository.SuratPermintaanRepository
+import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
+import com.e_suratpermintaan.core.rx.SchedulerProvider
 import io.reactivex.rxjava3.core.Observable
 
-class RemoveSuratPermintaanUseCase(private val suratPermintaanRepository: SuratPermintaanRepository) {
-    fun invoke(id_sp: String): Observable<DeleteSPResponse> = suratPermintaanRepository.remove(id_sp)
+class RemoveSuratPermintaanUseCase(
+    private val suratPermintaanRepository: SuratPermintaanRepository,
+    private val schedulerProvider: SchedulerProvider
+) {
+    fun invoke(id_sp: String): Observable<DeleteSPResponse> =
+        suratPermintaanRepository.remove(id_sp)
+            .observeOn(schedulerProvider.mainThread)
+            .subscribeOn(schedulerProvider.io)
 }

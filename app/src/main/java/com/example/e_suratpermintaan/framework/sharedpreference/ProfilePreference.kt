@@ -21,17 +21,17 @@ class ProfilePreference(private val context: Context) {
             context.getSharedPreferences(PROFILE_PREFS_NAME, Context.MODE_PRIVATE)
         val mEditor = prefs!!.edit()
         val gson = Gson()
-        val profile_json = gson.toJson(profile)
-        mEditor!!.putString(PROFILE_PREFS_STRING_KEY, profile_json)
+        val profileJson = gson.toJson(profile)
+        mEditor!!.putString(PROFILE_PREFS_STRING_KEY, profileJson)
         mEditor.apply()
     }
 
     fun getProfile(): DataProfile? {
         val prefs =
             context.getSharedPreferences(PROFILE_PREFS_NAME, Context.MODE_PRIVATE)
-        val profile_json = prefs!!.getString(PROFILE_PREFS_STRING_KEY, null)
+        val profileJson = prefs!!.getString(PROFILE_PREFS_STRING_KEY, null)
         val gson = Gson()
-        return gson.fromJson(profile_json, DataProfile::class.java)
+        return gson.fromJson(profileJson, DataProfile::class.java)
     }
 
 }

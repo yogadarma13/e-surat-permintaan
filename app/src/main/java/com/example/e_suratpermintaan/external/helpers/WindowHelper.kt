@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.e_suratpermintaan.R
 
 object WindowHelper {
@@ -52,7 +53,7 @@ object WindowHelper {
                         .clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
                     activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                     activity.window.statusBarColor =
-                        activity.resources.getColor(R.color.colorPrimaryDark)
+                        ContextCompat.getColor(activity, R.color.colorPrimaryDark)
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         activity.window

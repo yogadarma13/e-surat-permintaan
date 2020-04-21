@@ -3,4 +3,14 @@
     <color name="colorPrimary">#E73626</color>
     <color name="colorPrimaryDark">#95241A</color>
     <color name="colorAccent">#FFAF45</color>
+
+    <color name="selected_background_color">#FFDCAE</color>
+    <color name="separator_color">#878787</color>
+    <color name="shadow_background_color">#FFAF45</color>
+    <color name="unselected_background_color">#FFFFFF</color>
+
+    <color name="unselected_header_background_color">#FFAF45</color>
+    <color name="unselected_text_color">#000000</color>
+    <color name="selected_text_color">#ffffff</color>
+    <color name="popup_menu_item_text_color">#88a5c9</color>
 </resources>
