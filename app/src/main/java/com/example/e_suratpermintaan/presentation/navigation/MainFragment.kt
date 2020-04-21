@@ -5,8 +5,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.e_suratpermintaan.core.domain.entities.responses.DataAll
+import com.e_suratpermintaan.core.domain.entities.responses.DataAllResponse
+import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
 import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
-import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataMyData
 import com.evrencoskun.tableview.pagination.Pagination
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
@@ -73,8 +75,8 @@ class MainFragment : BaseFragment() {
         }
     }
 
-    private fun handleResponse(response: MyDataResponse) {
-        val suratPermintaanList: List<DataMyData?>? = response.data
+    private fun handleResponse(response: DataAllResponse) {
+        val suratPermintaanList: List<DataAll?>? = response.data
         mTableAdapter.setDataList(suratPermintaanList)
         mPagination.goToPage(1)
     }

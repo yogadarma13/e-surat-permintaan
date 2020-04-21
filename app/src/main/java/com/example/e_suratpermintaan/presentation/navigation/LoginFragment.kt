@@ -12,8 +12,8 @@ import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.requests.Login
+import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
-import com.e_suratpermintaan.core.domain.entities.responses.data_response.DataProfile
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
@@ -75,7 +75,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun loginResponse(response: LoginResponse) {
-        val dataLogin = response.dataLogin
+        val dataLogin = response.data
 
         dataLogin?.id?.let { id ->
 

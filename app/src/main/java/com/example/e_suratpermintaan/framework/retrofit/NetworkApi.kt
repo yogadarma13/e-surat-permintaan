@@ -25,7 +25,7 @@ interface NetworkApi {
     @POST("DataAll")
     fun getDataAll(
         @Field("id_user") id_user: String
-    ): Observable<MyDataResponse>
+    ): Observable<DataAllResponse>
 
     @FormUrlEncoded
     @POST("MyData")
@@ -83,13 +83,13 @@ interface NetworkApi {
     @POST("dataproyek")
     fun getMasterProyek(
         @Field("id_user") id_user: String
-    ): Observable<MasterJenisProyekResponse>
+    ): Observable<MasterProyekResponse>
 
     @FormUrlEncoded
     @POST("datajenis")
     fun getMasterJenis(
         @Field("id_user") id_user: String
-    ): Observable<MasterJenisProyekResponse>
+    ): Observable<MasterJenisResponse>
 
     @FormUrlEncoded
     @POST("datacostcode")
@@ -107,7 +107,7 @@ interface NetworkApi {
     @POST("create_item_sp")
     fun createItemSP(
         @Body createItemSP: CreateItemSP
-    ): Observable<BaseResponse>
+    ): Observable<CreateItemSPResponse>
 
     @FormUrlEncoded
     @POST("detail_item_sp")
@@ -118,7 +118,7 @@ interface NetworkApi {
     @POST("edit_item_sp")
     fun updateItemSP(
         @Body updateItemSP: UpdateItemSP
-    ): Observable<BaseResponse>
+    ): Observable<EditItemSPResponse>
 
     @POST("delete_item_sp")
     fun deleteItemSP(

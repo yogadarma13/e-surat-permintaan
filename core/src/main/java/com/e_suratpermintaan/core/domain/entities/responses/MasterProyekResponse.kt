@@ -2,13 +2,10 @@ package com.e_suratpermintaan.core.domain.entities.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class EditSPResponse(
-
-	@field:SerializedName("api_code")
-	val apiCode: String? = null,
+data class MasterProyekResponse(
 
 	@field:SerializedName("data")
-	val data: DataEditSP? = null,
+	val data: List<DataMasterProyek?>? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -17,11 +14,11 @@ data class EditSPResponse(
 	val status: Boolean? = null
 )
 
-data class DataEditSP(
+data class DataMasterProyek(
 
-	@field:SerializedName("updated_at")
-	val updatedAt: String? = null,
+	@field:SerializedName("nama")
+	val nama: String? = null,
 
-	@field:SerializedName("log")
-	val log: String? = null
+	@field:SerializedName("id")
+	val id: String? = null
 )
