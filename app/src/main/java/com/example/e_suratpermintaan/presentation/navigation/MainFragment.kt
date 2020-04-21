@@ -144,7 +144,7 @@ class MainFragment : BaseFragment() {
             val selectedProyek = dialogRootView.spinnerProyek.text.toString()
             val selectedJenis = dialogRootView.spinnerJenis.text.toString()
 
-            id_proyek = proyekList.find { it.nama == selectedProyek }?.toString()
+            id_proyek = proyekList.find { it.nama == selectedProyek } ?.id.toString()
             nama_jenis = selectedJenis
 
             alertDialog.hide()
