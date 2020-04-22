@@ -58,6 +58,15 @@ dependencies {
     // Material
     implementation "com.google.android.material:material:$material_version"
 
+    // Coordinatorlayout
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
+    // Recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // Cardview
+    implementation "androidx.cardview:cardview:1.0.0"
+
     //View Model
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
@@ -77,4 +86,5 @@ dependencies {
     // Navigation Architecture Component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 }

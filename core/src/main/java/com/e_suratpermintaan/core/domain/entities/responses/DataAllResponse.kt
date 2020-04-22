@@ -63,4 +63,4 @@ data class DataAll(
 
 	@field:SerializedName("id_lp")
 	val idLp: String? = null
-)
+) : SuratPermintaan
