@@ -39,9 +39,12 @@ interface NetworkApi {
         @Field("id_sp") id_sp: String
     ): Observable<DetailSPResponse>
 
+    @FormUrlEncoded
     @POST("create_sp")
     fun createSP(
-        @Body createSP: CreateSP
+        @Field("id_proyek") id_proyek: String,
+        @Field("jenis") jenis : String,
+        @Field("id_user") id_user : String
     ) : Observable<CreateSPResponse>
 
     @Multipart

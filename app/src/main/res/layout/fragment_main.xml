@@ -62,6 +62,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <Button
+        android:id="@+id/btnAjukan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ajukan"
+        app:layout_constraintBottom_toTopOf="@+id/filterContainer"
+        app:layout_constraintEnd_toEndOf="@+id/filterContainer"
+        app:layout_constraintStart_toStartOf="@+id/filterContainer" />
+
     <com.evrencoskun.tableview.TableView
         android:id="@+id/tableView"
         android:layout_width="match_parent"
@@ -72,7 +81,7 @@
         app:allow_click_inside_column_header="true"
         app:allow_click_inside_row_header="true"
         app:column_header_height="@dimen/table_view_cell_height"
-        app:layout_constraintBottom_toTopOf="@+id/filterContainer"
+        app:layout_constraintBottom_toTopOf="@+id/btnAjukan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
