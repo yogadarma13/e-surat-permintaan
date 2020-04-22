@@ -8,7 +8,7 @@ import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
 import io.reactivex.rxjava3.core.Observable
 
 interface SuratPermintaanDataSource {
-    fun add(sp: CreateSP): Observable<CreateSPResponse>
+    fun add(id_proyek : String, jenis: String, id_user : String): Observable<CreateSPResponse>
 
     fun readAllData(id_user: String): Observable<DataAllResponse>
 

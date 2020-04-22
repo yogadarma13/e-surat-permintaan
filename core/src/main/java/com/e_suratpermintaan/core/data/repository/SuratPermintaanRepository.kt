@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.core.Observable
 class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSource) :
     SuratPermintaanDataSource {
 
-    override fun add(sp: CreateSP): Observable<CreateSPResponse> = dataSource.add(sp)
+    override fun add(id_proyek : String, jenis: String, id_user : String): Observable<CreateSPResponse> = dataSource.add(id_proyek, jenis, id_user)
 
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         dataSource.readAllData(id_user)

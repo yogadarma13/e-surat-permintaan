@@ -79,6 +79,10 @@ class MainFragment : BaseFragment() {
                 .navigate(R.id.action_mainFragment_to_splashScreen, null, navOptions)
         }
 
+        btnAjukan.setOnClickListener {
+            startShowDialog()
+        }
+
         val profileId = profilePreference.getProfile()?.id
 
         if (profileId != null) {
@@ -118,8 +122,6 @@ class MainFragment : BaseFragment() {
                         jenisList.add(it)
                     }
                 }
-
-                startShowDialog()
             }
             is CreateSPResponse -> {
 
@@ -155,7 +157,7 @@ class MainFragment : BaseFragment() {
             val selectedJenis = dialogRootView.spinnerJenis.text.toString()
 
             idProyek = proyekList.find { it.nama == selectedProyek }?.id.toString()
-            namaJenis = jenisList.find { it.nama == selectedJenis}?.id.toString()
+            namaJenis = jenisList.find { it.nama == selectedJenis}?.nama.toString()
 
             alertDialog.hide()
 
@@ -163,8 +165,8 @@ class MainFragment : BaseFragment() {
                 .setMessage("Apakah Anda yakin ingin mengajukan?")
                 .setPositiveButton("Ya") { _, _ ->
 
-                    val createSP = CreateSP(idProyek, namaJenis, idUser)
-                    disposable = suratPermintaanViewModel.add(createSP)
+//                    val createSP = CreateSP(idProyek, namaJenis, idUser)
+                    disposable = suratPermintaanViewModel.add(idProyek, namaJenis, idUser)
                         .subscribe(this::handleResponse, this::handleError)
 
                     toastNotify("ID PROYEK : $idProyek \nNama Jenis : $namaJenis \nID USER : $idUser")

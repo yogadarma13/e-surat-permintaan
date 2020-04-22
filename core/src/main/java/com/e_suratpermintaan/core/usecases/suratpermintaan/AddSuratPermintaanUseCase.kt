@@ -10,8 +10,8 @@ class AddSuratPermintaanUseCase(
     private val suratPermintaanRepository: SuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(sp: CreateSP): Observable<CreateSPResponse> =
-        suratPermintaanRepository.add(sp)
+    fun invoke(id_proyek : String, jenis: String, id_user : String): Observable<CreateSPResponse> =
+        suratPermintaanRepository.add(id_proyek, jenis, id_user)
             .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
 }

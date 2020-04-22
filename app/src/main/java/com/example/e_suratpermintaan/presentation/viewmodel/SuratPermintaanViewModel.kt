@@ -20,7 +20,7 @@ class SuratPermintaanViewModel(
     private val removeSuratPermintaanUseCase: RemoveSuratPermintaanUseCase
 ) : ViewModel(), SuratPermintaanDataSource {
 
-    override fun add(sp: CreateSP): Observable<CreateSPResponse> = addSuratPermintaanUseCase.invoke(sp)
+    override fun add(id_proyek : String, jenis: String, id_user : String): Observable<CreateSPResponse> = addSuratPermintaanUseCase.invoke(id_proyek, jenis, id_user)
 
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         readAllDataSuratPermintaanUseCase.invoke(id_user)
