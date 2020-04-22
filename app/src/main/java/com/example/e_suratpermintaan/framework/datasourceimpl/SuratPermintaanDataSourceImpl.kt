@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-
 class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     SuratPermintaanDataSource {
 

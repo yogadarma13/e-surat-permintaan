@@ -6,15 +6,13 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
-import com.evrencoskun.tableview.pagination.Pagination
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.adapter.SuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
-import com.example.e_suratpermintaan.presentation.tableview.MyTableAdapter
-import com.example.e_suratpermintaan.presentation.tableview.MyTableViewListener
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,33 +40,13 @@ class MainFragment : BaseFragment() {
     private val proyekList: ArrayList<DataMasterProyek> = ArrayList()
     private val jenisList: ArrayList<DataMasterJenis> = ArrayList()
 
-    private lateinit var mTableAdapter: MyTableAdapter
-    private lateinit var mPagination: Pagination
+    lateinit var suratPermintaanAdapter: SuratPermintaanAdapter
 
     override fun layoutId(): Int = R.layout.fragment_main
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.clearFocus()
-
-        // Implementasi Data Table di android menggunakan library TableView
-        mTableAdapter = MyTableAdapter(context)
-        tableView.setAdapter(mTableAdapter)
-        tableView.tableViewListener = MyTableViewListener(tableView)
-
-        mPagination = Pagination(tableView)
-        mPagination.itemsPerPage = 5
-        mPagination.setOnTableViewPageTurnedListener { numItems, itemsStart, itemsEnd ->
-            // Relayout pagination number di sini
-        }
-
-        btnPrev.setOnClickListener {
-            mPagination.previousPage()
-        }
-
-        btnNext.setOnClickListener {
-            mPagination.nextPage()
-        }
 
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
@@ -102,8 +80,15 @@ class MainFragment : BaseFragment() {
             is MyDataResponse -> {
 
                 val suratPermintaanList: List<DataMyData?>? = response.data
-                mTableAdapter.setDataList(suratPermintaanList)
-                mPagination.goToPage(1)
+                val spList: ArrayList<SuratPermintaan?> = arrayListOf()
+
+                suratPermintaanList?.forEach {
+                    spList.add(it)
+                }
+
+                suratPermintaanAdapter = SuratPermintaanAdapter(spList)
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                recyclerView.adapter = suratPermintaanAdapter
 
             }
             is MasterProyekResponse -> {
@@ -157,7 +142,7 @@ class MainFragment : BaseFragment() {
             val selectedJenis = dialogRootView.spinnerJenis.text.toString()
 
             idProyek = proyekList.find { it.nama == selectedProyek }?.id.toString()
-            namaJenis = jenisList.find { it.nama == selectedJenis}?.nama.toString()
+            namaJenis = jenisList.find { it.nama == selectedJenis }?.nama.toString()
 
             alertDialog.hide()
 
@@ -165,7 +150,7 @@ class MainFragment : BaseFragment() {
                 .setMessage("Apakah Anda yakin ingin mengajukan?")
                 .setPositiveButton("Ya") { _, _ ->
 
-//                    val createSP = CreateSP(idProyek, namaJenis, idUser)
+                    //                    val createSP = CreateSP(idProyek, namaJenis, idUser)
                     disposable = suratPermintaanViewModel.add(idProyek, namaJenis, idUser)
                         .subscribe(this::handleResponse, this::handleError)
 

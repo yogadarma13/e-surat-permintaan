@@ -58,6 +58,15 @@ dependencies {
     // Material
     implementation "com.google.android.material:material:$material_version"
 
+    // Coordinatorlayout
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
+
+    // Recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+    // Cardview
+    implementation "androidx.cardview:cardview:1.0.0"
+
     //View Model
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
@@ -80,6 +89,4 @@ dependencies {
 
     // TableView Library
     implementation "com.evrencoskun.library:tableview:0.8.9.2"
-
-    //
 }
