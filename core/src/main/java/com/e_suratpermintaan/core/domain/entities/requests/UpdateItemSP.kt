@@ -2,7 +2,7 @@ package com.e_suratpermintaan.core.domain.entities.requests
 
 import com.google.gson.annotations.SerializedName
 
-data class UpdateItemSP (
+data class UpdateItemSP(
     val kode: String?,
     val kode_pekerjaan: String?,
     val id_barang: String?,

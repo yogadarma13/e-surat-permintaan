@@ -2,16 +2,20 @@ package com.e_suratpermintaan.core.data.repository
 
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
-import com.e_suratpermintaan.core.domain.entities.responses.CreateSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DataAllResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
+import com.e_suratpermintaan.core.domain.entities.requests.VerifikasiSP
+import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSource) :
     SuratPermintaanDataSource {
 
-    override fun add(id_proyek : String, jenis: String, id_user : String): Observable<CreateSPResponse> = dataSource.add(id_proyek, jenis, id_user)
+    override fun add(
+        id_proyek: String,
+        jenis: String,
+        id_user: String
+    ): Observable<CreateSPResponse> = dataSource.add(id_proyek, jenis, id_user)
 
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         dataSource.readAllData(id_user)
@@ -19,6 +23,22 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     override fun readMyData(id_user: String): Observable<MyDataResponse> =
         dataSource.readMyData(id_user)
 
-    override fun remove(id_sp: String): Observable<DeleteSPResponse> = dataSource.remove(id_sp)
+    override fun remove(id_sp: String): Observable<DeleteSPResponse> =
+        dataSource.remove(id_sp)
+
+    override fun readDetail(id_sp: String): Observable<DetailSPResponse> =
+        dataSource.readDetail(id_sp)
+
+    override fun edit(id: RequestBody, file: MultipartBody.Part, id_user: RequestBody) =
+        dataSource.edit(id, file, id_user)
+
+    override fun verifikasi(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse> =
+        dataSource.verifikasi(verifikasiSP)
+
+    override fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse> =
+        dataSource.ajukan(id_user, id)
+
+    override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
+        dataSource.cancel(id_user, id)
 
 }
