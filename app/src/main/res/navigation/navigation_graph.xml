@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_mainFragment_to_splashScreen"
             app:destination="@id/splashFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailSuratPermintaanFragment"
+            app:destination="@id/detailSuratPermintaanFragment" />
     </fragment>
 
     <fragment
@@ -52,6 +55,10 @@
         android:id="@+id/detailSuratPermintaanFragment"
         android:name="com.example.e_suratpermintaan.presentation.navigation.DetailSuratPermintaanFragment"
         android:label="fragment_detail_surat_permintaan"
-        tools:layout="@layout/fragment_detail_surat_permintaan" />
+        tools:layout="@layout/fragment_detail_surat_permintaan" >
+        <argument
+            android:name="id_sp"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

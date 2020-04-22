@@ -11,6 +11,15 @@ class NavOptionsHelper {
         fun getInstance(): NavOptionsHelper = NavOptionsHelper()
     }
 
+    fun addDefaultAnim(): NavOptionsHelper {
+        builder = builder
+            .setEnterAnim(R.anim.slide_in_from_right)
+            .setExitAnim(R.anim.slide_out_to_left)
+            .setPopEnterAnim(R.anim.slide_in_from_left)
+            .setPopExitAnim(R.anim.slide_out_to_right)
+        return this
+    }
+
     fun addAppStarterAnim(): NavOptionsHelper {
         builder = builder
             .setEnterAnim(R.anim.slide_in_from_right)
