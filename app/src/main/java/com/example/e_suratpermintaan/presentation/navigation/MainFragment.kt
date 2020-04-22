@@ -88,6 +88,8 @@ class MainFragment : BaseFragment() {
                     spList.add(it)
                 }
 
+                tv_show_length_entry.text = "Menampilkan ${spList.size.toString()} entri"
+
                 suratPermintaanAdapter = SuratPermintaanAdapter(spList)
                 suratPermintaanAdapter.setOnClickListener(object: SuratPermintaanAdapter.OnClickItemListener {
                     override fun onClick(view: View, item: SuratPermintaan?) {

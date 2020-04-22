@@ -30,6 +30,28 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
 
+            <TextView
+                android:id="@+id/text_surat_permintaan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Surat Permintaan"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_show_length_entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/text_surat_permintaan"
+                app:layout_constraintTop_toBottomOf="@+id/text_surat_permintaan" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
@@ -38,35 +60,44 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_show_length_entry"
+                tools:listitem="@layout/surat_permintaan_item" />
 
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
                 android:text="LOGOUT"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/filterContainer"
+                app:layout_constraintEnd_toEndOf="@+id/filterContainer"
+                app:layout_constraintStart_toStartOf="@+id/filterContainer" />
 
             <LinearLayout
                 android:id="@+id/filterContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="#CCC"
-                android:padding="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/border_radius_filter"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_filter_list"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Filter"
-                    android:textSize="16sp" />
+                    android:text="Filter data"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="16sp"
+                    android:layout_marginStart="8dp" />
 
             </LinearLayout>
 
