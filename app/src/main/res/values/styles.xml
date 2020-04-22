@@ -22,6 +22,14 @@
         <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow
         </item>
 
+        <item name="materialThemeOverlay">@style/MyFabOverlay</item>
+    </style>
+
+    <style name="MyFabOverlay">
+        <!-- Customize colorSecondary to change icon/text of FAB (maps to tint and rippleColor) -->
+        <item name="colorOnSecondary">@android:color/white</item>
+        <!-- Set colorSecondary to change background of FAB (backgroundTint) -->
+        <item name="colorSecondary">@color/colorAccent</item>
     </style>
 
     <!-- https://medium.com/@lcdsmao/material-design-custom-alert-dialog-5a9cab3ade11-->

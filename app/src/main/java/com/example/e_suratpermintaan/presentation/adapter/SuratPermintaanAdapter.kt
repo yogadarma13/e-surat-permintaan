@@ -5,20 +5,22 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
 import com.e_suratpermintaan.core.domain.entities.responses.SuratPermintaan
+import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 
-class SuratPermintaanAdapter(private val layoutRes: Int, var spList: ArrayList<SuratPermintaan>) :
+class SuratPermintaanAdapter(var spList: ArrayList<SuratPermintaan?>) :
     RecyclerView.Adapter<BaseViewHolder<SuratPermintaan>>() {
 
     // https://stackoverflow.com/questions/51087357/converting-a-generic-recyclerview-adapter-to-kotlin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<SuratPermintaan> {
         val context = parent.context
-        val view = LayoutInflater.from(context).inflate(layoutRes, parent)
 
-        return if (spList.toArray().isArrayOf<DataMyData>()){
+        return if (spList[0] is DataMyData){
+            val view = LayoutInflater.from(context).inflate(R.layout.surat_permintaan_item, parent, false)
             MyDataViewHolder(view)
         } else {
+            val view = LayoutInflater.from(context).inflate(R.layout.surat_permintaan_item, parent, false)
             DataAllViewHolder(view)
         }
     }

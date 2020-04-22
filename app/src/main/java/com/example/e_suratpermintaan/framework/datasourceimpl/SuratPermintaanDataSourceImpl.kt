@@ -9,7 +9,6 @@ import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
 import com.example.e_suratpermintaan.framework.retrofit.NetworkApi
 import io.reactivex.rxjava3.core.Observable
 
-
 class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     SuratPermintaanDataSource {
 
