@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 class GetProyekListUseCase(
     private val masterProyekRepository: MasterRepository,
     private val schedulerProvider: SchedulerProvider
-){
+) {
     fun invoke(id_user: String): Observable<MasterProyekResponse> =
         masterProyekRepository.getProyekList(id_user)
             .observeOn(schedulerProvider.mainThread)

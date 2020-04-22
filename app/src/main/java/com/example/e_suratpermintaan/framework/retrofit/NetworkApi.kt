@@ -78,7 +78,7 @@ interface NetworkApi {
     fun batalkanSP(
         @Field("id_user") id_user: String,
         @Field("id") id: String
-    ): Observable<AjukanSPResponse>
+    ): Observable<BatalkanSPResponse>
 
 
     // Master
