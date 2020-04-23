@@ -27,7 +27,7 @@ class ItemSuratPermintaanAdapter(var spList: ArrayList<ItemsDetailSP?>) :
     ): BaseViewHolder<ItemsDetailSP> {
         val context = parent.context
         val view =
-            LayoutInflater.from(context).inflate(R.layout.surat_permintaan_row, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_surat_permintaan_row, parent, false)
         return ItemSuratPermintaanViewHolder(view)
     }
 

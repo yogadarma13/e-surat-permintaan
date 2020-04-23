@@ -4,7 +4,7 @@ import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
 import com.e_suratpermintaan.core.domain.entities.responses.SuratPermintaan
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.surat_permintaan_row.view.*
+import kotlinx.android.synthetic.main.item_surat_permintaan_row.view.*
 
 class MyDataViewHolder(private val rootView: View) : BaseViewHolder<SuratPermintaan>(rootView) {
 

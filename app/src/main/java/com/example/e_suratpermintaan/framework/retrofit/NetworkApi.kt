@@ -107,9 +107,23 @@ interface NetworkApi {
     ): Observable<MasterPersyaratanResponse>
 
     // Surat Permintaan (Item)
+    @FormUrlEncoded
     @POST("create_item_sp")
     fun createItemSP(
-        @Body createItemSP: CreateItemSP
+        @Field("kode") kode: String?,
+        @Field("kode_pekerjaan") kode_pekerjaan: String?,
+        @Field("id_barang") id_barang: String?,
+        @Field("id_satuan") id_satuan: String?,
+        @Field("qty") qty: String?,
+        @Field("fungsi") fungsi: String?,
+        @Field("target") target: String?,
+        @Field("keterangan") keterangan: String?,
+        @Field("kapasitas") kapasitas: String?,
+        @Field("merk") merk: String?,
+        @Field("waktu_pemakaian") waktu_pemakaian: String?,
+        @Field("waktu_pelaksanaan") waktu_pelaksanaan: String?,
+        @Field("persyaratan[]") persyaratan: ArrayList<String?>?,
+        @Field("id_user") id_user: String?
     ): Observable<CreateItemSPResponse>
 
     @FormUrlEncoded

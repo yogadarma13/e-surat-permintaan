@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
@@ -64,7 +65,6 @@ class MainFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
     }
 
@@ -112,6 +112,13 @@ class MainFragment : BaseFragment() {
     }
 
     private fun setupListeners() {
+
+        btnProfile.setOnClickListener {
+            val navOption = NavOptionsHelper.getInstance().addBackToSplashAnim().build()
+
+            it.findNavController().navigate(R.id.action_mainFragment_to_profileFragment, null, navOption)
+        }
+
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
 
@@ -215,7 +222,7 @@ class MainFragment : BaseFragment() {
                 .setMessage("Apakah Anda yakin ingin mengajukan?")
                 .setPositiveButton("Ya") { _, _ ->
 
-                    //                    val createSP = CreateSP(idProyek, namaJenis, idUser)
+//                    var createSP = CreateSP(idProyek, namaJenis, idUser)
                     disposable = suratPermintaanViewModel.add(idProyek, namaJenis, idUser)
                         .subscribe(this::handleResponse, this::handleError)
 
