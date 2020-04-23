@@ -26,13 +26,15 @@ class ProfileFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_profile
 
+    override fun initApiRequest() {
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val idUser = profilePreference.getProfile()?.id
-
         getDataProfile(idUser)
-
     }
 
     private fun getDataProfile(id_user: String?) {
