@@ -1,0 +1,127 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilKodePekerjaan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <EditText
+            android:id="@+id/etKodePekerjaan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kode Pekerjaan" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilJenisBarang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilKodePekerjaan"
+        app:layout_constraintStart_toStartOf="@id/tilKodePekerjaan"
+        app:layout_constraintTop_toBottomOf="@id/tilKodePekerjaan">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <EditText
+            android:id="@+id/etJenisBarang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jenis Barang" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilVolume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@id/tilJenisBarang"
+        app:layout_constraintStart_toStartOf="@id/tilJenisBarang"
+        app:layout_constraintTop_toBottomOf="@id/tilJenisBarang">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <EditText
+            android:id="@+id/etVolume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Volume" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSatuan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@id/tilVolume"
+        app:layout_constraintStart_toStartOf="@id/tilVolume"
+        app:layout_constraintTop_toBottomOf="@id/tilVolume">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <EditText
+            android:id="@+id/etSatuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Satuan" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilKapasistas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@id/tilSatuan"
+        app:layout_constraintStart_toStartOf="@id/tilSatuan"
+        app:layout_constraintTop_toBottomOf="@id/tilSatuan">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <EditText
+            android:id="@+id/etKapasistas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kapasitas" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMerk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@id/tilKapasistas"
+        app:layout_constraintStart_toStartOf="@id/tilKapasistas"
+        app:layout_constraintTop_toBottomOf="@id/tilKapasistas">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <EditText
+            android:id="@+id/etMerk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Merk" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilWaktuPemakaian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@id/tilMerk"
+        app:layout_constraintStart_toStartOf="@id/tilMerk"
+        app:layout_constraintTop_toBottomOf="@+id/tilMerk">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <EditText
+            android:id="@+id/etWaktuPemakaian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Waktu Pemakaian" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnTambah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Tambah Item"
+        app:layout_constraintEnd_toEndOf="@+id/tilWaktuPemakaian"
+        app:layout_constraintTop_toBottomOf="@+id/tilWaktuPemakaian" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

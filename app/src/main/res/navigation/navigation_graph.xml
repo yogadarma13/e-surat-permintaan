@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailSuratPermintaanFragment"
+            app:destination="@id/detailSuratPermintaanFragment" />
     </fragment>
 
     <fragment
@@ -56,6 +59,11 @@
         android:name="com.example.e_suratpermintaan.presentation.navigation.DetailSuratPermintaanFragment"
         android:label="fragment_detail_surat_permintaan"
         tools:layout="@layout/fragment_detail_surat_permintaan" />
+        <argument
+            android:name="id_sp"
+            app:argType="string" />
+
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.e_suratpermintaan.presentation.navigation.ProfileFragment"

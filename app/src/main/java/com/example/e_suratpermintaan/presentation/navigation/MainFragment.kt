@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,6 +57,7 @@ class MainFragment : BaseFragment() {
 
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
+
             val navOptions =
                 NavOptionsHelper.getInstance().addBackToSplashAnim()
                     .clearBackStack(R.id.welcomeFragment).build()
@@ -95,6 +97,16 @@ class MainFragment : BaseFragment() {
                 tv_show_length_entry.text = "Menampilkan ${spList.size.toString()} entri"
 
                 suratPermintaanAdapter = SuratPermintaanAdapter(spList)
+                suratPermintaanAdapter.setOnClickListener(object: SuratPermintaanAdapter.OnClickItemListener {
+                    override fun onClick(view: View, item: SuratPermintaan?) {
+                        var bundle = bundleOf("id_sp" to (item as DataMyData).id)
+                        val navOptions =
+                            NavOptionsHelper.getInstance().addDefaultAnim().build()
+                        view.findNavController()
+                            .navigate(R.id.action_mainFragment_to_detailSuratPermintaanFragment, bundle, navOptions)
+                    }
+                })
+
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.adapter = suratPermintaanAdapter
 
