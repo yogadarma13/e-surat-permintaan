@@ -21,20 +21,20 @@ class ItemSuratPermintaanViewModel(
     private val readDetailItemSuratPermintaanUseCase: ReadDetailItemSuratPermintaanUseCase
 ) : ViewModel(), ItemSuratPermintaanDataSource {
     override fun addItem(
-        kode: String?,
-        kode_pekerjaan: String?,
-        id_barang: String?,
-        id_satuan: String?,
-        qty: String?,
-        fungsi: String?,
-        target: String?,
-        keterangan: String?,
-        kapasitas: String?,
-        merk: String?,
-        waktu_pemakaian: String?,
-        waktu_pelaksanaan: String?,
-        persyaratan: ArrayList<String?>?,
-        id_user: String?
+        kode: String,
+        kode_pekerjaan: String,
+        id_barang: String,
+        id_satuan: String,
+        qty: String,
+        fungsi: String,
+        target: String,
+        keterangan: String,
+        kapasitas: String,
+        merk: String,
+        waktu_pemakaian: String,
+        waktu_pelaksanaan: String,
+        persyaratan: ArrayList<String>,
+        id_user: String
     ): Observable<CreateItemSPResponse> =
         addItemSuratPermintaanUseCase.invoke(
             kode,
@@ -56,8 +56,41 @@ class ItemSuratPermintaanViewModel(
     override fun removeItem(id: String): Observable<DeleteItemSPResponse> =
         removeItemSuratPermintaanUseCase.invoke(id)
 
-    override fun editItem(updateItemSP: UpdateItemSP): Observable<EditItemSPResponse> =
-        editItemSuratPermintaanUseCase.invoke(updateItemSP)
+    override fun editItem(
+        kode: String,
+        kode_pekerjaan: String,
+        id_barang: String,
+        id_satuan: String,
+        qty: String,
+        fungsi: String,
+        target: String,
+        keterangan: String,
+        kapasitas: String,
+        merk: String,
+        waktu_pemakaian: String,
+        waktu_pelaksanaan: String,
+        persyaratan: ArrayList<String>,
+        id_user: String,
+        id_sp: String
+    ): Observable<EditItemSPResponse> =
+        editItemSuratPermintaanUseCase.invoke(
+            kode,
+            kode_pekerjaan,
+            id_barang,
+            id_satuan,
+            qty,
+            fungsi,
+            target,
+            keterangan,
+            kapasitas,
+            merk,
+            waktu_pemakaian,
+            waktu_pelaksanaan,
+            persyaratan,
+            id_user,
+            id_sp
+        )
+
 
     override fun readDetailItem(id: String): Observable<DetailItemSPResponse> =
         readDetailItemSuratPermintaanUseCase.invoke(id)

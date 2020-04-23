@@ -32,13 +32,26 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     override fun edit(id: RequestBody, file: MultipartBody.Part, id_user: RequestBody) =
         dataSource.edit(id, file, id_user)
 
-    override fun verifikasi(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse> =
-        dataSource.verifikasi(verifikasiSP)
+    override fun verifikasi(
+        id_user: String,
+        id: String,
+        status: String,
+        catatan: String
+    ): Observable<VerifikasiSPResponse> =
+        dataSource.verifikasi(
+            id_user,
+            id,
+            status,
+            catatan
+        )
 
     override fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse> =
         dataSource.ajukan(id_user, id)
 
     override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
         dataSource.cancel(id_user, id)
+
+    override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
+        dataSource.readHistory(id_sp)
 
 }

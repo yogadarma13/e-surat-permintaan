@@ -20,7 +20,7 @@ interface NetworkApi {
         @Field("id_user") id_user: String
     ): Observable<ProfileResponse>
 
-    // Surat Permintaan
+    //================================================ SURAT PERMINTAAN ============================================
     @FormUrlEncoded
     @POST("DataAll")
     fun getDataAll(
@@ -70,7 +70,10 @@ interface NetworkApi {
 
     @POST("verifikasi_sp")
     fun verifikasiSP(
-        @Body verifikasiSP: VerifikasiSP
+        @Field("id_user") id_user: String,
+        @Field("id") id: String,
+        @Field("status") status: String,
+        @Field("catatan") catatan: String
     ) : Observable<VerifikasiSPResponse>
 
     @FormUrlEncoded
@@ -80,8 +83,14 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<BatalkanSPResponse>
 
+    @FormUrlEncoded
+    @POST("history_sp")
+    fun getHistorySP(
+        @Field("id_sp") id_dp: String
+    ): Observable<HistorySPResponse>
 
-    // Master
+
+    //================================================ MASTER ============================================
     @FormUrlEncoded
     @POST("dataproyek")
     fun getMasterProyek(
@@ -106,24 +115,30 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<MasterPersyaratanResponse>
 
-    // Surat Permintaan (Item)
+    @FormUrlEncoded
+    @POST("datauom")
+    fun getMasterUom(
+        @Field("id") id: String
+    ): Observable<MasterUOMResponse>
+
+    //================================================ SURAT PERMINTAAN (ITEM) ============================================
     @FormUrlEncoded
     @POST("create_item_sp")
     fun createItemSP(
-        @Field("kode") kode: String?,
-        @Field("kode_pekerjaan") kode_pekerjaan: String?,
-        @Field("id_barang") id_barang: String?,
-        @Field("id_satuan") id_satuan: String?,
-        @Field("qty") qty: String?,
-        @Field("fungsi") fungsi: String?,
-        @Field("target") target: String?,
-        @Field("keterangan") keterangan: String?,
-        @Field("kapasitas") kapasitas: String?,
-        @Field("merk") merk: String?,
-        @Field("waktu_pemakaian") waktu_pemakaian: String?,
-        @Field("waktu_pelaksanaan") waktu_pelaksanaan: String?,
-        @Field("persyaratan[]") persyaratan: ArrayList<String?>?,
-        @Field("id_user") id_user: String?
+        @Field("kode") kode: String,
+        @Field("kode_pekerjaan") kode_pekerjaan: String,
+        @Field("id_barang") id_barang: String,
+        @Field("id_satuan") id_satuan: String,
+        @Field("qty") qty: String,
+        @Field("fungsi") fungsi: String,
+        @Field("target") target: String,
+        @Field("keterangan") keterangan: String,
+        @Field("kapasitas") kapasitas: String,
+        @Field("merk") merk: String,
+        @Field("waktu_pemakaian") waktu_pemakaian: String,
+        @Field("waktu_pelaksanaan") waktu_pelaksanaan: String,
+        @Field("persyaratan[]") persyaratan: ArrayList<String>,
+        @Field("id_user") id_user: String
     ): Observable<CreateItemSPResponse>
 
     @FormUrlEncoded
@@ -132,14 +147,67 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<DetailItemSPResponse>
 
+    @FormUrlEncoded
     @POST("edit_item_sp")
     fun updateItemSP(
-        @Body updateItemSP: UpdateItemSP
+        @Field("kode") kode: String,
+        @Field("kode_pekerjaan") kode_pekerjaan: String,
+        @Field("id_barang") id_barang: String,
+        @Field("id_satuan") id_satuan: String,
+        @Field("qty") qty: String,
+        @Field("fungsi") fungsi: String,
+        @Field("target") target: String,
+        @Field("keterangan") keterangan: String,
+        @Field("kapasitas") kapasitas: String,
+        @Field("merk") merk: String,
+        @Field("waktu_pemakaian") waktu_pemakaian: String,
+        @Field("waktu_pelaksanaan") waktu_pelaksanaan: String,
+        @Field("persyaratan[]") persyaratan: ArrayList<String>,
+        @Field("id_user") id_user: String,
+        @Field("id_sp") id_sp: String
     ): Observable<EditItemSPResponse>
 
+    @FormUrlEncoded
     @POST("delete_item_sp")
     fun deleteItemSP(
         @Field("id") id: String
     ): Observable<DeleteItemSPResponse>
+
+    //================================================ FILE LAMPIRAN ============================================
+    @FormUrlEncoded
+    @POST("tambah_file")
+    fun createFileLampiran(
+        @Field("id") id: RequestBody,
+        @Field("keterangan") keterangan: RequestBody,
+        @Field("file") file: MultipartBody.Part
+    ): Observable<CreateFileLampiranResponse>
+
+    @FormUrlEncoded
+    @POST("edit_file")
+    fun updateFileLampiran(
+        @Field("keterangan") keterangan: RequestBody,
+        @Field("file") file: MultipartBody.Part,
+        @Field("id_file") id_file: RequestBody
+    ): Observable<EditFileLampiranResponse>
+
+    @FormUrlEncoded
+    @POST("delete_file")
+    fun deleteFileLampiran(
+        @Field("id_file") id_file: String
+    ): Observable<DeleteFileLampiranResponse>
+
+    //================================================ NOTIFIKASI ============================================
+    @FormUrlEncoded
+    @POST("notifikasi")
+    fun getNotifikasi(
+        @Field("id_user") id_user: String
+    ): Observable<NotifikasiResponse>
+
+    @FormUrlEncoded
+    @POST("read_notifikasi")
+    fun readNotifikasi(
+        @Field("id_user") id_user: String,
+        @Field("id") id: String
+    ): Observable<ReadNotifikasiResponse>
 
 }

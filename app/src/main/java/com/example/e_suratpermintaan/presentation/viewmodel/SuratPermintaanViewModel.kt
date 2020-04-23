@@ -3,24 +3,8 @@ package com.example.e_suratpermintaan.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
 import com.e_suratpermintaan.core.domain.entities.requests.VerifikasiSP
-import com.e_suratpermintaan.core.domain.entities.responses.CreateSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DataAllResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DeleteSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.MyDataResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DetailSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.EditSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.VerifikasiSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.AjukanSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.BatalkanSPResponse
-import com.e_suratpermintaan.core.usecases.suratpermintaan.AddSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.ReadAllDataSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.ReadMyDataSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.RemoveSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.ReadDetailSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.EditSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.VerifikasiSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.AjukanSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.suratpermintaan.CancelSuratPermintaanUseCase
+import com.e_suratpermintaan.core.domain.entities.responses.*
+import com.e_suratpermintaan.core.usecases.suratpermintaan.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -34,7 +18,8 @@ class SuratPermintaanViewModel(
     private val editSuratPermintaanUseCase: EditSuratPermintaanUseCase,
     private val verifikasiSuratPermintaanUseCase: VerifikasiSuratPermintaanUseCase,
     private val ajukanSuratPermintaanUseCase: AjukanSuratPermintaanUseCase,
-    private val cancelSuratPermintaanUseCase: CancelSuratPermintaanUseCase
+    private val cancelSuratPermintaanUseCase: CancelSuratPermintaanUseCase,
+    private val readHistorySuratPermintaanUseCase: ReadHistorySuratPermintaanUseCase
 ) : ViewModel(), SuratPermintaanDataSource {
 
     override fun add(
@@ -62,13 +47,26 @@ class SuratPermintaanViewModel(
     ): Observable<EditSPResponse> =
         editSuratPermintaanUseCase.invoke(id, file, id_user)
 
-    override fun verifikasi(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse> =
-        verifikasiSuratPermintaanUseCase.invoke(verifikasiSP)
+    override fun verifikasi(
+        id_user: String,
+        id: String,
+        status: String,
+        catatan: String
+    ): Observable<VerifikasiSPResponse> =
+        verifikasiSuratPermintaanUseCase.invoke(
+            id_user,
+            id,
+            status,
+            catatan
+        )
 
     override fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse> =
         ajukanSuratPermintaanUseCase.invoke(id_user, id)
 
     override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
         cancelSuratPermintaanUseCase.invoke(id_user, id)
+
+    override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
+        readHistorySuratPermintaanUseCase.invoke(id_sp)
 
 }

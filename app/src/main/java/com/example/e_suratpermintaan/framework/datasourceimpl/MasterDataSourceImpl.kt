@@ -1,10 +1,7 @@
 package com.example.e_suratpermintaan.framework.datasourceimpl
 
 import com.e_suratpermintaan.core.data.datasource.MasterDataSource
-import com.e_suratpermintaan.core.domain.entities.responses.MasterCCResponse
-import com.e_suratpermintaan.core.domain.entities.responses.MasterJenisResponse
-import com.e_suratpermintaan.core.domain.entities.responses.MasterPersyaratanResponse
-import com.e_suratpermintaan.core.domain.entities.responses.MasterProyekResponse
+import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.framework.retrofit.NetworkApi
 import io.reactivex.rxjava3.core.Observable
 
@@ -21,5 +18,8 @@ class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSourc
 
     override fun getPersyaratanList(id: String): Observable<MasterPersyaratanResponse> =
         networkApi.getMasterPersyaratan(id)
+
+    override fun getUomList(id: String): Observable<MasterUOMResponse> =
+        networkApi.getMasterUom(id)
 
 }

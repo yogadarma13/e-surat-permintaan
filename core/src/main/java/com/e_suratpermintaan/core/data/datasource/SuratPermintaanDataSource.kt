@@ -24,9 +24,16 @@ interface SuratPermintaanDataSource {
         id_user: RequestBody
     ): Observable<EditSPResponse>
 
-    fun verifikasi(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse>
+    fun verifikasi(
+        id_user: String,
+        id: String,
+        status: String,
+        catatan: String
+    ): Observable<VerifikasiSPResponse>
 
     fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse>
 
     fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse>
+
+    fun readHistory(id_sp: String): Observable<HistorySPResponse>
 }

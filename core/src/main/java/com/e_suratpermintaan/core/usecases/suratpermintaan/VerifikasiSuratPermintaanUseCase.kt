@@ -10,8 +10,18 @@ class VerifikasiSuratPermintaanUseCase(
     private val suratPermintaanRepository: SuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse> =
-        suratPermintaanRepository.verifikasi(verifikasiSP)
+    fun invoke(
+        id_user: String,
+        id: String,
+        status: String,
+        catatan: String
+    ): Observable<VerifikasiSPResponse> =
+        suratPermintaanRepository.verifikasi(
+            id_user,
+            id,
+            status,
+            catatan
+        )
             .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
 }

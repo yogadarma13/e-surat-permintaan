@@ -30,4 +30,14 @@ val repoModule = module {
             get() as ItemSuratPermintaanDataSource
         )
     }
+    single {
+        FileLampiranRepository(
+            get() as FileLampiranDataSource
+        )
+    }
+    single {
+        NotifikasiRepository(
+            get() as NotifikasiDataSource
+        )
+    }
 }
