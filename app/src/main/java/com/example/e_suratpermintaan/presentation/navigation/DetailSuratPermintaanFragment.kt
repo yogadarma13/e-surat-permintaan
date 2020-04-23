@@ -1,6 +1,5 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
-import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
@@ -32,8 +31,7 @@ class DetailSuratPermintaanFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_detail_surat_permintaan
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initApiRequest() {
 
         idSp = arguments?.getString("id_sp")
 
@@ -49,6 +47,7 @@ class DetailSuratPermintaanFragment : BaseFragment() {
 
         disposable = suratPermintaanViewModel.readDetail(idSp.toString())
             .subscribe(this::handleResponse, this::handleError)
+
     }
 
     private fun handleResponse(response: Any) {

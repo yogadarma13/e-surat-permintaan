@@ -11,6 +11,6 @@ class RemoveItemSuratPermintaanUseCase(
 ) {
     fun invoke(id: String): Observable<DeleteItemSPResponse> =
         itemSuratPermintaanRepository.removeItem(id)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

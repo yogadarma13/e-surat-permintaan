@@ -23,6 +23,10 @@ class SplashFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_splash
 
+    override fun initApiRequest() {
+
+    }
+
     private val runnable = Runnable {
         if (profilePreference.getProfile() == null) {
             val navOptions =

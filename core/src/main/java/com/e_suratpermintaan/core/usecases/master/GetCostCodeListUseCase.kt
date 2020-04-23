@@ -11,6 +11,6 @@ class GetCostCodeListUseCase(
 ) {
     fun invoke(id_user: String): Observable<MasterCCResponse> =
         masterProyekRepository.getCostCodeList(id_user)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

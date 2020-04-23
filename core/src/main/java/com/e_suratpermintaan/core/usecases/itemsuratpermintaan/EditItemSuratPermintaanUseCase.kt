@@ -12,6 +12,6 @@ class EditItemSuratPermintaanUseCase(
 ) {
     fun invoke(updateItemSP: UpdateItemSP): Observable<EditItemSPResponse> =
         itemSuratPermintaanRepository.editItem(updateItemSP)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

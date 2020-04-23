@@ -12,6 +12,6 @@ class AddItemSuratPermintaanUseCase(
 ) {
     fun invoke(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
         itemSuratPermintaanRepository.addItem(createItemSP)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

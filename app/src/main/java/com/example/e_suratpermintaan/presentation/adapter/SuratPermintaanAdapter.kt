@@ -9,9 +9,10 @@ import com.e_suratpermintaan.core.domain.entities.responses.SuratPermintaan
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 
-class SuratPermintaanAdapter(var spList: ArrayList<SuratPermintaan?>) :
+class SuratPermintaanAdapter() :
     RecyclerView.Adapter<BaseViewHolder<SuratPermintaan>>() {
 
+    var spList: ArrayList<SuratPermintaan?> = arrayListOf()
     private lateinit var onClickItemListener: OnClickItemListener
 
     // https://stackoverflow.com/questions/51087357/converting-a-generic-recyclerview-adapter-to-kotlin

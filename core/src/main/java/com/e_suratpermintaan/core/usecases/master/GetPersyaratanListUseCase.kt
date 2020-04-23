@@ -11,6 +11,6 @@ class GetPersyaratanListUseCase(
 ) {
     fun invoke(id: String): Observable<MasterPersyaratanResponse> =
         masterPersyaratanRepository.getPersyaratanList(id)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

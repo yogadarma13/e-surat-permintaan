@@ -11,6 +11,6 @@ class ReadDetailItemSuratPermintaanUseCase(
 ) {
     fun invoke(id: String): Observable<DetailItemSPResponse> =
         itemSuratPermintaanRepository.readDetailItem(id)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

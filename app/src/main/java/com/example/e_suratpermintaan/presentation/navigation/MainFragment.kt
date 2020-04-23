@@ -1,12 +1,15 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
@@ -17,19 +20,21 @@ import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-/**
- * A simple [Fragment] subclass.
- */
+class MainStateViewModel : ViewModel() {
+    var isSavedState = false
+    var spList: ArrayList<SuratPermintaan?>? = null
+    var listState: Parcelable? = null
+}
 
 class MainFragment : BaseFragment() {
 
+    private val mainStateViewModel by navGraphViewModels<MainStateViewModel>(R.id.navigation_graph)
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
@@ -38,17 +43,75 @@ class MainFragment : BaseFragment() {
     private lateinit var idProyek: String
     private lateinit var namaJenis: String
 
-    private val proyekList: ArrayList<DataMasterProyek> = ArrayList()
-    private val jenisList: ArrayList<DataMasterJenis> = ArrayList()
+    private lateinit var proyekList: ArrayList<DataMasterProyek>
+    private lateinit var jenisList: ArrayList<DataMasterJenis>
 
     lateinit var suratPermintaanAdapter: SuratPermintaanAdapter
 
     override fun layoutId(): Int = R.layout.fragment_main
 
+    override fun saveState() {
+        mainStateViewModel.listState = recyclerView.layoutManager?.onSaveInstanceState()
+        mainStateViewModel.spList = suratPermintaanAdapter.spList
+        mainStateViewModel.isSavedState = true
+    }
+
+    override fun clearState() {
+        mainStateViewModel.listState = null
+        mainStateViewModel.spList = null
+        mainStateViewModel.isSavedState = false
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.clearFocus()
 
+        init()
+    }
+
+    private fun init() {
+        proyekList = arrayListOf()
+        jenisList = arrayListOf()
+
+        suratPermintaanAdapter = SuratPermintaanAdapter()
+        setupListeners()
+
+        initRecyclerView()
+    }
+
+    override fun initApiRequest() {
+        if (!mainStateViewModel.isSavedState) {
+            val profileId = profilePreference.getProfile()?.id
+
+            if (profileId != null) {
+                idUser = profileId
+
+                val spObservable = suratPermintaanViewModel.readMyData(profileId)
+                val proyekObservable = masterViewModel.getProyekList(profileId)
+                val jenisObservable = masterViewModel.getJenisList(profileId)
+
+                disposable = spObservable.subscribe(this::handleResponse, this::handleError)
+                disposable = proyekObservable.subscribe(this::handleResponse, this::handleError)
+                disposable = jenisObservable.subscribe(this::handleResponse, this::handleError)
+            }
+        }
+    }
+
+    private fun initRecyclerView() {
+        if (mainStateViewModel.spList != null){
+            suratPermintaanAdapter.spList = mainStateViewModel.spList!!
+        }
+
+        tv_show_length_entry.text = "Menampilkan ${suratPermintaanAdapter.spList.size} entri"
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = suratPermintaanAdapter
+
+        if (mainStateViewModel.listState != null) {
+            recyclerView.layoutManager?.onRestoreInstanceState(mainStateViewModel.listState)
+        }
+    }
+
+    private fun setupListeners() {
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
 
@@ -63,18 +126,20 @@ class MainFragment : BaseFragment() {
             startShowDialog()
         }
 
-        val profileId = profilePreference.getProfile()?.id
-
-        if (profileId != null) {
-            idUser = profileId
-
-            val spObservable = suratPermintaanViewModel.readMyData(profileId)
-            val proyekObservable = masterViewModel.getProyekList(profileId)
-            val jenisObservable = masterViewModel.getJenisList(profileId)
-
-            disposable = Observable.concat(spObservable, proyekObservable, jenisObservable)
-                .subscribe(this::handleResponse, this::handleError)
-        }
+        suratPermintaanAdapter.setOnClickListener(object :
+            SuratPermintaanAdapter.OnClickItemListener {
+            override fun onClick(view: View, item: SuratPermintaan?) {
+                var bundle = bundleOf("id_sp" to (item as DataMyData).id)
+                val navOptions =
+                    NavOptionsHelper.getInstance().addDefaultAnim().build()
+                view.findNavController()
+                    .navigate(
+                        R.id.action_mainFragment_to_detailSuratPermintaanFragment,
+                        bundle,
+                        navOptions
+                    )
+            }
+        })
     }
 
     private fun handleResponse(response: Any) {
@@ -82,27 +147,13 @@ class MainFragment : BaseFragment() {
             is MyDataResponse -> {
 
                 val suratPermintaanList: List<DataMyData?>? = response.data
-                val spList: ArrayList<SuratPermintaan?> = arrayListOf()
 
                 suratPermintaanList?.forEach {
-                    spList.add(it)
+                    suratPermintaanAdapter.spList.add(it)
                 }
 
-                tv_show_length_entry.text = "Menampilkan ${spList.size.toString()} entri"
-
-                suratPermintaanAdapter = SuratPermintaanAdapter(spList)
-                suratPermintaanAdapter.setOnClickListener(object: SuratPermintaanAdapter.OnClickItemListener {
-                    override fun onClick(view: View, item: SuratPermintaan?) {
-                        var bundle = bundleOf("id_sp" to (item as DataMyData).id)
-                        val navOptions =
-                            NavOptionsHelper.getInstance().addDefaultAnim().build()
-                        view.findNavController()
-                            .navigate(R.id.action_mainFragment_to_detailSuratPermintaanFragment, bundle, navOptions)
-                    }
-                })
-
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                recyclerView.adapter = suratPermintaanAdapter
+                tv_show_length_entry.text = "Menampilkan ${suratPermintaanAdapter.spList.size} entri"
+                suratPermintaanAdapter.notifyDataSetChanged()
 
             }
             is MasterProyekResponse -> {

@@ -11,6 +11,6 @@ class ReadDetailSuratPermintaanUseCase(
 ) {
     fun invoke(id_sp: String): Observable<DetailSPResponse> =
         suratPermintaanRepository.readDetail(id_sp)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

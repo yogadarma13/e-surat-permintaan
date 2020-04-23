@@ -27,4 +27,8 @@ class WelcomeFragment : BaseFragment() {
         }
     }
 
+    override fun initApiRequest() {
+
+    }
+
 }

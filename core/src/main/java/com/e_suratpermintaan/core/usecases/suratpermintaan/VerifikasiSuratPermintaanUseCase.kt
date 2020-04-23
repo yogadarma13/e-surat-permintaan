@@ -12,6 +12,6 @@ class VerifikasiSuratPermintaanUseCase(
 ) {
     fun invoke(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse> =
         suratPermintaanRepository.verifikasi(verifikasiSP)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

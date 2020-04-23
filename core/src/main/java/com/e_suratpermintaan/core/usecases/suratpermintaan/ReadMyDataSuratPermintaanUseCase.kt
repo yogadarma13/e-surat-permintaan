@@ -11,6 +11,6 @@ class ReadMyDataSuratPermintaanUseCase(
 ) {
     fun invoke(id_user: String): Observable<MyDataResponse> =
         suratPermintaanRepository.readMyData(id_user)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }
