@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_mainFragment_to_splashScreen"
             app:destination="@id/splashFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment
@@ -53,5 +56,10 @@
         android:name="com.example.e_suratpermintaan.presentation.navigation.DetailSuratPermintaanFragment"
         android:label="fragment_detail_surat_permintaan"
         tools:layout="@layout/fragment_detail_surat_permintaan" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.e_suratpermintaan.presentation.navigation.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

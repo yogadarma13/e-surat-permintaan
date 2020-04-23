@@ -48,6 +48,12 @@ class MainFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         view.clearFocus()
 
+        btnProfile.setOnClickListener {
+            val navOption = NavOptionsHelper.getInstance().addBackToSplashAnim().build()
+
+            it.findNavController().navigate(R.id.action_mainFragment_to_profileFragment, null, navOption)
+        }
+
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
             val navOptions =

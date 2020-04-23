@@ -65,6 +65,15 @@
                 tools:listitem="@layout/surat_permintaan_item" />
 
             <Button
+                android:id="@+id/btnProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+                app:layout_constraintEnd_toEndOf="@+id/btnLogout"
+                app:layout_constraintStart_toStartOf="@+id/btnLogout" />
+
+            <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
