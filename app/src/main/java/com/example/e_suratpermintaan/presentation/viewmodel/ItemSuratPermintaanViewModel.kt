@@ -20,8 +20,38 @@ class ItemSuratPermintaanViewModel(
     private val editItemSuratPermintaanUseCase: EditItemSuratPermintaanUseCase,
     private val readDetailItemSuratPermintaanUseCase: ReadDetailItemSuratPermintaanUseCase
 ) : ViewModel(), ItemSuratPermintaanDataSource {
-    override fun addItem(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
-        addItemSuratPermintaanUseCase.invoke(createItemSP)
+    override fun addItem(
+        kode: String?,
+        kode_pekerjaan: String?,
+        id_barang: String?,
+        id_satuan: String?,
+        qty: String?,
+        fungsi: String?,
+        target: String?,
+        keterangan: String?,
+        kapasitas: String?,
+        merk: String?,
+        waktu_pemakaian: String?,
+        waktu_pelaksanaan: String?,
+        persyaratan: ArrayList<String?>?,
+        id_user: String?
+    ): Observable<CreateItemSPResponse> =
+        addItemSuratPermintaanUseCase.invoke(
+            kode,
+            kode_pekerjaan,
+            id_barang,
+            id_satuan,
+            qty,
+            fungsi,
+            target,
+            keterangan,
+            kapasitas,
+            merk,
+            waktu_pemakaian,
+            waktu_pelaksanaan,
+            persyaratan,
+            id_user
+        )
 
     override fun removeItem(id: String): Observable<DeleteItemSPResponse> =
         removeItemSuratPermintaanUseCase.invoke(id)

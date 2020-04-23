@@ -12,8 +12,38 @@ import io.reactivex.rxjava3.core.Observable
 
 class ItemSuratPermintaanSourceImpl(private val networkApi: NetworkApi) :
     ItemSuratPermintaanDataSource {
-    override fun addItem(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
-        networkApi.createItemSP(createItemSP)
+    override fun addItem(
+        kode: String?,
+        kode_pekerjaan: String?,
+        id_barang: String?,
+        id_satuan: String?,
+        qty: String?,
+        fungsi: String?,
+        target: String?,
+        keterangan: String?,
+        kapasitas: String?,
+        merk: String?,
+        waktu_pemakaian: String?,
+        waktu_pelaksanaan: String?,
+        persyaratan: ArrayList<String?>?,
+        id_user: String?
+    ): Observable<CreateItemSPResponse> =
+        networkApi.createItemSP(
+            kode,
+            kode_pekerjaan,
+            id_barang,
+            id_satuan,
+            qty,
+            fungsi,
+            target,
+            keterangan,
+            kapasitas,
+            merk,
+            waktu_pemakaian,
+            waktu_pelaksanaan,
+            persyaratan,
+            id_user
+        )
 
     override fun removeItem(id: String): Observable<DeleteItemSPResponse> =
         networkApi.deleteItemSP(id)

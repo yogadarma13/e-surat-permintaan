@@ -10,8 +10,38 @@ class AddItemSuratPermintaanUseCase(
     private val itemSuratPermintaanRepository: ItemSuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
-        itemSuratPermintaanRepository.addItem(createItemSP)
+    fun invoke(
+        kode: String?,
+        kode_pekerjaan: String?,
+        id_barang: String?,
+        id_satuan: String?,
+        qty: String?,
+        fungsi: String?,
+        target: String?,
+        keterangan: String?,
+        kapasitas: String?,
+        merk: String?,
+        waktu_pemakaian: String?,
+        waktu_pelaksanaan: String?,
+        persyaratan: ArrayList<String?>?,
+        id_user: String?
+    ): Observable<CreateItemSPResponse> =
+        itemSuratPermintaanRepository.addItem(
+            kode,
+            kode_pekerjaan,
+            id_barang,
+            id_satuan,
+            qty,
+            fungsi,
+            target,
+            keterangan,
+            kapasitas,
+            merk,
+            waktu_pemakaian,
+            waktu_pelaksanaan,
+            persyaratan,
+            id_user
+        )
             .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
 }

@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
@@ -170,7 +171,7 @@ class MainFragment : BaseFragment() {
                 .setMessage("Apakah Anda yakin ingin mengajukan?")
                 .setPositiveButton("Ya") { _, _ ->
 
-                    //                    val createSP = CreateSP(idProyek, namaJenis, idUser)
+//                    var createSP = CreateSP(idProyek, namaJenis, idUser)
                     disposable = suratPermintaanViewModel.add(idProyek, namaJenis, idUser)
                         .subscribe(this::handleResponse, this::handleError)
 

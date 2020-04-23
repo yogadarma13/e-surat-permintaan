@@ -112,23 +112,38 @@ class DetailSuratPermintaanFragment : BaseFragment() {
             alertDialog = alertDialogBuilder
                 .setMessage("Apakah Anda yakin ingin menambah item?")
                 .setPositiveButton("Ya") { _, _ ->
-                    val createItemSP = CreateItemSP(
-                        kodeSp,
-                        kodePekerjaan,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        kapasitas,
-                        merk,
-                        null,
-                        waktuPemakaian,
-                        null,
+//                    val createItemSP = CreateItemSP(
+//                        kodeSp,
+//                        kodePekerjaan,
+//                        null,
+//                        null,
+//                        null,
+//                        null,
+//                        null,
+//                        null,
+//                        kapasitas,
+//                        merk,
+//                        null,
+//                        waktuPemakaian,
+//                        null,
+//                        idUser
+//                    )
+                    disposable = itemSuratPermintaanViewModel.addItem(
+                        "S-AAA-1",
+                        "010209",
+                        "010209",
+                        "M2",
+                        "50",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "2020-04-20",
+                        arrayListOf("1", "2"),
                         idUser
                     )
-                    disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
                         .subscribe(this::handleResponse, this::handleError)
 
                     alertDialog.hide()
