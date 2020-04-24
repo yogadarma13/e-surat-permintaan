@@ -27,8 +27,8 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         networkApi.deleteSP(id_sp)
 
-    override fun readDetail(id_sp: String): Observable<DetailSPResponse> =
-        networkApi.getDetailSP(id_sp)
+    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
+        networkApi.getDetailSP(id_sp, id_user)
 
     override fun edit(
         id: RequestBody,
@@ -37,13 +37,26 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     ): Observable<EditSPResponse> =
         networkApi.editSP(id, file, id_user)
 
-    override fun verifikasi(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse> =
-        networkApi.verifikasiSP(verifikasiSP)
+    override fun verifikasi(
+        id_user: String,
+        id: String,
+        status: String,
+        catatan: String
+    ): Observable<VerifikasiSPResponse> =
+        networkApi.verifikasiSP(
+            id_user,
+            id,
+            status,
+            catatan
+        )
 
     override fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse> =
         networkApi.ajukanSP(id_user, id)
 
     override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
         networkApi.batalkanSP(id_user, id)
+
+    override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
+        networkApi.getHistorySP(id_sp)
 
 }

@@ -12,20 +12,20 @@ class AddItemSuratPermintaanUseCase(
 ) {
 
     fun invoke(
-        kode: String?,
-        kode_pekerjaan: String?,
-        id_barang: String?,
-        id_satuan: String?,
-        qty: String?,
-        fungsi: String?,
-        target: String?,
-        keterangan: String?,
-        kapasitas: String?,
-        merk: String?,
-        waktu_pemakaian: String?,
-        waktu_pelaksanaan: String?,
-        persyaratan: ArrayList<String?>?,
-        id_user: String?
+        kode: String,
+        kode_pekerjaan: String,
+        id_barang: String,
+        id_satuan: String,
+        qty: String,
+        fungsi: String,
+        target: String,
+        keterangan: String,
+        kapasitas: String,
+        merk: String,
+        waktu_pemakaian: String,
+        waktu_pelaksanaan: String,
+        persyaratan: ArrayList<String>,
+        id_user: String
     ): Observable<CreateItemSPResponse> =
         itemSuratPermintaanRepository.addItem(
             kode,

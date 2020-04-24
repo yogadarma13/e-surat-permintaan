@@ -20,4 +20,10 @@ val dataSourceModule = module {
     single {
         ItemSuratPermintaanSourceImpl(get()) as ItemSuratPermintaanDataSource
     }
+    single {
+        FileLampiranSourceImpl(get()) as FileLampiranDataSource
+    }
+    single {
+        NotifikasiDataSourceImpl(get()) as NotifikasiDataSource
+    }
 }
