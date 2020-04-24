@@ -13,6 +13,6 @@ class EditFileLampiranUseCase(
 ) {
     fun invoke(keterangan: RequestBody, file: MultipartBody.Part, id_file: RequestBody): Observable<EditFileLampiranResponse> =
         fileLampiranRepository.editFile(keterangan, file, id_file)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

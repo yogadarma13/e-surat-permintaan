@@ -11,6 +11,6 @@ class GetJenisListUseCase(
 ) {
     fun invoke(id_user: String): Observable<MasterJenisResponse> =
         masterProyekRepository.getJenisList(id_user)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

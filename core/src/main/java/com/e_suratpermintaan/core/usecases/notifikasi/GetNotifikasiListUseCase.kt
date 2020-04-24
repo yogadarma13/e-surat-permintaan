@@ -11,6 +11,6 @@ class GetNotifikasiListUseCase(
 ) {
     fun invoke(id_user: String): Observable<NotifikasiResponse> =
         notifikasiRepository.getNotifikasiList(id_user)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

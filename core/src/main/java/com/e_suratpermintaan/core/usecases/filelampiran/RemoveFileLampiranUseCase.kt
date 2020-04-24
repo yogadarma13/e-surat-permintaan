@@ -11,6 +11,6 @@ class RemoveFileLampiranUseCase(
 ) {
     fun invoke(id_file: String): Observable<DeleteFileLampiranResponse> =
         fileLampiranRepository.removeFile(id_file)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

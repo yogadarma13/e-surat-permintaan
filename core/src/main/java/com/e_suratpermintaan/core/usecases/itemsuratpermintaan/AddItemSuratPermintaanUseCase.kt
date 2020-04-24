@@ -10,6 +10,7 @@ class AddItemSuratPermintaanUseCase(
     private val itemSuratPermintaanRepository: ItemSuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
+
     fun invoke(
         kode: String,
         kode_pekerjaan: String,
@@ -42,6 +43,6 @@ class AddItemSuratPermintaanUseCase(
             persyaratan,
             id_user
         )
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

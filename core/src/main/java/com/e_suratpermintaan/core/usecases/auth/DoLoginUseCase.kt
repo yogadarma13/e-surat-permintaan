@@ -12,6 +12,6 @@ class DoLoginUseCase(
 ) {
     fun invoke(login: Login): Observable<LoginResponse> =
         authRepository.doLogin(login)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

@@ -11,6 +11,6 @@ class GetUomListUseCase(
 ) {
     fun invoke(id: String): Observable<MasterUOMResponse> =
         masterRepository.getUomList(id)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

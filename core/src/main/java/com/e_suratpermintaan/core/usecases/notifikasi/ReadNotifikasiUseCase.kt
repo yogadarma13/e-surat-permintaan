@@ -11,6 +11,6 @@ class ReadNotifikasiUseCase(
 ) {
     fun invoke(id_user: String, id: String): Observable<ReadNotifikasiResponse> =
         notifikasiRepository.readNotifikasi(id_user, id)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

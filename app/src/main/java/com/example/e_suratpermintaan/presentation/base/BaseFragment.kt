@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.Disposable
+
 
 abstract class BaseFragment : Fragment() {
 
@@ -27,6 +30,7 @@ abstract class BaseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(layoutId(), container, false)
     }
 
@@ -37,7 +41,26 @@ abstract class BaseFragment : Fragment() {
         view.isFocusable = true
         view.isFocusableInTouchMode = true
 
+        view.clearFocus()
         findAndSetEditTextFocusChangeListenerRecursively(view)
+    }
+
+    open fun saveState() {
+
+    }
+
+    open fun clearState() {
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        saveState()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        saveState()
     }
 
     override fun onDetach() {
@@ -50,6 +73,64 @@ abstract class BaseFragment : Fragment() {
         }
 
         super.onDetach()
+    }
+
+    // Ini selalu dijalankan setiap mau menampilkan fragment, baik fragment yang udah pernah ditampilkan
+    // atupun fragment yang baru mau ditampilkan
+    // https://stackoverflow.com/questions/17792132/how-does-onviewstaterestored-from-fragments-work
+    // onViewStateRestored dipanggil setelah onCreateView() dan sebelum onResume()
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        anyInitName()
+    }
+
+    // Ini merupakan method yang bakalan dijalankan lebih dulu daripada initApiRequest
+    // Method init() bakalan yang selalu dijalankan di awal (bukan pertama) meskipun fragment baru
+    // init() hanya dipanggil di onViewStateRestored
+    private fun anyInitName() {
+
+    }
+
+    // Gunakan method ini untuk mulai malankan perintah seperti getdata dengan rxjava,
+    // set adapter ke recyclerview, dan lain-lain
+    // Jadi gak memblock (freeze) enter animation si fragment
+    // Kode dijalankan setelah animasi selesai / berhenti
+    abstract fun initApiRequest()
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        //https://stackoverflow.com/questions/19614392/fragmenttransaction-before-and-after-setcustomanimation-callback
+        //Check if the superclass already created the animation
+        var anim = super.onCreateAnimation(transit, enter, nextAnim)
+
+        //If not, and an animation is defined, load it now
+        if (anim == null && nextAnim !== 0) {
+            anim = AnimationUtils.loadAnimation(activity, nextAnim)
+        }
+
+        //If there is an animation for this fragment, add a listener.
+        anim?.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {
+            }
+
+            override fun onAnimationEnd(animation: Animation) {
+                // Bisa dijamin onAnimationEnd ini dijalankan paling akhir setelah semua
+                // fragment lifecycle (sampai onResume) selesai
+
+                if (enter) {
+                    // Jalankan ketika giliran fragment ditampilkan ke user
+                    initApiRequest()
+                    clearState()
+                }
+
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {
+
+            }
+        })
+
+        return anim
     }
 
     private fun findAndSetEditTextFocusChangeListenerRecursively(view: View) {

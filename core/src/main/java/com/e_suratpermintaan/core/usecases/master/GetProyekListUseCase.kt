@@ -11,6 +11,6 @@ class GetProyekListUseCase(
 ) {
     fun invoke(id_user: String): Observable<MasterProyekResponse> =
         masterProyekRepository.getProyekList(id_user)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

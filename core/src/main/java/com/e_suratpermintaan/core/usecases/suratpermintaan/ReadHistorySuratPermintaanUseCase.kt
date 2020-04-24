@@ -11,6 +11,6 @@ class ReadHistorySuratPermintaanUseCase(
 ) {
     fun invoke(id_sp: String): Observable<HistorySPResponse> =
         suratPermintaanRepository.readHistory(id_sp)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

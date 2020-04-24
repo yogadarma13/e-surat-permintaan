@@ -11,6 +11,6 @@ class CancelSuratPermintaanUseCase(
 ) {
     fun invoke(id_user: String, id: String): Observable<BatalkanSPResponse> =
         suratPermintaanRepository.cancel(id_user, id)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

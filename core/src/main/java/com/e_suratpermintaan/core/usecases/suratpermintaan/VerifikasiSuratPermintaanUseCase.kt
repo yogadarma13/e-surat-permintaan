@@ -22,6 +22,6 @@ class VerifikasiSuratPermintaanUseCase(
             status,
             catatan
         )
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

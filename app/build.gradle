@@ -33,6 +33,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     defaultConfig {
         buildConfigField "String", "BASE_URL", BASE_URL
         buildConfigField "String", "API_KEY", API_KEY
@@ -86,4 +90,6 @@ dependencies {
     // Navigation Architecture Component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.0-alpha01"
 }

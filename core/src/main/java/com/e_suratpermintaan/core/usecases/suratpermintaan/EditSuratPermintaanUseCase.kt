@@ -17,6 +17,6 @@ class EditSuratPermintaanUseCase(
         id_user: RequestBody
     ): Observable<EditSPResponse> =
         suratPermintaanRepository.edit(id, file, id_user)
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }

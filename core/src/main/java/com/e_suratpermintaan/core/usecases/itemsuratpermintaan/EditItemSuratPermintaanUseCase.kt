@@ -44,6 +44,6 @@ class EditItemSuratPermintaanUseCase(
             id_user,
             id_sp
         )
-            .observeOn(schedulerProvider.mainThread)
             .subscribeOn(schedulerProvider.io)
+            .observeOn(schedulerProvider.mainThread)
 }
