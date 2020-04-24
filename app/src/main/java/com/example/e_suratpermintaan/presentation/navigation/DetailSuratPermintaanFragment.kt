@@ -41,7 +41,7 @@ class DetailSuratPermintaanFragment : BaseFragment() {
             idUser = profileId
         }
 
-        tambahItem.setOnClickListener {
+        tvAddItem.setOnClickListener {
             startAddDialog()
         }
 
@@ -60,6 +60,17 @@ class DetailSuratPermintaanFragment : BaseFragment() {
                 val detailSPResponse = response.data
                 val dataDetailSP = detailSPResponse?.get(0)
                 kodeSp = dataDetailSP?.kode
+
+                val detailDate = dataDetailSP?.tanggalPengajuan?.split(" ")
+
+                tv_kode_detail.text = kodeSp
+                tv_kode_sp.text = kodeSp
+                tv_name_proyek_detail.text = dataDetailSP?.namaProyek
+                tv_location_detail.text = dataDetailSP?.namaLokasi
+                tv_date_detail.text = detailDate?.get(0)
+                tv_time_detail.text = detailDate?.get(1)
+                tv_status_detail.text = dataDetailSP?.statusPermintaan
+                tv_jenis_detail.text = dataDetailSP?.jenis
 
                 val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
                 val itemArrayList: ArrayList<ItemsDetailSP?> = arrayListOf()
