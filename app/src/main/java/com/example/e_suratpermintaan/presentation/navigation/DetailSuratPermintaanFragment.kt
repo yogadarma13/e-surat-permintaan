@@ -2,7 +2,6 @@ package com.example.e_suratpermintaan.presentation.navigation
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DetailSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP

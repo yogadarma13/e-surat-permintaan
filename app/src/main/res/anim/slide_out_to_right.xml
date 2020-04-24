@@ -2,12 +2,12 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <translate
         android:interpolator="@android:anim/overshoot_interpolator"
-        android:duration="@android:integer/config_shortAnimTime"
+        android:duration="150"
         android:fromXDelta="0"
         android:toXDelta="100%p" />
-    <alpha
-        android:interpolator="@android:anim/overshoot_interpolator"
-        android:duration="@android:integer/config_shortAnimTime"
-        android:fromAlpha="1.0"
-        android:toAlpha="0.5" />
+<!--    <alpha-->
+<!--        android:interpolator="@android:anim/overshoot_interpolator"-->
+<!--        android:duration="@android:integer/config_shortAnimTime"-->
+<!--        android:fromAlpha="1.0"-->
+<!--        android:toAlpha="0.5" />-->
 </set>

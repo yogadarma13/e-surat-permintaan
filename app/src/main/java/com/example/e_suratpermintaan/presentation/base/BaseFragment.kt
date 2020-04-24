@@ -1,7 +1,10 @@
 package com.example.e_suratpermintaan.presentation.base
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +15,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -37,10 +41,15 @@ abstract class BaseFragment : Fragment() {
         return getPersistentView(inflater, container, savedInstanceState, layoutId())
     }
 
-    private fun getPersistentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, layout: Int): View? {
+    private fun getPersistentView(
+        inflater: LayoutInflater?,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+        layout: Int
+    ): View? {
         if (rootView == null) {
             // Inflate the layout for this fragment
-            rootView = inflater?.inflate(layout,container,false)
+            rootView = inflater?.inflate(layout, container, false)
             Log.d("MYAPP", "CREATE NEW ROOTVIEW")
         } else {
             // Do not inflate the layout again.
@@ -52,12 +61,16 @@ abstract class BaseFragment : Fragment() {
             Log.d("MYAPP", "USE EXISTING ROOTVIEW")
         }
 
+        if (rootView?.background == null) {
+            rootView?.setBackgroundColor(resources.getColor(android.R.color.background_light))
+        }
+
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Log.d("MYAPP", "ON VIEW CREATED")
+         Log.d("MYAPP", "ON VIEW CREATED")
 
         view.isClickable = true
         view.isFocusable = true
@@ -73,11 +86,11 @@ abstract class BaseFragment : Fragment() {
     // onViewStateRestored dipanggil setelah onCreateView() dan sebelum onResume()
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        // Log.d("MYAPP", "ON VIEW RESTORED")
+         Log.d("MYAPP", "ON VIEW RESTORED")
 
         // Ini harus dipanggil karna saat orientation change atau config change onCreateAnimation itu gak dipanggil
         if (savedInstanceState?.getBoolean("is_config_change") == true) {
-            // Log.d("MYAPP", "ON ENTER ANIMATION END")
+             Log.d("MYAPP", "ON ENTER ANIMATION END")
             onEnterAnimationEnd()
             isConfigChanges = false
         }
@@ -93,16 +106,16 @@ abstract class BaseFragment : Fragment() {
     }
 
     open fun saveState() {
-        // Log.d("MYAPP", "SAVE STATE")
+         Log.d("MYAPP", "SAVE STATE")
     }
 
     open fun clearState() {
-        // Log.d("MYAPP", "CLEAR STATE")
+         Log.d("MYAPP", "CLEAR STATE")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        // Log.d("MYAPP", "ON SAVE INSTANCE STATE")
+         Log.d("MYAPP", "ON SAVE INSTANCE STATE")
 
         outState.putBoolean("is_config_change", true)
         isConfigChanges = true
@@ -110,14 +123,14 @@ abstract class BaseFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Log.d("MYAPP", "ON DESTROY VIEW")
+         Log.d("MYAPP", "ON DESTROY VIEW")
 
         saveState()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Log.d("MYAPP", "ON DESTROY")
+         Log.d("MYAPP", "ON DESTROY")
 
         rootView = null
 
@@ -129,7 +142,7 @@ abstract class BaseFragment : Fragment() {
     }
 
     override fun onDetach() {
-        // Log.d("MYAPP", "ON DETACH")
+         Log.d("MYAPP", "ON DETACH")
 
         disposableList.forEach { disposable ->
             if (disposable != null) {
@@ -140,48 +153,6 @@ abstract class BaseFragment : Fragment() {
         }
 
         super.onDetach()
-    }
-
-    // Gunakan method ini untuk mulai malankan perintah seperti getdata dengan rxjava,
-    // set adapter ke recyclerview, dan lain-lain
-    // Jadi gak memblock (freeze) enter animation si fragment
-    // Kode dijalankan setelah animasi selesai / berhenti
-    open fun onEnterAnimationEnd() {
-
-    }
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        //https://stackoverflow.com/questions/19614392/fragmenttransaction-before-and-after-setcustomanimation-callback
-        //Check if the superclass already created the animation
-        var anim = super.onCreateAnimation(transit, enter, nextAnim)
-
-        //If not, and an animation is defined, load it now
-        if (anim == null && nextAnim !== 0) {
-            anim = AnimationUtils.loadAnimation(activity, nextAnim)
-        }
-
-        //If there is an animation for this fragment, add a listener.
-        anim?.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {
-            }
-
-            override fun onAnimationEnd(animation: Animation) {
-                // Bisa dijamin onAnimationEnd ini dijalankan paling akhir setelah semua
-                // fragment lifecycle (sampai onResume) selesai
-
-                if (enter) {
-                    // Jalankan ketika giliran fragment ditampilkan ke user
-                    onEnterAnimationEnd()
-                }
-
-            }
-
-            override fun onAnimationRepeat(animation: Animation) {
-
-            }
-        })
-
-        return anim
     }
 
     private fun findAndSetEditTextFocusChangeListenerRecursively(view: View) {
@@ -239,5 +210,91 @@ abstract class BaseFragment : Fragment() {
 
     fun toastNotify(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // Gunakan method ini untuk mulai malankan perintah seperti getdata dengan rxjava,
+    // set adapter ke recyclerview, dan lain-lain
+    // Jadi gak memblock (freeze) enter animation si fragment
+    // Kode dijalankan setelah animasi selesai / berhenti
+    open fun onEnterAnimationEnd() {
+
+    }
+
+    // Sekedar racikan sederhana animasi transisi fragment untuk navigation component
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        //https://stackoverflow.com/questions/19614392/fragmenttransaction-before-and-after-setcustomanimation-callback
+        //Check if the superclass already created the animation
+        Log.d("MYAPP", "ON CREATE ANIMATION")
+        var anim = super.onCreateAnimation(transit, enter, nextAnim)
+
+        // This is just any good resource to read
+        // https://stackoverflow.com/a/54086704
+
+        handleOnExitForegroundDimAnimation(enter, nextAnim)
+
+        return handleOnEnterAnimationEnd(anim, nextAnim, enter)
+    }
+
+    private fun handleOnEnterAnimationEnd(
+        anim: Animation?,
+        nextAnim: Int,
+        enter: Boolean
+    ): Animation? {
+
+        //If not, and an animation is defined, load it now
+        var tempAnim = anim
+
+        if (tempAnim == null && nextAnim != 0) {
+            tempAnim = AnimationUtils.loadAnimation(activity, nextAnim)
+        }
+
+        //If there is an animation for this fragment, add a listener.
+        tempAnim?.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {
+            }
+
+            override fun onAnimationEnd(animation: Animation) {
+                // Bisa dijamin onAnimationEnd ini dijalankan paling akhir setelah semua
+                // fragment lifecycle (sampai onResume) selesai
+
+                if (enter) {
+                    // Jalankan ketika giliran fragment ditampilkan ke user
+                    onEnterAnimationEnd()
+                }
+
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {
+
+            }
+        })
+        return tempAnim
+    }
+
+    private fun handleOnExitForegroundDimAnimation(enter: Boolean, nextAnim: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!enter) {
+                    val color: Int = android.R.color.black
+                    view?.foreground =
+                        ColorDrawable(ContextCompat.getColor(requireContext(), color))
+                    view?.foreground?.alpha = 0
+
+                    val animator =
+                        ObjectAnimator.ofInt(requireView().foreground, "alpha", 0, 200)
+                    animator.duration = 300
+                    animator.startDelay = 0
+                    animator.start()
+            } else {
+                if (requireView().foreground != null) {
+                    if (requireView().foreground.alpha == 200) {
+                        requireView().foreground.alpha == 50
+                        val animator =
+                            ObjectAnimator.ofInt(requireView().foreground, "alpha", 50, 0)
+                        animator.duration = 150
+                        animator.start()
+                    }
+                }
+            }
+        }
     }
 }

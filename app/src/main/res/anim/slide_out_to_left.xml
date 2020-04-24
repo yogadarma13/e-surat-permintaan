@@ -3,9 +3,14 @@
     <translate
         android:duration="@android:integer/config_mediumAnimTime"
         android:fromXDelta="0"
-        android:toXDelta="-100%p" />
-    <alpha
-        android:duration="@android:integer/config_mediumAnimTime"
-        android:fromAlpha="1.0"
-        android:toAlpha="0.8" />
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:toXDelta="-40%p" />
+
+<!--    <alpha-->
+<!--        android:duration="@android:integer/config_mediumAnimTime"-->
+<!--        android:fromAlpha="1.0"-->
+<!--        android:toAlpha="0.8"-->
+<!--        android:fillEnabled="true"-->
+<!--        android:fillBefore="true"-->
+<!--        android:fillAfter="true"/>-->
 </set>
