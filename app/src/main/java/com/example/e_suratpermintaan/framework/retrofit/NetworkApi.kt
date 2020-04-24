@@ -36,7 +36,8 @@ interface NetworkApi {
     @FormUrlEncoded
     @POST("detail")
     fun getDetailSP(
-        @Field("id_sp") id_sp: String
+        @Field("id_sp") id_sp: String,
+        @Field("id_user") id_user: String
     ): Observable<DetailSPResponse>
 
     @FormUrlEncoded

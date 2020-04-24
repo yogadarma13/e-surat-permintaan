@@ -45,7 +45,7 @@ class DetailSuratPermintaanFragment : BaseFragment() {
             startAddDialog()
         }
 
-        disposable = suratPermintaanViewModel.readDetail(idSp.toString())
+        disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
             .subscribe(this::handleResponse, this::handleError)
 
     }

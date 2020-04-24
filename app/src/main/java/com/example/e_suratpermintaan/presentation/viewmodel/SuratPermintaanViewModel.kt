@@ -37,8 +37,8 @@ class SuratPermintaanViewModel(
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         removeSuratPermintaanUseCase.invoke(id_sp)
 
-    override fun readDetail(id_sp: String): Observable<DetailSPResponse> =
-        readDetailSuratPermintaanUseCase.invoke(id_sp)
+    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
+        readDetailSuratPermintaanUseCase.invoke(id_sp, id_user)
 
     override fun edit(
         id: RequestBody,
