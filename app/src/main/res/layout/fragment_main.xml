@@ -13,7 +13,22 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize" />
+            android:layout_height="?android:attr/actionBarSize" >
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_white"/>
+
+            <ImageView
+                android:id="@+id/btnProfile"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_account_circle"
+                android:layout_gravity="end"
+                android:layout_marginRight="14dp"/>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -85,24 +100,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal">
-
-        <Button
-            android:id="@+id/btnProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            app:layout_constraintBottom_toTopOf="@+id/btnLogout"
-            app:layout_constraintEnd_toEndOf="@+id/btnLogout"
-            app:layout_constraintStart_toStartOf="@+id/btnLogout" />
-
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LOGOUT"
-            app:layout_constraintBottom_toTopOf="@+id/filterContainer"
-            app:layout_constraintEnd_toEndOf="@+id/filterContainer"
-            app:layout_constraintStart_toStartOf="@+id/filterContainer" />
 
         <LinearLayout
             android:id="@+id/filterContainer"

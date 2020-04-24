@@ -97,16 +97,6 @@ class MainFragment : BaseFragment() {
                 .navigate(R.id.action_mainFragment_to_profileFragment, null, navOption)
         }
 
-        btnLogout.setOnClickListener {
-            profilePreference.removeProfile()
-
-            val navOptions =
-                NavOptionsHelper.getInstance().addBackToSplashAnim()
-                    .clearBackStack(R.id.welcomeFragment).build()
-            it.findNavController()
-                .navigate(R.id.action_mainFragment_to_splashScreen, null, navOptions)
-        }
-
         btnAjukan.setOnClickListener {
             startShowDialog()
         }

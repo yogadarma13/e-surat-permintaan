@@ -36,6 +36,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_name_profile"
         tools:text="Tes" />
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 <!--    <TextView-->
 <!--        android:id="@+id/text_tanda_tangan"-->
 <!--        android:layout_width="wrap_content"-->

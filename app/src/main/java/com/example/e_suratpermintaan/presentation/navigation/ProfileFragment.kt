@@ -3,9 +3,11 @@ package com.example.e_suratpermintaan.presentation.navigation
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -28,6 +30,16 @@ class ProfileFragment : BaseFragment() {
 
         val idUser = profilePreference.getProfile()?.id
         getDataProfile(idUser)
+
+        btnLogout.setOnClickListener {
+            profilePreference.removeProfile()
+
+            val navOptions =
+                NavOptionsHelper.getInstance().addBackToSplashAnim()
+                    .clearBackStack(R.id.welcomeFragment).build()
+            it.findNavController()
+                .navigate(R.id.action_profileFragment_to_splashFragment, null, navOptions)
+        }
     }
 
     private fun getDataProfile(id_user: String?) {
