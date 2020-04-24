@@ -31,7 +31,7 @@ class DetailSuratPermintaanFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_detail_surat_permintaan
 
-    override fun initApiRequest() {
+    override fun onEnterAnimationEnd() {
 
         idSp = arguments?.getString("id_sp")
 

@@ -3,6 +3,7 @@ package com.example.e_suratpermintaan.presentation.base
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.Disposable
 
-
 abstract class BaseFragment : Fragment() {
 
+    private var isConfigChanges = false
     private var disposableList: ArrayList<Disposable?> = ArrayList()
 
     var disposable: Disposable? = null
@@ -26,16 +27,37 @@ abstract class BaseFragment : Fragment() {
 
     abstract fun layoutId(): Int
 
+    private var rootView: View? = null
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return getPersistentView(inflater, container, savedInstanceState, layoutId())
+    }
 
-        return inflater.inflate(layoutId(), container, false)
+    private fun getPersistentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, layout: Int): View? {
+        if (rootView == null) {
+            // Inflate the layout for this fragment
+            rootView = inflater?.inflate(layout,container,false)
+            Log.d("MYAPP", "CREATE NEW ROOTVIEW")
+        } else {
+            // Do not inflate the layout again.
+            // The returned View of onCreateView will be added into the fragment.
+            // However it is not allowed to be added twice even if the parent is same.
+            // So we must remove rootView from the existing parent view group
+            // (it will be added back).
+            (rootView?.parent as? ViewGroup)?.removeView(rootView)
+            Log.d("MYAPP", "USE EXISTING ROOTVIEW")
+        }
+
+        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Log.d("MYAPP", "ON VIEW CREATED")
 
         view.isClickable = true
         view.isFocusable = true
@@ -45,42 +67,20 @@ abstract class BaseFragment : Fragment() {
         findAndSetEditTextFocusChangeListenerRecursively(view)
     }
 
-    open fun saveState() {
-
-    }
-
-    open fun clearState() {
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        saveState()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        saveState()
-    }
-
-    override fun onDetach() {
-        disposableList.forEach { disposable ->
-            if (disposable != null) {
-                if (!disposable.isDisposed) {
-                    disposable.dispose()
-                }
-            }
-        }
-
-        super.onDetach()
-    }
-
     // Ini selalu dijalankan setiap mau menampilkan fragment, baik fragment yang udah pernah ditampilkan
     // atupun fragment yang baru mau ditampilkan
     // https://stackoverflow.com/questions/17792132/how-does-onviewstaterestored-from-fragments-work
     // onViewStateRestored dipanggil setelah onCreateView() dan sebelum onResume()
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        // Log.d("MYAPP", "ON VIEW RESTORED")
+
+        // Ini harus dipanggil karna saat orientation change atau config change onCreateAnimation itu gak dipanggil
+        if (savedInstanceState?.getBoolean("is_config_change") == true) {
+            // Log.d("MYAPP", "ON ENTER ANIMATION END")
+            onEnterAnimationEnd()
+            isConfigChanges = false
+        }
 
         anyInitName()
     }
@@ -92,11 +92,63 @@ abstract class BaseFragment : Fragment() {
 
     }
 
+    open fun saveState() {
+        // Log.d("MYAPP", "SAVE STATE")
+    }
+
+    open fun clearState() {
+        // Log.d("MYAPP", "CLEAR STATE")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Log.d("MYAPP", "ON SAVE INSTANCE STATE")
+
+        outState.putBoolean("is_config_change", true)
+        isConfigChanges = true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Log.d("MYAPP", "ON DESTROY VIEW")
+
+        saveState()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Log.d("MYAPP", "ON DESTROY")
+
+        rootView = null
+
+        if (!isConfigChanges) {
+            // Kalau configchanges jangan clearState karna configchanges itu menjalankan lifecycle
+            // sampai ke onDetach
+            clearState()
+        }
+    }
+
+    override fun onDetach() {
+        // Log.d("MYAPP", "ON DETACH")
+
+        disposableList.forEach { disposable ->
+            if (disposable != null) {
+                if (!disposable.isDisposed) {
+                    disposable.dispose()
+                }
+            }
+        }
+
+        super.onDetach()
+    }
+
     // Gunakan method ini untuk mulai malankan perintah seperti getdata dengan rxjava,
     // set adapter ke recyclerview, dan lain-lain
     // Jadi gak memblock (freeze) enter animation si fragment
     // Kode dijalankan setelah animasi selesai / berhenti
-    abstract fun initApiRequest()
+    open fun onEnterAnimationEnd() {
+
+    }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         //https://stackoverflow.com/questions/19614392/fragmenttransaction-before-and-after-setcustomanimation-callback
@@ -119,8 +171,7 @@ abstract class BaseFragment : Fragment() {
 
                 if (enter) {
                     // Jalankan ketika giliran fragment ditampilkan ke user
-                    initApiRequest()
-                    clearState()
+                    onEnterAnimationEnd()
                 }
 
             }

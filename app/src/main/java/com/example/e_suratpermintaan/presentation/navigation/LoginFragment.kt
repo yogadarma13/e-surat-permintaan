@@ -38,10 +38,6 @@ class LoginFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_login
 
-    override fun initApiRequest() {
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
