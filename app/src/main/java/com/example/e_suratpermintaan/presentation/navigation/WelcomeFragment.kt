@@ -27,7 +27,7 @@ class WelcomeFragment : BaseFragment() {
         }
     }
 
-    override fun initApiRequest() {
+    override fun onEnterAnimationEnd() {
 
     }
 

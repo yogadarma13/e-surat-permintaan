@@ -1,13 +1,10 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
-
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
@@ -25,10 +22,6 @@ class ProfileFragment : BaseFragment() {
     private val profilePreference: ProfilePreference by inject()
 
     override fun layoutId(): Int = R.layout.fragment_profile
-
-    override fun initApiRequest() {
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
