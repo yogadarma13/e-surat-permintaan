@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
     app:startDestination="@id/splashFragment">
-
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.example.e_suratpermintaan.presentation.navigation.SplashFragment"
@@ -14,6 +13,7 @@
             android:id="@+id/action_splashScreen_to_welcomeScreen"
             app:destination="@id/welcomeFragment" />
     </fragment>
+
 
     <fragment
         android:id="@+id/welcomeFragment"

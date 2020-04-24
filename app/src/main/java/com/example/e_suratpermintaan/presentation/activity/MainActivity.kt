@@ -91,12 +91,6 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
         }
 
-        btnLogout.setOnClickListener {
-            profilePreference.removeProfile()
-            finish()
-            startActivity(Intent(this, StarterActivity::class.java))
-        }
-
         btnAjukan.setOnClickListener {
             startShowDialog()
         }
