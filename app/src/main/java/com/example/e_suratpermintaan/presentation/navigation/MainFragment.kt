@@ -81,6 +81,9 @@ class MainFragment : BaseFragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = suratPermintaanAdapter
 
+        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
+        recyclerView.setHasFixedSize(false)
+
         if (spListState != null)
             recyclerView.layoutManager?.onRestoreInstanceState(spListState)
     }
