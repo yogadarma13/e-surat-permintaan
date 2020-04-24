@@ -14,7 +14,7 @@ import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanV
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
-import kotlinx.android.synthetic.main.fragment_detail_surat_permintaan.*
+import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,7 +29,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     private lateinit var idUser: String
     private lateinit var itemSuratPermintaanAdapter: ItemSuratPermintaanAdapter
 
-    override fun layoutId(): Int = R.layout.fragment_detail_surat_permintaan
+    override fun layoutId(): Int = R.layout.activity_detail_surat_permintaan
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
