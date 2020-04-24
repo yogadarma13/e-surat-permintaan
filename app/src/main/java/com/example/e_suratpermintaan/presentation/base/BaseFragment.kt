@@ -17,6 +17,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.e_suratpermintaan.R
 import io.reactivex.rxjava3.disposables.Disposable
 
 abstract class BaseFragment : Fragment() {
@@ -61,23 +62,16 @@ abstract class BaseFragment : Fragment() {
             Log.d("MYAPP", "USE EXISTING ROOTVIEW")
         }
 
-        if (rootView?.background == null) {
-            rootView?.setBackgroundColor(resources.getColor(android.R.color.background_light))
-        }
-
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         Log.d("MYAPP", "ON VIEW CREATED")
+        Log.d("MYAPP", "ON VIEW CREATED")
 
         view.isClickable = true
         view.isFocusable = true
         view.isFocusableInTouchMode = true
-
-        view.clearFocus()
-        findAndSetEditTextFocusChangeListenerRecursively(view)
     }
 
     // Ini selalu dijalankan setiap mau menampilkan fragment, baik fragment yang udah pernah ditampilkan
@@ -86,11 +80,11 @@ abstract class BaseFragment : Fragment() {
     // onViewStateRestored dipanggil setelah onCreateView() dan sebelum onResume()
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-         Log.d("MYAPP", "ON VIEW RESTORED")
+        Log.d("MYAPP", "ON VIEW RESTORED")
 
         // Ini harus dipanggil karna saat orientation change atau config change onCreateAnimation itu gak dipanggil
         if (savedInstanceState?.getBoolean("is_config_change") == true) {
-             Log.d("MYAPP", "ON ENTER ANIMATION END")
+            Log.d("MYAPP", "ON ENTER ANIMATION END")
             onEnterAnimationEnd()
             isConfigChanges = false
         }
@@ -106,16 +100,16 @@ abstract class BaseFragment : Fragment() {
     }
 
     open fun saveState() {
-         Log.d("MYAPP", "SAVE STATE")
+        Log.d("MYAPP", "SAVE STATE")
     }
 
     open fun clearState() {
-         Log.d("MYAPP", "CLEAR STATE")
+        Log.d("MYAPP", "CLEAR STATE")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-         Log.d("MYAPP", "ON SAVE INSTANCE STATE")
+        Log.d("MYAPP", "ON SAVE INSTANCE STATE")
 
         outState.putBoolean("is_config_change", true)
         isConfigChanges = true
@@ -123,14 +117,14 @@ abstract class BaseFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-         Log.d("MYAPP", "ON DESTROY VIEW")
+        Log.d("MYAPP", "ON DESTROY VIEW")
 
         saveState()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-         Log.d("MYAPP", "ON DESTROY")
+        Log.d("MYAPP", "ON DESTROY")
 
         rootView = null
 
@@ -142,7 +136,7 @@ abstract class BaseFragment : Fragment() {
     }
 
     override fun onDetach() {
-         Log.d("MYAPP", "ON DETACH")
+        Log.d("MYAPP", "ON DETACH")
 
         disposableList.forEach { disposable ->
             if (disposable != null) {
@@ -217,7 +211,9 @@ abstract class BaseFragment : Fragment() {
     // Jadi gak memblock (freeze) enter animation si fragment
     // Kode dijalankan setelah animasi selesai / berhenti
     open fun onEnterAnimationEnd() {
-
+        requireView().clearFocus()
+        requireView().setBackgroundColor(resources.getColor(android.R.color.background_light))
+        findAndSetEditTextFocusChangeListenerRecursively(requireView())
     }
 
     // Sekedar racikan sederhana animasi transisi fragment untuk navigation component
@@ -230,9 +226,11 @@ abstract class BaseFragment : Fragment() {
         // This is just any good resource to read
         // https://stackoverflow.com/a/54086704
 
+        anim = handleOnEnterAnimationEnd(anim, nextAnim, enter)
+
         handleOnExitForegroundDimAnimation(enter, nextAnim)
 
-        return handleOnEnterAnimationEnd(anim, nextAnim, enter)
+        return anim
     }
 
     private fun handleOnEnterAnimationEnd(
@@ -244,7 +242,7 @@ abstract class BaseFragment : Fragment() {
         //If not, and an animation is defined, load it now
         var tempAnim = anim
 
-        if (tempAnim == null && nextAnim != 0) {
+        if (tempAnim == null && nextAnim !== 0) {
             tempAnim = AnimationUtils.loadAnimation(activity, nextAnim)
         }
 
@@ -274,6 +272,7 @@ abstract class BaseFragment : Fragment() {
     private fun handleOnExitForegroundDimAnimation(enter: Boolean, nextAnim: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!enter) {
+                if (nextAnim == R.anim.slide_out_to_left) {
                     val color: Int = android.R.color.black
                     view?.foreground =
                         ColorDrawable(ContextCompat.getColor(requireContext(), color))
@@ -281,15 +280,15 @@ abstract class BaseFragment : Fragment() {
 
                     val animator =
                         ObjectAnimator.ofInt(requireView().foreground, "alpha", 0, 200)
-                    animator.duration = 300
+                    animator.duration = 400
                     animator.startDelay = 0
                     animator.start()
+                }
             } else {
                 if (requireView().foreground != null) {
                     if (requireView().foreground.alpha == 200) {
-                        requireView().foreground.alpha == 50
                         val animator =
-                            ObjectAnimator.ofInt(requireView().foreground, "alpha", 50, 0)
+                            ObjectAnimator.ofInt(requireView().foreground, "alpha", 10, 0)
                         animator.duration = 150
                         animator.start()
                     }

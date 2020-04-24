@@ -11,37 +11,8 @@
         android:label="fragment_splash_screen"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_splashScreen_to_mainFragment"
-            app:destination="@id/mainFragment" />
-        <action
             android:id="@+id/action_splashScreen_to_welcomeScreen"
             app:destination="@id/welcomeFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.e_suratpermintaan.presentation.navigation.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_mainFragment_to_splashScreen"
-            app:destination="@id/splashFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_detailSuratPermintaanFragment"
-            app:destination="@id/detailSuratPermintaanFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.e_suratpermintaan.presentation.navigation.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
     </fragment>
 
     <fragment
@@ -55,19 +26,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/detailSuratPermintaanFragment"
-        android:name="com.example.e_suratpermintaan.presentation.navigation.DetailSuratPermintaanFragment"
-        android:label="fragment_detail_surat_permintaan"
-        tools:layout="@layout/fragment_detail_surat_permintaan" />
-        <argument
-            android:name="id_sp"
-            app:argType="string" />
-
-
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.e_suratpermintaan.presentation.navigation.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        android:id="@+id/loginFragment"
+        android:name="com.example.e_suratpermintaan.presentation.navigation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 
 </navigation>

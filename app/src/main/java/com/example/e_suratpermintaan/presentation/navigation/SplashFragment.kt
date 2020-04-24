@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.helpers.WindowHelper.transparentStatusBar
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import org.koin.android.ext.android.inject
 
@@ -34,14 +36,8 @@ class SplashFragment : BaseFragment() {
                 navOptions
             )
         } else {
-            val navOptions =
-                NavOptionsHelper.getInstance().addLoginToMainAnim()
-                    .clearBackStack(R.id.splashFragment).build()
-            view?.findNavController()?.navigate(
-                R.id.action_splashScreen_to_mainFragment,
-                null,
-                navOptions
-            )
+            requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
+            requireActivity().finish()
         }
     }
 

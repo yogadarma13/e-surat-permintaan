@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
@@ -9,19 +10,16 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.dialog_ajukan_sp.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -95,17 +93,8 @@ class LoginFragment : BaseFragment() {
 
                         if (dataProfile != null) {
                             profilePreference.saveProfile(dataProfile)
-
-                            val navOptions =
-                                NavOptionsHelper.getInstance().addLoginToMainAnim()
-                                    .clearBackStack(R.id.mainFragment).build()
-                            view?.findNavController()
-                                ?.navigate(
-                                    R.id.action_loginFragment_to_mainFragment,
-                                    null,
-                                    navOptions
-                                )
-
+                            requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
+                            requireActivity().finish()
                             toastNotify(response.message)
                         } else {
                             toastNotify(getString(R.string.profile_get_error_message))

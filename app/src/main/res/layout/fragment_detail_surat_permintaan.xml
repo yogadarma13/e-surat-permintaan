@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F1F0F0"
-    tools:context=".presentation.navigation.DetailSuratPermintaanFragment">
+    tools:context=".presentation.activity.DetailSuratPermintaanActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
