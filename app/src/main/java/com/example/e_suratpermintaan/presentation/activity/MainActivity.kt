@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class MainActivity : BaseActivity() {
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
@@ -51,6 +50,7 @@ class MainActivity : BaseActivity() {
 
             if (bodyValue != null) {
                 Toast.makeText(this@MainActivity, bodyValue, Toast.LENGTH_LONG).show()
+
             }
         }
     }

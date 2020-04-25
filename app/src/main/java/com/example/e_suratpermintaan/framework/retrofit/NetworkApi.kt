@@ -9,7 +9,11 @@ import retrofit2.http.*
 
 interface NetworkApi {
 
+    // https://stackoverflow.com/questions/44453175/why-retrofit2-works-with-field-and-not-body-for-post-requests/44453303#44453303
     // https://www.semicolonworld.com/question/44764/how-to-post-raw-whole-json-in-the-body-of-a-retrofit-request
+
+    // Dokumentasi setingan postman untuk perbedaan @Body dan @Field Retrofit
+    // https://gist.github.com/Reinhardjs/0a0d281618469ec1399518e71b42aabb
 
     @POST("login")
     fun loginUser(

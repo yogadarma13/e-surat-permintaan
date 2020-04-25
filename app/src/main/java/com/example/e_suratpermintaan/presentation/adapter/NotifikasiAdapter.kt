@@ -5,51 +5,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.e_suratpermintaan.core.domain.entities.responses.ReadItem
-import com.e_suratpermintaan.core.domain.entities.responses.UnreadItem
 import com.example.e_suratpermintaan.R
 
-class NotifikasiAdapter(private val notifList: ArrayList<Any>):
+class NotifikasiAdapter(private val notifList: ArrayList<Any>, private val viewType: ArrayList<Int>):
     RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
 
     companion object {
-        val ITEM_A = 1
-        val ITEM_B = 2
+        val ITEM_A = 0
+        val ITEM_B = 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when(viewType){
-            ITEM_A -> ViewHolderItemA(inflater.inflate(R.layout.notifikasi_unread_list, null))
-
-            else -> ViewHolderItemB(inflater.inflate(R.layout.notifikasi_read_list, null))
-
+            ITEM_A -> ViewHolderItemB(inflater.inflate(R.layout.notifikasi_read_list, null))
+            else -> ViewHolderItemA(inflater.inflate(R.layout.notifikasi_unread_list, null))
         }
     }
 
     override fun getItemCount(): Int = notifList.size
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val viewType = notifList[position]
-        when (viewType) {
+        when (viewType[position]) {
             ITEM_A -> {
                 val viewHolderA = holder as ViewHolderItemA
-                viewHolderA.date.text = "tess A"
+                viewHolderA.date.text = "READ"
             }
-            else -> {
+            ITEM_B -> {
                 val viewHolderB = holder as ViewHolderItemB
-                viewHolderB.date.text = "Tess B"
+                viewHolderB.date.text = "UNREAD"
             }
         }
     }
 
     override fun getItemViewType(position: Int) : Int {
-        if(notifList.get(position) === UnreadItem()){
-            return ITEM_A
-        } else {
-            return ITEM_B
-        }
+        return viewType[position]
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -70,6 +60,4 @@ class NotifikasiAdapter(private val notifList: ArrayList<Any>):
         val role: TextView = itemView.findViewById(R.id.tvRoleNotif)
 
     }
-
-
 }
