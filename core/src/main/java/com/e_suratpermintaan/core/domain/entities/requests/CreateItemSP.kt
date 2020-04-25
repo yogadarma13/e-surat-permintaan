@@ -4,45 +4,45 @@ import com.google.gson.annotations.SerializedName
 
 data class CreateItemSP(
 
-    @SerializedName("kode")
-    val kode: String?,
+    @field:SerializedName("kode")
+    val kode: String,
 
-    @SerializedName("kode_pekerjaan")
-    val kode_pekerjaan: String?,
+    @field:SerializedName("kode_pekerjaan")
+    val kode_pekerjaan: String,
 
-    @SerializedName("id_barang")
-    val id_barang: String?,
+    @field:SerializedName("id_barang")
+    val id_barang: String,
 
-    @SerializedName("id_satuan")
-    val id_satuan: String?,
+    @field:SerializedName("id_satuan")
+    val id_satuan: String,
 
-    @SerializedName("qty")
-    val qty: String?,
+    @field:SerializedName("qty")
+    val qty: String,
 
-    @SerializedName("fungsi")
-    val fungsi: String?,
+    @field:SerializedName("fungsi")
+    val fungsi: String,
 
-    @SerializedName("target")
-    val target: String?,
+    @field:SerializedName("target")
+    val target: String,
 
-    @SerializedName("keterangan")
-    val keterangan: String?,
+    @field:SerializedName("keterangan")
+    val keterangan: String,
 
-    @SerializedName("kapasitas")
-    val kapasitas: String?,
+    @field:SerializedName("kapasitas")
+    val kapasitas: String,
 
-    @SerializedName("merk")
-    val merk: String?,
+    @field:SerializedName("merk")
+    val merk: String,
 
-    @SerializedName("waktu_pemakaian")
-    val waktu_pemakaian: String?,
+    @field:SerializedName("waktu_pemakaian")
+    val waktu_pemakaian: String,
 
-    @SerializedName("waktu_pelaksanaan")
-    val waktu_pelaksanaan: String?,
+    @field:SerializedName("waktu_pelaksanaan")
+    val waktu_pelaksanaan: String,
 
-    @SerializedName("persyaratan[]")
-    val persyaratan: ArrayList<String?>?,
+    @field:SerializedName("persyaratan[]")
+    val persyaratan: ArrayList<String>,
 
-    @SerializedName("id_user")
-    val id_user: String?
+    @field:SerializedName("id_user")
+    val id_user: String
 )

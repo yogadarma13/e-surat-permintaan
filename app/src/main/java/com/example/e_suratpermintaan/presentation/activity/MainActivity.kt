@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
@@ -95,6 +96,10 @@ class MainActivity : BaseActivity() {
             startShowDialog()
         }
 
+        btnSeeNotifikasi.setOnClickListener {
+            startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
+        }
+
         suratPermintaanAdapter.setOnClickListener(object :
             SuratPermintaanAdapter.OnClickItemListener {
             override fun onClick(view: View, item: SuratPermintaan?) {
@@ -179,8 +184,8 @@ class MainActivity : BaseActivity() {
                 .setMessage("Apakah Anda yakin ingin mengajukan?")
                 .setPositiveButton("Ya") { _, _ ->
 
-//                    var createSP = CreateSP(idProyek, namaJenis, idUser)
-                    disposable = suratPermintaanViewModel.add(idProyek, namaJenis, idUser)
+                    var createSP = CreateSP(idProyek, namaJenis, idUser)
+                    disposable = suratPermintaanViewModel.add(createSP)
                         .subscribe(this::handleResponse, this::handleError)
 
                     toastNotify("ID PROYEK : $idProyek \nNama Jenis : $namaJenis \nID USER : $idUser")

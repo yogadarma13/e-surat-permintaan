@@ -21,13 +21,27 @@
                 android:layout_gravity="center"
                 android:src="@drawable/logo_white"/>
 
-            <ImageView
-                android:id="@+id/btnProfile"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_account_circle"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginRight="14dp"/>
+                android:layout_marginRight="14dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/btnSeeNotifikasi"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/ic_notifications"/>
+
+                <ImageView
+                    android:id="@+id/btnProfile"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_account_circle"/>
+            </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

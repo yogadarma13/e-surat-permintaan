@@ -7,25 +7,24 @@
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="stateHidden"
-        android:fullBackupContent="true">
-        <activity
-            android:name="com.example.e_suratpermintaan.presentation.activity.StarterActivity">
+        android:windowSoftInputMode="stateHidden">
+        <activity android:name=".presentation.activity.NotifikasiActivity"></activity>
+        <activity android:name=".presentation.activity.StarterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.activity.MainActivity"/>
+        <activity android:name=".presentation.activity.MainActivity" />
         <activity android:name=".presentation.activity.DetailSuratPermintaanActivity" />
         <activity android:name=".presentation.activity.ProfileActivity" />
-
     </application>
 
 </manifest>

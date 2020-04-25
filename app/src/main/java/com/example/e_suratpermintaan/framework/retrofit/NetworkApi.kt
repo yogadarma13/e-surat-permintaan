@@ -33,19 +33,14 @@ interface NetworkApi {
         @Field("id_user") id_user: String
     ): Observable<MyDataResponse>
 
-    @FormUrlEncoded
     @POST("detail")
     fun getDetailSP(
-        @Field("id_sp") id_sp: String,
-        @Field("id_user") id_user: String
+        @Body detailSP: DetailSP
     ): Observable<DetailSPResponse>
 
-    @FormUrlEncoded
     @POST("create_sp")
     fun createSP(
-        @Field("id_proyek") id_proyek: String,
-        @Field("jenis") jenis : String,
-        @Field("id_user") id_user : String
+        @Body createSP: CreateSP
     ) : Observable<CreateSPResponse>
 
     @Multipart
@@ -62,26 +57,19 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<DeleteSPResponse>
 
-    @FormUrlEncoded
     @POST("ajukan_sp")
     fun ajukanSP(
-        @Field("id_user") id_user: String,
-        @Field("id") id: String
+        @Body ajukanSP: AjukanSP
     ): Observable<AjukanSPResponse>
 
     @POST("verifikasi_sp")
     fun verifikasiSP(
-        @Field("id_user") id_user: String,
-        @Field("id") id: String,
-        @Field("status") status: String,
-        @Field("catatan") catatan: String
+        @Body verifikasiSP: VerifikasiSP
     ) : Observable<VerifikasiSPResponse>
 
-    @FormUrlEncoded
     @POST("batalkan_sp")
     fun batalkanSP(
-        @Field("id_user") id_user: String,
-        @Field("id") id: String
+        @Body batalkanSP: BatalkanSP
     ): Observable<BatalkanSPResponse>
 
     @FormUrlEncoded
@@ -123,23 +111,9 @@ interface NetworkApi {
     ): Observable<MasterUOMResponse>
 
     //================================================ SURAT PERMINTAAN (ITEM) ============================================
-    @FormUrlEncoded
     @POST("create_item_sp")
     fun createItemSP(
-        @Field("kode") kode: String,
-        @Field("kode_pekerjaan") kode_pekerjaan: String,
-        @Field("id_barang") id_barang: String,
-        @Field("id_satuan") id_satuan: String,
-        @Field("qty") qty: String,
-        @Field("fungsi") fungsi: String,
-        @Field("target") target: String,
-        @Field("keterangan") keterangan: String,
-        @Field("kapasitas") kapasitas: String,
-        @Field("merk") merk: String,
-        @Field("waktu_pemakaian") waktu_pemakaian: String,
-        @Field("waktu_pelaksanaan") waktu_pelaksanaan: String,
-        @Field("persyaratan[]") persyaratan: ArrayList<String>,
-        @Field("id_user") id_user: String
+        @Body createItemSP: CreateItemSP
     ): Observable<CreateItemSPResponse>
 
     @FormUrlEncoded
@@ -148,24 +122,9 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<DetailItemSPResponse>
 
-    @FormUrlEncoded
     @POST("edit_item_sp")
     fun updateItemSP(
-        @Field("kode") kode: String,
-        @Field("kode_pekerjaan") kode_pekerjaan: String,
-        @Field("id_barang") id_barang: String,
-        @Field("id_satuan") id_satuan: String,
-        @Field("qty") qty: String,
-        @Field("fungsi") fungsi: String,
-        @Field("target") target: String,
-        @Field("keterangan") keterangan: String,
-        @Field("kapasitas") kapasitas: String,
-        @Field("merk") merk: String,
-        @Field("waktu_pemakaian") waktu_pemakaian: String,
-        @Field("waktu_pelaksanaan") waktu_pelaksanaan: String,
-        @Field("persyaratan[]") persyaratan: ArrayList<String>,
-        @Field("id_user") id_user: String,
-        @Field("id_sp") id_sp: String
+        @Body updateItemSP: UpdateItemSP
     ): Observable<EditItemSPResponse>
 
     @FormUrlEncoded
@@ -175,20 +134,20 @@ interface NetworkApi {
     ): Observable<DeleteItemSPResponse>
 
     //================================================ FILE LAMPIRAN ============================================
-    @FormUrlEncoded
+    @Multipart
     @POST("tambah_file")
     fun createFileLampiran(
-        @Field("id") id: RequestBody,
-        @Field("keterangan") keterangan: RequestBody,
-        @Field("file") file: MultipartBody.Part
+        @Part("id") id: RequestBody,
+        @Part("keterangan") keterangan: RequestBody,
+        @Part("file") file: MultipartBody.Part
     ): Observable<CreateFileLampiranResponse>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("edit_file")
     fun updateFileLampiran(
-        @Field("keterangan") keterangan: RequestBody,
-        @Field("file") file: MultipartBody.Part,
-        @Field("id_file") id_file: RequestBody
+        @Part("keterangan") keterangan: RequestBody,
+        @Part("file") file: MultipartBody.Part,
+        @Part("id_file") id_file: RequestBody
     ): Observable<EditFileLampiranResponse>
 
     @FormUrlEncoded
@@ -204,11 +163,9 @@ interface NetworkApi {
         @Field("id_user") id_user: String
     ): Observable<NotifikasiResponse>
 
-    @FormUrlEncoded
     @POST("read_notifikasi")
     fun readNotifikasi(
-        @Field("id_user") id_user: String,
-        @Field("id") id: String
+        @Body readNotifikasi: ReadNotifikasi
     ): Observable<ReadNotifikasiResponse>
 
 }
