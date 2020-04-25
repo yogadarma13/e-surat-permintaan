@@ -45,14 +45,14 @@ class NotifikasiActivity : BaseActivity() {
         val dataAllNotif = arrayListOf<Any>()
         val viewType = arrayListOf<Int>()
 
-        dataNotif?.read?.forEach {
+        dataNotif?.unread?.forEach {
             it?.let { it1 ->
                 dataAllNotif.add(it1)
                 viewType.add(ITEM_A)
             }
         }
 
-        dataNotif?.unread?.forEach {
+        dataNotif?.read?.forEach {
             it?.let { it1 ->
                 dataAllNotif.add(it1)
                 viewType.add(ITEM_B)

@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/tvDateNotif"
+        android:id="@+id/tvDateNotifUnread"
         android:layout_width="0dp"
         android:textStyle="bold"
         android:layout_height="wrap_content"
@@ -20,8 +20,8 @@
         android:layout_width="0dp"
         android:textStyle="bold"
         android:layout_height="wrap_content"
-        android:id="@+id/tvKeteranganNotif"
-        app:layout_constraintTop_toBottomOf="@id/tvDateNotif"
+        android:id="@+id/tvKeteranganNotifUnread"
+        app:layout_constraintTop_toBottomOf="@id/tvDateNotifUnread"
         tools:text="Edit data"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -31,15 +31,15 @@
         android:text="Surat Permintaan : "
         android:textStyle="bold"
         android:id="@+id/textSP"
-        app:layout_constraintTop_toBottomOf="@id/tvKeteranganNotif"
+        app:layout_constraintTop_toBottomOf="@id/tvKeteranganNotifUnread"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:id="@+id/tvSuratPermintaanNotif"
-        app:layout_constraintTop_toBottomOf="@id/tvKeteranganNotif"
+        android:id="@+id/tvSuratPermintaanNotifUnread"
+        app:layout_constraintTop_toBottomOf="@id/tvKeteranganNotifUnread"
         app:layout_constraintLeft_toRightOf="@id/textSP"
         tools:text="B-AAA-1"/>
 
@@ -56,7 +56,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:id="@+id/tvUserNotif"
+        android:id="@+id/tvUserNotifUnread"
         app:layout_constraintTop_toBottomOf="@id/textSP"
         app:layout_constraintLeft_toRightOf="@id/textUser"
         tools:text="Bambang"/>
@@ -74,7 +74,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:id="@+id/tvRoleNotif"
+        android:id="@+id/tvRoleNotifUnread"
         app:layout_constraintTop_toBottomOf="@id/textUser"
         app:layout_constraintLeft_toRightOf="@id/textRole"
         tools:text="PM Proyek"/>
