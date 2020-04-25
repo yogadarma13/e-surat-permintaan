@@ -15,6 +15,7 @@ import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
@@ -32,7 +33,9 @@ class LoginFragment : BaseFragment() {
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private val authViewModel: AuthViewModel by viewModel()
+
     private val profilePreference: ProfilePreference by inject()
+    private val fcmPreference: FCMPreference by inject()
 
     override fun layoutId(): Int = R.layout.fragment_login
 

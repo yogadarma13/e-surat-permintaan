@@ -2,7 +2,6 @@ package com.e_suratpermintaan.core.data.repository
 
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
-import com.e_suratpermintaan.core.domain.entities.requests.VerifikasiSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -12,10 +11,8 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     SuratPermintaanDataSource {
 
     override fun add(
-        id_proyek: String,
-        jenis: String,
-        id_user: String
-    ): Observable<CreateSPResponse> = dataSource.add(id_proyek, jenis, id_user)
+        createSP: CreateSP
+    ): Observable<CreateSPResponse> = dataSource.add(createSP)
 
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         dataSource.readAllData(id_user)

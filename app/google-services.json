@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "825260775773",
+    "firebase_url": "https://e-surat-permintaan.firebaseio.com",
+    "project_id": "e-surat-permintaan",
+    "storage_bucket": "e-surat-permintaan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825260775773:android:a54646e34dc0adcdbdb0b4",
+        "android_client_info": {
+          "package_name": "com.example.e_suratpermintaan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "825260775773-o5v3pt3etnpdlmrle1rbes5jcmpil3cc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_suratpermintaan",
+            "certificate_hash": "d0227f58137d7dbd65e14ff50ae6512c58183bff"
+          }
+        },
+        {
+          "client_id": "825260775773-jp048pjic4s67c0219rcosq7jht8qgb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnmiDROeew9lgzOfjrpcq73fNQVGAlavM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "825260775773-jp048pjic4s67c0219rcosq7jht8qgb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

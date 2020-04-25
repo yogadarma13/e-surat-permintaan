@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.framework.retrofit
 
-import com.e_suratpermintaan.core.domain.entities.requests.*
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
+import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -8,6 +9,8 @@ import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface NetworkApi {
+
+    // https://www.semicolonworld.com/question/44764/how-to-post-raw-whole-json-in-the-body-of-a-retrofit-request
 
     @POST("login")
     fun loginUser(
@@ -20,7 +23,7 @@ interface NetworkApi {
         @Field("id_user") id_user: String
     ): Observable<ProfileResponse>
 
-    //================================================ SURAT PERMINTAAN ============================================
+    // ================================= SURAT PERMINTAAN =======================================
     @FormUrlEncoded
     @POST("DataAll")
     fun getDataAll(
@@ -40,21 +43,18 @@ interface NetworkApi {
         @Field("id_user") id_user: String
     ): Observable<DetailSPResponse>
 
-    @FormUrlEncoded
     @POST("create_sp")
     fun createSP(
-        @Field("id_proyek") id_proyek: String,
-        @Field("jenis") jenis : String,
-        @Field("id_user") id_user : String
-    ) : Observable<CreateSPResponse>
+        @Body createSP: CreateSP
+    ): Observable<CreateSPResponse>
 
     @Multipart
     @POST("edit_sp")
     fun editSP(
-        @Part("id") id : RequestBody,
-        @Part file : MultipartBody.Part,
+        @Part("id") id: RequestBody,
+        @Part file: MultipartBody.Part,
         @Part("id_user") id_user: RequestBody
-    ) : Observable<EditSPResponse>
+    ): Observable<EditSPResponse>
 
     @FormUrlEncoded
     @POST("delete_sp")
@@ -75,7 +75,7 @@ interface NetworkApi {
         @Field("id") id: String,
         @Field("status") status: String,
         @Field("catatan") catatan: String
-    ) : Observable<VerifikasiSPResponse>
+    ): Observable<VerifikasiSPResponse>
 
     @FormUrlEncoded
     @POST("batalkan_sp")
@@ -91,7 +91,7 @@ interface NetworkApi {
     ): Observable<HistorySPResponse>
 
 
-    //================================================ MASTER ============================================
+    // =================================== MASTER ===============================================
     @FormUrlEncoded
     @POST("dataproyek")
     fun getMasterProyek(
@@ -122,7 +122,7 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<MasterUOMResponse>
 
-    //================================================ SURAT PERMINTAAN (ITEM) ============================================
+    // ================================= SURAT PERMINTAAN (ITEM) ================================
     @FormUrlEncoded
     @POST("create_item_sp")
     fun createItemSP(
@@ -174,7 +174,7 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<DeleteItemSPResponse>
 
-    //================================================ FILE LAMPIRAN ============================================
+    // ================================= FILE LAMPIRAN ==========================================
     @FormUrlEncoded
     @POST("tambah_file")
     fun createFileLampiran(
@@ -197,7 +197,7 @@ interface NetworkApi {
         @Field("id_file") id_file: String
     ): Observable<DeleteFileLampiranResponse>
 
-    //================================================ NOTIFIKASI ============================================
+    // ================================= NOTIFIKASI =============================================
     @FormUrlEncoded
     @POST("notifikasi")
     fun getNotifikasi(

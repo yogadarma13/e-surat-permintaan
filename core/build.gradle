@@ -3,18 +3,17 @@ apply plugin: 'kotlin'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // RxJava
-    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
-    implementation "io.reactivex.rxjava3:rxjava:3.0.2"
-    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "io.reactivex.rxjava3:rxandroid:$rx_android_version"
+    implementation "io.reactivex.rxjava3:rxjava:$rx_java_version"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$rx_retrofit_adapter_version"
 }
 
 sourceCompatibility = "8"

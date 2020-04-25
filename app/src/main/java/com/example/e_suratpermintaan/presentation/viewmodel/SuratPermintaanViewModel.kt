@@ -2,7 +2,7 @@ package com.example.e_suratpermintaan.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
-import com.e_suratpermintaan.core.domain.entities.requests.VerifikasiSP
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.usecases.suratpermintaan.*
 import io.reactivex.rxjava3.core.Observable
@@ -23,10 +23,8 @@ class SuratPermintaanViewModel(
 ) : ViewModel(), SuratPermintaanDataSource {
 
     override fun add(
-        id_proyek: String,
-        jenis: String,
-        id_user: String
-    ): Observable<CreateSPResponse> = addSuratPermintaanUseCase.invoke(id_proyek, jenis, id_user)
+        createSP: CreateSP
+    ): Observable<CreateSPResponse> = addSuratPermintaanUseCase.invoke(createSP)
 
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         readAllDataSuratPermintaanUseCase.invoke(id_user)

@@ -1,7 +1,5 @@
 package com.e_suratpermintaan.core.data.datasource
 
-import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
-import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DeleteItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DetailItemSPResponse

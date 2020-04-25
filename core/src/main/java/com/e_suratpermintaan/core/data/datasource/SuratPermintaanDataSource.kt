@@ -1,14 +1,13 @@
 package com.e_suratpermintaan.core.data.datasource
 
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
-import com.e_suratpermintaan.core.domain.entities.requests.VerifikasiSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface SuratPermintaanDataSource {
-    fun add(id_proyek: String, jenis: String, id_user: String): Observable<CreateSPResponse>
+    fun add(createSP: CreateSP): Observable<CreateSPResponse>
 
     fun readAllData(id_user: String): Observable<DataAllResponse>
 
