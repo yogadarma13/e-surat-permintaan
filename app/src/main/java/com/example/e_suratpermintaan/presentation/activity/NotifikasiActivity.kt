@@ -7,6 +7,8 @@ import com.e_suratpermintaan.core.domain.entities.responses.NotifikasiResponse
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.adapter.NotifikasiAdapter
+import com.example.e_suratpermintaan.presentation.adapter.NotifikasiAdapter.Companion.ITEM_A
+import com.example.e_suratpermintaan.presentation.adapter.NotifikasiAdapter.Companion.ITEM_B
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
 import kotlinx.android.synthetic.main.activity_notifikasi.*
@@ -41,20 +43,25 @@ class NotifikasiActivity : BaseActivity() {
         }
 
         val dataAllNotif = arrayListOf<Any>()
+        val viewType = arrayListOf<Int>()
 
         dataNotif?.read?.forEach {
-            it?.let { it1 -> dataAllNotif.add(it1) }
+            it?.let { it1 ->
+                dataAllNotif.add(it1)
+                viewType.add(ITEM_A)
+            }
         }
 
         dataNotif?.unread?.forEach {
-            it?.let { it1 -> dataAllNotif.add(it1) }
+            it?.let { it1 ->
+                dataAllNotif.add(it1)
+                viewType.add(ITEM_B)
+            }
         }
-
-//        toastNotify(dataAllNotif.size.toString())
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val notifikasiAdapter = NotifikasiAdapter(dataAllNotif)
+        val notifikasiAdapter = NotifikasiAdapter(dataAllNotif, viewType)
 
         recyclerView.adapter = notifikasiAdapter
     }

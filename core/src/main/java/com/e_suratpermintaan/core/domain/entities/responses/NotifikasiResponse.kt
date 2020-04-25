@@ -44,7 +44,10 @@ data class ReadItem(
 	val tanggal: String? = null,
 
 	@field:SerializedName("user")
-	val user: String? = null
+	val user: String? = null,
+
+	@field:SerializedName("id_sp")
+	val id_sp: String? = null
 )
 
 data class UnreadItem(
@@ -65,5 +68,8 @@ data class UnreadItem(
 	val tanggal: String? = null,
 
 	@field:SerializedName("user")
-	val user: String? = null
+	val user: String? = null,
+
+	@field:SerializedName("id_sp")
+	val id_sp: String? = null
 )
