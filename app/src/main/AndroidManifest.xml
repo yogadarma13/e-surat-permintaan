@@ -38,7 +38,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.activity.MainActivity" />
+        <activity android:name=".presentation.activity.MainActivity">
+            <intent-filter>
+                <action android:name="com.e-suratpermintaan.fcm" />
+            </intent-filter>
+        </activity>
         <activity android:name=".presentation.activity.DetailSuratPermintaanActivity" />
         <activity android:name=".presentation.activity.ProfileActivity" />
     </application>

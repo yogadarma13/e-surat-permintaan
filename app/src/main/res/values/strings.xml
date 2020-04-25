@@ -10,4 +10,5 @@
     <string name="row_show">Show 5. Row</string>
     <string name="row_hide">Hide 5. Row</string>
     <string name="msg_token_fmt">User TokenID %1$s</string>
+    <string name="firebase_onmessagereceived_intentfilter">com.e-suratpermintaan.fcm</string>
 </resources>

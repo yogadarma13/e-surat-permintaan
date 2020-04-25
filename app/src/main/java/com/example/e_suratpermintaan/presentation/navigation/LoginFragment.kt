@@ -69,10 +69,12 @@ class LoginFragment : BaseFragment() {
     private fun doLogin() {
         progressBarOverlay.visibility = VISIBLE
         Handler().postDelayed({
-            disposable = authViewModel
-                .doLogin(Login(etEmail.text.toString(), etPassword.text.toString()))
-                .subscribe(this::loginResponse, this::handleError)
-        }, 2000)
+            fcmPreference.getUserTokenId()?.let { userTokenId ->
+                disposable = authViewModel
+                    .doLogin(Login(etEmail.text.toString(), etPassword.text.toString(), userTokenId))
+                    .subscribe(this::loginResponse, this::handleError)
+            }
+        }, 1000)
 
         closeKeyboard(activity as Activity)
     }

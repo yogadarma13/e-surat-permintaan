@@ -1,6 +1,9 @@
 package com.example.e_suratpermintaan.presentation.activity
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
@@ -16,10 +19,11 @@ import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : BaseActivity() {
 
@@ -41,6 +45,16 @@ class MainActivity : BaseActivity() {
 
     override fun layoutId(): Int = R.layout.activity_main
 
+    private val fcmOnMessageReceivedReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val bodyValue = intent.getStringExtra("body_value")
+
+            if (bodyValue != null) {
+                Toast.makeText(this@MainActivity, bodyValue, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,6 +63,15 @@ class MainActivity : BaseActivity() {
 
             init()
         }
+
+        val filter = IntentFilter(getString(R.string.firebase_onmessagereceived_intentfilter))
+        this.registerReceiver(fcmOnMessageReceivedReceiver, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        this.unregisterReceiver(fcmOnMessageReceivedReceiver)
     }
 
     private fun init() {
