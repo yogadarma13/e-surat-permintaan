@@ -119,6 +119,10 @@ class MainActivity : BaseActivity() {
             startShowDialog()
         }
 
+        btnSeeNotifikasi.setOnClickListener {
+            startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
+        }
+
         suratPermintaanAdapter.setOnClickListener(object :
             SuratPermintaanAdapter.OnClickItemListener {
             override fun onClick(view: View, item: SuratPermintaan?) {

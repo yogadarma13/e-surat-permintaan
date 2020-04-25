@@ -1,6 +1,6 @@
 package com.e_suratpermintaan.core.data.datasource
 
-import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
+import com.e_suratpermintaan.core.domain.entities.requests.*
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -15,7 +15,7 @@ interface SuratPermintaanDataSource {
 
     fun remove(id_sp: String): Observable<DeleteSPResponse>
 
-    fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse>
+    fun readDetail(detailSP: DetailSP): Observable<DetailSPResponse>
 
     fun edit(
         id: RequestBody,
@@ -23,16 +23,11 @@ interface SuratPermintaanDataSource {
         id_user: RequestBody
     ): Observable<EditSPResponse>
 
-    fun verifikasi(
-        id_user: String,
-        id: String,
-        status: String,
-        catatan: String
-    ): Observable<VerifikasiSPResponse>
+    fun verifikasi(verifikasiSP: VerifikasiSP): Observable<VerifikasiSPResponse>
 
-    fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse>
+    fun ajukan(ajukanSP: AjukanSP): Observable<AjukanSPResponse>
 
-    fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse>
+    fun cancel(batalkanSP: BatalkanSP): Observable<BatalkanSPResponse>
 
     fun readHistory(id_sp: String): Observable<HistorySPResponse>
 }

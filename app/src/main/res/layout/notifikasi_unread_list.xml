@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="8dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/tvDateNotif"
+        android:layout_width="0dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="21-04-2020" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvKeteranganNotif"
+        app:layout_constraintTop_toBottomOf="@id/tvDateNotif"
+        tools:text="Edit data"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Surat Permintaan : "
+        android:textStyle="bold"
+        android:id="@+id/textSP"
+        app:layout_constraintTop_toBottomOf="@id/tvKeteranganNotif"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:id="@+id/tvSuratPermintaanNotif"
+        app:layout_constraintTop_toBottomOf="@id/tvKeteranganNotif"
+        app:layout_constraintLeft_toRightOf="@id/textSP"
+        tools:text="B-AAA-1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="User : "
+        android:id="@+id/textUser"
+        app:layout_constraintTop_toBottomOf="@id/textSP"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:id="@+id/tvUserNotif"
+        app:layout_constraintTop_toBottomOf="@id/textSP"
+        app:layout_constraintLeft_toRightOf="@id/textUser"
+        tools:text="Bambang"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Role : "
+        android:id="@+id/textRole"
+        app:layout_constraintTop_toBottomOf="@id/textUser"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:id="@+id/tvRoleNotif"
+        app:layout_constraintTop_toBottomOf="@id/textUser"
+        app:layout_constraintLeft_toRightOf="@id/textRole"
+        tools:text="PM Proyek"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/textRole"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="4dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

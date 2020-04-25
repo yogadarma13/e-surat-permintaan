@@ -3,6 +3,8 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
+import com.e_suratpermintaan.core.domain.entities.requests.DetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DetailSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
@@ -46,7 +48,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             startAddDialog()
         }
 
-        disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
+        var detailSP = DetailSP(idSp.toString(), idUser)
+        disposable = suratPermintaanViewModel.readDetail(detailSP)
             .subscribe(this::handleResponse, this::handleError)
     }
 
@@ -122,23 +125,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             alertDialog = alertDialogBuilder
                 .setMessage("Apakah Anda yakin ingin menambah item?")
                 .setPositiveButton("Ya") { _, _ ->
-//                    val createItemSP = CreateItemSP(
-//                        kodeSp,
-//                        kodePekerjaan,
-//                        null,
-//                        null,
-//                        null,
-//                        null,
-//                        null,
-//                        null,
-//                        kapasitas,
-//                        merk,
-//                        null,
-//                        waktuPemakaian,
-//                        null,
-//                        idUser
-//                    )
-                    disposable = itemSuratPermintaanViewModel.addItem(
+                    val createItemSP = CreateItemSP(
                         "S-AAA-1",
                         "010209",
                         "010209",
@@ -154,6 +141,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                         arrayListOf("1", "2"),
                         idUser
                     )
+                    disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
                         .subscribe(this::handleResponse, this::handleError)
 
                     alertDialog.hide()

@@ -35,7 +35,7 @@ data class DataDetailSP(
 	val idStatus: String? = null,
 
 	@field:SerializedName("file_lampiran")
-	val fileLampiran: String? = null,
+	val fileLampiran: List<FileLampiranDetailSP?>? = null,
 
 	@field:SerializedName("kode")
 	val kode: String? = null,
@@ -144,4 +144,13 @@ data class ItemsDetailSP(
 
 	@field:SerializedName("kapasitas")
 	val kapasitas: String? = null
+)
+
+data class FileLampiranDetailSP(
+
+	@field:SerializedName("keterangan")
+	val keterangan: String? = null,
+
+	@field:SerializedName("dir")
+	val dir: String? = null
 )
