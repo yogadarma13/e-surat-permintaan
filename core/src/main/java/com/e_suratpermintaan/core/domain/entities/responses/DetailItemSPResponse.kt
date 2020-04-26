@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class DetailItemSPResponse(
 
 	@field:SerializedName("data")
-	val data: List<DataDetailItemSP?>? = null,
+	val data: List<DataDetailItem?>? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -14,10 +14,10 @@ data class DetailItemSPResponse(
 	val status: Boolean? = null
 )
 
-data class DataDetailItemSP(
+data class DataDetailItem(
 
 	@field:SerializedName("persyaratan")
-	val persyaratan: Any? = null,
+	val persyaratan: List<PersyaratanDetailItem?>? = null,
 
 	@field:SerializedName("id_satuan")
 	val idSatuan: String? = null,
@@ -54,4 +54,10 @@ data class DataDetailItemSP(
 
 	@field:SerializedName("kapasitas")
 	val kapasitas: String? = null
+)
+
+data class PersyaratanDetailItem(
+
+	@field:SerializedName("persyaratan")
+	val persyaratan: String? = null
 )

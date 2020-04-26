@@ -1,5 +1,6 @@
 package com.example.e_suratpermintaan.presentation.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +47,12 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         tvAddItem.setOnClickListener {
             startAddDialog()
+        }
+
+        btnHistory.setOnClickListener {
+            val intent = Intent(this@DetailSuratPermintaanActivity, HistorySuratPermintaanActivity::class.java)
+            intent.putExtra("id_sp", idSp)
+            startActivity(intent)
         }
 
         var detailSP = DetailSP(idSp.toString(), idUser)

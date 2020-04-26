@@ -13,7 +13,7 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
 
         rootView.tvKode.text = data?.kodePekerjaan
         rootView.tvTanggalPengajuan.text = data?.target
-        rootView.tvStatusPermintaan.text = data?.keterangan
+//        rootView.tvStatusPermintaan.text = data?.keterangan
     }
 
 }

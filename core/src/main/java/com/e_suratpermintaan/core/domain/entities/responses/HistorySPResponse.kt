@@ -1,6 +1,7 @@
 package com.e_suratpermintaan.core.domain.entities.responses
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class HistorySPResponse(
 
@@ -15,6 +16,9 @@ data class HistorySPResponse(
 )
 
 data class DataHistory(
+
+	@field:SerializedName("warna")
+	val warna: String? = null,
 
 	@field:SerializedName("keterangan")
 	val keterangan: String? = null,
@@ -32,46 +36,46 @@ data class DataHistory(
 	val tanggal: String? = null,
 
 	@field:SerializedName("detail")
-	val detail: List<DetailDataHistory?>? = null,
+	val detail: List<DetailHistory?>? = null,
 
 	@field:SerializedName("user")
 	val user: String? = null
 )
 
-data class DetailDataHistory(
+data class DetailHistory(
 
 	@field:SerializedName("files")
-	val files: Any? = null,
+	val files: List<FilesDetailHistory?>? = null,
 
 	@field:SerializedName("text")
 	val text: String? = null,
 
 	@field:SerializedName("items")
-	val items: List<ItemsHistory?>? = null
+	val items: List<ItemsDetailHistory?>? = null
 )
 
-data class ItemsHistory(
+data class ItemsDetailHistory(
 
 	@field:SerializedName("persyaratan")
-	val persyaratan: Any? = null,
+	val persyaratan: List<Any?>? = null,
 
 	@field:SerializedName("id_satuan")
-	val idSatuan: Any? = null,
+	val idSatuan: String? = null,
 
 	@field:SerializedName("keterangan")
-	val keterangan: Any? = null,
+	val keterangan: List<KeteranganItem?>? = null,
 
 	@field:SerializedName("merk")
 	val merk: Any? = null,
 
 	@field:SerializedName("id_barang")
-	val idBarang: Any? = null,
+	val idBarang: String? = null,
 
 	@field:SerializedName("qty")
-	val qty: Any? = null,
+	val qty: String? = null,
 
 	@field:SerializedName("kode_pekerjaan")
-	val kodePekerjaan: Any? = null,
+	val kodePekerjaan: String? = null,
 
 	@field:SerializedName("kapasitas")
 	val kapasitas: Any? = null,
@@ -80,11 +84,35 @@ data class ItemsHistory(
 	val waktuPelaksanaan: Any? = null,
 
 	@field:SerializedName("fungsi")
-	val fungsi: Any? = null,
+	val fungsi: String? = null,
 
 	@field:SerializedName("waktu_pemakaian")
 	val waktuPemakaian: Any? = null,
 
 	@field:SerializedName("target")
-	val target: Any? = null
+	val target: String? = null
+)
+
+data class FilesDetailHistory(
+
+	@field:SerializedName("keterangan")
+	val keterangan: String? = null,
+
+	@field:SerializedName("dir")
+	val dir: String? = null
+)
+
+data class KeteranganItem(
+
+	@field:SerializedName("keterangan")
+	val keterangan: String? = null,
+
+	@field:SerializedName("role_user")
+	val roleUser: String? = null,
+
+	@field:SerializedName("tanggal")
+	val tanggal: String? = null,
+
+	@field:SerializedName("nama_user")
+	val namaUser: String? = null
 )
