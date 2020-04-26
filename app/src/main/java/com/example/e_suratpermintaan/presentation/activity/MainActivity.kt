@@ -1,12 +1,8 @@
 package com.example.e_suratpermintaan.presentation.activity
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +10,10 @@ import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
-import com.example.e_suratpermintaan.presentation.adapter.SuratPermintaanAdapter
+import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
+import com.example.e_suratpermintaan.presentation.base.BaseAdapter
+import com.example.e_suratpermintaan.presentation.viewholders.MyDataViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -38,22 +36,11 @@ class MainActivity : BaseActivity() {
     private lateinit var jenisList: ArrayList<DataMasterJenis>
 
     private var spListState: Parcelable? = null
-    private lateinit var suratPermintaanAdapter: SuratPermintaanAdapter
+    private lateinit var spAdapter: BaseAdapter<MyDataViewHolder>
 
     private var isInitialized = false
 
     override fun layoutId(): Int = R.layout.activity_main
-
-    private val fcmOnMessageReceivedReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-            val bodyValue = intent.getStringExtra("body_value")
-
-            if (bodyValue != null) {
-                Toast.makeText(this@MainActivity, bodyValue, Toast.LENGTH_LONG).show()
-
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,22 +50,16 @@ class MainActivity : BaseActivity() {
 
             init()
         }
-
-        val filter = IntentFilter(getString(R.string.firebase_onmessagereceived_intentfilter))
-        this.registerReceiver(fcmOnMessageReceivedReceiver, filter)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        this.unregisterReceiver(fcmOnMessageReceivedReceiver)
     }
 
     private fun init() {
         proyekList = arrayListOf()
         jenisList = arrayListOf()
 
-        suratPermintaanAdapter = SuratPermintaanAdapter()
+        spAdapter = BaseAdapter(
+            R.layout.surat_permintaan_row, MyDataViewHolder::class.java
+        )
+
         setupListeners()
         initRecyclerView()
 
@@ -97,20 +78,19 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        tv_show_length_entry.text = "Menampilkan ${suratPermintaanAdapter.spList.size} entri"
+        tv_show_length_entry.text = getString(
+            R.string.main_header_list_count_msg,
+            spAdapter.itemList.size.toString()
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = suratPermintaanAdapter
-
-        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
-        recyclerView.setHasFixedSize(false)
+        recyclerView.adapter = spAdapter
 
         if (spListState != null)
             recyclerView.layoutManager?.onRestoreInstanceState(spListState)
     }
 
     private fun setupListeners() {
-
         btnProfile.setOnClickListener {
             startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
         }
@@ -123,14 +103,12 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
         }
 
-        suratPermintaanAdapter.setOnClickListener(object :
-            SuratPermintaanAdapter.OnClickItemListener {
-            override fun onClick(view: View, item: SuratPermintaan?) {
-                val intent = Intent(this@MainActivity, DetailSuratPermintaanActivity::class.java)
-                intent.putExtra("id_sp", (item as DataMyData).id)
-                startActivity(intent)
-            }
-        })
+        spAdapter.setOnItemClickListener {
+            val data = it as DataMyData
+            val intent = Intent(this@MainActivity, DetailSuratPermintaanActivity::class.java)
+            intent.putExtra(ID_SP_EXTRA_KEY, data.id.toString())
+            startActivity(intent)
+        }
     }
 
     private fun handleResponse(response: Any) {
@@ -140,12 +118,15 @@ class MainActivity : BaseActivity() {
                 val suratPermintaanList: List<DataMyData?>? = response.data
 
                 suratPermintaanList?.forEach {
-                    suratPermintaanAdapter.spList.add(it)
+                    spAdapter.itemList.add(it as DataMyData)
                 }
 
-                tv_show_length_entry.text =
-                    "Menampilkan ${suratPermintaanAdapter.spList.size} entri"
-                suratPermintaanAdapter.notifyDataSetChanged()
+                tv_show_length_entry.text = getString(
+                    R.string.main_header_list_count_msg,
+                    spAdapter.itemList.size.toString()
+                )
+
+                spAdapter.notifyDataSetChanged()
 
             }
             is MasterProyekResponse -> {

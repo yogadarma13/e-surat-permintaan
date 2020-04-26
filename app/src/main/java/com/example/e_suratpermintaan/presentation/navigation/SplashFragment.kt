@@ -58,7 +58,7 @@ class SplashFragment : BaseFragment() {
         }
     }
 
-    fun startTaskOnTokenCheckComplete(){
+    private fun startTaskOnTokenCheckComplete(){
         if (profilePreference.getProfile() == null) {
             val navOptions =
                 NavOptionsHelper.getInstance().addAppStarterAnim().clearBackStack(R.id.splashFragment)

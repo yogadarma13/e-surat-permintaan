@@ -43,3 +43,9 @@ data class DataMasterCC(
 	@field:SerializedName("status")
 	val status: String? = null
 )
+{
+	override fun toString(): String {
+		return "$kodeCostcontrol $deskripsi"
+	}
+}
+
