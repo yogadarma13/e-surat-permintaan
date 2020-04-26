@@ -104,6 +104,7 @@ class NotifikasiActivity : BaseActivity() {
                     intent.putExtra("id_sp", dataClick.id_sp)
                 }
                 startActivity(intent)
+                finish()
             }
         })
     }

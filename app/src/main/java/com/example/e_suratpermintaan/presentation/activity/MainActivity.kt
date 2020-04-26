@@ -17,6 +17,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.adapter.SuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,6 +29,7 @@ class MainActivity : BaseActivity() {
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
+    private val notifikasiViewModel: NotifikasiViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
     private lateinit var idUser: String
@@ -89,10 +91,12 @@ class MainActivity : BaseActivity() {
             val spObservable = suratPermintaanViewModel.readMyData(profileId)
             val proyekObservable = masterViewModel.getProyekList(profileId)
             val jenisObservable = masterViewModel.getJenisList(profileId)
+            val notifObservable = notifikasiViewModel.getNotifikasiList(profileId)
 
             disposable = spObservable.subscribe(this::handleResponse, this::handleError)
             disposable = proyekObservable.subscribe(this::handleResponse, this::handleError)
             disposable = jenisObservable.subscribe(this::handleResponse, this::handleError)
+            disposable = notifObservable.subscribe(this::handleResponse, this::handleError)
         }
     }
 
@@ -119,7 +123,7 @@ class MainActivity : BaseActivity() {
             startShowDialog()
         }
 
-        btnSeeNotifikasi.setOnClickListener {
+        frameNotifikasi.setOnClickListener {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
         }
 
@@ -169,6 +173,17 @@ class MainActivity : BaseActivity() {
 
                 toastNotify(response.message)
 
+            }
+
+            is NotifikasiResponse -> {
+                val notif = response.data?.get(0)
+
+                if (notif?.countUnread == 0) {
+                    tvCountUnreadNotif.visibility = View.GONE
+                } else {
+                    tvCountUnreadNotif.visibility = View.VISIBLE
+                    tvCountUnreadNotif.text = notif?.countUnread.toString()
+                }
             }
         }
     }
