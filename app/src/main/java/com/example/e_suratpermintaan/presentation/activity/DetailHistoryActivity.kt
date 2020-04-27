@@ -1,14 +1,17 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.DataHistory
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
+import com.e_suratpermintaan.core.domain.entities.responses.FilesDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.DetailHistoryViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.FileDownloadViewHolder
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_detail_history.*
 import org.json.JSONArray
@@ -18,9 +21,13 @@ class DetailHistoryActivity : BaseActivity() {
 
     override fun layoutId(): Int = R.layout.activity_detail_history
     private var dataDetailHistory: String? = null
-    private lateinit var detailHistoryList: DetailHistory
-    private lateinit var detailHistoryAdapter: BaseAdapter<DetailHistoryViewHolder>
+    private lateinit var detailHistoryBaruAdapter: BaseAdapter<DetailHistoryViewHolder>
+    private lateinit var detailHistoryLamaAdapter: BaseAdapter<DetailHistoryViewHolder>
+    private lateinit var fileDownloadBaruAdapter: BaseAdapter<FileDownloadViewHolder>
+    private lateinit var fileDownloadLamaAdapter: BaseAdapter<FileDownloadViewHolder>
     private lateinit var data: List<DetailHistory>
+    private lateinit var dataBaru: DetailHistory
+    private lateinit var dataLama: DetailHistory
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,14 +37,27 @@ class DetailHistoryActivity : BaseActivity() {
 
         data = Gson().fromJson(dataDetailHistory, Array<DetailHistory>::class.java).toList()
 
+        dataBaru = data.get(0)
+        dataLama = data.get(1)
+
         init()
     }
 
     private fun init() {
-        detailHistoryAdapter = BaseAdapter(
+        detailHistoryBaruAdapter = BaseAdapter(
             R.layout.detail_history_item, DetailHistoryViewHolder::class.java
         )
+        detailHistoryLamaAdapter = BaseAdapter(
+            R.layout.detail_history_item, DetailHistoryViewHolder::class.java
+        )
+        fileDownloadBaruAdapter = BaseAdapter(
+            R.layout.file_download_item, FileDownloadViewHolder::class.java
+        )
+        fileDownloadLamaAdapter = BaseAdapter(
+            R.layout.file_download_item, FileDownloadViewHolder::class.java
+        )
 
+//        setupListeners()
         initRecyclerView()
         setDataDetailHistory()
     }
@@ -45,28 +65,54 @@ class DetailHistoryActivity : BaseActivity() {
     private fun initRecyclerView() {
 
         recyclerViewBaru.layoutManager = LinearLayoutManager(this)
-        recyclerViewBaru.adapter = detailHistoryAdapter
+        recyclerViewBaru.adapter = detailHistoryBaruAdapter
 
         recyclerViewLama.layoutManager = LinearLayoutManager(this)
-        recyclerViewLama.adapter = detailHistoryAdapter
+        recyclerViewLama.adapter = detailHistoryLamaAdapter
+
+        recyclerViewButtonDownloadBaru.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewButtonDownloadBaru.adapter = fileDownloadBaruAdapter
+
+        recyclerViewButtonDownloadLama.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewButtonDownloadLama.adapter = fileDownloadLamaAdapter
     }
 
+//    private fun setupListeners() {
+//        fileDownloadBaruAdapter.setOnItemClickListener {
+//            val dataFileBaru = it as FilesDetailHistory
+//            toastNotify(dataFileBaru.dir)
+//        }
+//
+//        fileDownloadLamaAdapter.setOnItemClickListener {
+//            val dataFileLama = it as FilesDetailHistory
+//            toastNotify(dataFileLama.dir)
+//        }
+//    }
+
     private fun setDataDetailHistory() {
-//        val dataItemHistoryBaru = arrayListOf<ItemsDetailHistory>()
-//        val dataItemHistoryLama = arrayListOf<ItemsDetailHistory>()
 
-//        data.get(0)?.detail?.get(0).items
+        tvTextBaru.text = dataBaru.text
+        tvTextLama.text = dataLama.text
 
-        data.get(0).items?.forEach {
-            it?.let { it1 -> detailHistoryAdapter.itemList.add(it1) }
+        dataBaru.items?.forEach {
+            it?.let { it1 -> detailHistoryBaruAdapter.itemList.add(it1) }
         }
-        detailHistoryAdapter.notifyDataSetChanged()
+        detailHistoryBaruAdapter.notifyDataSetChanged()
 
-
-        data.get(1).items?.forEach {
-            it?.let { it1 -> detailHistoryAdapter.itemList.add(it1) }
+        dataLama.items?.forEach {
+            it?.let { it1 -> detailHistoryLamaAdapter.itemList.add(it1) }
         }
+        detailHistoryLamaAdapter.notifyDataSetChanged()
 
-        detailHistoryAdapter.notifyDataSetChanged()
+        dataBaru.files?.forEach {
+            it?.let { it1 -> fileDownloadBaruAdapter.itemList.add(it1) }
+        }
+        fileDownloadBaruAdapter.notifyDataSetChanged()
+
+        dataLama.files?.forEach {
+            it?.let { it1 -> fileDownloadLamaAdapter.itemList.add(it1) }
+        }
+        fileDownloadLamaAdapter.notifyDataSetChanged()
+
     }
 }
