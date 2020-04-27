@@ -46,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recyclerViewBaru"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintTop_toBottomOf="@id/tvTextBaru"
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -78,6 +79,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 android:id="@+id/recyclerViewLama"
                 app:layout_constraintTop_toBottomOf="@id/tvTextLama"
                 android:layout_marginTop="8dp"
