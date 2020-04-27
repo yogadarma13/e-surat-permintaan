@@ -1,14 +1,21 @@
 package com.example.e_suratpermintaan.presentation.base
 
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -19,11 +26,30 @@ abstract class BaseActivity : AppCompatActivity() {
             disposableList.add(value)
         }
 
+    private val fcmOnMessageReceivedReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val bodyValue = intent.getStringExtra("body_value")
+            val idSP = intent.getStringExtra("id_sp")
+
+            if (bodyValue != null) {
+                snackNotify(getWindowContentRootView(), bodyValue, "Lihat", View.OnClickListener {
+                    val activityIntent =
+                        Intent(applicationContext, DetailSuratPermintaanActivity::class.java)
+                    activityIntent.putExtra(DetailSuratPermintaanActivity.ID_SP_EXTRA_KEY, idSP)
+                    startActivity(activityIntent)
+                })
+            }
+        }
+    }
+
     abstract fun layoutId(): Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
+
+        val filter = IntentFilter(getString(R.string.firebase_onmessagereceived_intentfilter))
+        registerReceiver(fcmOnMessageReceivedReceiver, filter)
 
         window.decorView.clearFocus()
         window.decorView.setBackgroundColor(resources.getColor(android.R.color.background_light))
@@ -31,8 +57,51 @@ abstract class BaseActivity : AppCompatActivity() {
         findAndSetEditTextFocusChangeListenerRecursively(window.decorView)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(fcmOnMessageReceivedReceiver)
+    }
+
+    open fun getWindowContentRootView(): View {
+        val contentViewGroup =
+            findViewById<View>(android.R.id.content) as ViewGroup
+        var rootView: View?
+        rootView = contentViewGroup.getChildAt(0)
+        if (rootView == null) rootView = window.decorView.rootView
+        return rootView
+    }
+
     fun toastNotify(message: String?) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun snackNotify(
+        view: View,
+        message: String,
+        actionString: String?,
+        onClickActionListener: View.OnClickListener?
+    ) {
+        //Snackbar(view)
+        val snackbar = Snackbar.make(
+            view, message,
+            Snackbar.LENGTH_LONG
+        )
+
+        actionString.let {
+            snackbar.setAction("Tutup") {
+                snackbar.dismiss()
+            }
+            snackbar.setAction(actionString, onClickActionListener)
+        }
+
+        // snackbar.setActionTextColor(Color.BLACK)
+        val snackView = snackbar.view
+        // snackView.setBackgroundColor(Color.LTGRAY)
+        val textView =
+            snackView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        // textView.setTextColor(Color.BLACK)
+        textView.textSize = 14f
+        snackbar.show()
     }
 
     private fun findAndSetEditTextFocusChangeListenerRecursively(view: View) {
@@ -74,13 +143,13 @@ abstract class BaseActivity : AppCompatActivity() {
         imm?.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
     }
 
-    private fun closeKeyboard(view: View) {
+    fun closeKeyboard(view: View) {
         val imm: InputMethodManager? =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun showKeyboard(view: View) {
+    fun showKeyboard(view: View) {
         val imm: InputMethodManager? =
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         if (!(imm?.isAcceptingText!!)) {

@@ -1,13 +1,17 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="30dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="24dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:clickable="true">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilKodePekerjaan"
@@ -128,6 +132,26 @@
             app:layout_constraintEnd_toEndOf="@+id/tilWaktuPemakaian"
             app:layout_constraintTop_toBottomOf="@+id/tilWaktuPemakaian" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvKodePekerjaan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tilKodePekerjaan"
+            tools:layout_editor_absoluteX="24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvJenisBarang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tilJenisBarang"
+            tools:layout_editor_absoluteX="24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSatuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tilSatuan"
+            tools:layout_editor_absoluteX="24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

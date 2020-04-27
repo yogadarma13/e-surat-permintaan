@@ -11,4 +11,6 @@
     <string name="row_hide">Hide 5. Row</string>
     <string name="msg_token_fmt">User TokenID %1$s</string>
     <string name="firebase_onmessagereceived_intentfilter">com.e-suratpermintaan.fcm</string>
+    <string name="IdSpKeyExtraforDetailSPActivity">id_sp</string>
+    <string name="main_header_list_count_msg">Menampilkan %1$s entri</string>
 </resources>

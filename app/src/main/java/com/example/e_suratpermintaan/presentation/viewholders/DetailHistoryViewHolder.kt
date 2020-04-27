@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.presentation.adapter
+package com.example.e_suratpermintaan.presentation.viewholders
 
 import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
@@ -6,10 +6,10 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import kotlinx.android.synthetic.main.detail_history_item.view.*
 
 class DetailHistoryViewHolder(private val rootView: View) :
-    BaseViewHolder<ItemsDetailHistory>(rootView) {
+    BaseViewHolder(rootView) {
 
-    override fun bind(item: ItemsDetailHistory?) {
-        val data = item
+    override fun bind(item: Any?) {
+        val data = item as ItemsDetailHistory
 
         rootView.tvKodeDetail.text = data?.kodePekerjaan
         rootView.tvJenisDetail.text = data?.idBarang
@@ -19,7 +19,7 @@ class DetailHistoryViewHolder(private val rootView: View) :
         var dataKeterangan: String? = ""
 
         data?.keterangan?.forEach {
-             dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
+            dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
         }
 
         rootView.tvKeteranganDetail.text = dataKeterangan
