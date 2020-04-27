@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -20,6 +21,7 @@ class ProfileActivity : BaseActivity() {
 
     private val provileViewModel: ProfileViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
+    private val fcmPreference: FCMPreference by inject()
 
     override fun layoutId(): Int = R.layout.activity_profile
 
@@ -31,6 +33,7 @@ class ProfileActivity : BaseActivity() {
 
         btnLogout.setOnClickListener {
             profilePreference.removeProfile()
+            fcmPreference.removeUserTokenId()
 
             finish()
             startActivity(Intent(this@ProfileActivity, StarterActivity::class.java))
@@ -52,10 +55,6 @@ class ProfileActivity : BaseActivity() {
         tv_name_profile.text = dataProfile?.name
         tv_email_profile.text = dataProfile?.email
 
-    }
-
-    private fun handleError(error: Throwable) {
-        toastNotify(error.message.toString())
     }
 
 }

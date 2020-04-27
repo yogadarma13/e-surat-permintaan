@@ -3,8 +3,8 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
@@ -15,6 +15,7 @@ import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.MyDataViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,6 +27,7 @@ class MainActivity : BaseActivity() {
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
+    private val notifikasiViewModel: NotifikasiViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
     private lateinit var idUser: String
@@ -70,10 +72,12 @@ class MainActivity : BaseActivity() {
             val spObservable = suratPermintaanViewModel.readMyData(profileId)
             val proyekObservable = masterViewModel.getProyekList(profileId)
             val jenisObservable = masterViewModel.getJenisList(profileId)
+            val notifObservable = notifikasiViewModel.getNotifikasiList(profileId)
 
             disposable = spObservable.subscribe(this::handleResponse, this::handleError)
             disposable = proyekObservable.subscribe(this::handleResponse, this::handleError)
             disposable = jenisObservable.subscribe(this::handleResponse, this::handleError)
+            disposable = notifObservable.subscribe(this::handleResponse, this::handleError)
         }
     }
 
@@ -99,7 +103,7 @@ class MainActivity : BaseActivity() {
             startShowDialog()
         }
 
-        btnSeeNotifikasi.setOnClickListener {
+        frameNotifikasi.setOnClickListener {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
         }
 
@@ -151,11 +155,18 @@ class MainActivity : BaseActivity() {
                 toastNotify(response.message)
 
             }
-        }
-    }
 
-    private fun handleError(error: Throwable) {
-        Toast.makeText(this, error.message.toString(), Toast.LENGTH_LONG).show()
+            is NotifikasiResponse -> {
+                val notif = response.data?.get(0)
+
+                if (notif?.countUnread == 0) {
+                    tvCountUnreadNotif.visibility = View.GONE
+                } else {
+                    tvCountUnreadNotif.visibility = View.VISIBLE
+                    tvCountUnreadNotif.text = notif?.countUnread.toString()
+                }
+            }
+        }
     }
 
     private fun startShowDialog() {

@@ -1,8 +1,8 @@
 package com.example.e_suratpermintaan.presentation.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.requests.DetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DetailSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
@@ -42,22 +42,23 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
-
-        init()
-
-        val detailSP = DetailSP(idSp.toString(), idUser)
-        disposable = suratPermintaanViewModel.readDetail(detailSP)
-            .subscribe(this::handleResponse, this::handleError)
-    }
-
-    private fun init() {
         val profileId = profilePreference.getProfile()?.id
         if (profileId != null) {
             idUser = profileId
         }
 
-        initRecyclerView()
+        init()
         setupListeners()
+    }
+
+    private fun init() {
+        initRecyclerView()
+
+        alertDialogTambah =
+            TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+
+        disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
+            .subscribe(this::handleResponse, this::handleError)
     }
 
     private fun setupListeners() {
@@ -80,12 +81,25 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = itemSuratPermintaanAdapter
 
+        btnHistory.setOnClickListener {
+            val intent = Intent(
+                this@DetailSuratPermintaanActivity,
+                HistorySuratPermintaanActivity::class.java
+            )
+            intent.putExtra("id_sp", idSp)
+            startActivity(intent)
+        }
     }
 
-    private fun handleResponse(response: Any) {
+    fun handleResponse(response: Any) {
         when (response) {
             is CreateItemSPResponse -> {
+
                 toastNotify(response.message)
+                itemSuratPermintaanAdapter.itemList.clear()
+                itemSuratPermintaanAdapter.notifyDataSetChanged()
+                init()
+
             }
             is DetailSPResponse -> {
 
@@ -93,7 +107,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 val dataDetailSP = detailSPResponse?.get(0)
                 kodeSp = dataDetailSP?.kode
 
-                alertDialogTambah = TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
                 alertDialogTambah.initDialogViewTambah(kodeSp.toString(), idUser)
 
                 val detailDate = dataDetailSP?.tanggalPengajuan?.split(" ")
@@ -108,10 +121,9 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 tv_jenis_detail.text = dataDetailSP?.jenis
 
                 val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
-                val itemArrayList: ArrayList<ItemsDetailSP?> = arrayListOf()
 
                 itemList?.forEach {
-                    itemArrayList.add(it)
+                    itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
                 }
 
                 itemSuratPermintaanAdapter.notifyDataSetChanged()
@@ -119,10 +131,5 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             }
         }
     }
-
-    private fun handleError(error: Throwable) {
-        toastNotify(error.message)
-    }
-
 
 }

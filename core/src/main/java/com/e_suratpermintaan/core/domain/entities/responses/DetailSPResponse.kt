@@ -14,6 +14,57 @@ data class DetailSPResponse(
 	val status: Boolean? = null
 )
 
+data class ItemsDetailSP(
+
+	@field:SerializedName("persyaratan")
+	val persyaratan: List<PersyaratanItemDetailSP?>? = null,
+
+	@field:SerializedName("id_satuan")
+	val idSatuan: String? = null,
+
+	@field:SerializedName("keterangan")
+	val keterangan: List<KeteranganDetailSP?>? = null,
+
+	@field:SerializedName("merk")
+	val merk: String? = null,
+
+	@field:SerializedName("waktu_pelaksanaan")
+	val waktuPelaksanaan: String? = null,
+
+	@field:SerializedName("fungsi")
+	val fungsi: String? = null,
+
+	@field:SerializedName("waktu_pemakaian")
+	val waktuPemakaian: String? = null,
+
+	@field:SerializedName("tombol_edit_item")
+	val tombolEditItem: Int? = null,
+
+	@field:SerializedName("target")
+	val target: String? = null,
+
+	@field:SerializedName("tombol_tambah_item")
+	val tombolTambahItem: Int? = null,
+
+	@field:SerializedName("id_barang")
+	val idBarang: String? = null,
+
+	@field:SerializedName("qty")
+	val qty: String? = null,
+
+	@field:SerializedName("tombol_hapus_item")
+	val tombolHapusItem: Int? = null,
+
+	@field:SerializedName("id")
+	val id: String? = null,
+
+	@field:SerializedName("kode_pekerjaan")
+	val kodePekerjaan: String? = null,
+
+	@field:SerializedName("kapasitas")
+	val kapasitas: String? = null
+)
+
 data class DataDetailSP(
 
 	@field:SerializedName("tombol_edit")
@@ -95,55 +146,19 @@ data class DataDetailSP(
 	val tombolTolak: Int? = null
 )
 
-data class ItemsDetailSP(
-
-	@field:SerializedName("persyaratan")
-	val persyaratan: Any? = null,
-
-	@field:SerializedName("id_satuan")
-	val idSatuan: String? = null,
+data class KeteranganDetailSP(
 
 	@field:SerializedName("keterangan")
 	val keterangan: String? = null,
 
-	@field:SerializedName("merk")
-	val merk: String? = null,
+	@field:SerializedName("role_user")
+	val roleUser: String? = null,
 
-	@field:SerializedName("waktu_pelaksanaan")
-	val waktuPelaksanaan: String? = null,
+	@field:SerializedName("tanggal")
+	val tanggal: String? = null,
 
-	@field:SerializedName("fungsi")
-	val fungsi: String? = null,
-
-	@field:SerializedName("waktu_pemakaian")
-	val waktuPemakaian: String? = null,
-
-	@field:SerializedName("tombol_edit_item")
-	val tombolEditItem: Int? = null,
-
-	@field:SerializedName("target")
-	val target: String? = null,
-
-	@field:SerializedName("tombol_tambah_item")
-	val tombolTambahItem: Int? = null,
-
-	@field:SerializedName("id_barang")
-	val idBarang: String? = null,
-
-	@field:SerializedName("qty")
-	val qty: String? = null,
-
-	@field:SerializedName("tombol_hapus_item")
-	val tombolHapusItem: Int? = null,
-
-	@field:SerializedName("id")
-	val id: String? = null,
-
-	@field:SerializedName("kode_pekerjaan")
-	val kodePekerjaan: String? = null,
-
-	@field:SerializedName("kapasitas")
-	val kapasitas: String? = null
+	@field:SerializedName("nama_user")
+	val namaUser: String? = null
 )
 
 data class FileLampiranDetailSP(
@@ -154,3 +169,10 @@ data class FileLampiranDetailSP(
 	@field:SerializedName("dir")
 	val dir: String? = null
 )
+
+data class PersyaratanItemDetailSP(
+
+	@field:SerializedName("persyaratan")
+	val persyaratan: String? = null
+)
+

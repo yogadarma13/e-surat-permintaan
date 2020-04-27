@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.presentation.viewholders
+package com.example.e_suratpermintaan.presentation.adapter
 
 import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
@@ -13,7 +13,7 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
 
         rootView.tvKode.text = data.kodePekerjaan
         rootView.tvTanggalPengajuan.text = data.target
-        // rootView.tvStatusPermintaan.text = data.keterangan
+//        rootView.tvStatusPermintaan.text = data?.keterangan
     }
 
 }

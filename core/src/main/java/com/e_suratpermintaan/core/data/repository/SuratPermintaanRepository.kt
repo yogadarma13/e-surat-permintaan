@@ -21,8 +21,8 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         dataSource.remove(id_sp)
 
-    override fun readDetail(detailSP: DetailSP): Observable<DetailSPResponse> =
-        dataSource.readDetail(detailSP)
+    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
+        dataSource.readDetail(id_sp, id_user)
 
     override fun edit(id: RequestBody, file: MultipartBody.Part, id_user: RequestBody) =
         dataSource.edit(id, file, id_user)

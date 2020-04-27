@@ -12,6 +12,16 @@ import com.example.e_suratpermintaan.R
 class NotifikasiAdapter(private val notifList: ArrayList<Any>, private val viewType: ArrayList<Int>):
     RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
 
+    private lateinit var onClickItemListener: OnClickItemListener
+
+    interface OnClickItemListener{
+        fun onClick(view: View, item: Any)
+    }
+
+    fun setOnClickListener(onClickItemListener: OnClickItemListener){
+        this.onClickItemListener = onClickItemListener
+    }
+
     companion object {
         val ITEM_A = 0
         val ITEM_B = 1
@@ -32,7 +42,7 @@ class NotifikasiAdapter(private val notifList: ArrayList<Any>, private val viewT
             ITEM_A -> {
                 val data = notifList.get(position) as UnreadItem
                 val viewHolderA = holder as ViewHolderUnread
-                viewHolderA.dateUnread.text = "UNREAD"
+                viewHolderA.dateUnread.text = data.tanggal
                 viewHolderA.noteUnread.text = data.keterangan
                 viewHolderA.roleUnread.text = data.role
                 viewHolderA.spCodeUnread.text = data.id_sp
@@ -41,12 +51,16 @@ class NotifikasiAdapter(private val notifList: ArrayList<Any>, private val viewT
             ITEM_B -> {
                 val data = notifList.get(position) as ReadItem
                 val viewHolderB = holder as ViewHolderRead
-                viewHolderB.date.text = "READ"
+                viewHolderB.date.text = data.tanggal
                 viewHolderB.note.text = data.keterangan
                 viewHolderB.role.text = data.role
                 viewHolderB.spCode.text = data.id_sp
                 viewHolderB.user.text = data.user
             }
+        }
+        val dataNotifClick = notifList[holder.layoutPosition]
+        holder.itemView.setOnClickListener {
+            onClickItemListener.onClick(holder.itemView, dataNotifClick)
         }
     }
 
