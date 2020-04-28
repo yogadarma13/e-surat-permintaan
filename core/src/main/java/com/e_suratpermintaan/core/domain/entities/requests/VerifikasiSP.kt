@@ -11,5 +11,8 @@ data class VerifikasiSP(
     val id: String,
 
     @field:SerializedName("status")
-    val status: String
+    val status: String,
+
+    @field:SerializedName("catatan")
+    val catatan: String
 )
