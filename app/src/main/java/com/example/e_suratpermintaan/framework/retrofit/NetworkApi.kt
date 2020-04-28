@@ -155,9 +155,10 @@ interface NetworkApi {
     ): Observable<DeleteFileLampiranResponse>
 
     // ================================= NOTIFIKASI =============================================
-    @GET("notifikasi")
+    @FormUrlEncoded
+    @POST("notifikasi")
     fun getNotifikasi(
-        @Query("id_user") id_user: String
+        @Field("id_user") id_user: String
     ): Observable<NotifikasiResponse>
 
     @POST("read_notifikasi")

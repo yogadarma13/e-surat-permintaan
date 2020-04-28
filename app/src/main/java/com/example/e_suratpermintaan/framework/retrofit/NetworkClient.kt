@@ -78,14 +78,14 @@ class NetworkClient {
 
                 val cacheControl = CacheControl.Builder()
                     .noCache()
-                    //.maxAge(5, TimeUnit.SECONDS)
-                    .maxAge(0, TimeUnit.SECONDS)
+                    .maxAge(5, TimeUnit.SECONDS)
+                    //.maxAge(0, TimeUnit.SECONDS)
                     .build()
 
                 val authenticatedRequest = builder
-//                    .removeHeader(HEADER_PRAGMA)
-//                    .removeHeader(HEADER_CACHE_CONTROL)
-//                    .cacheControl(cacheControl)
+                    .removeHeader(HEADER_PRAGMA)
+                    .removeHeader(HEADER_CACHE_CONTROL)
+                    .cacheControl(cacheControl)
                     .build()
 
                 val response = chain.proceed(authenticatedRequest)
