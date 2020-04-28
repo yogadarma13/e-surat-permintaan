@@ -17,9 +17,10 @@ class DetailHistoryViewHolder(private val rootView: View) :
         rootView.tvFungsiDetail.text = data.fungsi
         rootView.tvTargetDetail.text = data.target
         rootView.tvQty.text = data.qty
+
         var dataKeterangan: String? = ""
 
-        data?.keterangan?.forEach {
+        data.keterangan?.forEach {
             dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
         }
 

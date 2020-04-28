@@ -2,7 +2,6 @@ package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.ReadNotifikasi
@@ -39,7 +38,7 @@ class NotifikasiActivity : BaseActivity() {
 
     }
 
-    private fun init(){
+    private fun init() {
         idUser = profilePreference.getProfile()?.id
         notifikasiAdapter = NotifikasiAdapter()
         getNotifikasi(idUser)
@@ -54,17 +53,23 @@ class NotifikasiActivity : BaseActivity() {
     }
 
     private fun setupListeners() {
-        notifikasiAdapter.setOnClickListener(object : NotifikasiAdapter.OnClickItemListener{
+        notifikasiAdapter.setOnClickListener(object : NotifikasiAdapter.OnClickItemListener {
             override fun onClick(view: View, item: Any) {
                 val dataClick = item
 
-                val intent = Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
-                if (dataClick is UnreadItem){
+                val intent =
+                    Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
+                if (dataClick is UnreadItem) {
                     toastNotify("Unread")
-                    disposable = readNotifikasiViewModel.readNotifikasi(ReadNotifikasi(idUser.toString(), dataClick.id.toString()))
+                    disposable = readNotifikasiViewModel.readNotifikasi(
+                        ReadNotifikasi(
+                            idUser.toString(),
+                            dataClick.id.toString()
+                        )
+                    )
                         .subscribe()
                     intent.putExtra("id_sp", dataClick.id_sp)
-                } else if (dataClick is ReadItem){
+                } else if (dataClick is ReadItem) {
                     toastNotify("Read")
                     intent.putExtra("id_sp", dataClick.id_sp)
                 }
@@ -86,7 +91,7 @@ class NotifikasiActivity : BaseActivity() {
             dataNotif = it
         }
 
-        if(dataNotif?.countUnread == 0) {
+        if (dataNotif?.countUnread == 0) {
             constraintCountUnread.visibility = View.GONE
         } else {
             constraintCountUnread.visibility = View.VISIBLE
@@ -111,9 +116,4 @@ class NotifikasiActivity : BaseActivity() {
         notifikasiAdapter.notifyDataSetChanged()
 
     }
-
-    private fun handleError(error: Throwable) {
-        toastNotify(error.message.toString())
-    }
-
 }

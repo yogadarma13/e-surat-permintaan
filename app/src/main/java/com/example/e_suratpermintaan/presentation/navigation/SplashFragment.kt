@@ -17,6 +17,7 @@ import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.google.firebase.iid.FirebaseInstanceId
 import org.koin.android.ext.android.inject
+import java.io.IOException
 
 /**
  * A simple [Fragment] subclass.
@@ -35,8 +36,16 @@ class SplashFragment : BaseFragment() {
             Log.d("FCM", "REQUEST NEW TOKEN")
             FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Toast.makeText(requireContext(), "${task.exception}", Toast.LENGTH_LONG)
-                        .show()
+                    if (task.exception is IOException){
+                        toastNotify("Maaf, Request Token Gagal \nAnda sedang offline, silakan hidupkan sambungan internet")
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Firebase token registration request error : ${task.exception}",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
                     return@addOnCompleteListener
                 }
 
@@ -44,24 +53,21 @@ class SplashFragment : BaseFragment() {
                 val token = task.result!!.token
                 fcmPreference.saveUserTokenId(token)
 
-                // Log and toast
-                val msg = getString(R.string.msg_token_fmt, token)
-                Log.d("FCM", msg)
-
                 startTaskOnTokenCheckComplete()
             }
         } else {
-            val msg = getString(R.string.msg_token_fmt, fcmPreference.getUserTokenId())
-            Log.d("FCM", msg)
-
             startTaskOnTokenCheckComplete()
         }
+
+        val msg = getString(R.string.msg_token_fmt, fcmPreference.getUserTokenId())
+        Log.d("FCM", msg)
     }
 
-    private fun startTaskOnTokenCheckComplete(){
+    private fun startTaskOnTokenCheckComplete() {
         if (profilePreference.getProfile() == null) {
             val navOptions =
-                NavOptionsHelper.getInstance().addAppStarterAnim().clearBackStack(R.id.splashFragment)
+                NavOptionsHelper.getInstance().addAppStarterAnim()
+                    .clearBackStack(R.id.splashFragment)
                     .build()
             view?.findNavController()?.navigate(
                 R.id.action_splashScreen_to_welcomeScreen,

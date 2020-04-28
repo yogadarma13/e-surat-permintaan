@@ -10,22 +10,23 @@ class FCMPreference(private val context: Context) {
         val prefs =
             context.getSharedPreferences(FCM_PREFS_NAME, Context.MODE_PRIVATE)
         val mEditor = prefs.edit()
-        mEditor!!.remove(FCM_PREFS_USER_TOKENID_KEY)
+        mEditor.remove(FCM_PREFS_USER_TOKENID_KEY)
+        mEditor.clear()
         mEditor.apply()
     }
 
     fun saveUserTokenId(userTokenId: String) {
         val prefs =
             context.getSharedPreferences(FCM_PREFS_NAME, Context.MODE_PRIVATE)
-        val mEditor = prefs!!.edit()
-        mEditor!!.putString(FCM_PREFS_USER_TOKENID_KEY, userTokenId)
+        val mEditor = prefs.edit()
+        mEditor.putString(FCM_PREFS_USER_TOKENID_KEY, userTokenId)
         mEditor.apply()
     }
 
     fun getUserTokenId(): String? {
         val prefs =
             context.getSharedPreferences(FCM_PREFS_NAME, Context.MODE_PRIVATE)
-        return prefs!!.getString(FCM_PREFS_USER_TOKENID_KEY, null)
+        return prefs.getString(FCM_PREFS_USER_TOKENID_KEY, null)
     }
 
 }

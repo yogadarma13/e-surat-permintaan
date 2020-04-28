@@ -23,8 +23,8 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         networkApi.deleteSP(id_sp)
 
-    override fun readDetail(detailSP: DetailSP): Observable<DetailSPResponse> =
-        networkApi.getDetailSP(detailSP)
+    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
+        networkApi.getDetailSP(id_sp, id_user)
 
     override fun edit(
         id: RequestBody,

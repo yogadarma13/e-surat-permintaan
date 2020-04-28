@@ -69,9 +69,4 @@ class HistorySuratPermintaanActivity : BaseActivity() {
         response.data?.let { historyAdapter.dataHistorySP.addAll(it) }
         historyAdapter.notifyDataSetChanged()
     }
-
-    private fun handleError(error: Throwable) {
-        toastNotify(error.message.toString())
-    }
-
 }

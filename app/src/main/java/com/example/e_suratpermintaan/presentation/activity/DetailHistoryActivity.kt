@@ -16,7 +16,6 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_detail_history.*
 import org.json.JSONArray
 import org.json.JSONObject
-
 class DetailHistoryActivity : BaseActivity() {
 
     override fun layoutId(): Int = R.layout.activity_detail_history
@@ -29,14 +28,12 @@ class DetailHistoryActivity : BaseActivity() {
     private lateinit var dataBaru: DetailHistory
     private lateinit var dataLama: DetailHistory
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         dataDetailHistory = intent.getStringExtra("detail_history")
 
         data = Gson().fromJson(dataDetailHistory, Array<DetailHistory>::class.java).toList()
-
         dataBaru = data.get(0)
         dataLama = data.get(1)
 
@@ -65,6 +62,7 @@ class DetailHistoryActivity : BaseActivity() {
     private fun initRecyclerView() {
 
         recyclerViewBaru.layoutManager = LinearLayoutManager(this)
+
         recyclerViewBaru.adapter = detailHistoryBaruAdapter
 
         recyclerViewLama.layoutManager = LinearLayoutManager(this)
@@ -113,6 +111,5 @@ class DetailHistoryActivity : BaseActivity() {
             it?.let { it1 -> fileDownloadLamaAdapter.itemList.add(it1) }
         }
         fileDownloadLamaAdapter.notifyDataSetChanged()
-
     }
 }

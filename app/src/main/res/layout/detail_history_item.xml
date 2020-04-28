@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="16dp"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    android:paddingHorizontal="16dp">
 
     <TextView
         android:id="@+id/textKode"
@@ -45,7 +45,6 @@
         android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvQty" />
-
 
     <TextView
         android:id="@+id/textFungsi"

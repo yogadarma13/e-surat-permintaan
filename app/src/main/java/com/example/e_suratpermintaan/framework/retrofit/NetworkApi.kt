@@ -27,21 +27,20 @@ interface NetworkApi {
     ): Observable<ProfileResponse>
 
     // ================================= SURAT PERMINTAAN =======================================
-    @FormUrlEncoded
-    @POST("DataAll")
+    @GET("DataAll")
     fun getDataAll(
-        @Field("id_user") id_user: String
+        @Query("id_user") id_user: String
     ): Observable<DataAllResponse>
 
-    @FormUrlEncoded
-    @POST("MyData")
+    @GET("MyData")
     fun getMyData(
-        @Field("id_user") id_user: String
+        @Query("id_user") id_user: String
     ): Observable<MyDataResponse>
 
-    @POST("detail")
+    @GET("detail")
     fun getDetailSP(
-        @Body detailSP: DetailSP
+        @Query("id_sp") id_sp: String,
+        @Query("id_user") id_user: String
     ): Observable<DetailSPResponse>
 
     @POST("create_sp")
@@ -78,42 +77,36 @@ interface NetworkApi {
         @Body batalkanSP: BatalkanSP
     ): Observable<BatalkanSPResponse>
 
-    @FormUrlEncoded
-    @POST("history_sp")
+    @GET("history_sp")
     fun getHistorySP(
-        @Field("id_sp") id_dp: String
+        @Query("id_sp") id_dp: String
     ): Observable<HistorySPResponse>
 
 
     // =================================== MASTER ===============================================
-    @FormUrlEncoded
-    @POST("dataproyek")
+    @GET("dataproyek")
     fun getMasterProyek(
-        @Field("id_user") id_user: String
+        @Query("id_user") id_user: String
     ): Observable<MasterProyekResponse>
 
-    @FormUrlEncoded
-    @POST("datajenis")
+    @GET("datajenis")
     fun getMasterJenis(
-        @Field("id_user") id_user: String
+        @Query("id_user") id_user: String
     ): Observable<MasterJenisResponse>
 
-    @FormUrlEncoded
-    @POST("datacostcode")
+    @GET("datacostcode")
     fun getMasterCostCode(
-        @Field("id") id: String
+        @Query("id") id: String
     ): Observable<MasterCCResponse>
 
-    @FormUrlEncoded
-    @POST("datapersyaratan")
+    @GET("datapersyaratan")
     fun getMasterPersyaratan(
-        @Field("id") id: String
+        @Query("id") id: String
     ): Observable<MasterPersyaratanResponse>
 
-    @FormUrlEncoded
-    @POST("datauom")
+    @GET("datauom")
     fun getMasterUom(
-        @Field("id") id: String
+        @Query("id") id: String
     ): Observable<MasterUOMResponse>
 
     // ================================= SURAT PERMINTAAN (ITEM) ================================
@@ -122,10 +115,9 @@ interface NetworkApi {
         @Body createItemSP: CreateItemSP
     ): Observable<CreateItemSPResponse>
 
-    @FormUrlEncoded
-    @POST("detail_item_sp")
+    @GET("detail_item_sp")
     fun detailItemSP(
-        @Field("id") id: String
+        @Query("id") id: String
     ): Observable<DetailItemSPResponse>
 
     @POST("edit_item_sp")

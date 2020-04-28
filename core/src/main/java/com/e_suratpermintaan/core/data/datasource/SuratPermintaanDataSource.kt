@@ -15,7 +15,7 @@ interface SuratPermintaanDataSource {
 
     fun remove(id_sp: String): Observable<DeleteSPResponse>
 
-    fun readDetail(detailSP: DetailSP): Observable<DetailSPResponse>
+    fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse>
 
     fun edit(
         id: RequestBody,

@@ -115,7 +115,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun handleError(error: Throwable) {
-        toastNotify(error.message.toString())
+        toastNotify(this::class.java.simpleName + " : " + error.message.toString())
     }
 
 }

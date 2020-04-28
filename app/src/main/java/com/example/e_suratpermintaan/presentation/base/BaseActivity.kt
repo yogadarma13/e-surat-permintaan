@@ -44,6 +44,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun layoutId(): Int
 
+    open fun handleError(error: Throwable) {
+        toastNotify(this::class.java.simpleName + " : " + error.message.toString())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId())
@@ -59,6 +63,15 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        disposableList.forEach { disposable ->
+            if (disposable != null) {
+                if (!disposable.isDisposed) {
+                    disposable.dispose()
+                }
+            }
+        }
+
         unregisterReceiver(fcmOnMessageReceivedReceiver)
     }
 
@@ -104,7 +117,7 @@ abstract class BaseActivity : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun findAndSetEditTextFocusChangeListenerRecursively(view: View) {
+    fun findAndSetEditTextFocusChangeListenerRecursively(view: View) {
         for (i in 0 until (view as ViewGroup).childCount) {
             val child = view.getChildAt(i)
 

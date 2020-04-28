@@ -9,11 +9,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
-import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterCC
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.presentation.base.BaseActivity
+import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.CCViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.JenisBarangViewHolder
@@ -24,7 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
 
 class TambahItemDialog(
-    private val activity: BaseActivity,
+    private val activity: DetailSuratPermintaanActivity,
     private val sharedViewModel: SharedViewModel,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
@@ -38,6 +37,8 @@ class TambahItemDialog(
     fun initDialogViewTambah(kodeSp: String, idUser: String) {
         dialogRootView =
             LayoutInflater.from(activity).inflate(R.layout.dialog_tambah_item, null)
+
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         setupTextChangeListener()
         hideAllRecyclerViews()
@@ -127,7 +128,11 @@ class TambahItemDialog(
         ccAdapter = BaseFilterableAdapter(R.layout.simple_item_row, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener {
             dialogRootView.etKodePekerjaan.setText((it as DataMasterCC).kodeCostcontrol)
-            dialogRootView.rvKodePekerjaan.visibility = View.GONE
+            dialogRootView.etJenisBarang.setText(it.deskripsi)
+            dialogRootView.etSatuan.setText(it.uom)
+            
+            hideAllRecyclerViews()
+
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
             dialogRootView.container.performClick()
         }
@@ -206,15 +211,11 @@ class TambahItemDialog(
     }
 
     private fun handleResponse(response: Any) {
-        when (response) {
-            is CreateItemSPResponse -> {
-                activity.toastNotify(response.message)
-            }
-        }
+        activity.handleResponse(response)
     }
 
     private fun handleError(error: Throwable) {
-        activity.toastNotify(error.message)
+        activity.handleError(error)
     }
 
 }

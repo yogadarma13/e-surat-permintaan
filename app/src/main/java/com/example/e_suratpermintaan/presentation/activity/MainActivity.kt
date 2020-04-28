@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
@@ -67,6 +66,8 @@ class MainActivity : BaseActivity() {
         initRecyclerView()
 
         val profileId = profilePreference.getProfile()?.id
+        val roleId = profilePreference.getProfile()?.roleId
+
         if (profileId != null) {
             idUser = profileId
 
@@ -79,6 +80,10 @@ class MainActivity : BaseActivity() {
             disposable = proyekObservable.subscribe(this::handleResponse, this::handleError)
             disposable = jenisObservable.subscribe(this::handleResponse, this::handleError)
             disposable = notifObservable.subscribe(this::handleResponse, this::handleError)
+        }
+
+        if (!roleId.equals("1")) {
+            btnAjukan.visibility = View.GONE
         }
     }
 
@@ -157,6 +162,7 @@ class MainActivity : BaseActivity() {
 
             }
 
+
             is NotifikasiResponse -> {
                 val notif = response.data?.get(0)
 
@@ -168,10 +174,6 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    private fun handleError(error: Throwable) {
-        Toast.makeText(this, error.message.toString(), Toast.LENGTH_LONG).show()
     }
 
     private fun startShowDialog() {

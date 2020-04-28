@@ -81,6 +81,12 @@ dependencies {
     //View Model
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
+    // okhttp
+    def okHttpVersion = "3.11.0"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    implementation 'com.ncornette.cache:okcache-control:1.1.1'
+
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
