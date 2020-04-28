@@ -44,8 +44,6 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         recyclerView.adapter = historyAdapter
-        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
-        recyclerView.setHasFixedSize(false)
     }
 
     private fun setupListener() {

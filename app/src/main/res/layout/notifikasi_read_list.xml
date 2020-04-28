@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingHorizontal="20dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp">
 
     <TextView
         android:id="@+id/tvRoleNotifRead"
@@ -15,6 +15,7 @@
         android:padding="6dp"
         android:text="PM"
         android:textColor="@android:color/white"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvKeteranganNotifRead" />
 
@@ -25,7 +26,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
         android:textSize="15dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvRoleNotifRead"
@@ -40,6 +43,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="6dp"
         android:text="Surat Permintaan"
+        android:textColor="@android:color/black"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvRoleNotifRead"
         app:layout_constraintTop_toBottomOf="@+id/tvKeteranganNotifRead" />
@@ -50,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="6dp"
+        android:textColor="@android:color/black"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/tvTextKodeSpNotifRead"
         app:layout_constraintRight_toRightOf="parent"
@@ -63,6 +68,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="6dp"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvRoleNotifRead"
@@ -141,6 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="14dp"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toRightOf="@id/imageView3"
         app:layout_constraintTop_toBottomOf="@id/tvUserNotifRead"
         tools:text="12-12-2020" />

@@ -41,54 +41,19 @@ class NotifikasiActivity : BaseActivity() {
 
     private fun init(){
         idUser = profilePreference.getProfile()?.id
+        notifikasiAdapter = NotifikasiAdapter()
         getNotifikasi(idUser)
+        setupListeners()
         initRecyclerView()
 
     }
 
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
-        recyclerView.setHasFixedSize(false)
-
-    }
-
-    private fun setupListener() {
-
-    }
-
-    private fun getNotifikasi(idUser: String?) {
-        disposable = notifikasiViewModel.getNotifikasiList(idUser.toString())
-            .subscribe(this::notifikasiResponse, this::handleError)
-    }
-
-    private fun notifikasiResponse(response: NotifikasiResponse) {
-        var dataNotif: DataNotifikasi? = DataNotifikasi()
-        response.data?.forEach {
-            dataNotif = it
-        }
-
-        val dataAllNotif = arrayListOf<Any>()
-        val viewType = arrayListOf<Int>()
-
-        dataNotif?.unread?.forEach {
-            it?.let { it1 ->
-                dataAllNotif.add(it1)
-                viewType.add(ITEM_A)
-            }
-        }
-
-        dataNotif?.read?.forEach {
-            it?.let { it1 ->
-                dataAllNotif.add(it1)
-                viewType.add(ITEM_B)
-            }
-        }
-
-        notifikasiAdapter = NotifikasiAdapter(dataAllNotif, viewType)
-        notifikasiAdapter.notifyDataSetChanged()
         recyclerView.adapter = notifikasiAdapter
+    }
 
+    private fun setupListeners() {
         notifikasiAdapter.setOnClickListener(object : NotifikasiAdapter.OnClickItemListener{
             override fun onClick(view: View, item: Any) {
                 val dataClick = item
@@ -107,6 +72,44 @@ class NotifikasiActivity : BaseActivity() {
                 finish()
             }
         })
+    }
+
+    private fun getNotifikasi(idUser: String?) {
+        disposable = notifikasiViewModel.getNotifikasiList(idUser.toString())
+            .subscribe(this::notifikasiResponse, this::handleError)
+    }
+
+    private fun notifikasiResponse(response: NotifikasiResponse) {
+        var dataNotif: DataNotifikasi? = DataNotifikasi()
+
+        response.data?.forEach {
+            dataNotif = it
+        }
+
+        if(dataNotif?.countUnread == 0) {
+            constraintCountUnread.visibility = View.GONE
+        } else {
+            constraintCountUnread.visibility = View.VISIBLE
+            tvCountNotifUnread.text = "${dataNotif?.countUnread.toString()} notifikasi baru"
+        }
+
+        dataNotif?.unread?.forEach {
+            it?.let { it1 ->
+                notifikasiAdapter.notifList.add(it1)
+                notifikasiAdapter.viewType.add(ITEM_A)
+
+            }
+        }
+
+        dataNotif?.read?.forEach {
+            it?.let { it1 ->
+                notifikasiAdapter.notifList.add(it1)
+                notifikasiAdapter.viewType.add(ITEM_B)
+            }
+        }
+
+        notifikasiAdapter.notifyDataSetChanged()
+
     }
 
     private fun handleError(error: Throwable) {
