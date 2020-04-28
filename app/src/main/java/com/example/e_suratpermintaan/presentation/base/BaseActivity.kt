@@ -22,7 +22,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
 
-
 abstract class BaseActivity : AppCompatActivity() {
 
     private var disposableList: ArrayList<Disposable?> = ArrayList()

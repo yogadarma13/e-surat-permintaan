@@ -21,10 +21,6 @@ class FCMService : FirebaseMessagingService() {
 
     private val tagString = "FCMSERVCE"
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
