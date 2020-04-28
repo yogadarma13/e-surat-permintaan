@@ -109,4 +109,8 @@ dependencies {
 
     //TimeLine
     implementation 'com.github.vipulasri:timelineview:1.1.4'
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    // annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    implementation "android.arch.lifecycle:common-java8:1.1.1"
 }
