@@ -11,8 +11,10 @@ import com.e_suratpermintaan.core.domain.entities.responses.ReadItem
 import com.e_suratpermintaan.core.domain.entities.responses.UnreadItem
 import com.example.e_suratpermintaan.R
 
-class NotifikasiAdapter(private val notifList: ArrayList<Any>, private val viewType: ArrayList<Int>):
-    RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
+class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
+
+    val notifList: ArrayList<Any> = arrayListOf()
+    val viewType: ArrayList<Int> = arrayListOf()
 
     private lateinit var onClickItemListener: OnClickItemListener
 

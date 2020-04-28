@@ -11,14 +11,14 @@ class DetailHistoryViewHolder(private val rootView: View) :
     override fun bind(item: Any?) {
         val data = item as ItemsDetailHistory
 
-        rootView.tvKodeDetail.text = data?.kodePekerjaan
-        rootView.tvJenisDetail.text = data?.idBarang
-        rootView.tvSatuanDetail.text = data?.idSatuan
-        rootView.tvFungsiDetail.text = data?.fungsi
-        rootView.tvTargetDetail.text = data?.target
+        rootView.tvKodeDetail.text = data.kodePekerjaan
+        rootView.tvJenisDetail.text = data.idBarang
+        rootView.tvSatuanDetail.text = data.idSatuan
+        rootView.tvFungsiDetail.text = data.fungsi
+        rootView.tvTargetDetail.text = data.target
         var dataKeterangan: String? = ""
 
-        data?.keterangan?.forEach {
+        data.keterangan?.forEach {
             dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
         }
 

@@ -38,22 +38,39 @@ class NotifikasiActivity : BaseActivity() {
 
     }
 
-    private fun init() {
+    private fun init(){
         idUser = profilePreference.getProfile()?.id
+        notifikasiAdapter = NotifikasiAdapter()
         getNotifikasi(idUser)
+        setupListeners()
         initRecyclerView()
 
     }
 
     private fun initRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
-        (recyclerView.layoutManager as LinearLayoutManager).isAutoMeasureEnabled = true
-        recyclerView.setHasFixedSize(false)
-
+        recyclerView.adapter = notifikasiAdapter
     }
 
-    private fun setupListener() {
+    private fun setupListeners() {
+        notifikasiAdapter.setOnClickListener(object : NotifikasiAdapter.OnClickItemListener{
+            override fun onClick(view: View, item: Any) {
+                val dataClick = item
 
+                val intent = Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
+                if (dataClick is UnreadItem){
+                    toastNotify("Unread")
+                    disposable = readNotifikasiViewModel.readNotifikasi(ReadNotifikasi(idUser.toString(), dataClick.id.toString()))
+                        .subscribe()
+                    intent.putExtra("id_sp", dataClick.id_sp)
+                } else if (dataClick is ReadItem){
+                    toastNotify("Read")
+                    intent.putExtra("id_sp", dataClick.id_sp)
+                }
+                startActivity(intent)
+                finish()
+            }
+        })
     }
 
     private fun getNotifikasi(idUser: String?) {
@@ -63,80 +80,35 @@ class NotifikasiActivity : BaseActivity() {
 
     private fun notifikasiResponse(response: NotifikasiResponse) {
         var dataNotif: DataNotifikasi? = DataNotifikasi()
+
         response.data?.forEach {
             dataNotif = it
         }
 
-        val dataAllNotif = arrayListOf<Any>()
-        val viewType = arrayListOf<Int>()
+        if(dataNotif?.countUnread == 0) {
+            constraintCountUnread.visibility = View.GONE
+        } else {
+            constraintCountUnread.visibility = View.VISIBLE
+            tvCountNotifUnread.text = "${dataNotif?.countUnread.toString()} notifikasi baru"
+        }
 
         dataNotif?.unread?.forEach {
             it?.let { it1 ->
-                dataAllNotif.add(it1)
-                viewType.add(ITEM_A)
+                notifikasiAdapter.notifList.add(it1)
+                notifikasiAdapter.viewType.add(ITEM_A)
+
             }
         }
 
         dataNotif?.read?.forEach {
             it?.let { it1 ->
-                dataAllNotif.add(it1)
-                viewType.add(ITEM_B)
+                notifikasiAdapter.notifList.add(it1)
+                notifikasiAdapter.viewType.add(ITEM_B)
             }
         }
 
-        notifikasiAdapter = NotifikasiAdapter(dataAllNotif, viewType)
         notifikasiAdapter.notifyDataSetChanged()
-        recyclerView.adapter = notifikasiAdapter
 
-        notifikasiAdapter.setOnClickListener(object : NotifikasiAdapter.OnClickItemListener {
-            override fun onClick(view: View, item: Any) {
-                val dataClick = item
-
-                val intent =
-                    Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
-                if (dataClick is UnreadItem) {
-                    toastNotify("Unread")
-                    disposable = readNotifikasiViewModel.readNotifikasi(
-                        ReadNotifikasi(
-                            idUser.toString(),
-                            dataClick.id.toString()
-                        )
-                    )
-                        .subscribe()
-                    intent.putExtra("id_sp", dataClick.id_sp)
-                } else if (dataClick is ReadItem) {
-                    toastNotify("Read")
-                    intent.putExtra("id_sp", dataClick.id_sp)
-                }
-                startActivity(intent)
-                finish()
-            }
-        })
-
-        notifikasiAdapter.setOnClickListener(
-            object : NotifikasiAdapter.OnClickItemListener {
-                override fun onClick(view: View, item: Any) {
-                    val intent =
-                        Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
-                    if (item is UnreadItem) {
-                        toastNotify("Unread")
-                        disposable = readNotifikasiViewModel.readNotifikasi(
-                            ReadNotifikasi(
-                                idUser.toString(),
-                                item.id.toString()
-                            )
-                        )
-                            .subscribe()
-                        intent.putExtra("id_sp", item.id_sp)
-                    } else if (item is ReadItem) {
-                        toastNotify("Read")
-                        intent.putExtra("id_sp", item.id_sp)
-                    }
-                    startActivity(intent)
-                    finish()
-                }
-            })
     }
-
 
 }

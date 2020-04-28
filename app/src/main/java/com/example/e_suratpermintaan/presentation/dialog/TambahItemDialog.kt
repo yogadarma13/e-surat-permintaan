@@ -128,7 +128,11 @@ class TambahItemDialog(
         ccAdapter = BaseFilterableAdapter(R.layout.simple_item_row, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener {
             dialogRootView.etKodePekerjaan.setText((it as DataMasterCC).kodeCostcontrol)
-            dialogRootView.rvKodePekerjaan.visibility = View.GONE
+            dialogRootView.etJenisBarang.setText(it.deskripsi)
+            dialogRootView.etSatuan.setText(it.uom)
+            
+            hideAllRecyclerViews()
+
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
             dialogRootView.container.performClick()
         }
