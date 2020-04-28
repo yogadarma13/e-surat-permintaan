@@ -71,5 +71,4 @@ class HistorySuratPermintaanActivity : BaseActivity() {
         response.data?.let { historyAdapter.dataHistorySP.addAll(it) }
         historyAdapter.notifyDataSetChanged()
     }
-
 }

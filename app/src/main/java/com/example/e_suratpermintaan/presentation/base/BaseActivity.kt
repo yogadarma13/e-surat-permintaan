@@ -63,6 +63,15 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        disposableList.forEach { disposable ->
+            if (disposable != null) {
+                if (!disposable.isDisposed) {
+                    disposable.dispose()
+                }
+            }
+        }
+
         unregisterReceiver(fcmOnMessageReceivedReceiver)
     }
 

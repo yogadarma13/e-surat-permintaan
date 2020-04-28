@@ -13,6 +13,8 @@ class ViewHolderFactory {
                 MyDataViewHolder::class.java -> MyDataViewHolder(view)
                 DataAllViewHolder::class.java -> DataAllViewHolder(view)
                 ItemSuratPermintaanViewHolder::class.java -> ItemSuratPermintaanViewHolder(view)
+                DetailHistoryViewHolder::class.java -> DetailHistoryViewHolder(view)
+                FileDownloadViewHolder::class.java -> FileDownloadViewHolder(view)
                 else -> EmptyViewHolder(view)
             }
         }

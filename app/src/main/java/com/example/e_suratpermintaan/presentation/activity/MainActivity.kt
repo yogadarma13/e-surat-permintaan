@@ -156,6 +156,7 @@ class MainActivity : BaseActivity() {
 
             }
 
+
             is NotifikasiResponse -> {
                 val notif = response.data?.get(0)
 

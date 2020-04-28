@@ -3,6 +3,7 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.e_suratpermintaan.core.domain.entities.requests.DetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.DetailSPResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
@@ -82,13 +83,14 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         recyclerView.adapter = itemSuratPermintaanAdapter
 
         btnHistory.setOnClickListener {
-            val intent = Intent(
-                this@DetailSuratPermintaanActivity,
-                HistorySuratPermintaanActivity::class.java
-            )
+            val intent = Intent(this@DetailSuratPermintaanActivity, HistorySuratPermintaanActivity::class.java)
             intent.putExtra("id_sp", idSp)
             startActivity(intent)
         }
+
+        disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
+            .subscribe(this::handleResponse, this::handleError)
+
     }
 
     fun handleResponse(response: Any) {

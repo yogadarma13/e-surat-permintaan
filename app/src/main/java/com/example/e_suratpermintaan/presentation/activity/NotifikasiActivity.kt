@@ -112,6 +112,31 @@ class NotifikasiActivity : BaseActivity() {
                 finish()
             }
         })
+
+        notifikasiAdapter.setOnClickListener(
+            object : NotifikasiAdapter.OnClickItemListener {
+                override fun onClick(view: View, item: Any) {
+                    val intent =
+                        Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
+                    if (item is UnreadItem) {
+                        toastNotify("Unread")
+                        disposable = readNotifikasiViewModel.readNotifikasi(
+                            ReadNotifikasi(
+                                idUser.toString(),
+                                item.id.toString()
+                            )
+                        )
+                            .subscribe()
+                        intent.putExtra("id_sp", item.id_sp)
+                    } else if (item is ReadItem) {
+                        toastNotify("Read")
+                        intent.putExtra("id_sp", item.id_sp)
+                    }
+                    startActivity(intent)
+                    finish()
+                }
+            })
     }
+
 
 }
