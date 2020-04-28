@@ -48,10 +48,10 @@ class NetworkClient {
         private fun httpLoggingInterceptor(): HttpLoggingInterceptor {
             val httpLoggingInterceptor =
                 HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
-                    Log.d(
-                        "MYAPP-RETROFIT",
-                        "log: http log: $message"
-                    )
+//                    Log.d(
+//                        "MYAPP-RETROFIT",
+//                        "log: http log: $message"
+//                    )
                 })
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             return httpLoggingInterceptor
@@ -83,9 +83,9 @@ class NetworkClient {
                     .build()
 
                 val authenticatedRequest = builder
-                    .removeHeader(HEADER_PRAGMA)
-                    .removeHeader(HEADER_CACHE_CONTROL)
-                    .cacheControl(cacheControl)
+//                    .removeHeader(HEADER_PRAGMA)
+//                    .removeHeader(HEADER_CACHE_CONTROL)
+//                    .cacheControl(cacheControl)
                     .build()
 
                 val response = chain.proceed(authenticatedRequest)
@@ -126,7 +126,7 @@ class NetworkClient {
                 val httpClientBuilder = OkHttpClient.Builder()
                     .cache(getCache(context))
                     .addInterceptor(httpLoggingInterceptor()) // used if network off OR on
-                    .addInterceptor(offlineInterceptor(context))
+                    //.addInterceptor(offlineInterceptor(context))
                     .addNetworkInterceptor(networkInterceptor(context)) // only used when network is on
 
                 httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS)

@@ -2,6 +2,7 @@ package com.example.e_suratpermintaan.presentation.adapter
 
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +52,16 @@ class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
                 viewHolderA.roleUnread.text = data.role
                 viewHolderA.spCodeUnread.text = data.kode_sp
                 viewHolderA.userUnread.text = data.user
-                viewHolderA.roleUnread.background.setColorFilter(Color.parseColor(data.warna), PorterDuff.Mode.SRC_IN)
+
+                if ((data.warna.toString().isNotEmpty())) {
+                    viewHolderA.roleUnread.background.setColorFilter(
+                        Color.parseColor(data.warna),
+                        PorterDuff.Mode.SRC_IN
+                    )
+                    Log.d("MYAPP", "UNREAD " + data.tanggal + "\n warna : " + data.warna)
+                } else {
+                    Log.d("MYAPP", "UNREAD WARNA NULL " + data.tanggal + "\n warna : " + data.warna)
+                }
             }
             ITEM_B -> {
                 val data = notifList.get(position) as ReadItem
@@ -61,9 +71,19 @@ class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
                 viewHolderB.role.text = data.role
                 viewHolderB.spCode.text = data.kode_sp
                 viewHolderB.user.text = data.user
-                viewHolderB.role.background.setColorFilter(Color.parseColor(data.warna), PorterDuff.Mode.SRC_IN)
+
+                if ((data.warna.toString().isNotEmpty())) {
+                    viewHolderB.role.background.setColorFilter(
+                        Color.parseColor(data.warna),
+                        PorterDuff.Mode.SRC_IN
+                    )
+                    Log.d("MYAPP", "READ " + data.tanggal + "\n warna : " + data.warna)
+                } else {
+                    Log.d("MYAPP", "READ WARNA NULL " + data.tanggal + "\n warna : " + data.warna)
+                }
             }
         }
+
         val dataNotifClick = notifList[holder.layoutPosition]
         holder.itemView.setOnClickListener {
             onClickItemListener.onClick(holder.itemView, dataNotifClick)
@@ -89,6 +109,5 @@ class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
         val spCode: TextView = itemView.findViewById(R.id.tvKodeSpNotifRead)
         val user: TextView = itemView.findViewById(R.id.tvUserNotifRead)
         val role: TextView = itemView.findViewById(R.id.tvRoleNotifRead)
-
     }
 }
