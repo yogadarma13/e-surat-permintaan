@@ -58,9 +58,6 @@ class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
                         Color.parseColor(data.warna),
                         PorterDuff.Mode.SRC_IN
                     )
-                    Log.d("MYAPP", "UNREAD " + data.tanggal + "\n warna : " + data.warna)
-                } else {
-                    Log.d("MYAPP", "UNREAD WARNA NULL " + data.tanggal + "\n warna : " + data.warna)
                 }
             }
             ITEM_B -> {
@@ -77,9 +74,6 @@ class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
                         Color.parseColor(data.warna),
                         PorterDuff.Mode.SRC_IN
                     )
-                    Log.d("MYAPP", "READ " + data.tanggal + "\n warna : " + data.warna)
-                } else {
-                    Log.d("MYAPP", "READ WARNA NULL " + data.tanggal + "\n warna : " + data.warna)
                 }
             }
         }

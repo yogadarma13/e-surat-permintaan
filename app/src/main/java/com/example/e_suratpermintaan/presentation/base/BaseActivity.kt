@@ -17,6 +17,11 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.HttpException
+
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -28,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val fcmOnMessageReceivedReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
-            val bodyValue = intent.getStringExtra("body_value")
+            val bodyValue = intent.getStringExtra("data_body_key")
             val idSP = intent.getStringExtra("id_sp")
 
             if (bodyValue != null) {
@@ -44,8 +49,33 @@ abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun layoutId(): Int
 
+    private fun isJSONValid(string: String): Boolean{
+        try {
+            JSONObject(string)
+        } catch (ex: JSONException) {
+            // edited, to include @Arthur's comment
+            // e.g. in case JSONArray is valid as well...
+            try {
+                JSONArray(string)
+            } catch (ex1: JSONException) {
+                return false
+            }
+        }
+        return true
+    }
+
     open fun handleError(error: Throwable) {
-        toastNotify(this::class.java.simpleName + " : " + error.message.toString())
+
+        val responseBodyString = (error as HttpException).response()?.errorBody()?.string().toString()
+
+        if (isJSONValid(responseBodyString)){
+            // Kalau format stringbody nya valid JSON, maka tampilkan atribut messagenya
+            val jsonObject = JSONObject(responseBodyString)
+            toastNotify(jsonObject.getString("message"))
+        } else {
+            // Kalau format stringbodynya gak valid JSON, maka tampilkan stringbody itu
+            toastNotify(this::class.java.simpleName + ", HTTP ${error.code()} : " + responseBodyString)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +115,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun toastNotify(message: String?) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     fun snackNotify(
