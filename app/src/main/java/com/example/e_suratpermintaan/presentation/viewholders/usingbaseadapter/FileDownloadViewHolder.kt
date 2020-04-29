@@ -10,12 +10,12 @@ class FileDownloadViewHolder(private val rootView: View) : BaseViewHolder(rootVi
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?, actionString: String?) -> Unit
+        listener: (Any?, String?) -> Unit
     ) {
         val data = item as FilesDetailHistory
 
         rootView.setOnClickListener {
-            listener(data, null)
+            listener.invoke(data, ROOTVIEW)
         }
 
         rootView.btnDownloadFile.text = data.keterangan

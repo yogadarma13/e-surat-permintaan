@@ -35,12 +35,12 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?, actionString: String?) -> Unit
+        listener: (Any?, String?) -> Unit
     ) {
         val data = item as ItemsDetailSP
 
         rootView.setOnClickListener {
-            listener(data, null)
+            listener.invoke(data, ROOTVIEW)
         }
 
         rootView.tvKode.text = data.kodePekerjaan
@@ -51,14 +51,14 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
         if (data.tombolEditItem == 1){
             rootView.btnEdit.visibility = View.VISIBLE
             rootView.btnEdit.setOnClickListener {
-                listener(data, BTN_EDIT)
+                listener.invoke(data, BTN_EDIT)
             }
         }
 
         if (data.tombolHapusItem == 1){
             rootView.btnHapus.visibility = View.VISIBLE
             rootView.btnHapus.setOnClickListener {
-                listener(data, BTN_HAPUS)
+                listener.invoke(data, BTN_HAPUS)
             }
         }
 

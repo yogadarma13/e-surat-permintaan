@@ -12,8 +12,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.e_suratpermintaan.core.domain.entities.connection.ConnectionModel
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData
+import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.MobileData
+import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.WifiData
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
@@ -22,8 +28,11 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
 
+
 abstract class BaseActivity : AppCompatActivity() {
 
+    var isConnectedToInternet: Boolean = true
+    private lateinit var connectionLiveData: ConnectionLiveData
     private var disposableList: ArrayList<Disposable?> = ArrayList()
     var disposable: Disposable? = null
         set(value) {
@@ -88,6 +97,7 @@ abstract class BaseActivity : AppCompatActivity() {
         window.decorView.setBackgroundColor(resources.getColor(android.R.color.background_light))
         closeKeyboard(this)
         findAndSetEditTextFocusChangeListenerRecursively(window.decorView)
+        setupInternetObserver()
     }
 
     override fun onDestroy() {
@@ -197,6 +207,27 @@ abstract class BaseActivity : AppCompatActivity() {
         if (!(imm?.isAcceptingText!!)) {
             imm.showSoftInput(view, 0)
         }
+    }
+
+    fun setupInternetObserver() {
+        /* Live data object and setting an oberser on it */
+        connectionLiveData = ConnectionLiveData(applicationContext)
+        connectionLiveData.observe(this,
+            Observer<ConnectionModel?> { connection -> /* every time connection state changes, we'll be notified and can perform action accordingly */
+                if (connection?.isConnected!!) {
+                    isConnectedToInternet = true
+
+                    when (connection.type) {
+                        WifiData -> {
+                        }
+                        MobileData -> {
+                        }
+                    }
+                } else {
+                    isConnectedToInternet = false
+                    toastNotify("Please turn on the internet")
+                }
+            })
     }
 
 }

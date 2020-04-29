@@ -17,98 +17,43 @@ import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
-import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
 import kotlinx.android.synthetic.main.dialog_tambah_item_form_keterangan.view.*
 import kotlinx.android.synthetic.main.dialog_tambah_item_form_spa.view.*
 import kotlinx.android.synthetic.main.dialog_tambah_item_form_spb.view.*
 import kotlinx.android.synthetic.main.dialog_tambah_item_form_sps.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 
-class TambahItemDialog(
+class EditItemDialog(
     private val activity: DetailSuratPermintaanActivity,
     private val sharedViewModel: SharedViewModel,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
     private lateinit var alertDialogTambah: AlertDialog
-    private lateinit var datePicker: MaterialDatePicker<Long>
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
     private lateinit var dialogRootView: View
 
-    private val waktuPemakaianDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
-        val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date = Date(selectedDate)
-        val dateString = simpleFormat.format(date)
-        dialogRootView.let {
-            it.etWaktuPemakaian.setText(dateString)
-            alertDialogTambah.show()
-        }
-    }
-
-    private val waktuPelaksanaanDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
-        val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date = Date(selectedDate)
-        val dateString = simpleFormat.format(date)
-        dialogRootView.let {
-            it.etWaktuPelaksanaan.setText(dateString)
-            alertDialogTambah.show()
-        }
-    }
-
     fun initDialogViewTambah(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         dialogRootView =
             LayoutInflater.from(activity).inflate(R.layout.dialog_tambah_item, null)
-        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
-        val builder = MaterialDatePicker.Builder.datePicker()
-        datePicker = builder.build()
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         setupAlertDialog(dataProfile, dataDetailSP)
         setupTextChangeListener()
         hideAllRecyclerViews()
         initRecyclerViews()
         populateAdapterList()
-        setupDatePickerListener()
-    }
-
-    private fun setupDatePickerListener() {
-        dialogRootView.etWaktuPemakaian.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                datePicker.addOnPositiveButtonClickListener(waktuPemakaianDateSubmitListener)
-                datePicker.show(activity.supportFragmentManager, datePicker.toString())
-            }
-        }
-
-        dialogRootView.pickWaktuPemakaian.setOnClickListener {
-            datePicker.addOnPositiveButtonClickListener(waktuPemakaianDateSubmitListener)
-            datePicker.show(activity.supportFragmentManager, datePicker.toString())
-        }
-
-
-
-        dialogRootView.etWaktuPelaksanaan.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
-                datePicker.show(activity.supportFragmentManager, datePicker.toString())
-            }
-        }
-
-        dialogRootView.pickWaktuPelaksanaan.setOnClickListener {
-            datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
-            datePicker.show(activity.supportFragmentManager, datePicker.toString())
-        }
     }
 
     private fun populateAdapterList() {
@@ -151,7 +96,7 @@ class TambahItemDialog(
                 .setTitle("Tambah Item")
         alertDialogTambah = alertDialogBuilder.create()
 
-        if (dataProfile.roleId!!.toInt() != 1) {
+        if (dataProfile.roleId!!.toInt() != 1){
             dialogRootView.formKeterangan.visibility = View.VISIBLE
         }
 

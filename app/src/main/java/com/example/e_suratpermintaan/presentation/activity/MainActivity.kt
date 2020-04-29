@@ -18,6 +18,7 @@ import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import org.koin.android.ext.android.inject
@@ -34,8 +35,8 @@ class MainActivity : BaseActivity() {
     private lateinit var idProyek: String
     private lateinit var namaJenis: String
 
-    private lateinit var proyekList: ArrayList<DataMasterProyek>
-    private lateinit var jenisList: ArrayList<DataMasterJenis>
+    private val proyekList: ArrayList<DataMasterProyek> = arrayListOf()
+    private val jenisList: ArrayList<DataMasterJenis> = arrayListOf()
 
     private var spListState: Parcelable? = null
     private lateinit var spAdapter: BaseAdapter<MyDataViewHolder>
@@ -50,20 +51,18 @@ class MainActivity : BaseActivity() {
         if (!isInitialized) {
             isInitialized = true
 
-            init()
+            initRecyclerView()
+            setupListeners()
+
+            initApiRequest()
         }
     }
 
-    private fun init() {
-        proyekList = arrayListOf()
-        jenisList = arrayListOf()
-
-        spAdapter = BaseAdapter(
-            R.layout.item_surat_permintaan_row, MyDataViewHolder::class.java
-        )
-
-        setupListeners()
-        initRecyclerView()
+    private fun initApiRequest() {
+        proyekList.clear()
+        jenisList.clear()
+        spAdapter.itemList.clear()
+        spAdapter.notifyDataSetChanged()
 
         val profileId = profilePreference.getProfile()?.id
         val roleId = profilePreference.getProfile()?.roleId
@@ -76,10 +75,11 @@ class MainActivity : BaseActivity() {
             val jenisObservable = masterViewModel.getJenisList(profileId)
             val notifObservable = notifikasiViewModel.getNotifikasiList(profileId)
 
-            disposable = spObservable.subscribe(this::handleResponse, this::handleError)
-            disposable = proyekObservable.subscribe(this::handleResponse, this::handleError)
-            disposable = jenisObservable.subscribe(this::handleResponse, this::handleError)
-            disposable = notifObservable.subscribe(this::handleResponse, this::handleError)
+            disposable =
+                Observable.concat(spObservable, proyekObservable, jenisObservable, notifObservable)
+                    .subscribe(this::handleResponse, this::handleError)
+
+            startRefresh()
         }
 
         if (!roleId.equals("1")) {
@@ -88,6 +88,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
+        spAdapter = BaseAdapter(
+            R.layout.item_surat_permintaan_row, MyDataViewHolder::class.java
+        )
+
         tv_show_length_entry.text = getString(
             R.string.main_header_list_count_msg,
             spAdapter.itemList.size.toString()
@@ -106,12 +110,13 @@ class MainActivity : BaseActivity() {
         }
 
         btnAjukan.setOnClickListener {
-            startShowDialog()
+            showAddSPDialog()
         }
 
         frameNotifikasi.setOnClickListener {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
         }
+
 
         spAdapter.setOnItemClickListener { item, _ ->
             val data = item as DataMyData
@@ -119,12 +124,32 @@ class MainActivity : BaseActivity() {
             intent.putExtra(ID_SP_EXTRA_KEY, data.id.toString())
             startActivity(intent)
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            if (!isConnectedToInternet) {
+                toastNotify("Please turn on the internet")
+                stopRefresh();
+                return@setOnRefreshListener
+            }
+
+            initApiRequest()
+        }
+    }
+
+    private fun startRefresh() {
+        if (!isConnectedToInternet) return
+        swipeRefreshLayout.isRefreshing = true
+    }
+
+    private fun stopRefresh() {
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun handleResponse(response: Any) {
         when (response) {
             is MyDataResponse -> {
 
+                stopRefresh()
                 val suratPermintaanList: List<DataMyData?>? = response.data
 
                 suratPermintaanList?.forEach {
@@ -155,11 +180,6 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
-            is CreateSPResponse -> {
-
-                toastNotify(response.message)
-
-            }
             is NotifikasiResponse -> {
                 val notif = response.data?.get(0)
 
@@ -170,10 +190,16 @@ class MainActivity : BaseActivity() {
                     tvCountUnreadNotif.text = notif?.countUnread.toString()
                 }
             }
+            is CreateSPResponse -> {
+
+                toastNotify(response.message)
+                initApiRequest()
+
+            }
         }
     }
 
-    private fun startShowDialog() {
+    private fun showAddSPDialog() {
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)

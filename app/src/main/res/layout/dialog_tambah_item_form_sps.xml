@@ -18,6 +18,17 @@
             android:hint="Waktu Pelaksanaan" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/pickWaktuPelaksanaan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/pick_date_show_btn_margin_right"
+        android:src="@drawable/ic_date_range_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tilWaktuPelaksanaan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tilWaktuPelaksanaan"
+        android:layout_marginEnd="@dimen/pick_date_show_btn_margin_right" />
+
     <TextView
         android:id="@+id/tvPersyaratan"
         android:layout_width="wrap_content"

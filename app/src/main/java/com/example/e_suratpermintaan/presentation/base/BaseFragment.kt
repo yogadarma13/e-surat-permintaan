@@ -19,6 +19,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.e_suratpermintaan.R
 import io.reactivex.rxjava3.disposables.Disposable
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.HttpException
 
 abstract class BaseFragment : Fragment() {
 
@@ -33,6 +37,35 @@ abstract class BaseFragment : Fragment() {
     abstract fun layoutId(): Int
 
     private var rootView: View? = null
+
+    private fun isJSONValid(string: String): Boolean{
+        try {
+            JSONObject(string)
+        } catch (ex: JSONException) {
+            // edited, to include @Arthur's comment
+            // e.g. in case JSONArray is valid as well...
+            try {
+                JSONArray(string)
+            } catch (ex1: JSONException) {
+                return false
+            }
+        }
+        return true
+    }
+
+    open fun handleError(error: Throwable) {
+
+        val responseBodyString = (error as HttpException).response()?.errorBody()?.string().toString()
+
+        if (isJSONValid(responseBodyString)){
+            // Kalau format stringbody nya valid JSON, maka tampilkan atribut messagenya
+            val jsonObject = JSONObject(responseBodyString)
+            toastNotify(jsonObject.getString("message"))
+        } else {
+            // Kalau format stringbodynya gak valid JSON, maka tampilkan stringbody itu
+            toastNotify(this::class.java.simpleName + ", HTTP ${error.code()} : " + responseBodyString)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

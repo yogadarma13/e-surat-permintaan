@@ -10,7 +10,7 @@ class UomViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?, actionString: String?) -> Unit
+        listener: (Any?, String?) -> Unit
     ) {
         val data = item as DataMasterUOM
 

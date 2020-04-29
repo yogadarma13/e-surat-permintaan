@@ -11,12 +11,12 @@ class DetailHistoryViewHolder(private val rootView: View) :
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?, actionString: String?) -> Unit
+        listener: (Any?, String?) -> Unit
     ) {
         val data = item as ItemsDetailHistory
 
         rootView.setOnClickListener {
-            listener(data, null)
+            listener.invoke(data, ROOTVIEW)
         }
 
         rootView.tvKodeDetail.text = data.kodePekerjaan

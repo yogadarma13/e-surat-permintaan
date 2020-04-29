@@ -10,13 +10,9 @@ class PersyaratanViewHolder(private val rootView: View) : BaseViewHolder(rootVie
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?, actionString: String?) -> Unit
+        listener: (Any?, String?) -> Unit
     ) {
         val data = item as DataMasterPersyaratan
-
-        rootView.setOnClickListener {
-            listener(data, null)
-        }
 
         rootView.checkbox.text = data.nama
 
@@ -28,15 +24,18 @@ class PersyaratanViewHolder(private val rootView: View) : BaseViewHolder(rootVie
                 rootView.checkbox.isChecked = true
                 data.status = "checked"
             }
-            // rootView.checkbox.text = "${data.nama} ${data.status}"
+             // rootView.checkbox.text = "${data.nama} ${data.status}"
+
+            listener(data, ROOTVIEW)
         }
+
         rootView.checkbox.setOnClickListener {
             if (rootView.checkbox.isChecked){
                 data.status = "checked"
             } else {
                 data.status = "unchecked"
             }
-            // rootView.checkbox.text = "${data.nama} ${data.status}"
+             // rootView.checkbox.text = "${data.nama} ${data.status}"
         }
     }
 

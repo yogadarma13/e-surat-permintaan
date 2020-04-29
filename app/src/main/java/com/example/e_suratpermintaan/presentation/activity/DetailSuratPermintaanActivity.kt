@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DetailSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
+import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
@@ -28,6 +26,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class DetailSuratPermintaanActivity : BaseActivity() {
 
     private lateinit var alertDialogTambah: TambahItemDialog
+    private lateinit var alertDialogEdit: EditItemDialog
+
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
@@ -35,6 +35,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
     private var idSp: String? = null
     private var kodeSp: String? = null
+
+    private var dataProfile: DataProfile? = null
     private lateinit var idUser: String
     private lateinit var itemSuratPermintaanAdapter: BaseAdapter<ItemSuratPermintaanViewHolder>
 
@@ -48,13 +50,20 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
-        val profileId = profilePreference.getProfile()?.id
-        if (profileId != null) {
-            idUser = profileId
+        idSp.let {
+            dataProfile = profilePreference.getProfile()
+
+            dataProfile.let {
+                val profileId = dataProfile?.id
+                if (profileId != null) {
+                    idUser = profileId
+                }
+
+                init()
+                setupListeners()
+            }
         }
 
-        init()
-        setupListeners()
     }
 
     private fun init() {
@@ -62,6 +71,9 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         alertDialogTambah =
             TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+
+        alertDialogEdit =
+            EditItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
 
         disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
             .subscribe(this::handleResponse, this::handleError)
@@ -84,7 +96,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnAjukan.setOnClickListener {
 
             val alertDialog =
-                AlertDialog.Builder(this).setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
+                AlertDialog.Builder(this)
+                    .setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
                     .setPositiveButton("Ajukan") { _, _ ->
                         disposable = suratPermintaanViewModel.ajukan(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
@@ -98,7 +111,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnCancel.setOnClickListener {
 
             val alertDialog =
-                AlertDialog.Builder(this).setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
+                AlertDialog.Builder(this)
+                    .setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
                     .setPositiveButton("Batalkan") { _, _ ->
                         disposable = suratPermintaanViewModel.cancel(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
@@ -112,10 +126,12 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnAccept.setOnClickListener {
 
             val alertDialog =
-                AlertDialog.Builder(this).setMessage("Apa anda yakin ingin menerima permintaan ini?")
+                AlertDialog.Builder(this)
+                    .setMessage("Apa anda yakin ingin menerima permintaan ini?")
                     .setPositiveButton("Terima") { _, _ ->
-                        disposable = suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
-                            .subscribe(this::handleResponse, this::handleError)
+                        disposable =
+                            suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
+                                .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
                         dialog.dismiss()
                     }.create()
@@ -138,9 +154,9 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         itemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
             val data = item as ItemsDetailSP
 
-            when (actionString){
+            when (actionString) {
                 BaseViewHolder.ROOTVIEW -> {
-
+                    // Ignored
                 }
                 ItemSuratPermintaanViewHolder.BTN_EDIT -> {
 
@@ -153,12 +169,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = itemSuratPermintaanAdapter
-
-        btnHistory.setOnClickListener {
-            val intent = Intent(this@DetailSuratPermintaanActivity, HistorySuratPermintaanActivity::class.java)
-            intent.putExtra("id_sp", idSp)
-            startActivity(intent)
-        }
 
     }
 
@@ -175,45 +185,51 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             is DetailSPResponse -> {
 
                 val detailSPResponse = response.data
-                val dataDetailSP = detailSPResponse?.get(0)
-                kodeSp = dataDetailSP?.kode
 
-                alertDialogTambah.initDialogViewTambah(kodeSp.toString(), idUser, dataDetailSP?.jenis.toString())
+                detailSPResponse.let {
 
-                val detailDate = dataDetailSP?.tanggalPengajuan?.split(" ")
+                    val dataDetailSP = detailSPResponse?.get(0)
+                    kodeSp = dataDetailSP?.kode
 
-                tv_kode_detail.text = kodeSp
-                tv_kode_sp.text = kodeSp
-                tv_name_proyek_detail.text = dataDetailSP?.namaProyek
-                tv_location_detail.text = dataDetailSP?.namaLokasi
-                tv_date_detail.text = detailDate?.get(0)
-                tv_time_detail.text = detailDate?.get(1)
-                tv_status_detail.text = dataDetailSP?.statusPermintaan
-                tv_jenis_detail.text = dataDetailSP?.jenis
+                    alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
 
-                val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
+                    val detailDate = dataDetailSP.tanggalPengajuan?.split(" ")
 
-                itemList?.forEach {
-                    itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
+                    tv_kode_detail.text = kodeSp
+                    tv_kode_sp.text = kodeSp
+                    tv_name_proyek_detail.text = dataDetailSP.namaProyek
+                    tv_location_detail.text = dataDetailSP.namaLokasi
+                    tv_date_detail.text = detailDate?.get(0)
+                    tv_time_detail.text = detailDate?.get(1)
+                    tv_status_detail.text = dataDetailSP.statusPermintaan
+                    tv_jenis_detail.text = dataDetailSP.jenis
+
+                    val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
+
+                    itemList?.forEach {
+                        itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
+                    }
+
+                    itemSuratPermintaanAdapter.notifyDataSetChanged()
+
+                    if (dataDetailSP.tombolAjukan == 1) {
+                        btnAjukan.visibility = View.VISIBLE
+                    }
+
+                    if (dataDetailSP.tombolBatalkan == 1) {
+                        btnCancel.visibility = View.VISIBLE
+                    }
+
+                    if (dataDetailSP.tombolTerima == 1) {
+                        btnAccept.visibility = View.VISIBLE
+                    }
+
+                    if (dataDetailSP.tombolTolak == 1) {
+                        btnDecline.visibility = View.VISIBLE
+                    }
+
                 }
 
-                itemSuratPermintaanAdapter.notifyDataSetChanged()
-
-                if (dataDetailSP?.tombolAjukan == 1) {
-                    btnAjukan.visibility = View.VISIBLE
-                }
-
-                if (dataDetailSP?.tombolBatalkan == 1) {
-                    btnCancel.visibility = View.VISIBLE
-                }
-
-                if (dataDetailSP?.tombolTerima == 1) {
-                    btnAccept.visibility = View.VISIBLE
-                }
-
-                if (dataDetailSP?.tombolTolak == 1) {
-                    btnDecline.visibility = View.VISIBLE
-                }
             }
 
             is AjukanSPResponse -> {
