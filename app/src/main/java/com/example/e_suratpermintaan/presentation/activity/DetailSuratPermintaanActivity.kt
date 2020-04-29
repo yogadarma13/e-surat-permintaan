@@ -254,6 +254,18 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                         btnDecline.visibility = View.VISIBLE
                     }
 
+                    if (dataDetailSP.tombolCetak == 1) {
+                        optionPrint = true
+                    }
+
+                    if (dataDetailSP.tombolEdit == 1) {
+                        optionEdit = true
+                    }
+
+                    if (dataDetailSP.tombolHapus == 1) {
+                        optionDelete = true
+                    }
+
                 }
 
             }
