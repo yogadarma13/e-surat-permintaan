@@ -57,7 +57,7 @@ data class DetailHistory(
 data class ItemsDetailHistory(
 
 	@field:SerializedName("persyaratan")
-	val persyaratan: List<Any?>? = null,
+	val persyaratan: List<PersyaratanItem?>? = null,
 
 	@field:SerializedName("id_satuan")
 	val idSatuan: String? = null,
@@ -66,7 +66,7 @@ data class ItemsDetailHistory(
 	val keterangan: List<KeteranganItem?>? = null,
 
 	@field:SerializedName("merk")
-	val merk: Any? = null,
+	val merk: String? = null,
 
 	@field:SerializedName("id_barang")
 	val idBarang: String? = null,
@@ -78,19 +78,21 @@ data class ItemsDetailHistory(
 	val kodePekerjaan: String? = null,
 
 	@field:SerializedName("kapasitas")
-	val kapasitas: Any? = null,
+	val kapasitas: String? = null,
 
 	@field:SerializedName("waktu_pelaksanaan")
-	val waktuPelaksanaan: Any? = null,
+	val waktuPelaksanaan: String? = null,
 
 	@field:SerializedName("fungsi")
 	val fungsi: String? = null,
 
 	@field:SerializedName("waktu_pemakaian")
-	val waktuPemakaian: Any? = null,
+	val waktuPemakaian: String? = null,
 
 	@field:SerializedName("target")
-	val target: String? = null
+	val target: String? = null,
+
+	var expanded: Boolean
 )
 
 data class FilesDetailHistory(
@@ -115,4 +117,10 @@ data class KeteranganItem(
 
 	@field:SerializedName("nama_user")
 	val namaUser: String? = null
+)
+
+data class PersyaratanItem(
+
+	@field:SerializedName("persyaratan")
+	val persyaratan: String? = null
 )

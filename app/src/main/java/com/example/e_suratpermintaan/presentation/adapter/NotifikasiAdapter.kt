@@ -12,6 +12,8 @@ import com.e_suratpermintaan.core.domain.entities.responses.ReadItem
 import com.e_suratpermintaan.core.domain.entities.responses.UnreadItem
 import com.example.e_suratpermintaan.R
 
+//https://medium.com/nusanet/cara-membuat-multiple-view-type-recyclerview-kotlin-android-a407fcb22b22
+
 class NotifikasiAdapter(): RecyclerView.Adapter<NotifikasiAdapter.ViewHolder>(){
 
     val notifList: ArrayList<Any> = arrayListOf()

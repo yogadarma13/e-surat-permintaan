@@ -23,6 +23,7 @@ class HistorySuratPermintaanActivity : BaseActivity() {
 
     private lateinit var historyAdapter: HistoryAdapter
     private var idSp : String? = null
+    private var jenisSp : String? = null
 
     override fun layoutId(): Int = R.layout.activity_history_surat_permintaan
 
@@ -30,6 +31,7 @@ class HistorySuratPermintaanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString("id_sp")
+        jenisSp = intent.extras?.getString("jenis_sp")
 
         init()
     }
@@ -54,6 +56,7 @@ class HistorySuratPermintaanActivity : BaseActivity() {
                 val json = gson.toJson(item)
                 val intent = Intent(this@HistorySuratPermintaanActivity, DetailHistoryActivity::class.java)
                 intent.putExtra("detail_history", json)
+                intent.putExtra("jenis_sp", jenisSp)
                 startActivity(intent)
             }
         })
