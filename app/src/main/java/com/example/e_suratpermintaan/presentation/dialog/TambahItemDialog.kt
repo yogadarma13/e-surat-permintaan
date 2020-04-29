@@ -170,10 +170,10 @@ class TambahItemDialog(
 
     private fun initRecyclerViews() {
         ccAdapter = BaseFilterableAdapter(R.layout.item_simple_row, CCViewHolder::class.java)
-        ccAdapter.setOnItemClickListener {
-            dialogRootView.etKodePekerjaan.setText((it as DataMasterCC).kodeCostcontrol)
-            dialogRootView.etJenisBarang.setText(it.deskripsi)
-            dialogRootView.etSatuan.setText(it.uom)
+        ccAdapter.setOnItemClickListener { item, _ ->
+            dialogRootView.etKodePekerjaan.setText((item as DataMasterCC).kodeCostcontrol)
+            dialogRootView.etJenisBarang.setText(item.deskripsi)
+            dialogRootView.etSatuan.setText(item.uom)
 
             hideAllRecyclerViews()
 
@@ -185,8 +185,8 @@ class TambahItemDialog(
 
         jenisBarangAdapter =
             BaseFilterableAdapter(R.layout.item_simple_row, JenisBarangViewHolder::class.java)
-        jenisBarangAdapter.setOnItemClickListener {
-            dialogRootView.etJenisBarang.setText((it as DataMasterCC).deskripsi)
+        jenisBarangAdapter.setOnItemClickListener { item, _ ->
+            dialogRootView.etJenisBarang.setText((item as DataMasterCC).deskripsi)
             dialogRootView.rvJenisBarang.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etJenisBarang)
             dialogRootView.container.performClick()
@@ -195,8 +195,8 @@ class TambahItemDialog(
         dialogRootView.rvJenisBarang.adapter = jenisBarangAdapter
 
         uomAdapter = BaseFilterableAdapter(R.layout.item_simple_row, UomViewHolder::class.java)
-        uomAdapter.setOnItemClickListener {
-            dialogRootView.etSatuan.setText((it as DataMasterUOM).nama)
+        uomAdapter.setOnItemClickListener { item, _ ->
+            dialogRootView.etSatuan.setText((item as DataMasterUOM).nama)
             dialogRootView.rvSatuan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
