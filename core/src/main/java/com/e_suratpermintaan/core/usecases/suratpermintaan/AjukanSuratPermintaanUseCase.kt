@@ -10,8 +10,8 @@ class AjukanSuratPermintaanUseCase(
     private val suratPermintaanRepository: SuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(ajukanSP: AjukanSP): Observable<AjukanSPResponse> =
-        suratPermintaanRepository.ajukan(ajukanSP)
+    fun invoke(id_user: String, id: String): Observable<AjukanSPResponse> =
+        suratPermintaanRepository.ajukan(id_user, id)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }

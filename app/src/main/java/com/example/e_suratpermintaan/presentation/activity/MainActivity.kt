@@ -13,7 +13,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
-import com.example.e_suratpermintaan.presentation.viewholders.MyDataViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -59,13 +59,15 @@ class MainActivity : BaseActivity() {
         jenisList = arrayListOf()
 
         spAdapter = BaseAdapter(
-            R.layout.surat_permintaan_row, MyDataViewHolder::class.java
+            R.layout.item_surat_permintaan_row, MyDataViewHolder::class.java
         )
 
         setupListeners()
         initRecyclerView()
 
         val profileId = profilePreference.getProfile()?.id
+        val roleId = profilePreference.getProfile()?.roleId
+
         if (profileId != null) {
             idUser = profileId
 
@@ -78,6 +80,10 @@ class MainActivity : BaseActivity() {
             disposable = proyekObservable.subscribe(this::handleResponse, this::handleError)
             disposable = jenisObservable.subscribe(this::handleResponse, this::handleError)
             disposable = notifObservable.subscribe(this::handleResponse, this::handleError)
+        }
+
+        if (!roleId.equals("1")) {
+            btnAjukan.visibility = View.GONE
         }
     }
 
@@ -129,7 +135,6 @@ class MainActivity : BaseActivity() {
                     R.string.main_header_list_count_msg,
                     spAdapter.itemList.size.toString()
                 )
-
                 spAdapter.notifyDataSetChanged()
 
             }
@@ -155,8 +160,6 @@ class MainActivity : BaseActivity() {
                 toastNotify(response.message)
 
             }
-
-
             is NotifikasiResponse -> {
                 val notif = response.data?.get(0)
 

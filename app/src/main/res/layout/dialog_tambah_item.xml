@@ -100,53 +100,48 @@
                         android:hint="Satuan" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilKapasistas"
+                <FrameLayout
+                    android:id="@+id/formContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="@id/tilSatuan"
                     app:layout_constraintStart_toStartOf="@id/tilSatuan"
                     app:layout_constraintTop_toBottomOf="@id/tilSatuan">
-                    <!-- Google themselves instruct us to use the deprecated editable attribute -->
-                    <EditText
-                        android:id="@+id/etKapasistas"
+
+                    <include
+                        android:id="@+id/formSPA"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Kapasitas" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:visibility="gone"
+                        layout="@layout/dialog_tambah_item_form_spa" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilMerk"
+                    <include
+                        android:id="@+id/formSPB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        layout="@layout/dialog_tambah_item_form_spb" />
+
+                    <include
+                        android:id="@+id/formSPS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        layout="@layout/dialog_tambah_item_form_sps" />
+
+                </FrameLayout>
+
+                <include
+                    android:id="@+id/formKeterangan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/tilKapasistas"
-                    app:layout_constraintStart_toStartOf="@id/tilKapasistas"
-                    app:layout_constraintTop_toBottomOf="@id/tilKapasistas">
-                    <!-- Google themselves instruct us to use the deprecated editable attribute -->
-                    <EditText
-                        android:id="@+id/etMerk"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Merk" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilWaktuPemakaian"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toEndOf="@id/tilMerk"
-                    app:layout_constraintStart_toStartOf="@id/tilMerk"
-                    app:layout_constraintTop_toBottomOf="@+id/tilMerk">
-                    <!-- Google themselves instruct us to use the deprecated editable attribute -->
-                    <EditText
-                        android:id="@+id/etWaktuPemakaian"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Waktu Pemakaian" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/formContainer"
+                    app:layout_constraintStart_toStartOf="@id/formContainer"
+                    app:layout_constraintTop_toBottomOf="@id/formContainer"
+                    layout="@layout/dialog_tambah_item_form_keterangan" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvKodePekerjaan"

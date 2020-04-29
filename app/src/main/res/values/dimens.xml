@@ -3,4 +3,6 @@
     <dimen name="table_view_cell_height">45dp</dimen>
     <dimen name="table_view_row_header_width">40dp</dimen>
     <dimen name="table_view_default_text_size">18sp</dimen>
+    <dimen name="detail_sp_normal_text_size">15sp</dimen>
+    <dimen name="detail_sp_item_padding">25dp</dimen>
 </resources>

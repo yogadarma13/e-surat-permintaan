@@ -1,13 +1,17 @@
-package com.example.e_suratpermintaan.presentation.viewholders
+package com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter
 
 import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.simple_item_row.view.*
+import kotlinx.android.synthetic.main.item_simple_row.view.*
 
 class UomViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
 
-    override fun bind(item: Any?) {
+    override fun bind(
+        item: Any?,
+        position: Int,
+        listener: (item: Any?) -> Unit
+    ) {
         val data = item as DataMasterUOM
 
         rootView.textView.text = data.nama

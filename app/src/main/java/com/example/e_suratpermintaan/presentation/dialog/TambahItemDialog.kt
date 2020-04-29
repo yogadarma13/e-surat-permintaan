@@ -10,17 +10,27 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterCC
+import com.e_suratpermintaan.core.domain.entities.responses.DataMasterPersyaratan
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPA
+import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPB
+import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPS
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
+import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
-import com.example.e_suratpermintaan.presentation.viewholders.CCViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.JenisBarangViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.UomViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_item_form_keterangan.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_item_form_spa.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_item_form_spb.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_item_form_sps.view.*
 
 class TambahItemDialog(
     private val activity: DetailSuratPermintaanActivity,
@@ -32,19 +42,20 @@ class TambahItemDialog(
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
+    private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
     private lateinit var dialogRootView: View
 
-    fun initDialogViewTambah(kodeSp: String, idUser: String) {
+    fun initDialogViewTambah(kodeSp: String, idUser: String, jenisPermintaan: String) {
         dialogRootView =
             LayoutInflater.from(activity).inflate(R.layout.dialog_tambah_item, null)
 
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
+        setupAlertDialog(kodeSp, idUser, jenisPermintaan)
         setupTextChangeListener()
         hideAllRecyclerViews()
         initRecyclerViews()
         populateAdapterList()
-        setupAlertDialog(kodeSp, idUser)
     }
 
     private fun populateAdapterList() {
@@ -68,41 +79,74 @@ class TambahItemDialog(
             uomAdapter.oldItemList = uomAdapter.itemList
             uomAdapter.notifyDataSetChanged()
         })
+
+        sharedViewModel.getPersyaratanList().observe(activity, Observer {
+            it?.forEach { item ->
+                persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
+            }
+            persyaratanAdapter.notifyDataSetChanged()
+        })
     }
 
-    private fun setupAlertDialog(kodeSp: String, idUser: String) {
+    private fun setupAlertDialog(kodeSp: String, idUser: String, jenisPermintaan: String) {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
                 .setTitle("Tambah Item")
         alertDialogTambah = alertDialogBuilder.create()
+
+        when (jenisPermintaan){
+            JENIS_PERMINTAAN_SPA -> {
+                dialogRootView.formSPA.visibility = View.VISIBLE
+            }
+            JENIS_PERMINTAAN_SPB -> {
+                dialogRootView.formSPB.visibility = View.VISIBLE
+            }
+            JENIS_PERMINTAAN_SPS -> {
+                dialogRootView.formSPS.visibility = View.VISIBLE
+            }
+        }
 
         dialogRootView.btnTambah.setOnClickListener {
             val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
             val jenisBarang = dialogRootView.etJenisBarang.text.toString()
             val volume = dialogRootView.etVolume.text.toString()
             val satuan = dialogRootView.etSatuan.text.toString()
-            val kapasitas = dialogRootView.etKapasistas.text.toString()
-            val merk = dialogRootView.etMerk.text.toString()
             val waktuPemakaian = dialogRootView.etWaktuPemakaian.text.toString()
 
-            alertDialogTambah.hide()
+            val kapasitas = dialogRootView.formSPA.etKapasitas.text.toString()
+            val merk = dialogRootView.formSPA.etMerk.text.toString()
+            val fungsi = dialogRootView.formSPB.etFungsi.text.toString()
+            val target = dialogRootView.formSPB.etTarget.text.toString()
+            val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
+
+            val persyaratanList : ArrayList<String> = arrayListOf()
+            persyaratanAdapter.itemList.forEach {
+                val data = it as DataMasterPersyaratan
+                if (data.status.equals("checked")){
+                    persyaratanList.add(data.id.toString())
+                }
+            }
+
+            val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
+
+                alertDialogTambah.hide()
             val newAlertDialog = alertDialogBuilder
                 .setMessage("Apakah Anda yakin ingin menambah item?")
                 .setPositiveButton("Ya") { _, _ ->
                     val createItemSP = CreateItemSP(
                         kodeSp,
-                        dialogRootView.etKodePekerjaan.text.toString(),
-                        dialogRootView.etJenisBarang.text.toString(),
-                        dialogRootView.etSatuan.text.toString(),
-                        "50",
-                        "",
-                        "",
-                        "",
-                        dialogRootView.etKapasistas.text.toString(),
-                        "",
-                        "",
-                        "2020-04-20",
-                        arrayListOf("1", "2"),
+                        kodePekerjaan,
+                        jenisBarang,
+                        satuan,
+                        volume,
+                        fungsi,
+                        target,
+                        keterangan,
+                        kapasitas,
+                        merk,
+                        waktuPemakaian,
+                        waktuPelaksanaan,
+                        persyaratanList,
                         idUser
                     )
                     activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
@@ -125,12 +169,12 @@ class TambahItemDialog(
     }
 
     private fun initRecyclerViews() {
-        ccAdapter = BaseFilterableAdapter(R.layout.simple_item_row, CCViewHolder::class.java)
+        ccAdapter = BaseFilterableAdapter(R.layout.item_simple_row, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener {
             dialogRootView.etKodePekerjaan.setText((it as DataMasterCC).kodeCostcontrol)
             dialogRootView.etJenisBarang.setText(it.deskripsi)
             dialogRootView.etSatuan.setText(it.uom)
-            
+
             hideAllRecyclerViews()
 
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
@@ -140,7 +184,7 @@ class TambahItemDialog(
         dialogRootView.rvKodePekerjaan.adapter = ccAdapter
 
         jenisBarangAdapter =
-            BaseFilterableAdapter(R.layout.simple_item_row, JenisBarangViewHolder::class.java)
+            BaseFilterableAdapter(R.layout.item_simple_row, JenisBarangViewHolder::class.java)
         jenisBarangAdapter.setOnItemClickListener {
             dialogRootView.etJenisBarang.setText((it as DataMasterCC).deskripsi)
             dialogRootView.rvJenisBarang.visibility = View.GONE
@@ -150,7 +194,7 @@ class TambahItemDialog(
         dialogRootView.rvJenisBarang.layoutManager = LinearLayoutManager(activity)
         dialogRootView.rvJenisBarang.adapter = jenisBarangAdapter
 
-        uomAdapter = BaseFilterableAdapter(R.layout.simple_item_row, UomViewHolder::class.java)
+        uomAdapter = BaseFilterableAdapter(R.layout.item_simple_row, UomViewHolder::class.java)
         uomAdapter.setOnItemClickListener {
             dialogRootView.etSatuan.setText((it as DataMasterUOM).nama)
             dialogRootView.rvSatuan.visibility = View.GONE
@@ -159,6 +203,11 @@ class TambahItemDialog(
         }
         dialogRootView.rvSatuan.layoutManager = LinearLayoutManager(activity)
         dialogRootView.rvSatuan.adapter = uomAdapter
+
+        persyaratanAdapter =
+            BaseAdapter(R.layout.item_simple_checkbox, PersyaratanViewHolder::class.java)
+        dialogRootView.formSPS.rvPersyaratan.layoutManager = LinearLayoutManager(activity)
+        dialogRootView.formSPS.rvPersyaratan.adapter = persyaratanAdapter
     }
 
     private fun setupTextChangeListener() {

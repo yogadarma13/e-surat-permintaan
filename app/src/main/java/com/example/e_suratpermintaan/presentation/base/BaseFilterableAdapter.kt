@@ -36,7 +36,7 @@ class BaseFilterableAdapter<T : BaseViewHolder>(
         holder.itemView.setOnClickListener {
             onItemClickListener(data)
         }
-        holder.bind(data)
+        holder.bind(data, position,)
     }
 
     override fun getFilter(): Filter {

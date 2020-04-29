@@ -5,7 +5,11 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 
 class EmptyViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
 
-    override fun bind(item: Any?) {
+    override fun bind(
+        item: Any?,
+        position: Int,
+        listener: (item: Any?) -> Unit
+    ) {
 
     }
 

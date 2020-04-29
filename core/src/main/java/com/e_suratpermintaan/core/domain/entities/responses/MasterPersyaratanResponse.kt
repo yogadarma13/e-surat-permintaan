@@ -35,5 +35,5 @@ data class DataMasterPersyaratan(
 	val createdBy: String? = null,
 
 	@field:SerializedName("status")
-	val status: String? = null
+	var status: String? = null
 )

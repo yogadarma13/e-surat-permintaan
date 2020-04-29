@@ -10,8 +10,8 @@ class CancelSuratPermintaanUseCase(
     private val suratPermintaanRepository: SuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(batalkanSP: BatalkanSP): Observable<BatalkanSPResponse> =
-        suratPermintaanRepository.cancel(batalkanSP)
+    fun invoke(id_user: String, id: String): Observable<BatalkanSPResponse> =
+        suratPermintaanRepository.cancel(id_user, id)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }

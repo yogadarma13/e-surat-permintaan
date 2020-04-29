@@ -12,7 +12,7 @@ import com.e_suratpermintaan.core.domain.entities.responses.DataHistory
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
 import com.example.e_suratpermintaan.R
 import com.github.vipulasri.timelineview.TimelineView
-import kotlinx.android.synthetic.main.history_item.view.*
+import kotlinx.android.synthetic.main.item_history.view.*
 
 class HistoryAdapter():
     RecyclerView.Adapter<HistoryAdapter.TimeLineViewHolder>() {
@@ -40,7 +40,7 @@ class HistoryAdapter():
             mLayoutInflter = LayoutInflater.from(parent.context)
         }
 
-        return TimeLineViewHolder(mLayoutInflter.inflate(R.layout.history_item, parent, false), viewType)
+        return TimeLineViewHolder(mLayoutInflter.inflate(R.layout.item_history, parent, false), viewType)
     }
 
     override fun getItemCount(): Int {

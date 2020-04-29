@@ -19,7 +19,7 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FCMService : FirebaseMessagingService() {
 
-    private val tagString = "FCMSERVCE"
+    private val tagString = "FCMSERVICE"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // TODO(developer): Handle FCM messages here.
@@ -48,7 +48,7 @@ class FCMService : FirebaseMessagingService() {
                     baseContext,
                     notificationTitle,
                     notificationBody,
-                    idSpValue.toInt()
+                    idSpValue
                 )
             }
 
@@ -74,14 +74,14 @@ class FCMService : FirebaseMessagingService() {
         context: Context,
         title: String?,
         message: String,
-        idSp: Int
+        idSp: String
     ) {
 
         val channelId = "Channel_E-SuratPermintaan"
         val channelName = "Notif Surat Permintaan"
 
         val intent = Intent(context, DetailSuratPermintaanActivity::class.java)
-        intent.putExtra(ID_SP_EXTRA_KEY, channelId)
+        intent.putExtra(ID_SP_EXTRA_KEY, idSp)
 
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
@@ -113,9 +113,10 @@ class FCMService : FirebaseMessagingService() {
         }
 
         val notification = builder.build()
+        //val notificationId = idSp.toInt()
+        val notificationId = System.currentTimeMillis().toInt()
 
-        notificationManagerCompat.notify(idSp, notification)
-        Log.d("FCMSERVICE", "TRAY")
+        notificationManagerCompat.notify(notificationId, notification)
     }
 
 

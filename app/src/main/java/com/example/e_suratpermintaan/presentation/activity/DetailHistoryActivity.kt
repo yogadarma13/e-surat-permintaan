@@ -1,21 +1,16 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.responses.DataHistory
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
-import com.e_suratpermintaan.core.domain.entities.responses.FilesDetailHistory
-import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
-import com.example.e_suratpermintaan.presentation.viewholders.DetailHistoryViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.FileDownloadViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.DetailHistoryViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileDownloadViewHolder
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_detail_history.*
-import org.json.JSONArray
-import org.json.JSONObject
+
 class DetailHistoryActivity : BaseActivity() {
 
     override fun layoutId(): Int = R.layout.activity_detail_history
@@ -42,10 +37,10 @@ class DetailHistoryActivity : BaseActivity() {
 
     private fun init() {
         detailHistoryBaruAdapter = BaseAdapter(
-            R.layout.detail_history_item, DetailHistoryViewHolder::class.java
+            R.layout.item_detail_history, DetailHistoryViewHolder::class.java
         )
         detailHistoryLamaAdapter = BaseAdapter(
-            R.layout.detail_history_item, DetailHistoryViewHolder::class.java
+            R.layout.item_detail_history, DetailHistoryViewHolder::class.java
         )
         fileDownloadBaruAdapter = BaseAdapter(
             R.layout.file_download_item, FileDownloadViewHolder::class.java

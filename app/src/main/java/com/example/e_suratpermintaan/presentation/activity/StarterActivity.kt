@@ -3,6 +3,7 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.os.Bundle
 import androidx.navigation.ActivityNavigator
 import com.e_suratpermintaan.core.domain.entities.responses.MasterCCResponse
+import com.e_suratpermintaan.core.domain.entities.responses.MasterPersyaratanResponse
 import com.e_suratpermintaan.core.domain.entities.responses.MasterUOMResponse
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
@@ -26,6 +27,7 @@ class StarterActivity : BaseActivity() {
     private fun initApiRequest() {
         masterViewModel.getCostCodeList("all").subscribe(this::handleResponse, this::handleError)
         masterViewModel.getUomList("all").subscribe(this::handleResponse, this::handleError)
+        masterViewModel.getPersyaratanList("all").subscribe(this::handleResponse, this::handleError)
     }
 
     private fun handleResponse(response: Any) {
@@ -36,6 +38,10 @@ class StarterActivity : BaseActivity() {
 
             is MasterUOMResponse -> {
                 sharedViewModel.setUomList(response.data)
+            }
+
+            is MasterPersyaratanResponse -> {
+                sharedViewModel.setPersyaratanList(response.data)
             }
         }
     }

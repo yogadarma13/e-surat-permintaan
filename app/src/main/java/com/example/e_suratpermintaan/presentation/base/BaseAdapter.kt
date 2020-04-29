@@ -13,7 +13,7 @@ class BaseAdapter<T : BaseViewHolder>(private val layoutRes: Int, private val cl
     private lateinit var onItemClickListener: (item: Any?) -> Unit
 
     fun setOnItemClickListener(listener: (item: Any?) -> Unit) {
-        this.onItemClickListener = listener
+        onItemClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -27,9 +27,6 @@ class BaseAdapter<T : BaseViewHolder>(private val layoutRes: Int, private val cl
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val data = itemList[holder.layoutPosition]
-        holder.itemView.setOnClickListener {
-            onItemClickListener(data)
-        }
-        holder.bind(data)
+        holder.bind(data, position, onItemClickListener)
     }
 }

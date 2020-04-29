@@ -40,7 +40,7 @@ data class CreateItemSP(
     @field:SerializedName("waktu_pelaksanaan")
     val waktu_pelaksanaan: String,
 
-    @field:SerializedName("persyaratan[]")
+    @field:SerializedName("persyaratan")
     val persyaratan: ArrayList<String>,
 
     @field:SerializedName("id_user")

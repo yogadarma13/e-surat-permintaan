@@ -1,15 +1,22 @@
-package com.example.e_suratpermintaan.presentation.viewholders
+package com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter
 
 import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
-import com.e_suratpermintaan.core.domain.entities.responses.SuratPermintaan
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import kotlinx.android.synthetic.main.item_surat_permintaan_row.view.*
 
 class MyDataViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
 
-    override fun bind(item: Any?) {
+    override fun bind(
+        item: Any?,
+        position: Int,
+        listener: (item: Any?) -> Unit
+    ) {
         val data = item as DataMyData
+
+        rootView.setOnClickListener {
+            listener(data)
+        }
 
         rootView.tvKode.text = data.kode
         rootView.tvTanggalPengajuan.text = data.tanggalPengajuan

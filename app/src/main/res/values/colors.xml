@@ -3,6 +3,7 @@
     <color name="colorPrimary">#E73626</color>
     <color name="colorPrimaryDark">#95241A</color>
     <color name="colorAccent">#FFAF45</color>
+    <color name="colorWarning">#FFAF45</color>
 
     <color name="selected_background_color">#FFDCAE</color>
     <color name="separator_color">#878787</color>
@@ -19,4 +20,5 @@
     <color name="green_history">#2AF802</color>
     <color name="orange_history">#FFAF45</color>
     <color name="gray_history">#878787</color>
+    <color name="detail_sp_normal_text_color">#000</color>
 </resources>

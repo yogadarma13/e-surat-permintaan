@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class BatalkanSP (
 
     @field:SerializedName("id_user")
-    val id_user: String,
+    val id_user: Int,
 
     @field:SerializedName("id")
-    val id: String
+    val id: Int
 )
