@@ -13,6 +13,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
+import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
@@ -134,8 +135,20 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             ItemSuratPermintaanViewHolder::class.java
         )
 
-        itemSuratPermintaanAdapter.setOnItemClickListener {
-            val item = it as ItemsDetailSP
+        itemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
+            val data = item as ItemsDetailSP
+
+            when (actionString){
+                BaseViewHolder.ROOTVIEW -> {
+
+                }
+                ItemSuratPermintaanViewHolder.BTN_EDIT -> {
+
+                }
+                ItemSuratPermintaanViewHolder.BTN_HAPUS -> {
+
+                }
+            }
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)

@@ -113,8 +113,8 @@ class MainActivity : BaseActivity() {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
         }
 
-        spAdapter.setOnItemClickListener {
-            val data = it as DataMyData
+        spAdapter.setOnItemClickListener { item, _ ->
+            val data = item as DataMyData
             val intent = Intent(this@MainActivity, DetailSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EXTRA_KEY, data.id.toString())
             startActivity(intent)

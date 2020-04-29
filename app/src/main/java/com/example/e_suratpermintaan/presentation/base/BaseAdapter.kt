@@ -10,9 +10,9 @@ class BaseAdapter<T : BaseViewHolder>(private val layoutRes: Int, private val cl
     RecyclerView.Adapter<BaseViewHolder>() {
 
     val itemList: ArrayList<Any> = arrayListOf()
-    private lateinit var onItemClickListener: (item: Any?) -> Unit
+    private lateinit var onItemClickListener: (item: Any?, actionString: String?) -> Unit
 
-    fun setOnItemClickListener(listener: (item: Any?) -> Unit) {
+    fun setOnItemClickListener(listener: (item: Any?, actionString: String?) -> Unit) {
         onItemClickListener = listener
     }
 

@@ -10,12 +10,12 @@ class MyDataViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?) -> Unit
+        listener: (item: Any?, actionString: String?) -> Unit
     ) {
         val data = item as DataMyData
 
         rootView.setOnClickListener {
-            listener(data)
+            listener(data, null)
         }
 
         rootView.tvKode.text = data.kode

@@ -10,9 +10,13 @@ class JenisBarangViewHolder(private val rootView: View) : BaseViewHolder(rootVie
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?) -> Unit
+        listener: (item: Any?, actionString: String?) -> Unit
     ) {
         val data = item as DataMasterCC
+
+        rootView.setOnClickListener {
+            listener(data, ROOTVIEW)
+        }
 
         rootView.textView.text = data.deskripsi
     }

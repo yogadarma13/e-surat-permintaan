@@ -16,9 +16,9 @@ class BaseFilterableAdapter<T : BaseViewHolder>(
     var oldItemList: ArrayList<Any> = arrayListOf()
     var itemList: ArrayList<Any> = arrayListOf()
 
-    private lateinit var onItemClickListener: (item: Any?) -> Unit
+    private lateinit var onItemClickListener: (item: Any?, actionString: String?) -> Unit
 
-    fun setOnItemClickListener(listener: (item: Any?) -> Unit) {
+    fun setOnItemClickListener(listener: (item: Any?, actionString: String?) -> Unit) {
         this.onItemClickListener = listener
     }
 
@@ -33,10 +33,7 @@ class BaseFilterableAdapter<T : BaseViewHolder>(
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val data = itemList[holder.layoutPosition]
-        holder.itemView.setOnClickListener {
-            onItemClickListener(data)
-        }
-        holder.bind(data, position,)
+        holder.bind(data, position, onItemClickListener)
     }
 
     override fun getFilter(): Filter {

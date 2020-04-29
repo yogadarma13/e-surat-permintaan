@@ -16,7 +16,10 @@ import kotlinx.android.synthetic.main.item_surat_permintaan_item_row.view.*
 class ItemSuratPermintaanViewHolder(private val rootView: View) :
     BaseViewHolder(rootView) {
 
-    val height: Int = 0
+    companion object {
+        const val BTN_HAPUS = "btnHapus"
+        const val BTN_EDIT = "btnEdit"
+    }
 
     // TransitionManager.beginDelayedTransition() :
     // Android cardview expandable transition : https://www.youtube.com/watch?v=19E85PngufY&vl=en
@@ -32,12 +35,12 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
     override fun bind(
         item: Any?,
         position: Int,
-        listener: (item: Any?) -> Unit
+        listener: (item: Any?, actionString: String?) -> Unit
     ) {
         val data = item as ItemsDetailSP
 
         rootView.setOnClickListener {
-            listener(data)
+            listener(data, null)
         }
 
         rootView.tvKode.text = data.kodePekerjaan
@@ -45,12 +48,18 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
         rootView.tvVolume.text = data.qty
         rootView.tvSatuan.text = data.idSatuan
 
-        if (data.tombolEditItem == 0){
-            rootView.btnEdit.visibility = View.GONE
+        if (data.tombolEditItem == 1){
+            rootView.btnEdit.visibility = View.VISIBLE
+            rootView.btnEdit.setOnClickListener {
+                listener(data, BTN_EDIT)
+            }
         }
 
-        if (data.tombolHapusItem == 0){
-            rootView.btnHapus.visibility = View.GONE
+        if (data.tombolHapusItem == 1){
+            rootView.btnHapus.visibility = View.VISIBLE
+            rootView.btnHapus.setOnClickListener {
+                listener(data, BTN_HAPUS)
+            }
         }
 
         rootView.constraintLayout.setOnClickListener {
