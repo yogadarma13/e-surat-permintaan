@@ -85,7 +85,7 @@ class FCMService : FirebaseMessagingService() {
         val channelName = "Notif Surat Permintaan"
 
         val intent = Intent(context, DetailSuratPermintaanActivity::class.java)
-        intent.putExtra(ID_SP_EXTRA_KEY, channelId)
+        intent.putExtra(ID_SP_EXTRA_KEY, idSp.toString())
 
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 

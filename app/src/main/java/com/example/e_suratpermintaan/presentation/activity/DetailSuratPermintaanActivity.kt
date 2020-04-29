@@ -1,8 +1,12 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.AjukanSP
@@ -24,8 +28,9 @@ import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.zip.Inflater
 
-class DetailSuratPermintaanActivity : BaseActivity() {
+class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
     private lateinit var alertDialogTambah: TambahItemDialog
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
@@ -37,6 +42,10 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     private var kodeSp: String? = null
     private lateinit var idUser: String
     private lateinit var itemSuratPermintaanAdapter: BaseAdapter<ItemSuratPermintaanViewHolder>
+    private var optionPrint = false
+    private var optionEdit = false
+    private var optionDelete = false
+    private var jenisSP: String? = null
 
     override fun layoutId(): Int = R.layout.activity_detail_surat_permintaan
 
@@ -72,19 +81,26 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             alertDialogTambah.show()
         }
 
+        three_dot.setOnClickListener {
+            showMenuItem(it)
+        }
+
         btnHistory.setOnClickListener {
             val intent = Intent(
                 this@DetailSuratPermintaanActivity,
                 HistorySuratPermintaanActivity::class.java
             )
             intent.putExtra("id_sp", idSp)
+            intent.putExtra("jenis_sp", jenisSP)
             startActivity(intent)
         }
 
         btnAjukan.setOnClickListener {
 
             val alertDialog =
-                AlertDialog.Builder(this).setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
+                AlertDialog.Builder(this)
+                    .setTitle("Konfirmasi Pengajuan")
+                    .setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
                     .setPositiveButton("Ajukan") { _, _ ->
                         disposable = suratPermintaanViewModel.ajukan(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
@@ -98,7 +114,9 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnCancel.setOnClickListener {
 
             val alertDialog =
-                AlertDialog.Builder(this).setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
+                AlertDialog.Builder(this)
+                    .setTitle("Konfirmasi Pembatalan")
+                    .setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
                     .setPositiveButton("Batalkan") { _, _ ->
                         disposable = suratPermintaanViewModel.cancel(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
@@ -112,10 +130,13 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnAccept.setOnClickListener {
 
             val alertDialog =
-                AlertDialog.Builder(this).setMessage("Apa anda yakin ingin menerima permintaan ini?")
+                AlertDialog.Builder(this)
+                    .setTitle("Konfirmasi Penerimaan")
+                    .setMessage("Apa anda yakin ingin menerima permintaan ini?")
                     .setPositiveButton("Terima") { _, _ ->
-                        disposable = suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
-                            .subscribe(this::handleResponse, this::handleError)
+                        disposable =
+                            suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
+                                .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
                         dialog.dismiss()
                     }.create()
@@ -172,6 +193,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 tv_time_detail.text = detailDate?.get(1)
                 tv_status_detail.text = dataDetailSP?.statusPermintaan
                 tv_jenis_detail.text = dataDetailSP?.jenis
+                jenisSP = dataDetailSP?.jenis
 
                 val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
 
@@ -196,6 +218,18 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 if (dataDetailSP?.tombolTolak == 1) {
                     btnDecline.visibility = View.VISIBLE
                 }
+
+                if (dataDetailSP?.tombolCetak == 1) {
+                    optionPrint = true
+                }
+
+                if (dataDetailSP?.tombolEdit == 1) {
+                    optionEdit = true
+                }
+
+                if (dataDetailSP?.tombolHapus == 1) {
+                    optionDelete = true
+                }
             }
 
             is AjukanSPResponse -> {
@@ -215,6 +249,58 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 btnAccept.visibility = View.GONE
                 btnDecline.visibility = View.GONE
             }
+
+            is DeleteSPResponse -> {
+                toastNotify(response.message)
+                onBackPressed()
+            }
+        }
+    }
+
+    private fun showMenuItem(v: View) {
+
+        PopupMenu(this, v).apply {
+
+            setOnMenuItemClickListener(this@DetailSuratPermintaanActivity)
+            inflate(R.menu.menu_item_sp)
+            if (optionPrint) menu.findItem(R.id.menuCetakSP).setVisible(true)
+            if (optionEdit) menu.findItem(R.id.menuEditSP).setVisible(true)
+            if (optionDelete) menu.findItem(R.id.menuHapusSP).setVisible(true)
+
+            show()
+        }
+
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.menuCetakSP -> {
+                val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(i)
+
+                true
+            }
+            R.id.menuEditSP -> {
+                toastNotify("Edit")
+                true
+            }
+            R.id.menuHapusSP -> {
+                val alertDialog =
+                    AlertDialog.Builder(this)
+                        .setTitle("Konfirmasi Penghapusan")
+                        .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
+                        .setPositiveButton("Ya, Hapus") { _, _ ->
+                            disposable = suratPermintaanViewModel.remove(idSp.toString())
+                                .subscribe(this::handleResponse, this::handleError)
+                        }.setNegativeButton("Tutup") { dialog, _ ->
+                            dialog.dismiss()
+                        }.create()
+
+                alertDialog.show()
+                true
+            }
+            else -> false
         }
     }
 
