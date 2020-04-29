@@ -1,21 +1,22 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.requests.AjukanSP
-import com.e_suratpermintaan.core.domain.entities.requests.BatalkanSP
-import com.e_suratpermintaan.core.domain.entities.requests.DetailSP
-import com.e_suratpermintaan.core.domain.entities.requests.VerifikasiSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
+import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
+import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
-import com.example.e_suratpermintaan.presentation.viewholders.ItemSuratPermintaanViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -25,18 +26,25 @@ import kotlinx.android.synthetic.main.dialog_catatan.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DetailSuratPermintaanActivity : BaseActivity() {
+class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
+    private lateinit var alertDialogEdit: EditItemDialog
     private lateinit var alertDialogTambah: TambahItemDialog
+
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
     private val sharedViewModel: SharedViewModel by inject()
 
+    private var dataProfile: DataProfile? = null
     private var idSp: String? = null
     private var kodeSp: String? = null
     private lateinit var idUser: String
     private lateinit var itemSuratPermintaanAdapter: BaseAdapter<ItemSuratPermintaanViewHolder>
+    private var optionPrint = false
+    private var optionEdit = false
+    private var optionDelete = false
+    private var jenisSP: String? = null
 
     override fun layoutId(): Int = R.layout.activity_detail_surat_permintaan
 
@@ -52,7 +60,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             dataProfile = profilePreference.getProfile()
 
             dataProfile.let {
-                val profileId = dataProfile?.id
+                val profileId = it!!.id
                 if (profileId != null) {
                     idUser = profileId
                 }
@@ -69,6 +77,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         alertDialogTambah =
             TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+
+        alertDialogEdit = EditItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
 
         disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
             .subscribe(this::handleResponse, this::handleError)
@@ -150,7 +160,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     private fun initRecyclerView() {
 
         itemSuratPermintaanAdapter = BaseAdapter(
-            R.layout.item_surat_permintaan_row,
+            R.layout.item_surat_permintaan_item_row,
             ItemSuratPermintaanViewHolder::class.java
         )
 
@@ -162,10 +172,22 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                     // Ignored
                 }
                 ItemSuratPermintaanViewHolder.BTN_EDIT -> {
-
+                    alertDialogEdit.show(data)
                 }
                 ItemSuratPermintaanViewHolder.BTN_HAPUS -> {
+                    val alertDialog =
+                        AlertDialog.Builder(this)
+                            .setTitle("Konfirmasi Hapus Item")
+                            .setMessage("Apa anda yakin ingin menghapus item?")
+                            .setPositiveButton("Hapus") { _, _ ->
+                                disposable =
+                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
+                                        .subscribe(this::handleResponse, this::handleError)
+                            }.setNegativeButton("Batal") { dialog, _ ->
+                                dialog.dismiss()
+                            }.create()
 
+                    alertDialog.show()
                 }
             }
         }
@@ -195,17 +217,18 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                     kodeSp = dataDetailSP?.kode
 
                     alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
+                    alertDialogEdit.initDialogViewEdit(dataProfile!!, dataDetailSP)
 
                     val detailDate = dataDetailSP.tanggalPengajuan?.split(" ")
 
-                tv_kode_detail.text = kodeSp
-                tv_kode_sp.text = kodeSp
-                tv_name_proyek_detail.text = dataDetailSP?.namaProyek
-                tv_location_detail.text = dataDetailSP?.namaLokasi
-                tv_date_detail.text = detailDate?.get(0)
-                tv_time_detail.text = detailDate?.get(1)
-                tv_status_detail.text = dataDetailSP?.statusPermintaan
-                tv_jenis_detail.text = dataDetailSP?.jenis
+                    tv_kode_detail.text = kodeSp
+                    tv_kode_sp.text = kodeSp
+                    tv_name_proyek_detail.text = dataDetailSP.namaProyek
+                    tv_location_detail.text = dataDetailSP.namaLokasi
+                    tv_date_detail.text = detailDate?.get(0)
+                    tv_time_detail.text = detailDate?.get(1)
+                    tv_status_detail.text = dataDetailSP.statusPermintaan
+                    tv_jenis_detail.text = dataDetailSP.jenis
 
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
 
@@ -233,18 +256,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
                 }
 
-
-                if (dataDetailSP?.tombolCetak == 1) {
-                    optionPrint = true
-                }
-
-                if (dataDetailSP?.tombolEdit == 1) {
-                    optionEdit = true
-                }
-
-                if (dataDetailSP?.tombolHapus == 1) {
-                    optionDelete = true
-                }
             }
 
             is AjukanSPResponse -> {
@@ -268,6 +279,14 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             is DeleteSPResponse -> {
                 toastNotify(response.message)
                 onBackPressed()
+            }
+
+            is EditItemSPResponse -> {
+                toastNotify(response.message)
+            }
+
+            is DeleteItemSPResponse -> {
+                toastNotify(response.message)
             }
         }
     }

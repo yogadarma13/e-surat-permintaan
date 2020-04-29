@@ -9,7 +9,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.adapter.DetailHistoryAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
-import com.example.e_suratpermintaan.presentation.viewholders.FileDownloadViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileDownloadViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_detail_history.*
