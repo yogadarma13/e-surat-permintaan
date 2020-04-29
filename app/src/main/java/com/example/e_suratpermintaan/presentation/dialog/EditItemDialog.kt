@@ -26,11 +26,11 @@ import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanV
 import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_item_form_keterangan.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_item_form_spa.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_item_form_spb.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_item_form_sps.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item_form_spa.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item_form_spb.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item_form_sps.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,7 +70,7 @@ class EditItemDialog(
 
     fun initDialogViewEdit(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         dialogRootView =
-            LayoutInflater.from(activity).inflate(R.layout.dialog_tambah_item, null)
+            LayoutInflater.from(activity).inflate(R.layout.dialog_edit_item, null)
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         val builder = MaterialDatePicker.Builder.datePicker()
@@ -133,13 +133,6 @@ class EditItemDialog(
             uomAdapter.oldItemList = uomAdapter.itemList
             uomAdapter.notifyDataSetChanged()
         })
-
-        sharedViewModel.getPersyaratanList().observe(activity, Observer {
-            it?.forEach { item ->
-                persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
-            }
-            persyaratanAdapter.notifyDataSetChanged()
-        })
     }
 
     private fun setupAlertDialog(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
@@ -149,7 +142,7 @@ class EditItemDialog(
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setTitle("Tambah Item")
+                .setTitle("Update Item")
         alertDialogTambah = alertDialogBuilder.create()
 
         if (dataProfile.roleId!!.toInt() != 1) {
@@ -168,7 +161,7 @@ class EditItemDialog(
             }
         }
 
-        dialogRootView.btnTambah.setOnClickListener {
+        dialogRootView.btnEdit.setOnClickListener {
             val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
             val jenisBarang = dialogRootView.etJenisBarang.text.toString()
             val volume = dialogRootView.etVolume.text.toString()
@@ -193,7 +186,7 @@ class EditItemDialog(
 
             alertDialogTambah.hide()
             val newAlertDialog = alertDialogBuilder
-                .setMessage("Apakah Anda yakin ingin menambah item?")
+                .setMessage("Apakah Anda yakin ingin mengupdate item?")
                 .setPositiveButton("Ya") { _, _ ->
                     val updateItemSP = UpdateItemSP(
                         kodeSp,
@@ -210,7 +203,7 @@ class EditItemDialog(
                         waktuPelaksanaan,
                         persyaratanList,
                         dataProfile.id!!,
-                        idSp.toString()
+                        idSp!!
                     )
                     activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
                         .subscribe(this::handleResponse, this::handleError)
@@ -344,8 +337,20 @@ class EditItemDialog(
         dialogRootView.formSPB.etTarget.setText(itemsDetailSP.target)
         dialogRootView.formSPS.etWaktuPelaksanaan.setText(itemsDetailSP.waktuPelaksanaan)
 
-        hideAllRecyclerViews()
-        alertDialogTambah.show()
+        sharedViewModel.getPersyaratanList().observe(activity, Observer {
+            it?.forEach { item ->
+                itemsDetailSP.persyaratan?.forEach { persyaratanItemDetailSP ->
+                    if (item?.nama == persyaratanItemDetailSP?.persyaratan){
+                        item?.status = "checked"
+                    }
+                }
+                persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
+            }
+            persyaratanAdapter.notifyDataSetChanged()
+
+            hideAllRecyclerViews()
+            alertDialogTambah.show()
+        })
     }
 
     private fun handleResponse(response: Any) {
