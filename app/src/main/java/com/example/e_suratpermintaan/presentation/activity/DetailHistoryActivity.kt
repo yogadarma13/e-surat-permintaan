@@ -37,6 +37,7 @@ class DetailHistoryActivity : BaseActivity() {
 
         dataDetailHistory = intent.getStringExtra("detail_history")
         jenisSP = intent.getStringExtra("jenis_sp")
+        toastNotify(jenisSP)
 
         data = Gson().fromJson(dataDetailHistory, Array<DetailHistory>::class.java).toList()
         dataBaru = data.get(0)
@@ -81,11 +82,11 @@ class DetailHistoryActivity : BaseActivity() {
 
     private fun initRecyclerView() {
 
-        recyclerViewBaru.itemAnimator = null
+//        recyclerViewBaru.itemAnimator = null
         recyclerViewBaru.layoutManager = LinearLayoutManager(this)
         recyclerViewBaru.adapter = detailHistoryBaruAdapter
 
-        recyclerViewLama.itemAnimator = null
+//        recyclerViewLama.itemAnimator = null
         recyclerViewLama.layoutManager = LinearLayoutManager(this)
         recyclerViewLama.adapter = detailHistoryLamaAdapter
 

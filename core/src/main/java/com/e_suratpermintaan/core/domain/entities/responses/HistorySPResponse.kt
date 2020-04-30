@@ -90,9 +90,9 @@ data class ItemsDetailHistory(
 	val waktuPemakaian: String? = null,
 
 	@field:SerializedName("target")
-	val target: String? = null,
+	val target: String? = null
 
-	var expanded: Boolean
+//	var expanded: Boolean
 )
 
 data class FilesDetailHistory(

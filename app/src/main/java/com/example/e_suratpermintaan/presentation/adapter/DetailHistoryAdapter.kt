@@ -1,32 +1,29 @@
 package com.example.e_suratpermintaan.presentation.adapter
 
+import android.os.Build
+import android.transition.ChangeBounds
+import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterPersyaratan
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItem
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.animations.SlideAnimation
 
-class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHolder>() {
+class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolder>() {
 
     val historyList: ArrayList<ItemsDetailHistory> = arrayListOf()
     val viewType: ArrayList<String> = arrayListOf()
     val persyaratanList = mutableMapOf<String, String>()
-
-//    private lateinit var onClickItemListener: OnClickItemListener
-//
-//    interface OnClickItemListener{
-//        fun onClick(view: View, item: Any)
-//    }
-//
-//    fun setOnClickListener(onClickItemListener: OnClickItemListener){
-//        this.onClickItemListener = onClickItemListener
-//    }
 
     companion object {
         val SPA = 0
@@ -36,7 +33,7 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return when(viewType){
+        return when (viewType) {
             SPA -> ViewHolderSPA(inflater.inflate(R.layout.detail_history_spa_item, parent, false))
             SPB -> ViewHolderSPB(inflater.inflate(R.layout.detail_history_spb_item, parent, false))
             else -> ViewHolderSPS(inflater.inflate(R.layout.detail_history_sps_item, parent, false))
@@ -47,18 +44,9 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = historyList.get(position)
-        when(getItemViewType(position)){
+        when (getItemViewType(position)) {
             SPA -> {
                 val viewHolderSPA = holder as ViewHolderSPA
-
-                val expanded = data.expanded
-                if (expanded) {
-                    viewHolderSPA.expandedSPA.visibility = View.VISIBLE
-                    viewHolderSPA.jenisDetailSPA.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-                } else {
-                    viewHolderSPA.expandedSPA.visibility = View.GONE
-                    viewHolderSPA.jenisDetailSPA.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-                }
 
                 viewHolderSPA.jenisDetailSPA.text = data.idBarang
                 viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
@@ -74,25 +62,38 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
                 }
                 viewHolderSPA.keteranganDetailSPA.text = dataKeterangan
 
-                viewHolderSPA.jenisDetailSPA.setOnClickListener {
-                    var expanded  = data.expanded
-                    data.expanded = !expanded
-                    notifyItemChanged(position)
-                }
+                viewHolderSPA.expandedParentSPA.setOnClickListener {
+                    if (viewHolderSPA.expandedChildSPA.visibility == View.GONE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            TransitionManager.beginDelayedTransition(
+                                viewHolderSPA.cardViewSPA,
+                                TransitionSet()
+                                    .addTransition(ChangeBounds())
+                            )
+                        }
+                        viewHolderSPA.expandedChildSPA.visibility = View.VISIBLE
+                        viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
+                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                                R.drawable.ic_arrow_up
+                            )
+                        )
+                    } else {
+                        val animation = animation(viewHolderSPA.expandedChildSPA)
 
+                        viewHolderSPA.expandedChildSPA.animation = animation
+                        viewHolderSPA.expandedChildSPA.startAnimation(animation)
+                        viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
+                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                                R.drawable.ic_arrow_down
+                            )
+                        )
+                    }
+
+                }
             }
 
             SPB -> {
                 val viewHolderSPB = holder as ViewHolderSPB
-
-                val expanded = data.expanded
-                if (expanded) {
-                    viewHolderSPB.expandedSPB.visibility = View.VISIBLE
-                    viewHolderSPB.jenisDetailSPB.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-                } else {
-                    viewHolderSPB.expandedSPB.visibility = View.GONE
-                    viewHolderSPB.jenisDetailSPB.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-                }
 
                 viewHolderSPB.jenisDetailSPB.text = data.idBarang
                 viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
@@ -107,24 +108,37 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
                 }
                 viewHolderSPB.keteranganDetailSPB.text = dataKeterangan
 
-                viewHolderSPB.jenisDetailSPB.setOnClickListener {
-                    var expanded  = data.expanded
-                    data.expanded = !expanded
-                    notifyItemChanged(position)
+                viewHolderSPB.expandedParentSPB.setOnClickListener {
+                    if (viewHolderSPB.expandedChildSPB.visibility == View.GONE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            TransitionManager.beginDelayedTransition(
+                                viewHolderSPB.cardViewSPB,
+                                TransitionSet()
+                                    .addTransition(ChangeBounds())
+                            )
+                        }
+                        viewHolderSPB.expandedChildSPB.visibility = View.VISIBLE
+                        viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
+                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                                R.drawable.ic_arrow_up
+                            )
+                        )
+                    } else {
+                        val animation = animation(viewHolderSPB.expandedChildSPB)
+
+                        viewHolderSPB.expandedChildSPB.animation = animation
+                        viewHolderSPB.expandedChildSPB.startAnimation(animation)
+                        viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
+                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                                R.drawable.ic_arrow_down
+                            )
+                        )
+                    }
                 }
             }
 
             SPS -> {
                 val viewHolderSPS = holder as ViewHolderSPS
-
-                val expanded = data.expanded
-                if (expanded) {
-                    viewHolderSPS.expandedSPS.visibility = View.VISIBLE
-                    viewHolderSPS.jenisDetailSPS.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_up, 0)
-                } else {
-                    viewHolderSPS.expandedSPS.visibility = View.GONE
-                    viewHolderSPS.jenisDetailSPS.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_down, 0)
-                }
 
                 viewHolderSPS.jenisDetailSPS.text = data.idBarang
                 viewHolderSPS.kodeDetailSPS.text = data.kodePekerjaan
@@ -147,21 +161,42 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
                 }
                 viewHolderSPS.keteranganDetailSPS.text = dataKeterangan
 
-                viewHolderSPS.jenisDetailSPS.setOnClickListener {
-                    var expanded  = data.expanded
-                    data.expanded = !expanded
-                    notifyItemChanged(position)
+                viewHolderSPS.expandedParentSPS.setOnClickListener {
+                    if (viewHolderSPS.expandedChildSPS.visibility == View.GONE) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            TransitionManager.beginDelayedTransition(
+                                viewHolderSPS.cardViewSPS,
+                                TransitionSet()
+                                    .addTransition(ChangeBounds())
+                            )
+                        }
+                        viewHolderSPS.expandedChildSPS.visibility = View.VISIBLE
+                        viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
+                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                                R.drawable.ic_arrow_up
+                            )
+                        )
+                    } else {
+                        val animation = animation(viewHolderSPS.expandedChildSPS)
+
+                        viewHolderSPS.expandedChildSPS.animation = animation
+                        viewHolderSPS.expandedChildSPS.startAnimation(animation)
+                        viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
+                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                                R.drawable.ic_arrow_down
+                            )
+                        )
+                    }
                 }
 
             }
         }
     }
 
-    override fun getItemViewType(position: Int) : Int {
-        if (viewType[position].equals("SPA")){
+    override fun getItemViewType(position: Int): Int {
+        if (viewType[position].equals("SPA")) {
             return SPA
-        }
-        else if (viewType[position].equals("SPB")) {
+        } else if (viewType[position].equals("SPB")) {
             return SPB
         } else {
             return SPS
@@ -179,10 +214,13 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
         val waktuDetailSPA: TextView = itemView.findViewById(R.id.tvWaktuDetailSPA)
         val qtyDetailSPA: TextView = itemView.findViewById(R.id.tvQtySPA)
         val keteranganDetailSPA: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPA)
-        val expandedSPA: ConstraintLayout = itemView.findViewById(R.id.constarintExpandSPA)
+        val expandedChildSPA: ConstraintLayout = itemView.findViewById(R.id.expandedChildSPA)
+        val expandedParentSPA: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPA)
+        val cardViewSPA: CardView = itemView.findViewById(R.id.cardViewSPA)
+        val imageExpandedParentSPA: ImageView = itemView.findViewById(R.id.imgExpandedParentSPA)
     }
 
-    inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView){
+    inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
         val jenisDetailSPB: TextView = itemView.findViewById(R.id.tvJenisDetailSPB)
         val kodeDetailSPB: TextView = itemView.findViewById(R.id.tvKodeDetailSPB)
         val satuanDetailSPB: TextView = itemView.findViewById(R.id.tvSatuanDetailSPB)
@@ -190,11 +228,14 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
         val targetDetailSPB: TextView = itemView.findViewById(R.id.tvTargetDetailSPB)
         val qtyDetailSPB: TextView = itemView.findViewById(R.id.tvQtySPB)
         val keteranganDetailSPB: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPB)
-        val expandedSPB: ConstraintLayout = itemView.findViewById(R.id.constarintExpandSPB)
+        val expandedChildSPB: ConstraintLayout = itemView.findViewById(R.id.expandedChildSPB)
+        val expandedParentSPB: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPB)
+        val cardViewSPB: CardView = itemView.findViewById(R.id.cardViewSPB)
+        val imageExpandedParentSPB: ImageView = itemView.findViewById(R.id.imgExpandedParentSPB)
 
     }
 
-    inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView){
+    inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
         val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
         val kodeDetailSPS: TextView = itemView.findViewById(R.id.tvKodeDetailSPS)
         val satuanDetailSPS: TextView = itemView.findViewById(R.id.tvSatuanDetailSPS)
@@ -202,6 +243,37 @@ class DetailHistoryAdapter(): RecyclerView.Adapter<DetailHistoryAdapter.ViewHold
         val waktuDetailSPS: TextView = itemView.findViewById(R.id.tvWaktuDetailSPS)
         val qtyDetailSPS: TextView = itemView.findViewById(R.id.tvQtySPS)
         val keteranganDetailSPS: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPS)
-        val expandedSPS: ConstraintLayout = itemView.findViewById(R.id.constarintExpandSPS)
+        val expandedChildSPS: ConstraintLayout = itemView.findViewById(R.id.expandedChildSPS)
+        val expandedParentSPS: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPS)
+        val cardViewSPS: CardView = itemView.findViewById(R.id.cardViewSPS)
+        val imageExpandedParentSPS: ImageView = itemView.findViewById(R.id.imgExpandedParentSPS)
+    }
+
+    private fun animation(expanded: ConstraintLayout): Animation {
+        val animation: Animation =
+            SlideAnimation(
+                expanded,
+                expanded.height,
+                0
+            )
+
+        animation.interpolator = DecelerateInterpolator()
+        animation.duration = 150
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                animation?.setAnimationListener(null)
+                expanded.visibility = View.GONE
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+
+            }
+        })
+
+        return animation
     }
 }

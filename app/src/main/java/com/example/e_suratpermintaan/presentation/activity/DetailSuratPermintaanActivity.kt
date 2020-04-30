@@ -229,6 +229,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                     tv_time_detail.text = detailDate?.get(1)
                     tv_status_detail.text = dataDetailSP.statusPermintaan
                     tv_jenis_detail.text = dataDetailSP.jenis
+                    jenisSP = dataDetailSP.jenis
 
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
 
