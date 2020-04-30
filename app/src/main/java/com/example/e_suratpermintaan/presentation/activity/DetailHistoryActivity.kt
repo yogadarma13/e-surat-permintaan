@@ -81,11 +81,11 @@ class DetailHistoryActivity : BaseActivity() {
 
     private fun initRecyclerView() {
 
-        recyclerViewBaru.itemAnimator = null
+//        recyclerViewBaru.itemAnimator = null
         recyclerViewBaru.layoutManager = LinearLayoutManager(this)
         recyclerViewBaru.adapter = detailHistoryBaruAdapter
 
-        recyclerViewLama.itemAnimator = null
+//        recyclerViewLama.itemAnimator = null
         recyclerViewLama.layoutManager = LinearLayoutManager(this)
         recyclerViewLama.adapter = detailHistoryLamaAdapter
 
