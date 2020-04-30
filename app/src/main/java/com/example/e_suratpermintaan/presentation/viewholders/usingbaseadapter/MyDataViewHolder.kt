@@ -21,6 +21,9 @@ class MyDataViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
         rootView.tvKode.text = data.kode
         rootView.tvTanggalPengajuan.text = data.tanggalPengajuan
         rootView.tvStatusPermintaan.text = data.statusPermintaan
+        rootView.tvJenis.text = data.jenis
+        rootView.tvProyek.text = data.namaProyek
+        rootView.tvPabrik.text = data.namaLokasi
     }
 
 }

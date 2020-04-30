@@ -37,7 +37,6 @@ class DetailHistoryActivity : BaseActivity() {
 
         dataDetailHistory = intent.getStringExtra("detail_history")
         jenisSP = intent.getStringExtra("jenis_sp")
-        toastNotify(jenisSP)
 
         data = Gson().fromJson(dataDetailHistory, Array<DetailHistory>::class.java).toList()
         dataBaru = data.get(0)
