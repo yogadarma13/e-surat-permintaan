@@ -15,8 +15,14 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         dataSource.readAllData(id_user)
 
-    override fun readMyData(id_user: String): Observable<MyDataResponse> =
-        dataSource.readMyData(id_user)
+    override fun readMyData(
+        id_user: String,
+        proyek: String,
+        status_permintaan: String,
+        jenis_permintaan: String,
+        jenis_data: String
+    ): Observable<MyDataResponse> =
+        dataSource.readMyData(id_user, proyek, status_permintaan, jenis_permintaan, jenis_data)
 
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         dataSource.remove(id_sp)

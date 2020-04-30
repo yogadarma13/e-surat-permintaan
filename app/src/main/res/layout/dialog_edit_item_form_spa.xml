@@ -48,15 +48,23 @@
             android:hint="Waktu Pemakaian" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/pickWaktuPemakaian"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/pick_date_show_btn_margin_right"
-        android:src="@drawable/ic_date_range_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tilWaktuPemakaian"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tilWaktuPemakaian"
-        android:layout_marginEnd="@dimen/pick_date_show_btn_margin_right" />
+        android:padding="@dimen/pick_date_show_btn_margin_right"
+        app:layout_constraintBottom_toBottomOf="@id/tilWaktuPemakaian"
+        app:layout_constraintEnd_toEndOf="@id/tilWaktuPemakaian"
+        app:layout_constraintTop_toTopOf="@id/tilWaktuPemakaian">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_date_range_black_30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

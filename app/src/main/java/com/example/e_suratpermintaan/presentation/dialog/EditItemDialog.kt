@@ -1,14 +1,18 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
+import android.app.Activity
+import android.app.Dialog
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
 import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
@@ -18,21 +22,34 @@ import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_edit_item.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item.view.container
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etJenisBarang
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etKodePekerjaan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etSatuan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etVolume
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formKeterangan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPA
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPB
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPS
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvJenisBarang
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvKodePekerjaan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvSatuan
+import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spa.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spb.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_sps.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class EditItemDialog(
     private val activity: DetailSuratPermintaanActivity,
@@ -40,7 +57,7 @@ class EditItemDialog(
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
-    private lateinit var alertDialogTambah: AlertDialog
+    private lateinit var alertDialogEdit: AlertDialog
     private lateinit var datePicker: MaterialDatePicker<Long>
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
@@ -48,13 +65,14 @@ class EditItemDialog(
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
     private lateinit var dialogRootView: View
 
+    private lateinit var selectedItemId: String
+
     private val waktuPemakaianDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
         dialogRootView.let {
             it.etWaktuPemakaian.setText(dateString)
-            alertDialogTambah.show()
         }
     }
 
@@ -64,14 +82,21 @@ class EditItemDialog(
         val dateString = simpleFormat.format(date)
         dialogRootView.let {
             it.etWaktuPelaksanaan.setText(dateString)
-            alertDialogTambah.show()
         }
     }
 
     fun initDialogViewEdit(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         dialogRootView =
-            LayoutInflater.from(activity).inflate(R.layout.dialog_edit_item, null)
+            View.inflate(activity, R.layout.dialog_edit_item, null)
+
+        dialogRootView.etVolume.setText("0.0")
+
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
+            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
+        }
 
         val builder = MaterialDatePicker.Builder.datePicker()
         datePicker = builder.build()
@@ -79,14 +104,15 @@ class EditItemDialog(
         setupAlertDialog(dataProfile, dataDetailSP)
         setupTextChangeListener()
         hideAllRecyclerViews()
-        initRecyclerViews()
-        populateAdapterList()
+        setupRecyclerViews()
+        populateAdapters()
         setupDatePickerListener()
     }
 
     private fun setupDatePickerListener() {
         dialogRootView.etWaktuPemakaian.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
+                activity.closeKeyboard(dialogRootView.etWaktuPemakaian)
                 datePicker.addOnPositiveButtonClickListener(waktuPemakaianDateSubmitListener)
                 datePicker.show(activity.supportFragmentManager, datePicker.toString())
             }
@@ -98,9 +124,9 @@ class EditItemDialog(
         }
 
 
-
         dialogRootView.etWaktuPelaksanaan.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
+                activity.closeKeyboard(dialogRootView.etWaktuPelaksanaan)
                 datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
                 datePicker.show(activity.supportFragmentManager, datePicker.toString())
             }
@@ -112,7 +138,7 @@ class EditItemDialog(
         }
     }
 
-    private fun populateAdapterList() {
+    private fun populateAdapters() {
         sharedViewModel.getCostCodeList().observe(activity, Observer {
             it?.forEach { item ->
                 ccAdapter.itemList.add(item as DataMasterCC)
@@ -142,8 +168,11 @@ class EditItemDialog(
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setTitle("Update Item")
-        alertDialogTambah = alertDialogBuilder.create()
+                .setTitle("Edit Item")
+        alertDialogEdit = alertDialogBuilder.create()
+
+        // Ini dipakai biar supaya pas keyboard showup, gak ngepush view dialog
+        preventKeyboardFromPushingViews(alertDialogEdit)
 
         if (dataProfile.roleId!!.toInt() != 1) {
             dialogRootView.formKeterangan.visibility = View.VISIBLE
@@ -184,8 +213,8 @@ class EditItemDialog(
 
             val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
 
-            alertDialogTambah.hide()
-            val newAlertDialog = alertDialogBuilder
+            val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+                .setTitle("Edit Item")
                 .setMessage("Apakah Anda yakin ingin mengupdate item?")
                 .setPositiveButton("Ya") { _, _ ->
                     val updateItemSP = UpdateItemSP(
@@ -203,19 +232,24 @@ class EditItemDialog(
                         waktuPelaksanaan,
                         persyaratanList,
                         dataProfile.id!!,
-                        idSp!!
+                        selectedItemId
                     )
                     activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
                         .subscribe(this::handleResponse, this::handleError)
 
-                    alertDialogTambah.hide()
+                    alertDialogEdit.hide()
 
                 }.create()
 
-            newAlertDialog.show()
+            confirmationDialog.show()
         }
 
-        alertDialogTambah.setView(dialogRootView)
+        alertDialogEdit.setView(dialogRootView)
+    }
+
+    private fun preventKeyboardFromPushingViews(dialog: Dialog?) {
+        val window: Window? = dialog?.window
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     private fun hideAllRecyclerViews() {
@@ -224,7 +258,7 @@ class EditItemDialog(
         dialogRootView.rvSatuan.visibility = View.GONE
     }
 
-    private fun initRecyclerViews() {
+    private fun setupRecyclerViews() {
         // ------------------------------ INIT CC START ---------------------------------------------
         ccAdapter = BaseFilterableAdapter(R.layout.item_simple_row, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->
@@ -325,6 +359,8 @@ class EditItemDialog(
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {
+        selectedItemId = itemsDetailSP.id.toString()
+
         dialogRootView.etKodePekerjaan.setText(itemsDetailSP.kodePekerjaan)
         dialogRootView.etJenisBarang.setText(itemsDetailSP.idBarang)
         dialogRootView.etVolume.setText(itemsDetailSP.qty)
@@ -349,7 +385,7 @@ class EditItemDialog(
             persyaratanAdapter.notifyDataSetChanged()
 
             hideAllRecyclerViews()
-            alertDialogTambah.show()
+            alertDialogEdit.show()
         })
     }
 

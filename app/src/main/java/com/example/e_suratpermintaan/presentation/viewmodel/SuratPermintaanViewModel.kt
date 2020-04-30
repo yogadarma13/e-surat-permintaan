@@ -2,7 +2,7 @@ package com.example.e_suratpermintaan.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
-import com.e_suratpermintaan.core.domain.entities.requests.*
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.usecases.suratpermintaan.*
 import io.reactivex.rxjava3.core.Observable
@@ -28,8 +28,20 @@ class SuratPermintaanViewModel(
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         readAllDataSuratPermintaanUseCase.invoke(id_user)
 
-    override fun readMyData(id_user: String): Observable<MyDataResponse> =
-        readMyDataSuratPermintaanUseCase.invoke(id_user)
+    override fun readMyData(
+        id_user: String,
+        proyek: String,
+        status_permintaan: String,
+        jenis_permintaan: String,
+        jenis_data: String
+    ): Observable<MyDataResponse> =
+        readMyDataSuratPermintaanUseCase.invoke(
+            id_user,
+            proyek,
+            status_permintaan,
+            jenis_permintaan,
+            jenis_data
+        )
 
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         removeSuratPermintaanUseCase.invoke(id_sp)
@@ -44,13 +56,18 @@ class SuratPermintaanViewModel(
     ): Observable<EditSPResponse> =
         editSuratPermintaanUseCase.invoke(id, file, id_user)
 
-    override fun verifikasi(id_user: String, id: String, status: String, catatan: String): Observable<VerifikasiSPResponse> =
+    override fun verifikasi(
+        id_user: String,
+        id: String,
+        status: String,
+        catatan: String
+    ): Observable<VerifikasiSPResponse> =
         verifikasiSuratPermintaanUseCase.invoke(id_user, id, status, catatan)
 
     override fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse> =
         ajukanSuratPermintaanUseCase.invoke(id_user, id)
 
-    override fun cancel(id_user: String, id:String): Observable<BatalkanSPResponse> =
+    override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
         cancelSuratPermintaanUseCase.invoke(id_user, id)
 
     override fun readHistory(id_sp: String): Observable<HistorySPResponse> =

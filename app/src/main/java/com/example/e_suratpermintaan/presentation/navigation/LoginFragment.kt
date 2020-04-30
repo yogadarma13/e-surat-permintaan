@@ -73,6 +73,7 @@ class LoginFragment : BaseFragment() {
                 disposable = authViewModel
                     .doLogin(Login(etEmail.text.toString(), etPassword.text.toString(), userTokenId))
                     .subscribe(this::loginResponse, this::handleError)
+                closeKeyboard(requireActivity())
             }
         }, 1000)
 
@@ -112,6 +113,12 @@ class LoginFragment : BaseFragment() {
                     }
                 )
         }
+    }
+
+    override fun handleError(error: Throwable) {
+        super.handleError(error)
+
+        progressBarOverlay.visibility = GONE
     }
 
 }

@@ -91,7 +91,7 @@
          an overlay for the ExposedDropdownMenu style  -->
     <style name="AppTheme.ExposedDropdownMenu.MaterialThemeOverlay" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- background color of dropdown (popup) items -->
-        <item name="colorSurface">#444444</item>
+        <item name="colorSurface">#bdc3c7</item>
         <!--
          When this overlay is applied, the AutoCompleteTextView
          loses padding. Luckily, we can restore it by defining
@@ -108,14 +108,14 @@
         <!-- restore padding to sanity -->
         <item name="android:padding">16dp</item>
         <item name="android:textColor">@color/colorOnSurface</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!-- style for material spinner 'item' layout -->
     <style name="MaterialSpinnerItem" parent="Widget.AppCompat.TextView">
         <item name="android:color">@color/colorOnSurface</item>
         <item name="android:textColor">@color/colorOnSurface</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
         <item name="android:padding">16dp</item>

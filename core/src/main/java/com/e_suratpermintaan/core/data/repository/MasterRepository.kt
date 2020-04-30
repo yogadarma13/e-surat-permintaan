@@ -22,4 +22,10 @@ class MasterRepository(private val masterDataSource: MasterDataSource) :
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         masterDataSource.getUomList(id)
 
+    override fun getStatusPermintaanList(): Observable<MasterStatusPermintaanResponse> =
+        masterDataSource.getStatusPermintaanList()
+
+    override fun getJenisDataPermintaanList(): Observable<MasterJenisDataPermintaanResponse> =
+        masterDataSource.getJenisDataPermintaanList()
+
 }

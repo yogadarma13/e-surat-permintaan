@@ -14,4 +14,8 @@ interface MasterDataSource {
     fun getPersyaratanList(id: String): Observable<MasterPersyaratanResponse>
 
     fun getUomList(id: String): Observable<MasterUOMResponse>
+
+    fun getStatusPermintaanList(): Observable<MasterStatusPermintaanResponse>
+
+    fun getJenisDataPermintaanList(): Observable<MasterJenisDataPermintaanResponse>
 }

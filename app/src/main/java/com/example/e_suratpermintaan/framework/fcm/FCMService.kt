@@ -10,24 +10,40 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.example.e_suratpermintaan.App
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.PreferenceConstants
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 
 class FCMService : FirebaseMessagingService() {
 
     private val tagString = "FCMSERVICE"
+
+    fun getProfile(context: Context): DataProfile? {
+        val prefs =
+            context.getSharedPreferences(
+                PreferenceConstants.PROFILE_PREFS_NAME,
+                Context.MODE_PRIVATE
+            )
+        val profileJson = prefs!!.getString(PreferenceConstants.PROFILE_PREFS_STRING_KEY, null)
+        val gson = Gson()
+        return gson.fromJson(profileJson, DataProfile::class.java)
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(tagString, "From: " + remoteMessage.from)
 
+        val idUser = getProfile(applicationContext)?.id.toString()
+
         // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
+        if (remoteMessage.data.isNotEmpty() && idUser.isNotEmpty()) {
             Log.d(tagString, "Message data payload: " + remoteMessage.data)
 
             val notificationTitle = remoteMessage.data.getValue("notification_title")
@@ -83,7 +99,25 @@ class FCMService : FirebaseMessagingService() {
         val intent = Intent(context, DetailSuratPermintaanActivity::class.java)
         intent.putExtra(ID_SP_EXTRA_KEY, idSp)
 
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        // Dengan membuat requestCode maka pendingIntent untuk aplikasi akan unik semua
+        // Kalau dibuat sama, misal kita buat 0 aja, maka kita akan menggunakan pendingIntent yang
+        // pertama kali diciptakan (create), misal ada notifikasi pertama dengan id_sp 116
+        // kalau ada notifikasi dengan id 117, maka dia akan memakai pendingIntent untuk 116
+        // Untuk membuat dia tidak menggunakan pendingIntent yang lama, maka pakai flags :
+        // PendingIntent.FLAG_UPDATE_CURRENT
+        // atau dengan menggunakan currentTimeMilis yang unik
+        // Di bawah memakai keduanya untuk memastikan bahwa tidak ada yang sama untuk idSp yang berbeda
+        // referensi solusi :
+        // https://stackoverflow.com/questions/16004006/how-can-i-get-the-intent-extras-for-a-pendingintent-that-is-already-pending
+
+        val requestCode = System.currentTimeMillis().toInt()
+        // val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val notificationManagerCompat =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -93,6 +127,7 @@ class FCMService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.logo)
             .setContentTitle(title)
             .setContentText(message)
+            .setAutoCancel(true)
             .setColor(ContextCompat.getColor(context, android.R.color.transparent))
             //.setVibrate(longArrayOf(100, 100, 100, 100, 100))
             .setSound(defaultSound)

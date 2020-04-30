@@ -34,7 +34,11 @@ interface NetworkApi {
 
     @GET("MyData")
     fun getMyData(
-        @Query("id_user") id_user: String
+        @Query("id_user") id_user: String,
+        @Query("proyek") proyek: String,
+        @Query("status_permintaan") status_permintaan: String,
+        @Query("jenis_permintaan") jenis_permintaan: String,
+        @Query("jenis_data") jenis_data: String
     ): Observable<MyDataResponse>
 
     @GET("detail")
@@ -46,7 +50,7 @@ interface NetworkApi {
     @POST("create_sp")
     fun createSP(
         @Body createSP: CreateSP
-    ) : Observable<CreateSPResponse>
+    ): Observable<CreateSPResponse>
 
     @Multipart
     @POST("edit_sp")
@@ -76,7 +80,7 @@ interface NetworkApi {
         @Field("id") id: String,
         @Field("status") status: String,
         @Field("catatan") catatan: String
-    ) : Observable<VerifikasiSPResponse>
+    ): Observable<VerifikasiSPResponse>
 
     @FormUrlEncoded
     @POST("batalkan_sp")
@@ -92,6 +96,12 @@ interface NetworkApi {
 
 
     // =================================== MASTER ===============================================
+    @GET("status_permintaan")
+    fun getMasterStatusPermintaan(): Observable<MasterStatusPermintaanResponse>
+
+    @GET("jenis_data")
+    fun getMasterJenisDataPermintaan(): Observable<MasterJenisDataPermintaanResponse>
+
     @GET("dataproyek")
     fun getMasterProyek(
         @Query("id_user") id_user: String

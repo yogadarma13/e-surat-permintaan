@@ -17,8 +17,14 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     override fun readAllData(id_user: String): Observable<DataAllResponse> =
         networkApi.getDataAll(id_user)
 
-    override fun readMyData(id_user: String): Observable<MyDataResponse> =
-        networkApi.getMyData(id_user)
+    override fun readMyData(
+        id_user: String,
+        proyek: String,
+        status_permintaan: String,
+        jenis_permintaan: String,
+        jenis_data: String
+    ): Observable<MyDataResponse> =
+        networkApi.getMyData(id_user, proyek, status_permintaan,jenis_permintaan, jenis_data)
 
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =
         networkApi.deleteSP(id_sp)
