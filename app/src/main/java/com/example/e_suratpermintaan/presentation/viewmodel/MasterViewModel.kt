@@ -11,7 +11,9 @@ class MasterViewModel(
     private val getJenisListUseCase: GetJenisListUseCase,
     private val getCostCodeListUseCase: GetCostCodeListUseCase,
     private val getPersyaratanListUseCase: GetPersyaratanListUseCase,
-    private val getUomListUseCase: GetUomListUseCase
+    private val getUomListUseCase: GetUomListUseCase,
+    private val getMasterStatusPermintaanListUseCase: GetStatusPermintaanListUseCase,
+    private val getmasterJenisDataPermintaanListUseCase: GetJenisDataPermintaanListUseCase
 ) : ViewModel(), MasterDataSource {
 
     override fun getProyekList(id_user: String): Observable<MasterProyekResponse> =
@@ -29,4 +31,9 @@ class MasterViewModel(
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         getUomListUseCase.invoke(id)
 
+    override fun getStatusPermintaanList(): Observable<MasterStatusPermintaanResponse> =
+        getMasterStatusPermintaanListUseCase.invoke()
+
+    override fun getJenisDataPermintaanList(): Observable<MasterJenisDataPermintaanResponse> =
+        getmasterJenisDataPermintaanListUseCase.invoke()
 }

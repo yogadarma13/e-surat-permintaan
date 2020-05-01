@@ -54,7 +54,7 @@ abstract class BaseFragment : Fragment() {
     }
 
     open fun handleError(error: Throwable) {
-
+        toastNotify("SUPER CALLED")
         val responseBodyString = (error as HttpException).response()?.errorBody()?.string().toString()
 
         if (isJSONValid(responseBodyString)){
@@ -198,9 +198,10 @@ abstract class BaseFragment : Fragment() {
                                 // ketika me-tap view diluar edittext maka akan menutup keyboard/softinput
                                 if (!hasFocus) {
                                     closeKeyboard(view)
-                                } else {
-                                    showKeyboard(view)
                                 }
+//                                else {
+//                                    showKeyboard(view)
+//                                }
                             })
                     }
                 }
@@ -246,7 +247,7 @@ abstract class BaseFragment : Fragment() {
     open fun onEnterAnimationEnd() {
         requireView().clearFocus()
         requireView().setBackgroundColor(resources.getColor(android.R.color.background_light))
-        findAndSetEditTextFocusChangeListenerRecursively(requireView())
+        // findAndSetEditTextFocusChangeListenerRecursively(requireView())
     }
 
     // Sekedar racikan sederhana animasi transisi fragment untuk navigation component

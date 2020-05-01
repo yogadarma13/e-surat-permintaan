@@ -30,11 +30,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
-            android:hint="Pilih Proyek" />
+            android:hint="Proyek" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/tilJenis"
         style="@style/AppTheme.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,19 +47,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
-            android:hint="Pilih Jenis" />
+            android:hint="Jenis Permintaan" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilStatus"
+        style="@style/AppTheme.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilJenis">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <AutoCompleteTextView
+            android:id="@+id/spinnerStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:hint="Status Permintaan" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilJenisData"
+        style="@style/AppTheme.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilStatus">
+        <!-- Google themselves instruct us to use the deprecated editable attribute -->
+        <AutoCompleteTextView
+            android:id="@+id/spinnerJenisData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:hint="Jenis Data" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnAjukan"
+        android:id="@+id/btnFilterSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:paddingVertical="12dp"
-        android:text="Ajukan"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        android:layout_marginTop="15dp"
+        android:text="Filter"
+        app:layout_constraintEnd_toEndOf="@+id/tilJenisData"
+        app:layout_constraintStart_toStartOf="@+id/tilJenisData"
+        app:layout_constraintTop_toBottomOf="@+id/tilJenisData" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

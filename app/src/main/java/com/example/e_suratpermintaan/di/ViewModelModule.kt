@@ -51,7 +51,9 @@ val viewModelModule = module {
             get() as GetJenisListUseCase,
             get() as GetCostCodeListUseCase,
             get() as GetPersyaratanListUseCase,
-            get() as GetUomListUseCase
+            get() as GetUomListUseCase,
+            get() as GetStatusPermintaanListUseCase,
+            get() as GetJenisDataPermintaanListUseCase
         )
     }
     viewModel {

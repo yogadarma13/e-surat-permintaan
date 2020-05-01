@@ -143,7 +143,10 @@ data class DataDetailSP(
 	val items: List<ItemsDetailSP?>? = null,
 
 	@field:SerializedName("tombol_tolak")
-	val tombolTolak: Int? = null
+	val tombolTolak: Int? = null,
+
+	@field:SerializedName("tombol_tambah_item")
+	val tombolTambahItem: Int? = null
 )
 
 data class KeteranganDetailSP(

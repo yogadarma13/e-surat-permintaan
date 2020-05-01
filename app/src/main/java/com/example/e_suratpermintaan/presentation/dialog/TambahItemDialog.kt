@@ -1,10 +1,12 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
+import android.app.Dialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,25 +53,22 @@ class TambahItemDialog(
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.let {
-            it.etWaktuPemakaian.setText(dateString)
-            alertDialogTambah.show()
-        }
+        dialogRootView.etWaktuPemakaian.setText(dateString)
     }
 
     private val waktuPelaksanaanDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.let {
-            it.etWaktuPelaksanaan.setText(dateString)
-            alertDialogTambah.show()
-        }
+        dialogRootView.etWaktuPelaksanaan.setText(dateString)
     }
 
     fun initDialogViewTambah(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         dialogRootView =
-            LayoutInflater.from(activity).inflate(R.layout.dialog_tambah_item, null)
+            View.inflate(activity, R.layout.dialog_tambah_item, null)
+
+        dialogRootView.etVolume.setText("0.0")
+
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         val builder = MaterialDatePicker.Builder.datePicker()
@@ -78,7 +77,7 @@ class TambahItemDialog(
         setupAlertDialog(dataProfile, dataDetailSP)
         setupTextChangeListener()
         hideAllRecyclerViews()
-        initRecyclerViews()
+        setupRecyclerViews()
         populateAdapterList()
         setupDatePickerListener()
     }
@@ -95,8 +94,6 @@ class TambahItemDialog(
             datePicker.addOnPositiveButtonClickListener(waktuPemakaianDateSubmitListener)
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
-
-
 
         dialogRootView.etWaktuPelaksanaan.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -142,7 +139,7 @@ class TambahItemDialog(
     }
 
     private fun setupAlertDialog(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
-        val idSp = dataDetailSP.id
+        // val idSp = dataDetailSP.id
         val jenisPermintaan = dataDetailSP.jenis.toString()
         val kodeSp = dataDetailSP.kode.toString()
 
@@ -150,6 +147,9 @@ class TambahItemDialog(
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
                 .setTitle("Tambah Item")
         alertDialogTambah = alertDialogBuilder.create()
+
+        // Ini dipakai biar supaya pas keyboard showup, gak ngepush view dialog
+        preventKeyboardFromPushingViews(alertDialogTambah)
 
         if (dataProfile.roleId!!.toInt() != 1) {
             dialogRootView.formKeterangan.visibility = View.VISIBLE
@@ -190,8 +190,7 @@ class TambahItemDialog(
 
             val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
 
-            alertDialogTambah.hide()
-            val newAlertDialog = alertDialogBuilder
+            val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
                 .setMessage("Apakah Anda yakin ingin menambah item?")
                 .setPositiveButton("Ya") { _, _ ->
                     val createItemSP = CreateItemSP(
@@ -217,10 +216,15 @@ class TambahItemDialog(
 
                 }.create()
 
-            newAlertDialog.show()
+            confirmationDialog.show()
         }
 
         alertDialogTambah.setView(dialogRootView)
+    }
+
+    private fun preventKeyboardFromPushingViews(dialog: Dialog?) {
+        val window: Window? = dialog?.window
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     private fun hideAllRecyclerViews() {
@@ -229,7 +233,7 @@ class TambahItemDialog(
         dialogRootView.rvSatuan.visibility = View.GONE
     }
 
-    private fun initRecyclerViews() {
+    private fun setupRecyclerViews() {
         // ------------------------------ INIT CC START ---------------------------------------------
         ccAdapter = BaseFilterableAdapter(R.layout.item_simple_row, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->

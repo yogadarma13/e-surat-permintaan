@@ -1,5 +1,6 @@
 package com.example.e_suratpermintaan.presentation.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -28,6 +29,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
+    companion object {
+        const val ID_SP_EXTRA_KEY = "id_sp"
+        const val STATUS_SP_DELETED = "SP_DELETED"
+    }
+
     private lateinit var alertDialogEdit: EditItemDialog
     private lateinit var alertDialogTambah: TambahItemDialog
 
@@ -48,14 +54,11 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
     override fun layoutId(): Int = R.layout.activity_detail_surat_permintaan
 
-    companion object {
-        const val ID_SP_EXTRA_KEY = "id_sp"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
+
         idSp.let {
             dataProfile = profilePreference.getProfile()
 
@@ -66,14 +69,14 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 }
 
                 init()
-                setupListeners()
             }
         }
 
     }
 
     private fun init() {
-        initRecyclerView()
+        setupItemSuratPermintaanRecyclerView()
+        setupOnClickListeners()
 
         alertDialogTambah =
             TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
@@ -84,7 +87,19 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             .subscribe(this::handleResponse, this::handleError)
     }
 
-    private fun setupListeners() {
+    private fun setupItemSuratPermintaanRecyclerView() {
+        itemSuratPermintaanAdapter = BaseAdapter(
+            R.layout.item_surat_permintaan_item_row,
+            ItemSuratPermintaanViewHolder::class.java
+        )
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = itemSuratPermintaanAdapter
+    }
+
+    private fun setupOnClickListeners() {
+
+        tvAddItem.visibility = View.GONE
         tvAddItem.setOnClickListener {
             alertDialogTambah.show()
         }
@@ -155,14 +170,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         btnDecline.setOnClickListener {
             showDialogCatatan()
         }
-    }
-
-    private fun initRecyclerView() {
-
-        itemSuratPermintaanAdapter = BaseAdapter(
-            R.layout.item_surat_permintaan_item_row,
-            ItemSuratPermintaanViewHolder::class.java
-        )
 
         itemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
             val data = item as ItemsDetailSP
@@ -191,10 +198,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 }
             }
         }
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = itemSuratPermintaanAdapter
-
     }
 
     fun handleResponse(response: Any) {
@@ -238,6 +241,10 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                     }
 
                     itemSuratPermintaanAdapter.notifyDataSetChanged()
+
+                    if (dataDetailSP.tombolTambahItem == 1){
+                        tvAddItem.visibility = View.VISIBLE
+                    }
 
                     if (dataDetailSP.tombolAjukan == 1) {
                         btnAjukan.visibility = View.VISIBLE
@@ -291,11 +298,17 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
             is DeleteSPResponse -> {
                 toastNotify(response.message)
-                onBackPressed()
+                val intent = Intent()
+                intent.putExtra("status", STATUS_SP_DELETED)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
             }
 
             is EditItemSPResponse -> {
                 toastNotify(response.message)
+                itemSuratPermintaanAdapter.itemList.clear()
+                itemSuratPermintaanAdapter.notifyDataSetChanged()
+                init()
             }
 
             is DeleteItemSPResponse -> {
@@ -310,9 +323,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
             setOnMenuItemClickListener(this@DetailSuratPermintaanActivity)
             inflate(R.menu.menu_item_sp)
-            if (optionPrint) menu.findItem(R.id.menuCetakSP).setVisible(true)
-            if (optionEdit) menu.findItem(R.id.menuEditSP).setVisible(true)
-            if (optionDelete) menu.findItem(R.id.menuHapusSP).setVisible(true)
+            if (optionPrint) menu.findItem(R.id.menuCetakSP).isVisible = true
+            if (optionEdit) menu.findItem(R.id.menuEditSP).isVisible = true
+            if (optionDelete) menu.findItem(R.id.menuHapusSP).isVisible = true
 
             show()
         }
@@ -357,10 +370,10 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
                 .setTitle("Berikan Catatan")
 
-        var alertDialog = alertDialogBuilder.create()
+        val alertDialog = alertDialogBuilder.create()
 
         val dialogRootView =
-            this.layoutInflater.inflate(R.layout.dialog_catatan, null)
+            View.inflate(this, R.layout.dialog_catatan, null)
 
         dialogRootView.btnCatatan.setOnClickListener {
 

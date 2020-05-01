@@ -2,15 +2,19 @@ package com.example.e_suratpermintaan.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterCC
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterPersyaratan
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
+import com.e_suratpermintaan.core.domain.entities.responses.*
 
 class SharedViewModel : ViewModel() {
 
     private val costCodeList: MutableLiveData<List<DataMasterCC?>?> = MutableLiveData()
     private val uomList: MutableLiveData<List<DataMasterUOM?>?> = MutableLiveData()
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()
+    private val statusPermintaanList: MutableLiveData<List<DataMasterStatusPermintaan?>?> =
+        MutableLiveData()
+    private val jenisDataPermintaanList: MutableLiveData<List<DataMasterJenisDataPermintaan?>?> =
+        MutableLiveData()
+
+    private val onNotifikasiReceived: MutableLiveData<String> = MutableLiveData()
 
     fun getCostCodeList(): MutableLiveData<List<DataMasterCC?>?> = costCodeList
 
@@ -28,6 +32,26 @@ class SharedViewModel : ViewModel() {
 
     fun setPersyaratanList(list: List<DataMasterPersyaratan?>?) {
         persyaratanList.value = list
+    }
+
+    fun getStatusPermintaanList(): MutableLiveData<List<DataMasterStatusPermintaan?>?> =
+        statusPermintaanList
+
+    fun setStatusPermintaanList(list: List<DataMasterStatusPermintaan?>?) {
+        statusPermintaanList.value = list
+    }
+
+    fun getJenisDataPermintaanList(): MutableLiveData<List<DataMasterJenisDataPermintaan?>?> =
+        jenisDataPermintaanList
+
+    fun setJenisDataPermintaanList(list: List<DataMasterJenisDataPermintaan?>?) {
+        jenisDataPermintaanList.value = list
+    }
+
+    fun getOnNotifikasiReceived(): MutableLiveData<String> = onNotifikasiReceived
+
+    fun setOnNotifikasiReceived(idSp: String) {
+        onNotifikasiReceived.value = idSp
     }
 
 }
