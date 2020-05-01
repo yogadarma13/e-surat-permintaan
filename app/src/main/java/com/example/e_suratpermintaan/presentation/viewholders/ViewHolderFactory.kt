@@ -35,6 +35,15 @@ class ViewHolderFactory {
                 PersyaratanViewHolder::class.java -> PersyaratanViewHolder(
                     view
                 )
+                EditItemSuratPermintaanViewHolder::class.java -> EditItemSuratPermintaanViewHolder(
+                    view
+                )
+                EditFileSuratPermintaanViewHolder::class.java -> EditFileSuratPermintaanViewHolder(
+                    view
+                )
+                FileSuratPermintaanViewHolder::class.java -> FileSuratPermintaanViewHolder(
+                    view
+                )
                 else -> EmptyViewHolder(view)
             }
         }

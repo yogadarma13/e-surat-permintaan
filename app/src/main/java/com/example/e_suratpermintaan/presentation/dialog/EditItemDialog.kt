@@ -20,6 +20,7 @@ import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPB
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPS
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
+import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
@@ -52,7 +53,7 @@ import java.util.*
 
 
 class EditItemDialog(
-    private val activity: DetailSuratPermintaanActivity,
+    private val activity: EditSuratPermintaanActivity,
     private val sharedViewModel: SharedViewModel,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
