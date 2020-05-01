@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.MasterDataSource
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.usecases.master.*
-import com.e_suratpermintaan.core.usecases.master.filter.GetJenisDataFilterOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.filter.GetJenisPermintaanFilterOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.filter.GetProyekFilterOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.filter.GetStatusFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.GetPenugasanOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.GetStatusPenugasanOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisDataFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisPermintaanFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetProyekFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetStatusFilterOptionUseCase
 import io.reactivex.rxjava3.core.Observable
 
 class MasterViewModel(
@@ -19,7 +21,9 @@ class MasterViewModel(
     private val getMasterStatusFilterOptionUseCase: GetStatusFilterOptionUseCase,
     private val getMasterJenisDataFilterOptionUseCase: GetJenisDataFilterOptionUseCase,
     private val getMasterProyekFilterOptionUseCase: GetProyekFilterOptionUseCase,
-    private val getMasterJenisPermintaanFilterOptionUseCase: GetJenisPermintaanFilterOptionUseCase
+    private val getMasterJenisPermintaanFilterOptionUseCase: GetJenisPermintaanFilterOptionUseCase,
+    private val getMasterPenugasanOptionUseCase: GetPenugasanOptionUseCase,
+    private val getMasterStatusPenugasanOptionUseCase: GetStatusPenugasanOptionUseCase
 ) : ViewModel(), MasterDataSource {
 
     override fun getProyekList(id_user: String): Observable<MasterProyekResponse> =
@@ -48,4 +52,10 @@ class MasterViewModel(
 
     override fun getJenisPermintaanFilterOptionList(id_user: String): Observable<MasterJenisPermintaanFilterOptionResponse> =
         getMasterJenisPermintaanFilterOptionUseCase.invoke(id_user)
+
+    override fun getPenugasanOptionList(): Observable<MasterPenugasanOptionResponse> =
+        getMasterPenugasanOptionUseCase.invoke()
+
+    override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
+        getMasterStatusPenugasanOptionUseCase.invoke()
 }

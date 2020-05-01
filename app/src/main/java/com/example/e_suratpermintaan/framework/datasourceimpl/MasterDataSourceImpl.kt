@@ -34,4 +34,10 @@ class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSourc
     override fun getJenisPermintaanFilterOptionList(id_user: String): Observable<MasterJenisPermintaanFilterOptionResponse> =
         networkApi.getMasterJenisFilterOptionList(id_user)
 
+    override fun getPenugasanOptionList(): Observable<MasterPenugasanOptionResponse> =
+        networkApi.getMasterPenugasanOptionList()
+
+    override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
+        networkApi.getMasterStatusPenugasanOptionList()
+
 }

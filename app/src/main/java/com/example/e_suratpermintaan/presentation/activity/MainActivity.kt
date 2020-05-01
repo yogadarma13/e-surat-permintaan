@@ -60,19 +60,19 @@ class MainActivity : BaseActivity() {
     private val proyekList: ArrayList<DataMasterProyek> = arrayListOf()
     private val jenisList: ArrayList<DataMasterJenis> = arrayListOf()
 
-    private val proyekFilterOptionList: ArrayList<DataMasterFilterOption> = arrayListOf()
-    private val jenisPermintaanFilterOptionList: ArrayList<DataMasterFilterOption> = arrayListOf()
-    private val statusFilterOptionList: ArrayList<DataMasterFilterOption> = arrayListOf()
-    private val jenisDataFilterOptionList: ArrayList<DataMasterFilterOption> =
+    private val proyekOptionList: ArrayList<DataMasterOption> = arrayListOf()
+    private val jenisPermintaanOptionList: ArrayList<DataMasterOption> = arrayListOf()
+    private val statusOptionList: ArrayList<DataMasterOption> = arrayListOf()
+    private val jenisDataOptionList: ArrayList<DataMasterOption> =
         arrayListOf()
 
     private lateinit var jenisAdapter: ArrayAdapter<DataMasterJenis>
     private lateinit var proyekAdapter: ArrayAdapter<DataMasterProyek>
 
-    private lateinit var proyekFilterOptionAdapter: ArrayAdapter<DataMasterFilterOption>
-    private lateinit var jenisPermintaanFilterOptionAdapter: ArrayAdapter<DataMasterFilterOption>
-    private lateinit var statusFilterOptionAdapter: ArrayAdapter<DataMasterFilterOption>
-    private lateinit var jenisDataFilterOptionAdapter: ArrayAdapter<DataMasterFilterOption>
+    private lateinit var proyekOptionAdapter: ArrayAdapter<DataMasterOption>
+    private lateinit var jenisPermintaanOptionAdapter: ArrayAdapter<DataMasterOption>
+    private lateinit var statusOptionAdapter: ArrayAdapter<DataMasterOption>
+    private lateinit var jenisDataOptionAdapter: ArrayAdapter<DataMasterOption>
 
     private var spListState: Parcelable? = null
     private lateinit var spAdapter: BaseAdapter<MyDataViewHolder>
@@ -103,30 +103,30 @@ class MainActivity : BaseActivity() {
 
         sharedViewModel.getStatusFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
-                statusFilterOptionList.add(item as DataMasterFilterOption)
+                statusOptionList.add(item as DataMasterOption)
             }
-            statusFilterOptionAdapter.notifyDataSetChanged()
+            statusOptionAdapter.notifyDataSetChanged()
         })
 
         sharedViewModel.getJenisDataFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
-                jenisDataFilterOptionList.add(item as DataMasterFilterOption)
+                jenisDataOptionList.add(item as DataMasterOption)
             }
-            jenisDataFilterOptionAdapter.notifyDataSetChanged()
+            jenisDataOptionAdapter.notifyDataSetChanged()
         })
 
         sharedViewModel.getJenisPermintaanFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
-                jenisPermintaanFilterOptionList.add(item as DataMasterFilterOption)
+                jenisPermintaanOptionList.add(item as DataMasterOption)
             }
-            jenisPermintaanFilterOptionAdapter.notifyDataSetChanged()
+            jenisPermintaanOptionAdapter.notifyDataSetChanged()
         })
 
         sharedViewModel.getProyekFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
-                proyekFilterOptionList.add(item as DataMasterFilterOption)
+                proyekOptionList.add(item as DataMasterOption)
             }
-            proyekFilterOptionAdapter.notifyDataSetChanged()
+            proyekOptionAdapter.notifyDataSetChanged()
         })
     }
 
@@ -156,10 +156,10 @@ class MainActivity : BaseActivity() {
     private fun initApiRequest() {
         proyekList.clear()
         jenisList.clear()
-        jenisPermintaanFilterOptionList.clear()
-        proyekFilterOptionList.clear()
-        statusFilterOptionList.clear()
-        jenisDataFilterOptionList.clear()
+        jenisPermintaanOptionList.clear()
+        proyekOptionList.clear()
+        statusOptionList.clear()
+        jenisDataOptionList.clear()
         spAdapter.itemList.clear()
 
         tv_show_length_entry.text = getString(
@@ -169,10 +169,10 @@ class MainActivity : BaseActivity() {
 
         proyekAdapter.notifyDataSetChanged()
         jenisAdapter.notifyDataSetChanged()
-        jenisPermintaanFilterOptionAdapter.notifyDataSetChanged()
-        proyekFilterOptionAdapter.notifyDataSetChanged()
-        statusFilterOptionAdapter.notifyDataSetChanged()
-        jenisDataFilterOptionAdapter.notifyDataSetChanged()
+        jenisPermintaanOptionAdapter.notifyDataSetChanged()
+        proyekOptionAdapter.notifyDataSetChanged()
+        statusOptionAdapter.notifyDataSetChanged()
+        jenisDataOptionAdapter.notifyDataSetChanged()
         spAdapter.notifyDataSetChanged()
 
         profileId = profilePreference.getProfile()?.id
@@ -239,17 +239,17 @@ class MainActivity : BaseActivity() {
 
         jenisAdapter = ArrayAdapter(this, R.layout.material_spinner_item, jenisList)
 
-        proyekFilterOptionAdapter =
-            ArrayAdapter(this, R.layout.material_spinner_item, proyekFilterOptionList)
+        proyekOptionAdapter =
+            ArrayAdapter(this, R.layout.material_spinner_item, proyekOptionList)
 
-        jenisPermintaanFilterOptionAdapter =
-            ArrayAdapter(this, R.layout.material_spinner_item, jenisPermintaanFilterOptionList)
+        jenisPermintaanOptionAdapter =
+            ArrayAdapter(this, R.layout.material_spinner_item, jenisPermintaanOptionList)
 
-        statusFilterOptionAdapter =
-            ArrayAdapter(this, R.layout.material_spinner_item, statusFilterOptionList)
+        statusOptionAdapter =
+            ArrayAdapter(this, R.layout.material_spinner_item, statusOptionList)
 
-        jenisDataFilterOptionAdapter =
-            ArrayAdapter(this, R.layout.material_spinner_item, jenisDataFilterOptionList)
+        jenisDataOptionAdapter =
+            ArrayAdapter(this, R.layout.material_spinner_item, jenisDataOptionList)
 
         spAdapter = BaseAdapter(
             R.layout.item_surat_permintaan_row, MyDataViewHolder::class.java
@@ -476,10 +476,10 @@ class MainActivity : BaseActivity() {
         val dialogRootView =
             View.inflate(this, R.layout.dialog_filter_sp, null)
 
-        dialogRootView.spinnerProyek.setAdapter(proyekFilterOptionAdapter)
-        dialogRootView.spinnerJenis.setAdapter(jenisPermintaanFilterOptionAdapter)
-        dialogRootView.spinnerStatus.setAdapter(statusFilterOptionAdapter)
-        dialogRootView.spinnerJenisData.setAdapter(jenisDataFilterOptionAdapter)
+        dialogRootView.spinnerProyek.setAdapter(proyekOptionAdapter)
+        dialogRootView.spinnerJenis.setAdapter(jenisPermintaanOptionAdapter)
+        dialogRootView.spinnerStatus.setAdapter(statusOptionAdapter)
+        dialogRootView.spinnerJenisData.setAdapter(jenisDataOptionAdapter)
 
         dialogRootView.btnFilterSubmit.setOnClickListener {
             val selectedProyek = dialogRootView.spinnerProyek.text.toString()
@@ -488,13 +488,13 @@ class MainActivity : BaseActivity() {
             val selectedJenisData = dialogRootView.spinnerJenisData.text.toString()
 
             selectedIdProyekFilterValue =
-                proyekFilterOptionList.find { it.option == selectedProyek }?.value ?: ""
+                proyekOptionList.find { it.option == selectedProyek }?.value ?: ""
             selectedJenisPermintaanFilterValue =
-                jenisPermintaanFilterOptionList.find { it.option == selectedJenis }?.value ?: ""
+                jenisPermintaanOptionList.find { it.option == selectedJenis }?.value ?: ""
             selectedStatusFilterValue =
-                statusFilterOptionList.find { it.option == selectedStatus }?.value ?: ""
+                statusOptionList.find { it.option == selectedStatus }?.value ?: ""
             selectedJenisDataFilterValue =
-                jenisDataFilterOptionList.find { it.option == selectedJenisData }?.value ?: ""
+                jenisDataOptionList.find { it.option == selectedJenisData }?.value ?: ""
 
             initApiRequest()
 

@@ -215,7 +215,7 @@ class EditItemDialog(
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
                 val data = it as DataMasterPersyaratan
-                if (data.status.equals("checked")) {
+                if (data.isChecked) {
                     persyaratanList.add(data.id.toString())
                 }
             }
@@ -387,11 +387,11 @@ class EditItemDialog(
 
         persyaratanAdapter.itemList.forEach { item ->
             val data = item as DataMasterPersyaratan
-            data.status = "unchecked"
+            data.isChecked = false
 
             itemsDetailSP.persyaratan?.forEach {
                 if (it?.persyaratan.equals(data.id)) {
-                    data.status = "checked"
+                    data.isChecked = true
                 }
             }
         }

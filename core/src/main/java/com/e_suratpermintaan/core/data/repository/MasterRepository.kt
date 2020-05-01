@@ -34,4 +34,10 @@ class MasterRepository(private val masterDataSource: MasterDataSource) :
     override fun getJenisPermintaanFilterOptionList(id_user: String): Observable<MasterJenisPermintaanFilterOptionResponse> =
         masterDataSource.getJenisPermintaanFilterOptionList(id_user)
 
+    override fun getPenugasanOptionList(): Observable<MasterPenugasanOptionResponse> =
+        masterDataSource.getPenugasanOptionList()
+
+    override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
+        masterDataSource.getStatusPenugasanOptionList()
+
 }

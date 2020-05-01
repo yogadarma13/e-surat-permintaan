@@ -9,10 +9,12 @@ import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.EditItemSuratPerm
 import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.ReadDetailItemSuratPermintaanUseCase
 import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.RemoveItemSuratPermintaanUseCase
 import com.e_suratpermintaan.core.usecases.master.*
-import com.e_suratpermintaan.core.usecases.master.filter.GetJenisDataFilterOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.filter.GetJenisPermintaanFilterOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.filter.GetProyekFilterOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.filter.GetStatusFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.GetPenugasanOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.GetStatusPenugasanOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisDataFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisPermintaanFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetProyekFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetStatusFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.GetNotifikasiListUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.ReadNotifikasiUseCase
 import com.e_suratpermintaan.core.usecases.profile.GetProfileUseCase
@@ -59,7 +61,9 @@ val viewModelModule = module {
             get() as GetStatusFilterOptionUseCase,
             get() as GetJenisDataFilterOptionUseCase,
             get() as GetProyekFilterOptionUseCase,
-            get() as GetJenisPermintaanFilterOptionUseCase
+            get() as GetJenisPermintaanFilterOptionUseCase,
+            get() as GetPenugasanOptionUseCase,
+            get() as GetStatusPenugasanOptionUseCase
         )
     }
     viewModel {

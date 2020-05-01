@@ -16,19 +16,19 @@ class PersyaratanViewHolder(private val rootView: View) : BaseViewHolder(rootVie
 
         rootView.checkbox.text = data.nama
 
-        rootView.checkbox.isChecked = (data.status == "checked")
+        rootView.checkbox.isChecked = data.isChecked
 
-        if (data.status == "checked"){
+        if (data.isChecked){
             rootView.checkbox.isChecked = true
         }
 
         rootView.setOnClickListener {
             if (rootView.checkbox.isChecked){
                 rootView.checkbox.isChecked = false
-                data.status = "unchecked"
+                data.isChecked = false
             } else {
                 rootView.checkbox.isChecked = true
-                data.status = "checked"
+                data.isChecked = true
             }
              // rootView.checkbox.text = "${data.nama} ${data.status}"
 
@@ -36,11 +36,7 @@ class PersyaratanViewHolder(private val rootView: View) : BaseViewHolder(rootVie
         }
 
         rootView.checkbox.setOnClickListener {
-            if (rootView.checkbox.isChecked){
-                data.status = "checked"
-            } else {
-                data.status = "unchecked"
-            }
+            data.isChecked = rootView.checkbox.isChecked
              // rootView.checkbox.text = "${data.nama} ${data.status}"
         }
     }

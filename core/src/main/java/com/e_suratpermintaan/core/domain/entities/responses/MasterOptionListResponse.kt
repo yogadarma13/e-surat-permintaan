@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MasterJenisPermintaanFilterOptionResponse (
 
     @field:SerializedName("data")
-    val data: List<DataMasterFilterOption?>? = null,
+    val data: List<DataMasterOption?>? = null,
 
     @field:SerializedName("message")
     val message: String? = null,
@@ -17,7 +17,7 @@ data class MasterJenisPermintaanFilterOptionResponse (
 data class MasterProyekFilterOptionResponse (
 
     @field:SerializedName("data")
-    val data: List<DataMasterFilterOption?>? = null,
+    val data: List<DataMasterOption?>? = null,
 
     @field:SerializedName("message")
     val message: String? = null,
@@ -29,7 +29,7 @@ data class MasterProyekFilterOptionResponse (
 data class MasterJenisDataFilterOptionResponse (
 
     @field:SerializedName("data")
-	val data: List<DataMasterFilterOption?>? = null,
+	val data: List<DataMasterOption?>? = null,
 
     @field:SerializedName("message")
 	val message: String? = null,
@@ -41,7 +41,7 @@ data class MasterJenisDataFilterOptionResponse (
 data class MasterStatusFilterOptionResponse (
 
     @field:SerializedName("data")
-    val data: List<DataMasterFilterOption?>? = null,
+    val data: List<DataMasterOption?>? = null,
 
     @field:SerializedName("message")
     val message: String? = null,
@@ -50,7 +50,29 @@ data class MasterStatusFilterOptionResponse (
     val status: Boolean? = null
 )
 
-data class DataMasterFilterOption(
+data class MasterPenugasanOptionResponse(
+    @field:SerializedName("data")
+    val data: List<DataMasterOption?>? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("status")
+    val status: Boolean? = null
+)
+
+data class MasterStatusPenugasanOptionResponse(
+    @field:SerializedName("data")
+    val data: List<DataMasterOption?>? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("status")
+    val status: Boolean? = null
+)
+
+data class DataMasterOption(
 
     @field:SerializedName("option")
     val option: String? = null,

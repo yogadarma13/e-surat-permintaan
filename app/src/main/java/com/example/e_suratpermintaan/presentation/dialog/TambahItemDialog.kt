@@ -84,6 +84,13 @@ class TambahItemDialog(
         dialogRootView.etWaktuPelaksanaan.setText(dateString)
     }
 
+    private val targetDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
+        val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val date = Date(selectedDate)
+        val dateString = simpleFormat.format(date)
+        dialogRootView.etTarget.setText(dateString)
+    }
+
     fun initDialogViewTambah(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         dialogRootView.etVolume.setText("0.0")
         setupAlertDialog(dataProfile, dataDetailSP)
@@ -102,6 +109,7 @@ class TambahItemDialog(
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
 
+
         dialogRootView.etWaktuPelaksanaan.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
@@ -111,6 +119,20 @@ class TambahItemDialog(
 
         dialogRootView.pickWaktuPelaksanaan.setOnClickListener {
             datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
+            datePicker.show(activity.supportFragmentManager, datePicker.toString())
+        }
+
+
+        dialogRootView.etTarget.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                activity.closeKeyboard(dialogRootView.etTarget)
+                datePicker.addOnPositiveButtonClickListener(targetDateSubmitListener)
+                datePicker.show(activity.supportFragmentManager, datePicker.toString())
+            }
+        }
+
+        dialogRootView.pickTarget.setOnClickListener {
+            datePicker.addOnPositiveButtonClickListener(targetDateSubmitListener)
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
     }
@@ -142,7 +164,7 @@ class TambahItemDialog(
                 // harus di uncheck untuk menghilangkan data "checked" untuk
                 // data yang baru saja ditambahkan sebelum ini
                 // Karna sharedViewModel berubah datanya karna diset "checked"
-                item?.status = "unchecked"
+                item?.isChecked = false
 
                 persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
             }
@@ -172,6 +194,9 @@ class TambahItemDialog(
         }
 
         dialogRootView.btnTambah.setOnClickListener {
+            // Untuk menghilangkan focus yang ada di input field
+            dialogRootView.clearFocus()
+
             val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
             val jenisBarang = dialogRootView.etJenisBarang.text.toString()
             val volume = dialogRootView.etVolume.text.toString()
@@ -187,7 +212,7 @@ class TambahItemDialog(
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
                 val data = it as DataMasterPersyaratan
-                if (data.status.equals("checked")) {
+                if (data.isChecked) {
                     persyaratanList.add(data.id.toString())
                 }
             }

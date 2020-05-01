@@ -22,4 +22,8 @@ interface MasterDataSource {
     fun getProyekFilterOptionList(id_user: String): Observable<MasterProyekFilterOptionResponse>
 
     fun getJenisPermintaanFilterOptionList(id_user: String): Observable<MasterJenisPermintaanFilterOptionResponse>
+
+    fun getPenugasanOptionList(): Observable<MasterPenugasanOptionResponse>
+
+    fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse>
 }

@@ -112,6 +112,12 @@ interface NetworkApi {
         @Query("id_user") id_user: String
     ): Observable<MasterProyekFilterOptionResponse>
 
+    @GET("penugasan")
+    fun getMasterPenugasanOptionList(): Observable<MasterPenugasanOptionResponse>
+
+    @GET("status_penugasan")
+    fun getMasterStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse>
+
     @GET("dataproyek")
     fun getMasterProyek(
         @Query("id_user") id_user: String
