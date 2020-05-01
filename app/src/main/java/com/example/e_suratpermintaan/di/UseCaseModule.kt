@@ -11,6 +11,10 @@ import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.EditItemSuratPerm
 import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.ReadDetailItemSuratPermintaanUseCase
 import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.RemoveItemSuratPermintaanUseCase
 import com.e_suratpermintaan.core.usecases.master.*
+import com.e_suratpermintaan.core.usecases.master.filter.GetJenisDataFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetJenisPermintaanFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetProyekFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetStatusFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.GetNotifikasiListUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.ReadNotifikasiUseCase
 import com.e_suratpermintaan.core.usecases.profile.GetProfileUseCase
@@ -127,13 +131,25 @@ val useCaseModule = module {
         )
     }
     single {
-        GetStatusPermintaanListUseCase(
+        GetStatusFilterOptionUseCase(
             get() as MasterRepository,
             get() as SchedulerProvider
         )
     }
     single {
-        GetJenisDataPermintaanListUseCase(
+        GetJenisDataFilterOptionUseCase(
+            get() as MasterRepository,
+            get() as SchedulerProvider
+        )
+    }
+    single {
+        GetProyekFilterOptionUseCase(
+            get() as MasterRepository,
+            get() as SchedulerProvider
+        )
+    }
+    single {
+        GetJenisPermintaanFilterOptionUseCase(
             get() as MasterRepository,
             get() as SchedulerProvider
         )

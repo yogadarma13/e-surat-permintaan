@@ -9,6 +9,10 @@ import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.EditItemSuratPerm
 import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.ReadDetailItemSuratPermintaanUseCase
 import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.RemoveItemSuratPermintaanUseCase
 import com.e_suratpermintaan.core.usecases.master.*
+import com.e_suratpermintaan.core.usecases.master.filter.GetJenisDataFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetJenisPermintaanFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetProyekFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetStatusFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.GetNotifikasiListUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.ReadNotifikasiUseCase
 import com.e_suratpermintaan.core.usecases.profile.GetProfileUseCase
@@ -52,8 +56,10 @@ val viewModelModule = module {
             get() as GetCostCodeListUseCase,
             get() as GetPersyaratanListUseCase,
             get() as GetUomListUseCase,
-            get() as GetStatusPermintaanListUseCase,
-            get() as GetJenisDataPermintaanListUseCase
+            get() as GetStatusFilterOptionUseCase,
+            get() as GetJenisDataFilterOptionUseCase,
+            get() as GetProyekFilterOptionUseCase,
+            get() as GetJenisPermintaanFilterOptionUseCase
         )
     }
     viewModel {

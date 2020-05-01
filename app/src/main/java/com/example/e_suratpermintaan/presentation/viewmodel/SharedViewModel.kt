@@ -9,9 +9,14 @@ class SharedViewModel : ViewModel() {
     private val costCodeList: MutableLiveData<List<DataMasterCC?>?> = MutableLiveData()
     private val uomList: MutableLiveData<List<DataMasterUOM?>?> = MutableLiveData()
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()
-    private val statusPermintaanList: MutableLiveData<List<DataMasterStatusPermintaan?>?> =
+
+    private val statusFilterOptionList: MutableLiveData<List<DataMasterFilterOption?>?> =
         MutableLiveData()
-    private val jenisDataPermintaanList: MutableLiveData<List<DataMasterJenisDataPermintaan?>?> =
+    private val jenisDataFilterOptionList: MutableLiveData<List<DataMasterFilterOption?>?> =
+        MutableLiveData()
+    private val proyekFilterOptionList: MutableLiveData<List<DataMasterFilterOption?>?> =
+        MutableLiveData()
+    private val jenisPermintaanFilterOptionList: MutableLiveData<List<DataMasterFilterOption?>?> =
         MutableLiveData()
 
     private val onNotifikasiReceived: MutableLiveData<String> = MutableLiveData()
@@ -34,18 +39,32 @@ class SharedViewModel : ViewModel() {
         persyaratanList.value = list
     }
 
-    fun getStatusPermintaanList(): MutableLiveData<List<DataMasterStatusPermintaan?>?> =
-        statusPermintaanList
+    fun getStatusFilterOptionList(): MutableLiveData<List<DataMasterFilterOption?>?> =
+        statusFilterOptionList
 
-    fun setStatusPermintaanList(list: List<DataMasterStatusPermintaan?>?) {
-        statusPermintaanList.value = list
+    fun setStatusFilterOptionList(list: List<DataMasterFilterOption?>?) {
+        statusFilterOptionList.value = list
     }
 
-    fun getJenisDataPermintaanList(): MutableLiveData<List<DataMasterJenisDataPermintaan?>?> =
-        jenisDataPermintaanList
+    fun getJenisDataFilterOptionList(): MutableLiveData<List<DataMasterFilterOption?>?> =
+        jenisDataFilterOptionList
 
-    fun setJenisDataPermintaanList(list: List<DataMasterJenisDataPermintaan?>?) {
-        jenisDataPermintaanList.value = list
+    fun setJenisDataFilterOptionList(list: List<DataMasterFilterOption?>?) {
+        jenisDataFilterOptionList.value = list
+    }
+
+    fun getProyekFilterOptionList(): MutableLiveData<List<DataMasterFilterOption?>?> =
+        proyekFilterOptionList
+
+    fun setProyekFilterOptionList(list: List<DataMasterFilterOption?>?) {
+        proyekFilterOptionList.value = list
+    }
+
+    fun getJenisPermintaanFilterOptionList(): MutableLiveData<List<DataMasterFilterOption?>?> =
+        jenisPermintaanFilterOptionList
+
+    fun setJenisPermintaanFilterOptionList(list: List<DataMasterFilterOption?>?) {
+        jenisPermintaanFilterOptionList.value = list
     }
 
     fun getOnNotifikasiReceived(): MutableLiveData<String> = onNotifikasiReceived

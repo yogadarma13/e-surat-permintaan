@@ -1,16 +1,16 @@
-package com.e_suratpermintaan.core.usecases.master
+package com.e_suratpermintaan.core.usecases.master.filter
 
 import com.e_suratpermintaan.core.data.repository.MasterRepository
-import com.e_suratpermintaan.core.domain.entities.responses.MasterStatusPermintaanResponse
+import com.e_suratpermintaan.core.domain.entities.responses.MasterProyekFilterOptionResponse
 import com.e_suratpermintaan.core.rx.SchedulerProvider
 import io.reactivex.rxjava3.core.Observable
 
-class GetStatusPermintaanListUseCase(
+class GetProyekFilterOptionUseCase(
     private val masterProyekRepository: MasterRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(): Observable<MasterStatusPermintaanResponse> =
-        masterProyekRepository.getStatusPermintaanList()
+    fun invoke(id_user: String): Observable<MasterProyekFilterOptionResponse> =
+        masterProyekRepository.getProyekFilterOptionList(id_user)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }

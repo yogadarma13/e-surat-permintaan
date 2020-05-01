@@ -97,10 +97,20 @@ interface NetworkApi {
 
     // =================================== MASTER ===============================================
     @GET("status_permintaan")
-    fun getMasterStatusPermintaan(): Observable<MasterStatusPermintaanResponse>
+    fun getMasterStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse>
 
     @GET("jenis_data")
-    fun getMasterJenisDataPermintaan(): Observable<MasterJenisDataPermintaanResponse>
+    fun getMasterJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse>
+
+    @GET("jenis_permintaan")
+    fun getMasterJenisFilterOptionList(
+        @Query("id_user") id_user: String
+    ): Observable<MasterJenisPermintaanFilterOptionResponse>
+
+    @GET("proyek")
+    fun getMasterProyekFilterOptionList(
+        @Query("id_user") id_user: String
+    ): Observable<MasterProyekFilterOptionResponse>
 
     @GET("dataproyek")
     fun getMasterProyek(

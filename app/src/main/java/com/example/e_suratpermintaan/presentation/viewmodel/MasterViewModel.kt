@@ -4,6 +4,10 @@ import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.MasterDataSource
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.usecases.master.*
+import com.e_suratpermintaan.core.usecases.master.filter.GetJenisDataFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetJenisPermintaanFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetProyekFilterOptionUseCase
+import com.e_suratpermintaan.core.usecases.master.filter.GetStatusFilterOptionUseCase
 import io.reactivex.rxjava3.core.Observable
 
 class MasterViewModel(
@@ -12,8 +16,10 @@ class MasterViewModel(
     private val getCostCodeListUseCase: GetCostCodeListUseCase,
     private val getPersyaratanListUseCase: GetPersyaratanListUseCase,
     private val getUomListUseCase: GetUomListUseCase,
-    private val getMasterStatusPermintaanListUseCase: GetStatusPermintaanListUseCase,
-    private val getmasterJenisDataPermintaanListUseCase: GetJenisDataPermintaanListUseCase
+    private val getMasterStatusFilterOptionUseCase: GetStatusFilterOptionUseCase,
+    private val getMasterJenisDataFilterOptionUseCase: GetJenisDataFilterOptionUseCase,
+    private val getMasterProyekFilterOptionUseCase: GetProyekFilterOptionUseCase,
+    private val getMasterJenisPermintaanFilterOptionUseCase: GetJenisPermintaanFilterOptionUseCase
 ) : ViewModel(), MasterDataSource {
 
     override fun getProyekList(id_user: String): Observable<MasterProyekResponse> =
@@ -31,9 +37,15 @@ class MasterViewModel(
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         getUomListUseCase.invoke(id)
 
-    override fun getStatusPermintaanList(): Observable<MasterStatusPermintaanResponse> =
-        getMasterStatusPermintaanListUseCase.invoke()
+    override fun getStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse> =
+        getMasterStatusFilterOptionUseCase.invoke()
 
-    override fun getJenisDataPermintaanList(): Observable<MasterJenisDataPermintaanResponse> =
-        getmasterJenisDataPermintaanListUseCase.invoke()
+    override fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse> =
+        getMasterJenisDataFilterOptionUseCase.invoke()
+
+    override fun getProyekFilterOptionList(id_user: String): Observable<MasterProyekFilterOptionResponse> =
+        getMasterProyekFilterOptionUseCase.invoke(id_user)
+
+    override fun getJenisPermintaanFilterOptionList(id_user: String): Observable<MasterJenisPermintaanFilterOptionResponse> =
+        getMasterJenisPermintaanFilterOptionUseCase.invoke(id_user)
 }
