@@ -145,6 +145,40 @@
                     app:layout_constraintTop_toBottomOf="@id/formContainer"
                     layout="@layout/dialog_tambah_item_form_keterangan" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilPenugasan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/formKeterangan"
+                    app:layout_constraintStart_toStartOf="@id/formKeterangan"
+                    app:layout_constraintTop_toBottomOf="@id/formKeterangan">
+                    <!-- Google themselves instruct us to use the deprecated editable attribute -->
+                    <EditText
+                        android:id="@+id/etPenugasan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ditugaskan Kepada" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilStatusPenugasan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/tilPenugasan"
+                    app:layout_constraintStart_toStartOf="@id/tilPenugasan"
+                    app:layout_constraintTop_toBottomOf="@id/tilPenugasan">
+                    <!-- Google themselves instruct us to use the deprecated editable attribute -->
+                    <EditText
+                        android:id="@+id/etStatusPenugasan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Status Penugasan" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvKodePekerjaan"
                     android:layout_width="match_parent"
@@ -164,6 +198,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/tilSatuan"
+                    tools:layout_editor_absoluteX="24dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPenugasan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tilPenugasan"
+                    tools:layout_editor_absoluteX="24dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvStatusPenugasan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tilStatusPenugasan"
                     tools:layout_editor_absoluteX="24dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

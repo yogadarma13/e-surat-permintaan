@@ -9,6 +9,8 @@ class SharedViewModel : ViewModel() {
     private val costCodeList: MutableLiveData<List<DataMasterCC?>?> = MutableLiveData()
     private val uomList: MutableLiveData<List<DataMasterUOM?>?> = MutableLiveData()
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()
+    private val penugasanList: MutableLiveData<List<DataMasterOption?>?> = MutableLiveData()
+    private val statusPenugasanList: MutableLiveData<List<DataMasterOption?>?> = MutableLiveData()
 
     private val statusOptionList: MutableLiveData<List<DataMasterOption?>?> =
         MutableLiveData()
@@ -37,6 +39,18 @@ class SharedViewModel : ViewModel() {
 
     fun setPersyaratanList(list: List<DataMasterPersyaratan?>?) {
         persyaratanList.value = list
+    }
+
+    fun getPenugasanList(): MutableLiveData<List<DataMasterOption?>?> = penugasanList
+
+    fun setPenugasanList(list: List<DataMasterOption?>?) {
+        penugasanList.value = list
+    }
+
+    fun getStatusPenugasanList(): MutableLiveData<List<DataMasterOption?>?> = statusPenugasanList
+
+    fun setStatusPenugasnList(list: List<DataMasterOption?>?) {
+        statusPenugasanList.value = list
     }
 
     fun getStatusFilterOptionList(): MutableLiveData<List<DataMasterOption?>?> =

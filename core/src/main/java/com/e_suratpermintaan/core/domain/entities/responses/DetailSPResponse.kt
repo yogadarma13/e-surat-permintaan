@@ -37,23 +37,14 @@ data class ItemsDetailSP(
 	@field:SerializedName("waktu_pemakaian")
 	val waktuPemakaian: String? = null,
 
-	@field:SerializedName("tombol_edit_item")
-	val tombolEditItem: Int? = null,
-
 	@field:SerializedName("target")
 	val target: String? = null,
-
-	@field:SerializedName("tombol_tambah_item")
-	val tombolTambahItem: Int? = null,
 
 	@field:SerializedName("id_barang")
 	val idBarang: String? = null,
 
 	@field:SerializedName("qty")
 	val qty: String? = null,
-
-	@field:SerializedName("tombol_hapus_item")
-	val tombolHapusItem: Int? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null,
@@ -62,25 +53,19 @@ data class ItemsDetailSP(
 	val kodePekerjaan: String? = null,
 
 	@field:SerializedName("kapasitas")
-	val kapasitas: String? = null
+	val kapasitas: String? = null,
+
+	@field:SerializedName("tombol_edit_item")
+	val tombolEditItem: Int? = null,
+
+	@field:SerializedName("tombol_tambah_item")
+	val tombolTambahItem: Int? = null,
+
+	@field:SerializedName("tombol_hapus_item")
+	val tombolHapusItem: Int? = null
 )
 
 data class DataDetailSP(
-
-	@field:SerializedName("tombol_edit")
-	val tombolEdit: Int? = null,
-
-	@field:SerializedName("tombol_hapus")
-	val tombolHapus: Int? = null,
-
-	@field:SerializedName("tombol_cetak")
-	val tombolCetak: Int? = null,
-
-	@field:SerializedName("tombol_simpan_draft")
-	val tombolSimpanDraft: Int? = null,
-
-	@field:SerializedName("tombol_simpan")
-	val tombolSimpan: Int? = null,
 
 	@field:SerializedName("id_status")
 	val idStatus: String? = null,
@@ -118,9 +103,6 @@ data class DataDetailSP(
 	@field:SerializedName("id_pd")
 	val idPd: String? = null,
 
-	@field:SerializedName("tombol_ajukan")
-	val tombolAjukan: Int? = null,
-
 	@field:SerializedName("nama_lokasi")
 	val namaLokasi: String? = null,
 
@@ -130,23 +112,50 @@ data class DataDetailSP(
 	@field:SerializedName("jenis")
 	val jenis: String? = null,
 
-	@field:SerializedName("tombol_terima")
-	val tombolTerima: Int? = null,
-
 	@field:SerializedName("id_pic")
 	val idPic: String? = null,
 
-	@field:SerializedName("tombol_batalkan")
-	val tombolBatalkan: Int? = null,
-
 	@field:SerializedName("items")
 	val items: List<ItemsDetailSP?>? = null,
+
+	@field:SerializedName("tombol_edit")
+	val tombolEdit: Int? = null,
+
+	@field:SerializedName("tombol_hapus")
+	val tombolHapus: Int? = null,
+
+	@field:SerializedName("tombol_cetak")
+	val tombolCetak: Int? = null,
+
+	@field:SerializedName("tombol_simpan_draft")
+	val tombolSimpanDraft: Int? = null,
+
+	@field:SerializedName("tombol_simpan")
+	val tombolSimpan: Int? = null,
+
+	@field:SerializedName("tombol_ajukan")
+	val tombolAjukan: Int? = null,
+
+	@field:SerializedName("tombol_terima")
+	val tombolTerima: Int? = null,
+
+	@field:SerializedName("tombol_batalkan")
+	val tombolBatalkan: Int? = null,
 
 	@field:SerializedName("tombol_tolak")
 	val tombolTolak: Int? = null,
 
 	@field:SerializedName("tombol_tambah_item")
-	val tombolTambahItem: Int? = null
+	val tombolTambahItem: Int? = null,
+
+	@field:SerializedName("input_keterangan")
+	val inputKeterangan: Int? = null,
+
+	@field:SerializedName("input_kepada")
+	val inputPenugasan: Int? = null,
+
+	@field:SerializedName("input_penugasan")
+	val inputStatusPenugasan: Int? = null
 )
 
 data class KeteranganDetailSP(

@@ -3,9 +3,7 @@ package com.example.e_suratpermintaan.presentation.viewholders
 import android.view.View
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.*
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.*
 
 class ViewHolderFactory {
     companion object {
@@ -33,6 +31,12 @@ class ViewHolderFactory {
                     view
                 )
                 PersyaratanViewHolder::class.java -> PersyaratanViewHolder(
+                    view
+                )
+                PenugasanViewHolder::class.java -> PenugasanViewHolder(
+                    view
+                )
+                StatusPenugasanViewHolder::class.java -> StatusPenugasanViewHolder(
                     view
                 )
                 else -> EmptyViewHolder(view)
