@@ -13,7 +13,7 @@ import com.example.e_suratpermintaan.framework.animations.SlideAnimation
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import kotlinx.android.synthetic.main.item_surat_permintaan_item_row.view.*
 
-class ItemSuratPermintaanViewHolder(private val rootView: View) :
+class EditItemSuratPermintaanViewHolder(private val rootView: View) :
     BaseViewHolder(rootView) {
 
     companion object {
@@ -21,27 +21,7 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
         const val BTN_EDIT = "btnEdit"
     }
 
-    init {
-        this.setIsRecyclable(false)
-    }
-
-    // TransitionManager.beginDelayedTransition() :
-    // Android cardview expandable transition : https://www.youtube.com/watch?v=19E85PngufY&vl=en
-
-    // For View Visibility.GONE transition, not working using beginDelayedTransition():
-    // Jadi implement custom animation aja, referensi dari sini :
-    // https://coderwall.com/p/35xi3w/layout-change-animations-sliding-height
-
-    // Atau kalau males nulis kodingan taruh di xml aja animateLayoutChanges di rootView atau di view itu sendiri
-    // or just set it at xml, with animateLayoutChanges=true :
-    // https://stackoverflow.com/questions/22454839/android-adding-simple-animations-while-setvisibilityview-gone
-
-    override fun bind(
-        item: Any?,
-        position: Int,
-        listener: (Any?, String?) -> Unit
-    ) {
-
+    override fun bind(item: Any?, position: Int, listener: (Any?, String?) -> Unit) {
         val data = item as ItemsDetailSP
 
         rootView.setOnClickListener {
@@ -52,6 +32,20 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
         rootView.tvJenisBarang.text = data.idBarang
         rootView.tvVolume.text = data.qty
         rootView.tvSatuan.text = data.idSatuan
+
+        if (data.tombolEditItem == 1){
+            rootView.btnEdit.visibility = View.VISIBLE
+            rootView.btnEdit.setOnClickListener {
+                listener.invoke(data, BTN_EDIT)
+            }
+        }
+
+        if (data.tombolHapusItem == 1){
+            rootView.btnHapus.visibility = View.VISIBLE
+            rootView.btnHapus.setOnClickListener {
+                listener.invoke(data, BTN_HAPUS)
+            }
+        }
 
         rootView.constraintLayout.setOnClickListener {
 
@@ -94,5 +88,4 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
 
         }
     }
-
 }

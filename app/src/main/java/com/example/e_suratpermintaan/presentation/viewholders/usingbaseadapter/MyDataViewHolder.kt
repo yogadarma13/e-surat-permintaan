@@ -1,5 +1,6 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter
 
+import android.graphics.Color
 import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
@@ -24,6 +25,8 @@ class MyDataViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
         rootView.tvJenis.text = data.jenis
         rootView.tvProyek.text = data.namaProyek
         rootView.tvPabrik.text = data.namaLokasi
+        rootView.tvDurasi.text = data.durasi
+        rootView.cardStatusPermintaan.setCardBackgroundColor(Color.parseColor(data.warna))
     }
 
 }

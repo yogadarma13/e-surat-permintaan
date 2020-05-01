@@ -75,7 +75,7 @@ class LoginFragment : BaseFragment() {
                     .subscribe(this::loginResponse, this::handleError)
                 closeKeyboard(requireActivity())
             }
-        }, 1000)
+        }, 850)
 
         closeKeyboard(activity as Activity)
     }

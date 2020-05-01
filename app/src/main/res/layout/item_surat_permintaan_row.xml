@@ -14,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:paddingVertical="14dp"
+        android:paddingHorizontal="20sp">
 
         <TextView
             android:id="@+id/tvKode"
@@ -35,41 +36,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Proyek A"
-            app:layout_constraintEnd_toStartOf="@+id/lineSeparatorProyek"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toStartOf="@+id/cardStatusPermintaan"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvKode" />
-
-        <View
-            android:id="@+id/lineSeparatorProyek"
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/separator_color"
-            app:layout_constraintBottom_toBottomOf="@+id/tvProyek"
-            app:layout_constraintEnd_toStartOf="@+id/tvJenis"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/tvProyek"
-            app:layout_constraintTop_toTopOf="@+id/tvProyek" />
 
         <TextView
             android:id="@+id/tvJenis"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             android:text="SPB"
             app:layout_constraintEnd_toStartOf="@+id/cardStatusPermintaan"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/lineSeparatorProyek"
-            app:layout_constraintTop_toBottomOf="@+id/tvKode" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProyek" />
 
         <ImageView
             android:id="@+id/imgPabrik"
@@ -77,50 +64,64 @@
             android:layout_height="18dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_location"
-            app:layout_constraintEnd_toStartOf="@+id/tvPabrik"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvProyek" />
+            app:layout_constraintTop_toBottomOf="@+id/tvJenis" />
 
         <TextView
             android:id="@+id/tvPabrik"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="Pabrik A"
             android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/imgTanggal"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/cardStatusPermintaan"
             app:layout_constraintStart_toEndOf="@+id/imgPabrik"
-            app:layout_constraintTop_toBottomOf="@+id/tvProyek" />
+            app:layout_constraintTop_toBottomOf="@+id/tvJenis" />
 
         <ImageView
             android:id="@+id/imgTanggal"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_marginLeft="14dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_date"
-            app:layout_constraintEnd_toStartOf="@+id/tvTanggalPengajuan"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvPabrik"
-            app:layout_constraintTop_toBottomOf="@id/tvProyek" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgPabrik" />
 
         <TextView
             android:id="@+id/tvTanggalPengajuan"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:text="21-02-2019"
             android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/cardStatusPermintaan"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imgTanggal"
-            app:layout_constraintTop_toBottomOf="@+id/tvJenis" />
+            app:layout_constraintTop_toBottomOf="@+id/imgPabrik" />
 
+        <ImageView
+            android:id="@+id/imgDurasi"
+            android:layout_width="18dp"
+            android:layout_marginLeft="16dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_time"
+            app:layout_constraintStart_toEndOf="@id/tvTanggalPengajuan"
+            app:layout_constraintTop_toBottomOf="@+id/imgPabrik" />
+
+        <TextView
+            android:id="@+id/tvDurasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="21-02-2019"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/imgDurasi"
+            app:layout_constraintTop_toBottomOf="@+id/imgPabrik" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardStatusPermintaan"
@@ -138,6 +139,7 @@
                 android:id="@+id/tvStatusPermintaan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:layout_gravity="center"
                 android:padding="8dp"
                 android:text="TEXT" />

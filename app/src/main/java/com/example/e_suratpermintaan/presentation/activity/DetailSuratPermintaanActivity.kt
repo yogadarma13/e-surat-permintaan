@@ -15,12 +15,8 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
-import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
-import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
-import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
@@ -35,19 +31,18 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         const val STATUS_SP_DELETED = "SP_DELETED"
     }
 
-    private lateinit var alertDialogEdit: EditItemDialog
-    private lateinit var alertDialogTambah: TambahItemDialog
+//    private lateinit var alertDialogEdit: EditItemDialog
+//    private lateinit var alertDialogTambah: TambahItemDialog
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
-    private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
-    private val sharedViewModel: SharedViewModel by inject()
 
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
     private var kodeSp: String? = null
     private lateinit var idUser: String
     private lateinit var itemSuratPermintaanAdapter: BaseAdapter<ItemSuratPermintaanViewHolder>
+    private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder>
     private var optionPrint = false
     private var optionEdit = false
     private var optionDelete = false
@@ -76,11 +71,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     }
 
     private fun init() {
-        alertDialogTambah =
-            TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
-
-        alertDialogEdit = EditItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
-
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
         initApiRequest()
@@ -103,14 +93,18 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = itemSuratPermintaanAdapter
+
+        fileSuratPermintaanAdapter = BaseAdapter(
+            R.layout.item_file_lampiran_row,
+            FileSuratPermintaanViewHolder::class.java
+        )
+
+        recyclerViewFile.layoutManager = LinearLayoutManager(this)
+        recyclerViewFile.adapter = fileSuratPermintaanAdapter
     }
 
     private fun setupActionListeners() {
 
-        tvAddItem.visibility = View.GONE
-        tvAddItem.setOnClickListener {
-            alertDialogTambah.show()
-        }
 
         three_dot.setOnClickListener {
             showMenuItem(it)
@@ -179,34 +173,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             showDialogCatatan()
         }
 
-        itemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
-            val data = item as ItemsDetailSP
-
-            when (actionString) {
-                BaseViewHolder.ROOTVIEW -> {
-                    // Ignored
-                }
-                ItemSuratPermintaanViewHolder.BTN_EDIT -> {
-                    alertDialogEdit.show(data)
-                }
-                ItemSuratPermintaanViewHolder.BTN_HAPUS -> {
-                    val alertDialog =
-                        AlertDialog.Builder(this)
-                            .setTitle("Konfirmasi Hapus Item")
-                            .setMessage("Apa anda yakin ingin menghapus item?")
-                            .setPositiveButton("Hapus") { _, _ ->
-                                disposable =
-                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
-                                        .subscribe(this::handleResponse, this::handleError)
-                            }.setNegativeButton("Batal") { dialog, _ ->
-                                dialog.dismiss()
-                            }.create()
-
-                    alertDialog.show()
-                }
-            }
-        }
-
         swipeRefreshLayout.setOnRefreshListener {
             if (!isConnectedToInternet) {
                 toastNotify("Please turn on the internet")
@@ -224,7 +190,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 1000)
+        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 850)
     }
 
     override fun handleError(error: Throwable) {
@@ -246,57 +212,66 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                     val dataDetailSP = detailSPResponse?.get(0)
                     kodeSp = dataDetailSP?.kode
 
-                    alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
-                    alertDialogEdit.initDialogViewEdit(dataProfile!!, dataDetailSP)
-
-                    val detailDate = dataDetailSP.tanggalPengajuan?.split(" ")
+                    val detailDate = dataDetailSP?.tanggalPengajuan?.split(" ")
 
                     tv_kode_detail.text = kodeSp
                     tv_kode_sp.text = kodeSp
-                    tv_name_proyek_detail.text = dataDetailSP.namaProyek
-                    tv_location_detail.text = dataDetailSP.namaLokasi
+                    tv_name_proyek_detail.text = dataDetailSP?.namaProyek
+                    tv_location_detail.text = dataDetailSP?.namaLokasi
                     tv_date_detail.text = detailDate?.get(0)
                     tv_time_detail.text = detailDate?.get(1)
-                    tv_status_detail.text = dataDetailSP.statusPermintaan
-                    tv_jenis_detail.text = dataDetailSP.jenis
-                    jenisSP = dataDetailSP.jenis
+                    tv_status_detail.text = dataDetailSP?.statusPermintaan
+                    tv_jenis_detail.text = dataDetailSP?.jenis
+                    jenisSP = dataDetailSP?.jenis
 
-                    val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
-
-                    itemList?.forEach {
-                        itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
+                    val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
+                    if (!itemList.isNullOrEmpty()) {
+                        constraint_text_item.visibility = View.VISIBLE
+                        itemList.forEach {
+                            itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
+                        }
                     }
                     itemSuratPermintaanAdapter.notifyDataSetChanged()
 
-                    if (dataDetailSP.tombolTambahItem == 1) {
-                        tvAddItem.visibility = View.VISIBLE
+                    val fileList = dataDetailSP?.fileLampiran
+                    if (!fileList.isNullOrEmpty()) {
+                        constraint_text_file.visibility = View.VISIBLE
+                        fileList.forEach {
+                            fileSuratPermintaanAdapter.itemList.add(it as FileLampiranDetailSP)
+                        }
                     }
 
-                    if (dataDetailSP.tombolAjukan == 1) {
+                    fileSuratPermintaanAdapter.notifyDataSetChanged()
+
+//                    if (dataDetailSP?.tombolTambahItem == 1){
+//                        tvAddItem.visibility = View.VISIBLE
+//                    }
+
+                    if (dataDetailSP?.tombolAjukan == 1) {
                         btnAjukan.visibility = View.VISIBLE
                     }
 
-                    if (dataDetailSP.tombolBatalkan == 1) {
+                    if (dataDetailSP?.tombolBatalkan == 1) {
                         btnCancel.visibility = View.VISIBLE
                     }
 
-                    if (dataDetailSP.tombolTerima == 1) {
+                    if (dataDetailSP?.tombolTerima == 1) {
                         btnAccept.visibility = View.VISIBLE
                     }
 
-                    if (dataDetailSP.tombolTolak == 1) {
+                    if (dataDetailSP?.tombolTolak == 1) {
                         btnDecline.visibility = View.VISIBLE
                     }
 
-                    if (dataDetailSP.tombolCetak == 1) {
+                    if (dataDetailSP?.tombolCetak == 1) {
                         optionPrint = true
                     }
 
-                    if (dataDetailSP.tombolEdit == 1) {
+                    if (dataDetailSP?.tombolEdit == 1) {
                         optionEdit = true
                     }
 
-                    if (dataDetailSP.tombolHapus == 1) {
+                    if (dataDetailSP?.tombolHapus == 1) {
                         optionDelete = true
                     }
 
@@ -329,23 +304,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
-
-            is CreateItemSPResponse -> {
-                toastNotify(response.message)
-                alertDialogTambah =
-                    TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
-                initApiRequest()
-            }
-
-            is EditItemSPResponse -> {
-                toastNotify(response.message)
-                initApiRequest()
-            }
-
-            is DeleteItemSPResponse -> {
-                toastNotify(response.message)
-                initApiRequest()
-            }
         }
     }
 
@@ -374,7 +332,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 true
             }
             R.id.menuEditSP -> {
-                toastNotify("Edit")
+                val intent = Intent(this, EditSuratPermintaanActivity::class.java)
+                intent.putExtra("id_sp", idSp)
+                startActivity(intent)
                 true
             }
             R.id.menuHapusSP -> {

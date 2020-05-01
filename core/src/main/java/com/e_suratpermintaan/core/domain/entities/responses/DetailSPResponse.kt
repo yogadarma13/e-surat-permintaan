@@ -179,7 +179,17 @@ data class FileLampiranDetailSP(
 	val keterangan: String? = null,
 
 	@field:SerializedName("dir")
-	val dir: String? = null
+	val dir: String? = null,
+
+	@field:SerializedName("id_file")
+	val id_file: String? = null,
+
+	@field:SerializedName("tombol_edit_file")
+	val tombolEditFile: Int? = null,
+
+	@field:SerializedName("tombol_hapus_file")
+	val tombolHapusFile: Int? = null
+
 )
 
 data class PersyaratanItemDetailSP(

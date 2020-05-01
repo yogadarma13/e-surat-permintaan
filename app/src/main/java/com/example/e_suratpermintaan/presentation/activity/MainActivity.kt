@@ -297,7 +297,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 1000)
+        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 850)
     }
 
     private fun handleResponse(response: Any) {

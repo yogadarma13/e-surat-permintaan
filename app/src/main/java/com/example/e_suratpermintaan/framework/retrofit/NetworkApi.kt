@@ -171,7 +171,7 @@ interface NetworkApi {
     fun createFileLampiran(
         @Part("id") id: RequestBody,
         @Part("keterangan") keterangan: RequestBody,
-        @Part("file") file: MultipartBody.Part
+        @Part file: MultipartBody.Part
     ): Observable<CreateFileLampiranResponse>
 
     @Multipart

@@ -16,6 +16,9 @@ data class MyDataResponse(
 
 data class DataMyData(
 
+	@field:SerializedName("warna")
+	val warna: String? = null,
+
 	@field:SerializedName("id_proyek")
 	val idProyek: String? = null,
 
@@ -52,6 +55,9 @@ data class DataMyData(
 	@field:SerializedName("id")
 	val id: String? = null,
 
+	@field:SerializedName("durasi")
+	val durasi: String? = null,
+
 	@field:SerializedName("id_pic")
 	val idPic: String? = null,
 
@@ -63,4 +69,4 @@ data class DataMyData(
 
 	@field:SerializedName("id_lp")
 	val idLp: String? = null
-) : SuratPermintaan
+): SuratPermintaan

@@ -39,6 +39,15 @@ class ViewHolderFactory {
                 StatusPenugasanViewHolder::class.java -> StatusPenugasanViewHolder(
                     view
                 )
+                EditItemSuratPermintaanViewHolder::class.java -> EditItemSuratPermintaanViewHolder(
+                    view
+                )
+                EditFileSuratPermintaanViewHolder::class.java -> EditFileSuratPermintaanViewHolder(
+                    view
+                )
+                FileSuratPermintaanViewHolder::class.java -> FileSuratPermintaanViewHolder(
+                    view
+                )
                 else -> EmptyViewHolder(view)
             }
         }
