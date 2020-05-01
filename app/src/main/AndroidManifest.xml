@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateHidden">
-        <activity android:name=".presentation.activity.DetailHistoryActivity"/>
+        <activity android:name=".presentation.activity.DetailHistoryActivity" />
         <activity android:name=".presentation.activity.HistorySuratPermintaanActivity" />
 
         <meta-data
