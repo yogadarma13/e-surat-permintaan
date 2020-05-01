@@ -47,7 +47,28 @@ class TambahItemDialog(
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
-    private lateinit var dialogRootView: View
+    private var dialogRootView: View = View.inflate(activity, R.layout.dialog_tambah_item, null)
+
+    init {
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
+
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+                .setTitle("Tambah Item")
+        alertDialogTambah = alertDialogBuilder.create()
+
+        // Ini dipakai biar supaya pas keyboard showup, gak ngepush view dialog
+        preventKeyboardFromPushingViews(alertDialogTambah)
+
+        val builder = MaterialDatePicker.Builder.datePicker()
+        datePicker = builder.build()
+
+        setupTextChangeListener()
+        hideAllRecyclerViews()
+        setupRecyclerViews()
+        populateAdapterList()
+        setupDatePickerListener()
+    }
 
     private val waktuPemakaianDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -64,22 +85,8 @@ class TambahItemDialog(
     }
 
     fun initDialogViewTambah(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
-        dialogRootView =
-            View.inflate(activity, R.layout.dialog_tambah_item, null)
-
         dialogRootView.etVolume.setText("0.0")
-
-        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
-
-        val builder = MaterialDatePicker.Builder.datePicker()
-        datePicker = builder.build()
-
         setupAlertDialog(dataProfile, dataDetailSP)
-        setupTextChangeListener()
-        hideAllRecyclerViews()
-        setupRecyclerViews()
-        populateAdapterList()
-        setupDatePickerListener()
     }
 
     private fun setupDatePickerListener() {
@@ -142,14 +149,6 @@ class TambahItemDialog(
         // val idSp = dataDetailSP.id
         val jenisPermintaan = dataDetailSP.jenis.toString()
         val kodeSp = dataDetailSP.kode.toString()
-
-        val alertDialogBuilder =
-            MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setTitle("Tambah Item")
-        alertDialogTambah = alertDialogBuilder.create()
-
-        // Ini dipakai biar supaya pas keyboard showup, gak ngepush view dialog
-        preventKeyboardFromPushingViews(alertDialogTambah)
 
         if (dataProfile.roleId!!.toInt() != 1) {
             dialogRootView.formKeterangan.visibility = View.VISIBLE

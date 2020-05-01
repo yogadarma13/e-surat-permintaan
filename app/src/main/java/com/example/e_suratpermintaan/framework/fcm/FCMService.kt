@@ -59,14 +59,14 @@ class FCMService : FirebaseMessagingService() {
                 intent.putExtra("data_body_key", dataBody)
                 intent.putExtra("id_sp", idSpValue)
                 sendBroadcast(intent)
-            } else {
-                showNotification(
-                    baseContext,
-                    notificationTitle,
-                    notificationBody,
-                    idSpValue
-                )
             }
+
+            showNotification(
+                baseContext,
+                notificationTitle,
+                notificationBody,
+                idSpValue
+            )
 
 //            if ( /* Check if data needs to be processed by long running job */true) {
 //                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.

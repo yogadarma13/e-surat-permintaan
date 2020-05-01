@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
 
     private var selectedJenisDataFilterValue: String = ""
     private var selectedStatusFilterValue: String = ""
-    private var selectedNamaJenisFilterValue: String = ""
+    private var selectedJenisPermintaanFilterValue: String = ""
     private var selectedIdProyekFilterValue: String = ""
     private var profileId: String? = null
     private lateinit var idUser: String
@@ -208,7 +208,7 @@ class MainActivity : BaseActivity() {
                 idUser,
                 selectedIdProyekFilterValue,
                 selectedStatusFilterValue,
-                selectedNamaJenisFilterValue,
+                selectedJenisPermintaanFilterValue,
                 selectedJenisDataFilterValue
             )
                 .subscribe(this::handleResponse, this::handleError)
@@ -449,6 +449,11 @@ class MainActivity : BaseActivity() {
                     dialogRootView.spinnerProyek.text.clear()
                     dialogRootView.spinnerJenis.text.clear()
 
+                    selectedJenisDataFilterValue = ""
+                    selectedStatusFilterValue = ""
+                    selectedIdProyekFilterValue = ""
+                    selectedJenisPermintaanFilterValue = ""
+
                 }.create()
 
             confirmAlert.show()
@@ -481,7 +486,7 @@ class MainActivity : BaseActivity() {
 
             selectedIdProyekFilterValue =
                 proyekFilterOptionList.find { it.option == selectedProyek }?.value ?: ""
-            selectedNamaJenisFilterValue =
+            selectedJenisPermintaanFilterValue =
                 jenisPermintaanFilterOptionList.find { it.option == selectedJenis }?.value ?: ""
             selectedStatusFilterValue =
                 statusFilterOptionList.find { it.option == selectedStatus }?.value ?: ""

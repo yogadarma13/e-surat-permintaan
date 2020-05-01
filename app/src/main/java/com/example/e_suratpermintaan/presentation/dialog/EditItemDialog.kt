@@ -1,12 +1,10 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -31,18 +29,6 @@ import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_edit_item.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item.view.container
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etJenisBarang
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etKodePekerjaan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etSatuan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etVolume
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formKeterangan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPA
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPB
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPS
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvJenisBarang
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvKodePekerjaan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvSatuan
 import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spa.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spb.view.*
@@ -63,9 +49,35 @@ class EditItemDialog(
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
-    private lateinit var dialogRootView: View
+
+    private var dialogRootView: View = View.inflate(activity, R.layout.dialog_edit_item, null)
 
     private lateinit var selectedItemId: String
+
+    init {
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
+            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
+        }
+
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+                .setTitle("Edit Item")
+        alertDialogEdit = alertDialogBuilder.create()
+
+        // Ini dipakai biar supaya pas keyboard showup, gak ngepush view dialog
+        preventKeyboardFromPushingViews(alertDialogEdit)
+
+        val builder = MaterialDatePicker.Builder.datePicker()
+        datePicker = builder.build()
+
+        setupRecyclerViews()
+        populateAdapters()
+        setupDatePickerListener()
+        setupTextChangeListener()
+    }
 
     private val waktuPemakaianDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -86,27 +98,8 @@ class EditItemDialog(
     }
 
     fun initDialogViewEdit(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
-        dialogRootView =
-            View.inflate(activity, R.layout.dialog_edit_item, null)
-
         dialogRootView.etVolume.setText("0.0")
-
-        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
-            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
-        }
-
-        val builder = MaterialDatePicker.Builder.datePicker()
-        datePicker = builder.build()
-
         setupAlertDialog(dataProfile, dataDetailSP)
-        setupTextChangeListener()
-        hideAllRecyclerViews()
-        setupRecyclerViews()
-        populateAdapters()
-        setupDatePickerListener()
     }
 
     private fun setupDatePickerListener() {
@@ -159,20 +152,19 @@ class EditItemDialog(
             uomAdapter.oldItemList = uomAdapter.itemList
             uomAdapter.notifyDataSetChanged()
         })
+
+        sharedViewModel.getPersyaratanList().observe(activity, Observer {
+            it?.forEach { item ->
+                persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
+            }
+            persyaratanAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun setupAlertDialog(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         val idSp = dataDetailSP.id
         val jenisPermintaan = dataDetailSP.jenis.toString()
         val kodeSp = dataDetailSP.kode.toString()
-
-        val alertDialogBuilder =
-            MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setTitle("Edit Item")
-        alertDialogEdit = alertDialogBuilder.create()
-
-        // Ini dipakai biar supaya pas keyboard showup, gak ngepush view dialog
-        preventKeyboardFromPushingViews(alertDialogEdit)
 
         if (dataProfile.roleId!!.toInt() != 1) {
             dialogRootView.formKeterangan.visibility = View.VISIBLE
@@ -209,6 +201,10 @@ class EditItemDialog(
                 if (data.status.equals("checked")) {
                     persyaratanList.add(data.id.toString())
                 }
+            }
+
+            persyaratanList.forEach {
+                activity.toastNotify(it)
             }
 
             val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
@@ -373,20 +369,21 @@ class EditItemDialog(
         dialogRootView.formSPB.etTarget.setText(itemsDetailSP.target)
         dialogRootView.formSPS.etWaktuPelaksanaan.setText(itemsDetailSP.waktuPelaksanaan)
 
-        sharedViewModel.getPersyaratanList().observe(activity, Observer {
-            it?.forEach { item ->
-                itemsDetailSP.persyaratan?.forEach { persyaratanItemDetailSP ->
-                    if (item?.nama == persyaratanItemDetailSP?.persyaratan){
-                        item?.status = "checked"
-                    }
-                }
-                persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
-            }
-            persyaratanAdapter.notifyDataSetChanged()
+        alertDialogEdit.show()
+        hideAllRecyclerViews()
 
-            hideAllRecyclerViews()
-            alertDialogEdit.show()
-        })
+        persyaratanAdapter.itemList.forEach { item ->
+            val data = item as DataMasterPersyaratan
+            data.status = "unchecked"
+
+            itemsDetailSP.persyaratan?.forEach {
+                if (it?.persyaratan.equals(data.id)){
+                    data.status = "checked"
+                }
+            }
+        }
+
+        persyaratanAdapter.notifyDataSetChanged()
     }
 
     private fun handleResponse(response: Any) {
