@@ -25,9 +25,6 @@ import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.btnAjukan
-import kotlinx.android.synthetic.main.activity_main.recyclerView
-import kotlinx.android.synthetic.main.activity_main.swipeRefreshLayout
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerJenis
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerProyek
@@ -90,11 +87,6 @@ class MainActivity : BaseActivity() {
         setupListeners()
 
         initApiRequest()
-
-        tv_show_length_entry.text = getString(
-            R.string.main_header_list_count_msg,
-            spAdapter.itemList.size.toString()
-        )
 
         sharedViewModel.getOnNotifikasiReceived().observe(this, Observer {
             // val idSp = it
@@ -313,6 +305,7 @@ class MainActivity : BaseActivity() {
 
         when (response) {
             is MyDataResponse -> {
+
                 val suratPermintaanList: List<DataMyData?>? = response.data
 
                 suratPermintaanList?.forEach {
@@ -320,6 +313,11 @@ class MainActivity : BaseActivity() {
                 }
 
                 spAdapter.notifyDataSetChanged()
+
+                tv_show_length_entry.text = getString(
+                    R.string.main_header_list_count_msg,
+                    spAdapter.itemList.size.toString()
+                )
 
             }
             is MasterProyekResponse -> {
