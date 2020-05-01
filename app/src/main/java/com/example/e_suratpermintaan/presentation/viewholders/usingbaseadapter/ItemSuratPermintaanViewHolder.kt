@@ -21,6 +21,10 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
         const val BTN_EDIT = "btnEdit"
     }
 
+    init {
+        this.setIsRecyclable(false)
+    }
+
     // TransitionManager.beginDelayedTransition() :
     // Android cardview expandable transition : https://www.youtube.com/watch?v=19E85PngufY&vl=en
 
@@ -37,6 +41,7 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
         position: Int,
         listener: (Any?, String?) -> Unit
     ) {
+
         val data = item as ItemsDetailSP
 
         rootView.setOnClickListener {

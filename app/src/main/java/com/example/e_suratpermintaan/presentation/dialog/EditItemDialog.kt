@@ -1,7 +1,6 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
-import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -36,15 +35,14 @@ import kotlinx.android.synthetic.main.dialog_edit_item_form_sps.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class EditItemDialog(
     private val activity: DetailSuratPermintaanActivity,
     private val sharedViewModel: SharedViewModel,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
-    private lateinit var alertDialogEdit: AlertDialog
-    private lateinit var datePicker: MaterialDatePicker<Long>
+    private var alertDialogEdit: AlertDialog
+    private var datePicker: MaterialDatePicker<Long>
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
@@ -57,10 +55,10 @@ class EditItemDialog(
     init {
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
-            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
+//            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
+//        }
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
@@ -83,18 +81,21 @@ class EditItemDialog(
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.let {
-            it.etWaktuPemakaian.setText(dateString)
-        }
+        dialogRootView.etWaktuPemakaian.setText(dateString)
     }
 
     private val waktuPelaksanaanDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.let {
-            it.etWaktuPelaksanaan.setText(dateString)
-        }
+        dialogRootView.etWaktuPelaksanaan.setText(dateString)
+    }
+
+    private val targetDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
+        val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val date = Date(selectedDate)
+        val dateString = simpleFormat.format(date)
+        dialogRootView.etTarget.setText(dateString)
     }
 
     fun initDialogViewEdit(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
@@ -127,6 +128,19 @@ class EditItemDialog(
 
         dialogRootView.pickWaktuPelaksanaan.setOnClickListener {
             datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
+            datePicker.show(activity.supportFragmentManager, datePicker.toString())
+        }
+
+        dialogRootView.etTarget.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                activity.closeKeyboard(dialogRootView.etTarget)
+                datePicker.addOnPositiveButtonClickListener(targetDateSubmitListener)
+                datePicker.show(activity.supportFragmentManager, datePicker.toString())
+            }
+        }
+
+        dialogRootView.pickTarget.setOnClickListener {
+            datePicker.addOnPositiveButtonClickListener(targetDateSubmitListener)
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
     }
@@ -162,7 +176,7 @@ class EditItemDialog(
     }
 
     private fun setupAlertDialog(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
-        val idSp = dataDetailSP.id
+        // val idSp = dataDetailSP.id
         val jenisPermintaan = dataDetailSP.jenis.toString()
         val kodeSp = dataDetailSP.kode.toString()
 
@@ -183,6 +197,9 @@ class EditItemDialog(
         }
 
         dialogRootView.btnEdit.setOnClickListener {
+            // Untuk menghilangkan focus yang ada di input field
+            dialogRootView.clearFocus()
+
             val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
             val jenisBarang = dialogRootView.etJenisBarang.text.toString()
             val volume = dialogRootView.etVolume.text.toString()
@@ -201,10 +218,6 @@ class EditItemDialog(
                 if (data.status.equals("checked")) {
                     persyaratanList.add(data.id.toString())
                 }
-            }
-
-            persyaratanList.forEach {
-                activity.toastNotify(it)
             }
 
             val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
@@ -377,7 +390,7 @@ class EditItemDialog(
             data.status = "unchecked"
 
             itemsDetailSP.persyaratan?.forEach {
-                if (it?.persyaratan.equals(data.id)){
+                if (it?.persyaratan.equals(data.id)) {
                     data.status = "checked"
                 }
             }

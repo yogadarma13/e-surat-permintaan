@@ -3,6 +3,7 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.view.View
 import android.widget.ArrayAdapter
@@ -24,6 +25,9 @@ import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.btnAjukan
+import kotlinx.android.synthetic.main.activity_main.recyclerView
+import kotlinx.android.synthetic.main.activity_main.swipeRefreshLayout
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerJenis
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerProyek
@@ -135,7 +139,6 @@ class MainActivity : BaseActivity() {
 
                 when (data?.getStringExtra("status")) {
                     STATUS_SP_DELETED -> {
-
                         initApiRequest()
                     }
                 }
@@ -302,14 +305,14 @@ class MainActivity : BaseActivity() {
     }
 
     private fun stopRefresh() {
-        swipeRefreshLayout.isRefreshing = false
+        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 1000)
     }
 
     private fun handleResponse(response: Any) {
+        stopRefresh()
+
         when (response) {
             is MyDataResponse -> {
-
-                stopRefresh()
                 val suratPermintaanList: List<DataMyData?>? = response.data
 
                 suratPermintaanList?.forEach {
@@ -494,7 +497,6 @@ class MainActivity : BaseActivity() {
                 jenisDataFilterOptionList.find { it.option == selectedJenisData }?.value ?: ""
 
             initApiRequest()
-            startRefresh()
 
             alertDialogFilterSP.hide()
         }

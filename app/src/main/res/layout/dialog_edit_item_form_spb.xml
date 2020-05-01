@@ -32,4 +32,23 @@
             android:hint="Target" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pickTarget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/pick_date_show_btn_margin_right"
+        app:layout_constraintBottom_toBottomOf="@id/tilTarget"
+        app:layout_constraintEnd_toEndOf="@id/tilTarget"
+        app:layout_constraintTop_toTopOf="@id/tilTarget">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_date_range_black_30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

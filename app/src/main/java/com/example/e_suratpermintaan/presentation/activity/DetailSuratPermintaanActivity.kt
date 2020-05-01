@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
@@ -75,16 +76,23 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     }
 
     private fun init() {
-        setupItemSuratPermintaanRecyclerView()
-        setupOnClickListeners()
-
         alertDialogTambah =
             TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
 
         alertDialogEdit = EditItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
 
+        setupItemSuratPermintaanRecyclerView()
+        setupActionListeners()
+        initApiRequest()
+    }
+
+    private fun initApiRequest() {
         disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
             .subscribe(this::handleResponse, this::handleError)
+
+        itemSuratPermintaanAdapter.itemList.clear()
+        itemSuratPermintaanAdapter.notifyDataSetChanged()
+        startRefresh()
     }
 
     private fun setupItemSuratPermintaanRecyclerView() {
@@ -97,7 +105,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         recyclerView.adapter = itemSuratPermintaanAdapter
     }
 
-    private fun setupOnClickListeners() {
+    private fun setupActionListeners() {
 
         tvAddItem.visibility = View.GONE
         tvAddItem.setOnClickListener {
@@ -198,22 +206,41 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 }
             }
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            if (!isConnectedToInternet) {
+                toastNotify("Please turn on the internet")
+                stopRefresh()
+                return@setOnRefreshListener
+            }
+
+            initApiRequest()
+        }
+    }
+
+    private fun startRefresh() {
+        if (!isConnectedToInternet) return
+        swipeRefreshLayout.isRefreshing = true
+    }
+
+    private fun stopRefresh() {
+        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 1000)
+    }
+
+    override fun handleError(error: Throwable) {
+        super.handleError(error)
+
+        stopRefresh()
     }
 
     fun handleResponse(response: Any) {
+        stopRefresh()
+
         when (response) {
-            is CreateItemSPResponse -> {
 
-                toastNotify(response.message)
-                itemSuratPermintaanAdapter.itemList.clear()
-                itemSuratPermintaanAdapter.notifyDataSetChanged()
-                init()
-
-            }
             is DetailSPResponse -> {
 
                 val detailSPResponse = response.data
-
                 detailSPResponse.let {
 
                     val dataDetailSP = detailSPResponse?.get(0)
@@ -239,10 +266,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                     itemList?.forEach {
                         itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
                     }
-
                     itemSuratPermintaanAdapter.notifyDataSetChanged()
 
-                    if (dataDetailSP.tombolTambahItem == 1){
+                    if (dataDetailSP.tombolTambahItem == 1) {
                         tvAddItem.visibility = View.VISIBLE
                     }
 
@@ -304,15 +330,21 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 finish()
             }
 
+            is CreateItemSPResponse -> {
+                toastNotify(response.message)
+                alertDialogTambah =
+                    TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+                initApiRequest()
+            }
+
             is EditItemSPResponse -> {
                 toastNotify(response.message)
-                itemSuratPermintaanAdapter.itemList.clear()
-                itemSuratPermintaanAdapter.notifyDataSetChanged()
-                init()
+                initApiRequest()
             }
 
             is DeleteItemSPResponse -> {
                 toastNotify(response.message)
+                initApiRequest()
             }
         }
     }

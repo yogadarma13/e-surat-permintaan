@@ -41,8 +41,8 @@ class TambahItemDialog(
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
-    private lateinit var alertDialogTambah: AlertDialog
-    private lateinit var datePicker: MaterialDatePicker<Long>
+    private var alertDialogTambah: AlertDialog
+    private var datePicker: MaterialDatePicker<Long>
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
@@ -139,6 +139,11 @@ class TambahItemDialog(
 
         sharedViewModel.getPersyaratanList().observe(activity, Observer {
             it?.forEach { item ->
+                // harus di uncheck untuk menghilangkan data "checked" untuk
+                // data yang baru saja ditambahkan sebelum ini
+                // Karna sharedViewModel berubah datanya karna diset "checked"
+                item?.status = "unchecked"
+
                 persyaratanAdapter.itemList.add(item as DataMasterPersyaratan)
             }
             persyaratanAdapter.notifyDataSetChanged()
