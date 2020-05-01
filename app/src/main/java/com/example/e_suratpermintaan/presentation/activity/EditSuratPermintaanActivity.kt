@@ -88,6 +88,10 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
         editItemSuratPermintaanAdapter.itemList.clear()
         editItemSuratPermintaanAdapter.notifyDataSetChanged()
+
+        editFileSuratPermintaanAdapter.itemList.clear()
+        editFileSuratPermintaanAdapter.notifyDataSetChanged()
+
         startRefresh()
     }
 
@@ -147,29 +151,33 @@ class EditSuratPermintaanActivity : BaseActivity() {
             }
         }
         editFileSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
-            val data = item as ItemsDetailSP
+            val data = item as FileLampiranDetailSP
 
             when (actionString) {
                 BaseViewHolder.ROOTVIEW -> {
                     // Ignored
                 }
-                EditItemSuratPermintaanViewHolder.BTN_EDIT -> {
-                    alertDialogEdit.show(data)
+                EditFileSuratPermintaanViewHolder.BTN_EDIT -> {
+//                    alertDialogEdit.show(data)
                 }
-                EditItemSuratPermintaanViewHolder.BTN_HAPUS -> {
+                EditFileSuratPermintaanViewHolder.BTN_HAPUS -> {
                     val alertDialog =
                         AlertDialog.Builder(this)
-                            .setTitle("Konfirmasi Hapus Item")
-                            .setMessage("Apa anda yakin ingin menghapus item?")
+                            .setTitle("Konfirmasi Hapus File")
+                            .setMessage("Apa anda yakin ingin menghapus file?")
                             .setPositiveButton("Hapus") { _, _ ->
                                 disposable =
-                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
+                                    fileLampiranViewModel.removeFile(data.id_file.toString())
                                         .subscribe(this::handleResponse, this::handleError)
                             }.setNegativeButton("Batal") { dialog, _ ->
                                 dialog.dismiss()
                             }.create()
 
                     alertDialog.show()
+                }
+
+                EditFileSuratPermintaanViewHolder.BTN_FILE -> {
+                    toastNotify(data.dir)
                 }
             }
         }
@@ -221,9 +229,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
             is DeleteFileLampiranResponse -> {
                 toastNotify(response.message)
-                editFileSuratPermintaanAdapter.itemList.clear()
-                editFileSuratPermintaanAdapter.notifyDataSetChanged()
-                init()
+                initApiRequest()
             }
 
             is DetailSPResponse -> {

@@ -82,6 +82,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
         itemSuratPermintaanAdapter.itemList.clear()
         itemSuratPermintaanAdapter.notifyDataSetChanged()
+
+        fileSuratPermintaanAdapter.itemList.clear()
+        fileSuratPermintaanAdapter.notifyDataSetChanged()
         startRefresh()
     }
 
