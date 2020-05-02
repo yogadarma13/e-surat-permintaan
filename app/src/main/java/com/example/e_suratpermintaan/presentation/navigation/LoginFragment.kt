@@ -43,8 +43,8 @@ class LoginFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_login
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onEnterAnimationEnd() {
+        super.onEnterAnimationEnd()
 
         passwordSeek.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -108,6 +108,7 @@ class LoginFragment : BaseFragment() {
                         }
 
                         if (dataProfile != null) {
+                            profilePreference.saveProfile(dataProfile)
 
                             starterActivity.initUserDataDependentApiRequest()
                             sharedViewModel.isAllMasterObservableResponseComplete.observe(
@@ -117,14 +118,13 @@ class LoginFragment : BaseFragment() {
                                     if (isIt){
                                         toastNotify(response.message)
                                         progressBarOverlay.visibility = GONE
-                                        profilePreference.saveProfile(dataProfile)
 
                                         Handler().postDelayed({
                                             starterActivity.startActivity(
                                                 Intent(starterActivity, MainActivity::class.java)
                                             )
                                             starterActivity.finish()
-                                        }, 1000)
+                                        }, 500)
                                     }
 
                                 })

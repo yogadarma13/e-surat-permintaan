@@ -21,4 +21,6 @@
     <color name="orange_history">#FFAF45</color>
     <color name="gray_history">#878787</color>
     <color name="detail_sp_normal_text_color">#000</color>
+
+    <color name="dim">#CCC</color>
 </resources>

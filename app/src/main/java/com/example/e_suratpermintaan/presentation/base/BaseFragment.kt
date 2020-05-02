@@ -305,29 +305,29 @@ abstract class BaseFragment : Fragment() {
 
     private fun handleOnExitForegroundDimAnimation(enter: Boolean, nextAnim: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!enter) {
-                if (nextAnim == R.anim.slide_out_to_left) {
-                    val color: Int = android.R.color.black
-                    view?.foreground =
-                        ColorDrawable(ContextCompat.getColor(requireContext(), color))
-                    view?.foreground?.alpha = 0
-
-                    val animator =
-                        ObjectAnimator.ofInt(requireView().foreground, "alpha", 0, 200)
-                    animator.duration = 400
-                    animator.startDelay = 0
-                    animator.start()
-                }
-            } else {
-                if (requireView().foreground != null) {
-                    if (requireView().foreground.alpha == 200) {
-                        val animator =
-                            ObjectAnimator.ofInt(requireView().foreground, "alpha", 10, 0)
-                        animator.duration = 150
-                        animator.start()
-                    }
-                }
-            }
+//            if (!enter) {
+//                if (nextAnim == R.anim.slide_out_to_left) {
+//                    val color: Int = R.color.dim
+//                    view?.foreground =
+//                        ColorDrawable(ContextCompat.getColor(requireContext(), color))
+//                    view?.foreground?.alpha = 0
+//
+//                    val animator =
+//                        ObjectAnimator.ofInt(requireView().foreground, "alpha", 0, 200)
+//                    animator.duration = 200
+//                    animator.startDelay = 0
+//                    animator.start()
+//                }
+//            } else {
+//                if (requireView().foreground != null) {
+//                    if (requireView().foreground.alpha == 200) {
+//                        val animator =
+//                            ObjectAnimator.ofInt(requireView().foreground, "alpha", 0, 0)
+//                        animator.duration = 150
+//                        animator.start()
+//                    }
+//                }
+//            }
         }
     }
 }
