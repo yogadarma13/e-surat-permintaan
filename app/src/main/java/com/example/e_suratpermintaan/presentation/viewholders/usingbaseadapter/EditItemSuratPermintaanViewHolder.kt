@@ -21,6 +21,10 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
         const val BTN_EDIT = "btnEdit"
     }
 
+    init {
+        this.setIsRecyclable(false)
+    }
+
     override fun bind(item: Any?, position: Int, listener: (Any?, String?) -> Unit) {
         val data = item as ItemsDetailSP
 

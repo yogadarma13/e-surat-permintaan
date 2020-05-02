@@ -38,16 +38,17 @@ class MainActivity : BaseActivity() {
         const val LAUNCH_DETAIL_ACTIVITY: Int = 111
     }
 
+    private var profileId: String? = null
+    private lateinit var idUser: String
+
     private var selectedJenisDataFilterValue: String = ""
     private var selectedStatusFilterValue: String = ""
     private var selectedJenisPermintaanFilterValue: String = ""
     private var selectedIdProyekFilterValue: String = ""
-    private var profileId: String? = null
-    private lateinit var idUser: String
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
-    private val masterViewModel: MasterViewModel by viewModel()
     private val notifikasiViewModel: NotifikasiViewModel by viewModel()
+    private val masterViewModel: MasterViewModel by viewModel()
     private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
 
@@ -80,7 +81,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         initAdapters()
-
         setupTambahSPDialog()
         setupFilterSPDialog()
         setupRecyclerView()
@@ -148,10 +148,11 @@ class MainActivity : BaseActivity() {
     private fun initApiRequest() {
         proyekList.clear()
         jenisList.clear()
-        jenisPermintaanOptionList.clear()
-        proyekOptionList.clear()
-        statusOptionList.clear()
-        jenisDataOptionList.clear()
+
+        // jenisPermintaanOptionList.clear()
+        // proyekOptionList.clear()
+        // statusOptionList.clear()
+        // jenisDataOptionList.clear()
         spAdapter.itemList.clear()
 
         tv_show_length_entry.text = getString(
@@ -170,34 +171,12 @@ class MainActivity : BaseActivity() {
         profileId = profilePreference.getProfile()?.id
         val roleId = profilePreference.getProfile()?.roleId
 
+        if (!roleId.equals("1")) {
+            btnAjukan.visibility = View.GONE
+        }
+
         if (profileId != null) {
             idUser = profileId.toString()
-
-            // Master request api - START
-            // -----------------------------------------------------------
-            disposable = masterViewModel.getCostCodeList("all")
-                .subscribe(this::handleResponse, this::handleError)
-
-            disposable = masterViewModel.getUomList("all")
-                .subscribe(this::handleResponse, this::handleError)
-
-            disposable = masterViewModel.getPersyaratanList("all")
-                .subscribe(this::handleResponse, this::handleError)
-
-            disposable = masterViewModel.getStatusFilterOptionList()
-                .subscribe(this::handleResponse, this::handleError)
-
-            disposable = masterViewModel.getJenisDataFilterOptionList()
-                .subscribe(this::handleResponse, this::handleError)
-
-            disposable = masterViewModel.getProyekFilterOptionList(idUser)
-                .subscribe(this::handleResponse, this::handleError)
-
-            disposable = masterViewModel.getJenisPermintaanFilterOptionList(idUser)
-                .subscribe(this::handleResponse, this::handleError)
-
-            // Master API END
-            // -----------------------------------------------------------
 
             disposable = suratPermintaanViewModel.readMyData(
                 idUser,
@@ -208,20 +187,16 @@ class MainActivity : BaseActivity() {
             )
                 .subscribe(this::handleResponse, this::handleError)
 
+            disposable = notifikasiViewModel.getNotifikasiList(idUser)
+                .subscribe(this::handleResponse, this::handleError)
+
             disposable = masterViewModel.getProyekList(idUser)
                 .subscribe(this::handleResponse, this::handleError)
 
             disposable = masterViewModel.getJenisList(idUser)
                 .subscribe(this::handleResponse, this::handleError)
 
-            disposable = notifikasiViewModel.getNotifikasiList(idUser)
-                .subscribe(this::handleResponse, this::handleError)
-
             startRefresh()
-        }
-
-        if (!roleId.equals("1")) {
-            btnAjukan.visibility = View.GONE
         }
     }
 
@@ -355,36 +330,6 @@ class MainActivity : BaseActivity() {
                 toastNotify(response.message)
                 initApiRequest()
 
-            }
-
-            is MasterCCResponse -> {
-                sharedViewModel.setCostCodeList(response.data)
-            }
-
-            is MasterUOMResponse -> {
-                sharedViewModel.setUomList(response.data)
-            }
-
-            is MasterPersyaratanResponse -> {
-                sharedViewModel.setPersyaratanList(response.data)
-            }
-
-            // Filter Option List
-            // -----------------------------------------------------------
-            is MasterStatusFilterOptionResponse -> {
-                sharedViewModel.setStatusFilterOptionList(response.data)
-            }
-
-            is MasterJenisDataFilterOptionResponse -> {
-                sharedViewModel.setJenisDataFilterOptionList(response.data)
-            }
-
-            is MasterProyekFilterOptionResponse -> {
-                sharedViewModel.setProyekFilterOptionList(response.data)
-            }
-
-            is MasterJenisPermintaanFilterOptionResponse -> {
-                sharedViewModel.setJenisPermintaanFilterOptionList(response.data)
             }
         }
     }

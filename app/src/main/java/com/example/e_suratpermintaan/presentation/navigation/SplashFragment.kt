@@ -14,6 +14,7 @@ import com.example.e_suratpermintaan.framework.helpers.WindowHelper.transparentS
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
+import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.google.firebase.iid.FirebaseInstanceId
 import org.koin.android.ext.android.inject
@@ -36,7 +37,7 @@ class SplashFragment : BaseFragment() {
             Log.d("FCM", "REQUEST NEW TOKEN")
             FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    if (task.exception is IOException){
+                    if (task.exception is IOException) {
                         toastNotify("Maaf, Request Token Gagal \nAnda sedang offline, silakan hidupkan sambungan internet")
                     } else {
                         Toast.makeText(
@@ -75,8 +76,13 @@ class SplashFragment : BaseFragment() {
                 navOptions
             )
         } else {
-            requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
-            requireActivity().finish()
+            if ((requireActivity() as StarterActivity).isAllObservableComplete) {
+                requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
+                requireActivity().finish()
+            } else {
+                (requireActivity() as StarterActivity)
+                    .isSplashOrLoginRequestStartMainActivity = true
+            }
         }
     }
 

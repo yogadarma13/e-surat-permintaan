@@ -18,6 +18,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
+import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -71,7 +72,13 @@ class LoginFragment : BaseFragment() {
         Handler().postDelayed({
             fcmPreference.getUserTokenId()?.let { userTokenId ->
                 disposable = authViewModel
-                    .doLogin(Login(etEmail.text.toString(), etPassword.text.toString(), userTokenId))
+                    .doLogin(
+                        Login(
+                            etEmail.text.toString(),
+                            etPassword.text.toString(),
+                            userTokenId
+                        )
+                    )
                     .subscribe(this::loginResponse, this::handleError)
                 closeKeyboard(requireActivity())
             }
@@ -99,9 +106,20 @@ class LoginFragment : BaseFragment() {
 
                         if (dataProfile != null) {
                             profilePreference.saveProfile(dataProfile)
-                            requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
-                            requireActivity().finish()
                             toastNotify(response.message)
+
+                            if ((requireActivity() as StarterActivity).isAllObservableComplete) {
+                                requireActivity().startActivity(
+                                    Intent(
+                                        requireActivity(),
+                                        MainActivity::class.java
+                                    )
+                                )
+                                requireActivity().finish()
+                            } else {
+                                (requireActivity() as StarterActivity)
+                                    .isSplashOrLoginRequestStartMainActivity = true
+                            }
                         } else {
                             toastNotify(getString(R.string.profile_get_error_message))
                         }
