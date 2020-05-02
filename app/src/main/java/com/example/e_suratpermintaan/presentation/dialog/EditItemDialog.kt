@@ -225,9 +225,9 @@ class EditItemDialog(
             dialogRootView.tilPenugasan.visibility = View.VISIBLE
         }
 
-        if (dataDetailSP.inputStatusPenugasan == 1) {
-            dialogRootView.tilStatusPenugasan.visibility = View.VISIBLE
-        }
+//        if (dataDetailSP.inputStatusPenugasan == 1) {
+//            dialogRootView.tilStatusPenugasan.visibility = View.VISIBLE
+//        }
 
         dialogRootView.btnEdit.setOnClickListener {
             // Untuk menghilangkan focus yang ada di input field

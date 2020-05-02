@@ -1,5 +1,7 @@
 package com.example.e_suratpermintaan.presentation.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
@@ -15,10 +18,7 @@ import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditFileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
-import com.example.e_suratpermintaan.presentation.viewmodel.FileLampiranViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.swipeRefreshLayout
@@ -28,9 +28,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditSuratPermintaanActivity : BaseActivity() {
 
-//    companion object {
-//        const val PICKFILE_REQUEST_CODE = 200;
-//    }
+    companion object {
+        const val ID_SP_EDIT = "id_sp";
+        const val MASTER_PERSYARATAN ="master_persyaratan"
+    }
 
     private lateinit var alertDialogEdit: EditItemDialog
     private lateinit var alertDialogTambah: TambahItemDialog
@@ -38,16 +39,18 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
     private val fileLampiranViewModel: FileLampiranViewModel by viewModel()
+    private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
     private val sharedViewModel: SharedViewModel by inject()
 
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
     private var idFile: String? = null
+    private var persyaratanList = mutableMapOf<String, String>()
     private lateinit var idUser: String
     private lateinit var filePart: MultipartBody.Part
 
-    private lateinit var editItemSuratPermintaanAdapter: BaseAdapter<EditItemSuratPermintaanViewHolder>
+    private lateinit var editItemSuratPermintaanAdapter: EditItemSuratPermintaanAdapter
     private lateinit var editFileSuratPermintaanAdapter: BaseAdapter<EditFileSuratPermintaanViewHolder>
 
     override fun layoutId(): Int = R.layout.activity_edit_surat_permintaan
@@ -55,7 +58,9 @@ class EditSuratPermintaanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        idSp = intent.extras?.getString("id_sp")
+        idSp = intent.extras?.getString(ID_SP_EDIT)
+
+        editItemSuratPermintaanAdapter = EditItemSuratPermintaanAdapter()
 
         idSp.let {
             dataProfile = profilePreference.getProfile()
@@ -83,6 +88,9 @@ class EditSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun initApiRequest() {
+        disposable = masterViewModel.getPersyaratanList("all")
+            .subscribe(this::handleResponse, this::handleError)
+
         disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
             .subscribe(this::handleResponse, this::handleError)
 
@@ -96,10 +104,10 @@ class EditSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun setupItemSuratPermintaanRecyclerView(){
-        editItemSuratPermintaanAdapter = BaseAdapter(
-            R.layout.item_surat_permintaan_item_row,
-            EditItemSuratPermintaanViewHolder::class.java
-        )
+//        editItemSuratPermintaanAdapter = BaseAdapter(
+//            R.layout.item_surat_permintaan_item_row,
+//            EditItemSuratPermintaanViewHolder::class.java
+//        )
 
         recyclerViewEditItem.layoutManager = LinearLayoutManager(this)
         recyclerViewEditItem.adapter = editItemSuratPermintaanAdapter
@@ -123,33 +131,33 @@ class EditSuratPermintaanActivity : BaseActivity() {
 //            showDialogTambahFile()
 //        }
 
-        editItemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
-            val data = item as ItemsDetailSP
-
-            when (actionString) {
-                BaseViewHolder.ROOTVIEW -> {
-                    // Ignored
-                }
-                EditItemSuratPermintaanViewHolder.BTN_EDIT -> {
-                    alertDialogEdit.show(data)
-                }
-                EditItemSuratPermintaanViewHolder.BTN_HAPUS -> {
-                    val alertDialog =
-                        AlertDialog.Builder(this)
-                            .setTitle("Konfirmasi Hapus Item")
-                            .setMessage("Apa anda yakin ingin menghapus item?")
-                            .setPositiveButton("Hapus") { _, _ ->
-                                disposable =
-                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
-                                        .subscribe(this::handleResponse, this::handleError)
-                            }.setNegativeButton("Batal") { dialog, _ ->
-                                dialog.dismiss()
-                            }.create()
-
-                    alertDialog.show()
-                }
-            }
-        }
+//        editItemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
+//            val data = item as ItemsDetailSP
+//
+//            when (actionString) {
+//                BaseViewHolder.ROOTVIEW -> {
+//                    // Ignored
+//                }
+//                EditItemSuratPermintaanViewHolder.BTN_EDIT -> {
+//                    alertDialogEdit.show(data)
+//                }
+//                EditItemSuratPermintaanViewHolder.BTN_HAPUS -> {
+//                    val alertDialog =
+//                        AlertDialog.Builder(this)
+//                            .setTitle("Konfirmasi Hapus Item")
+//                            .setMessage("Apa anda yakin ingin menghapus item?")
+//                            .setPositiveButton("Hapus") { _, _ ->
+//                                disposable =
+//                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
+//                                        .subscribe(this::handleResponse, this::handleError)
+//                            }.setNegativeButton("Batal") { dialog, _ ->
+//                                dialog.dismiss()
+//                            }.create()
+//
+//                    alertDialog.show()
+//                }
+//            }
+//        }
         editFileSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
             val data = item as FileLampiranDetailSP
 
@@ -167,7 +175,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
                             .setMessage("Apa anda yakin ingin menghapus file?")
                             .setPositiveButton("Hapus") { _, _ ->
                                 disposable =
-                                    fileLampiranViewModel.removeFile(data.id_file.toString())
+                                    fileLampiranViewModel.removeFile(data.idFile.toString())
                                         .subscribe(this::handleResponse, this::handleError)
                             }.setNegativeButton("Batal") { dialog, _ ->
                                 dialog.dismiss()
@@ -180,6 +188,12 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     toastNotify(data.dir)
                 }
             }
+        }
+
+        btnSimpanEdit.setOnClickListener {
+            val intent = Intent()
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
 
         swipeRefreshLayout.setOnRefreshListener {
@@ -232,6 +246,14 @@ class EditSuratPermintaanActivity : BaseActivity() {
                 initApiRequest()
             }
 
+            is MasterPersyaratanResponse -> {
+                val dataPersyaratan = response.data
+
+                dataPersyaratan?.forEach {
+                    persyaratanList[it?.id.toString()] = it?.nama.toString()
+                }
+            }
+
             is DetailSPResponse -> {
                 val detailSPResponse = response.data
 
@@ -239,14 +261,24 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
                     val dataDetailSP = detailSPResponse?.get(0)
 
+                    if (dataDetailSP?.tombolTambahItem == 1) {
+                        tvAddIitem.visibility = View.VISIBLE
+                    }
+
+                    if (dataDetailSP?.tombolSimpan == 1) {
+                        btnSimpanEdit.visibility = View.VISIBLE
+                    }
+
                     alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
                     alertDialogEdit.initDialogViewEdit(dataProfile!!, dataDetailSP)
 
 
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
 
+                    editItemSuratPermintaanAdapter.persyaratanList.putAll(persyaratanList)
                     itemList?.forEach {
                         editItemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
+                        editItemSuratPermintaanAdapter.viewType.add(dataDetailSP.jenis.toString())
                     }
 
                     editItemSuratPermintaanAdapter.notifyDataSetChanged()

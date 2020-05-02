@@ -13,10 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
+import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.MASTER_PERSYARATAN
+import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.ID_SP_HISTORY
+import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.JENIS_SP_HISTORY
+import com.example.e_suratpermintaan.presentation.adapter.ItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
@@ -29,19 +35,23 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     companion object {
         const val ID_SP_EXTRA_KEY = "id_sp"
         const val STATUS_SP_DELETED = "SP_DELETED"
+        const val LAUNCH_EDIT_ACTIVITY: Int = 99
     }
+
 
 //    private lateinit var alertDialogEdit: EditItemDialog
 //    private lateinit var alertDialogTambah: TambahItemDialog
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
+    private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
     private var kodeSp: String? = null
+    private var persyaratanList = mutableMapOf<String, String>()
     private lateinit var idUser: String
-    private lateinit var itemSuratPermintaanAdapter: BaseAdapter<ItemSuratPermintaanViewHolder>
+    private lateinit var itemSuratPermintaanAdapter: ItemSuratPermintaanAdapter
     private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder>
     private var optionPrint = false
     private var optionEdit = false
@@ -54,6 +64,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
+        itemSuratPermintaanAdapter = ItemSuratPermintaanAdapter()
 
         idSp.let {
             dataProfile = profilePreference.getProfile()
@@ -70,6 +81,16 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == LAUNCH_EDIT_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                initApiRequest()
+            }
+        }
+    }
+
     private fun init() {
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
@@ -77,6 +98,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     }
 
     private fun initApiRequest() {
+        disposable = masterViewModel.getPersyaratanList("all")
+            .subscribe(this::handleResponse, this::handleError)
+
         disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
             .subscribe(this::handleResponse, this::handleError)
 
@@ -89,10 +113,10 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     }
 
     private fun setupItemSuratPermintaanRecyclerView() {
-        itemSuratPermintaanAdapter = BaseAdapter(
-            R.layout.item_surat_permintaan_item_row,
-            ItemSuratPermintaanViewHolder::class.java
-        )
+//        itemSuratPermintaanAdapter = BaseAdapter(
+//            R.layout.item_surat_permintaan_item_row,
+//            ItemSuratPermintaanViewHolder::class.java
+//        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = itemSuratPermintaanAdapter
@@ -118,8 +142,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 this@DetailSuratPermintaanActivity,
                 HistorySuratPermintaanActivity::class.java
             )
-            intent.putExtra("id_sp", idSp)
-            intent.putExtra("jenis_sp", jenisSP)
+            intent.putExtra(ID_SP_HISTORY, idSp)
+            intent.putExtra(JENIS_SP_HISTORY, jenisSP)
             startActivity(intent)
         }
 
@@ -229,10 +253,14 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
                     if (!itemList.isNullOrEmpty()) {
+                        itemSuratPermintaanAdapter.persyaratanList.putAll(persyaratanList)
                         constraint_text_item.visibility = View.VISIBLE
                         itemList.forEach {
                             itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
+                            itemSuratPermintaanAdapter.viewType.add(dataDetailSP.jenis.toString())
                         }
+                    } else {
+                        constraint_text_item.visibility = View.GONE
                     }
                     itemSuratPermintaanAdapter.notifyDataSetChanged()
 
@@ -242,6 +270,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                         fileList.forEach {
                             fileSuratPermintaanAdapter.itemList.add(it as FileLampiranDetailSP)
                         }
+                    } else {
+                        constraint_text_file.visibility = View.GONE
                     }
 
                     fileSuratPermintaanAdapter.notifyDataSetChanged()
@@ -307,6 +337,14 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }
+
+            is MasterPersyaratanResponse -> {
+                val dataPersyaratan = response.data
+
+                dataPersyaratan?.forEach {
+                    persyaratanList[it?.id.toString()] = it?.nama.toString()
+                }
+            }
         }
     }
 
@@ -336,8 +374,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             }
             R.id.menuEditSP -> {
                 val intent = Intent(this, EditSuratPermintaanActivity::class.java)
-                intent.putExtra("id_sp", idSp)
-                startActivity(intent)
+                intent.putExtra(ID_SP_EDIT, idSp)
+                intent.putExtra(MASTER_PERSYARATAN, persyaratanList.toString())
+                startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
                 true
             }
             R.id.menuHapusSP -> {

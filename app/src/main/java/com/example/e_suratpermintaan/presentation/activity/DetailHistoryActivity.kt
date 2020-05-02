@@ -16,6 +16,11 @@ import kotlinx.android.synthetic.main.activity_detail_history.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailHistoryActivity : BaseActivity() {
+    
+    companion object {
+        const val DETAIL_HISTORY_SP = "detail_history_sp"
+        const val JENIS_SP_DETAIL_HISTORY = "jenis_sp_detail_history"
+    }
 
     override fun layoutId(): Int = R.layout.activity_detail_history
 

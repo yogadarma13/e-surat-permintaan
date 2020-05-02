@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.HistorySPResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.presentation.activity.DetailHistoryActivity.Companion.DETAIL_HISTORY_SP
+import com.example.e_suratpermintaan.presentation.activity.DetailHistoryActivity.Companion.JENIS_SP_DETAIL_HISTORY
 import com.example.e_suratpermintaan.presentation.adapter.HistoryAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -18,6 +20,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 class HistorySuratPermintaanActivity : BaseActivity() {
+
+    companion object {
+        const val ID_SP_HISTORY = "id_sp_history"
+        const val JENIS_SP_HISTORY = "jenis_sp_history"
+    }
 
     private val historyViewModel: SuratPermintaanViewModel by viewModel()
 
@@ -30,8 +37,8 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        idSp = intent.extras?.getString("id_sp")
-        jenisSp = intent.extras?.getString("jenis_sp")
+        idSp = intent.extras?.getString(ID_SP_HISTORY)
+        jenisSp = intent.extras?.getString(JENIS_SP_HISTORY)
 
         init()
     }
@@ -55,8 +62,8 @@ class HistorySuratPermintaanActivity : BaseActivity() {
                 val gson = Gson()
                 val json = gson.toJson(item)
                 val intent = Intent(this@HistorySuratPermintaanActivity, DetailHistoryActivity::class.java)
-                intent.putExtra("detail_history", json)
-                intent.putExtra("jenis_sp", jenisSp)
+                intent.putExtra(DETAIL_HISTORY_SP, json)
+                intent.putExtra(JENIS_SP_DETAIL_HISTORY, jenisSp)
                 startActivity(intent)
             }
         })
