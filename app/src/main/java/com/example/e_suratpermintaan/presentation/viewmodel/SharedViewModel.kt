@@ -6,6 +6,8 @@ import com.e_suratpermintaan.core.domain.entities.responses.*
 
 class SharedViewModel : ViewModel() {
 
+    val isAllMasterObservableResponseComplete:MutableLiveData<Boolean> = MutableLiveData()
+
     private val costCodeList: MutableLiveData<List<DataMasterCC?>?> = MutableLiveData()
     private val uomList: MutableLiveData<List<DataMasterUOM?>?> = MutableLiveData()
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()

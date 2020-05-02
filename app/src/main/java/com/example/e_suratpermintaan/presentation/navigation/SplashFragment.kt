@@ -7,6 +7,7 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
@@ -16,6 +17,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.google.firebase.iid.FirebaseInstanceId
 import org.koin.android.ext.android.inject
 import java.io.IOException
@@ -27,6 +29,8 @@ import java.io.IOException
 class SplashFragment : BaseFragment() {
 
     private lateinit var handler: Handler
+
+    private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
@@ -76,13 +80,21 @@ class SplashFragment : BaseFragment() {
                 navOptions
             )
         } else {
-            if ((requireActivity() as StarterActivity).isAllObservableComplete) {
-                requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
-                requireActivity().finish()
-            } else {
-                (requireActivity() as StarterActivity)
-                    .isSplashOrLoginRequestStartMainActivity = true
-            }
+            val starterActivity = (requireActivity() as StarterActivity)
+
+            sharedViewModel.isAllMasterObservableResponseComplete.observe(
+                starterActivity,
+                Observer { isIt ->
+
+                    if (isIt) {
+                        requireActivity().startActivity(
+                            Intent(requireActivity(), MainActivity::class.java)
+                        )
+                        requireActivity().finish()
+                    }
+
+                })
+
         }
     }
 
@@ -94,7 +106,7 @@ class SplashFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
 
-        handler.postDelayed(runnable, 1500)
+        handler.postDelayed(runnable, 1000)
     }
 
     override fun onResume() {

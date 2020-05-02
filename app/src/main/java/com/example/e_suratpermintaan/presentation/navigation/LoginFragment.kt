@@ -11,6 +11,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
@@ -22,6 +23,7 @@ import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,6 +37,7 @@ class LoginFragment : BaseFragment() {
     private val profileViewModel: ProfileViewModel by viewModel()
     private val authViewModel: AuthViewModel by viewModel()
 
+    private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
@@ -90,6 +93,8 @@ class LoginFragment : BaseFragment() {
     private fun loginResponse(response: LoginResponse) {
         val dataLogin = response.data
 
+        val starterActivity = (requireActivity() as StarterActivity)
+
         dataLogin?.id?.let { id ->
 
             disposable = profileViewModel.getProfile(id)
@@ -102,24 +107,27 @@ class LoginFragment : BaseFragment() {
                             dataProfile = it
                         }
 
-                        progressBarOverlay.visibility = GONE
-
                         if (dataProfile != null) {
-                            profilePreference.saveProfile(dataProfile)
-                            toastNotify(response.message)
 
-                            if ((requireActivity() as StarterActivity).isAllObservableComplete) {
-                                requireActivity().startActivity(
-                                    Intent(
-                                        requireActivity(),
-                                        MainActivity::class.java
-                                    )
-                                )
-                                requireActivity().finish()
-                            } else {
-                                (requireActivity() as StarterActivity)
-                                    .isSplashOrLoginRequestStartMainActivity = true
-                            }
+                            starterActivity.initUserDataDependentApiRequest()
+                            sharedViewModel.isAllMasterObservableResponseComplete.observe(
+                                starterActivity,
+                                Observer { isIt ->
+
+                                    if (isIt){
+                                        toastNotify(response.message)
+                                        progressBarOverlay.visibility = GONE
+                                        profilePreference.saveProfile(dataProfile)
+
+                                        Handler().postDelayed({
+                                            starterActivity.startActivity(
+                                                Intent(starterActivity, MainActivity::class.java)
+                                            )
+                                            starterActivity.finish()
+                                        }, 1000)
+                                    }
+
+                                })
                         } else {
                             toastNotify(getString(R.string.profile_get_error_message))
                         }

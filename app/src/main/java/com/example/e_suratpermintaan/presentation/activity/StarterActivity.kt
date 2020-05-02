@@ -2,6 +2,7 @@ package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.ActivityNavigator
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
@@ -23,7 +24,10 @@ class StarterActivity : BaseActivity() {
     private val profilePreference: ProfilePreference by inject()
 
     var isAllObservableComplete = false
-    var isSplashOrLoginRequestStartMainActivity = false
+    var isSplashRequestStartMainActivity = false
+    var isLoginRequestStartMainActivity = false
+
+    var loginResponse: String = ""
 
     override fun layoutId(): Int = R.layout.activity_starter
 
@@ -33,91 +37,109 @@ class StarterActivity : BaseActivity() {
         initApiRequest()
     }
 
-    private fun initApiRequest() {
+    fun initApiRequest() {
 
         profileId = profilePreference.getProfile()?.id
-        val roleId = profilePreference.getProfile()?.roleId
+        idUser = profileId.toString()
 
-        if (profileId != null) {
-            idUser = profileId.toString()
+        // Master request api - START
+        // -----------------------------------------------------------
+        val observableCC = masterViewModel.getCostCodeList("all")
 
-            // Master request api - START
-            // -----------------------------------------------------------
-            val observableCC = masterViewModel.getCostCodeList("all")
+        val observableUom =masterViewModel.getUomList("all")
 
-            val observableUom =masterViewModel.getUomList("all")
+        val observablePersyaratan = masterViewModel.getPersyaratanList("all")
 
-            val observablePersyaratan = masterViewModel.getPersyaratanList("all")
+        val observableStatusFilter = masterViewModel.getStatusFilterOptionList()
 
-            val observableStatusFilter = masterViewModel.getStatusFilterOptionList()
+        val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
 
-            val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
+        val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
 
-            val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
+        val observableJenisPermintaanFilter = masterViewModel.getJenisPermintaanFilterOptionList(idUser)
 
-            val observableJenisPermintaanFilter = masterViewModel.getJenisPermintaanFilterOptionList(idUser)
+        val concat1 = Observable.concat(
+            observableCC.onErrorResumeNext { Observable.empty() },
+            observableUom.onErrorResumeNext { Observable.empty() },
+            observablePersyaratan.onErrorResumeNext { Observable.empty() })
 
-            val concat1 = Observable.concat(
-                observableCC.onErrorResumeNext { Observable.empty() },
-                observableUom.onErrorResumeNext { Observable.empty() },
-                observablePersyaratan.onErrorResumeNext { Observable.empty() },
-                observableStatusFilter.onErrorResumeNext { Observable.empty() })
+        val concat2 = Observable.concat(
+            observableStatusFilter.onErrorResumeNext { Observable.empty() },
+            observableJenisDataFilter.onErrorResumeNext { Observable.empty() },
+            observableProyekFilter.onErrorResumeNext { Observable.empty() },
+            observableJenisPermintaanFilter.onErrorResumeNext { Observable.empty() })
 
-            val concat2 = Observable.concat(
-                observableJenisDataFilter.onErrorResumeNext { Observable.empty() },
-                observableProyekFilter.onErrorResumeNext { Observable.empty() },
-                observableJenisPermintaanFilter.onErrorResumeNext { Observable.empty() })
+        disposable = Observable.concat(
+            concat1.onErrorResumeNext { Observable.empty() },
+            concat2.onErrorResumeNext { Observable.empty() })
+            .subscribe(this::handleResponse, this::handleError)
 
-            Observable.concat(
-                concat1.onErrorResumeNext { Observable.empty() },
-                concat2.onErrorResumeNext { Observable.empty() })
-                .subscribe(this::handleResponse, this::handleError)
+        // Master API END
+        // -----------------------------------------------------------
+    }
 
-            // Master API END
-            // -----------------------------------------------------------
+    fun initUserDataDependentApiRequest(){
+        profileId = profilePreference.getProfile()?.id
+        idUser = profileId.toString()
 
-        }
+        // Master request api - START
+        // -----------------------------------------------------------
+
+        val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
+
+        val observableJenisPermintaanFilter = masterViewModel.getJenisPermintaanFilterOptionList(idUser)
+
+        disposable = Observable.concat(
+            observableProyekFilter.onErrorResumeNext { Observable.empty() },
+            observableJenisPermintaanFilter.onErrorResumeNext { Observable.empty() })
+            .subscribe(this::handleResponse, this::handleError)
+
+        // Master API END
+        // -----------------------------------------------------------
     }
 
     private fun handleResponse(response: Any) {
         when (response) {
+
+            // CRUD ITEM Field List
+            // -----------------------------------------------------------
             is MasterCCResponse -> {
                 sharedViewModel.setCostCodeList(response.data)
+                Log.d("MYAPPSTARTER", "CC RESPONSE")
             }
 
             is MasterUOMResponse -> {
                 sharedViewModel.setUomList(response.data)
+                Log.d("MYAPPSTARTER", "UOM RESPONSE")
             }
 
             is MasterPersyaratanResponse -> {
                 sharedViewModel.setPersyaratanList(response.data)
+                Log.d("MYAPPSTARTER", "PERSYARATAN RESPONSE")
             }
 
             // Filter Option List
             // -----------------------------------------------------------
             is MasterStatusFilterOptionResponse -> {
                 sharedViewModel.setStatusFilterOptionList(response.data)
+                Log.d("MYAPPSTARTER", "STATUS FILTER RESPONSE")
             }
 
             is MasterJenisDataFilterOptionResponse -> {
                 sharedViewModel.setJenisDataFilterOptionList(response.data)
+                Log.d("MYAPPSTARTER", "JENIS DATA FILTER RESPONSE")
             }
 
             is MasterProyekFilterOptionResponse -> {
                 sharedViewModel.setProyekFilterOptionList(response.data)
+                Log.d("MYAPPSTARTER", "PROYEK FILTER RESPONSE")
             }
 
             is MasterJenisPermintaanFilterOptionResponse -> {
                 sharedViewModel.setJenisPermintaanFilterOptionList(response.data)
-                isAllObservableComplete = true
+                Log.d("MYAPPSTARTER", "JENIS PERMINTAAN FILTER RESPONSE")
 
-                if (isSplashOrLoginRequestStartMainActivity){
-                    startActivity(
-                        Intent(
-                        this@StarterActivity,
-                        MainActivity::class.java)
-                    )
-                }
+                sharedViewModel.isAllMasterObservableResponseComplete.value = true
             }
         }
     }

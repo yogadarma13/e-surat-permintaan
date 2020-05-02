@@ -107,18 +107,18 @@ class MainActivity : BaseActivity() {
             jenisDataOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedViewModel.getJenisPermintaanFilterOptionList().observe(this, Observer {
-            it?.forEach { item ->
-                jenisPermintaanOptionList.add(item as DataMasterOption)
-            }
-            jenisPermintaanOptionAdapter.notifyDataSetChanged()
-        })
-
         sharedViewModel.getProyekFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 proyekOptionList.add(item as DataMasterOption)
             }
             proyekOptionAdapter.notifyDataSetChanged()
+        })
+
+        sharedViewModel.getJenisPermintaanFilterOptionList().observe(this, Observer {
+            it?.forEach { item ->
+                jenisPermintaanOptionList.add(item as DataMasterOption)
+            }
+            jenisPermintaanOptionAdapter.notifyDataSetChanged()
         })
     }
 
