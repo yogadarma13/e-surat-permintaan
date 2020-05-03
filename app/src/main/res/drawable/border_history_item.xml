@@ -14,7 +14,7 @@
     <item
         android:top="8dp">
         <shape>
-            <solid android:color="#FFF"/>
+            <solid android:color="@android:color/white"/>
             <corners
                 android:bottomLeftRadius="8dp"
                 android:bottomRightRadius="8dp"

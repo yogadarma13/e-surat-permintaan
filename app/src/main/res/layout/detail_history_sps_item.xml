@@ -22,7 +22,7 @@
             android:id="@+id/expandedParentSPS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E4E1E1"
+            android:background="@color/colorBackground"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent">
 
@@ -33,7 +33,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="16dp"
                 android:text="Jenis Barang"
-                android:textColor="@android:color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,9 +52,10 @@
             android:id="@+id/expandedChildSPS"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="8dp"
-            android:visibility="gone"
             android:paddingHorizontal="16dp"
+            android:visibility="gone"
+            android:background="@android:color/white"
+            android:paddingVertical="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expandedParentSPS">
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kode Pekerjaan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Vol"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPS" />
 
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Satuan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvQtySPS" />
 
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Waktu\nPelaksanaan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPS" />
 
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Persyaratan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPS" />
 
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Keterangan/ \nTujuannya"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPersyaratanDetailSPS" />
 
@@ -206,33 +206,35 @@
                 android:id="@+id/btnEditSPS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorWarning"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorBlue"
                 android:paddingHorizontal="32dp"
-                android:paddingVertical="12dp"
                 android:text="Edit"
                 android:visibility="gone"
-                android:layout_marginTop="8dp"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnHapus"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/btnHapusSPS"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPS" />
 
 
             <Button
                 android:id="@+id/btnHapusSPS"
-                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                android:layout_marginRight="8dp"
                 android:backgroundTint="@android:color/holo_red_light"
                 android:paddingHorizontal="32dp"
-                android:paddingVertical="12dp"
                 android:text="Hapus"
-                android:visibility="gone"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btnEdit"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditSPS"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPS" />
 
 

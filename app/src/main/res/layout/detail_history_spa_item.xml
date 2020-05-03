@@ -21,7 +21,7 @@
             android:id="@+id/expandedParentSPA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E4E1E1"
+            android:background="@color/colorBackground"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -32,7 +32,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="20dp"
                 android:text="Jenis Barang"
-                android:textColor="@android:color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,10 +51,11 @@
             android:id="@+id/expandedChildSPA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@android:color/white"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expandedParentSPA">
 
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kode Pekerjaan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Vol"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPA" />
 
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Satuan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvQtySPA" />
 
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Kapasitas"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPA" />
 
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Merk"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKapasitasDetailSPA" />
 
@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Waktu\nPemakaian"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvMerkDetailSPA" />
 
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Keterangan/ \nTujuannya"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPA" />
 
@@ -227,33 +227,35 @@
                 android:id="@+id/btnEditSPA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorWarning"
-                android:paddingHorizontal="32dp"
-                android:paddingVertical="12dp"
-                android:visibility="gone"
-                android:text="Edit"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorBlue"
+                android:paddingHorizontal="32dp"
+                android:text="Edit"
+                android:visibility="gone"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnHapus"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/btnHapusSPA"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPA" />
 
 
             <Button
                 android:id="@+id/btnHapusSPA"
-                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                android:layout_marginRight="8dp"
                 android:backgroundTint="@android:color/holo_red_light"
                 android:paddingHorizontal="32dp"
-                android:paddingVertical="12dp"
                 android:text="Hapus"
-                android:visibility="gone"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btnEdit"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPA" />
 
 

@@ -5,14 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_DELETED
@@ -32,7 +35,7 @@ import kotlinx.android.synthetic.main.dialog_filter_sp.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
     companion object {
         const val LAUNCH_DETAIL_ACTIVITY: Int = 111
@@ -51,6 +54,7 @@ class MainActivity : BaseActivity() {
     private val masterViewModel: MasterViewModel by viewModel()
     private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
+    private val fcmPreference: FCMPreference by inject()
 
     private lateinit var alertDialogTambahSP: AlertDialog
     private lateinit var alertDialogFilterSP: AlertDialog
@@ -233,7 +237,7 @@ class MainActivity : BaseActivity() {
 
     private fun setupListeners() {
         btnProfile.setOnClickListener {
-            startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+            showMenuItemProfile(it)
         }
 
         btnAjukan.setOnClickListener {
@@ -445,5 +449,32 @@ class MainActivity : BaseActivity() {
         }
 
         alertDialogFilterSP.setView(dialogRootView)
+    }
+
+    private fun showMenuItemProfile(v: View) {
+        PopupMenu(this, v).apply {
+            setOnMenuItemClickListener(this@MainActivity)
+            inflate(R.menu.menu_item_profile)
+            show()
+        }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when(item?.itemId) {
+            R.id.menuProfile -> {
+                startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+                true
+            }
+
+            R.id.menuLogout -> {
+                profilePreference.removeProfile()
+                fcmPreference.removeUserTokenId()
+
+                finish()
+                startActivity(Intent(this, StarterActivity::class.java))
+                true
+            }
+            else -> false
+        }
     }
 }

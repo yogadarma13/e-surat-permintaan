@@ -8,6 +8,9 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowContentTransitions" tools:ignore="NewApi">true</item>
 
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -69,16 +72,16 @@
     <!-- Style for material design 'Spinner'-->
     <style name="AppTheme.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <!-- color of box ONLY, not dropdown -->
-        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxBackgroundColor">@color/colorBackground</item>
         <!-- the box outline color depending on state
              (default, enabled, hovered, focused, but NOT error) -->
-        <item name="boxStrokeColor">@color/material_spinner_box</item>
+        <item name="boxStrokeColor">@color/colorMidGrey</item>
         <!-- the box outline color just for errors -->
         <!-- <item name="boxStrokeErrorColor">@color/colorError</item> -->
         <!-- enable 8dp space below the box for error message -->
         <item name="errorEnabled">true</item>
         <!-- the hint INSIDE the box, before focusing the TextInputEditText -->
-        <item name="android:textColorHint">@color/colorPrimaryVariant</item>
+        <item name="android:textColorHint">@color/colorTextSecondary</item>
         <!-- the hint ON TOP of the box, when the TextInputEditText is focused -->
         <item name="hintTextColor">@color/colorPrimary</item>
         <!-- Gain access to additional styling for the child AutoCompleteTextView,

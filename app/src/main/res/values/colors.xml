@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#95241A</color>
     <color name="colorAccent">#FFAF45</color>
     <color name="colorWarning">#FFAF45</color>
+    <color name="colorBackground">#F9F9F9</color>
+    <color name="colorBlue">#2783D9</color>
+    <color name="colorTextPrimary">#1B2E41</color>
+    <color name="colorTextSecondary">#808080</color>
+    <color name="colorGreen">#54BD3A</color>
+    <color name="colorMidGrey">#D8D8D8</color>
 
     <color name="selected_background_color">#FFDCAE</color>
     <color name="separator_color">#878787</color>

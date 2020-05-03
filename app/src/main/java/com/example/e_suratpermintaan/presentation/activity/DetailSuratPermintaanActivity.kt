@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.Serializable
 
 class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
@@ -375,7 +376,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             R.id.menuEditSP -> {
                 val intent = Intent(this, EditSuratPermintaanActivity::class.java)
                 intent.putExtra(ID_SP_EDIT, idSp)
-                intent.putExtra(MASTER_PERSYARATAN, persyaratanList.toString())
+                intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
                 startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
                 true
             }

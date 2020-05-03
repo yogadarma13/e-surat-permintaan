@@ -19,6 +19,7 @@ import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetProyekFil
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetStatusFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.GetNotifikasiListUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.ReadNotifikasiUseCase
+import com.e_suratpermintaan.core.usecases.profile.EditProfileUseCase
 import com.e_suratpermintaan.core.usecases.profile.GetProfileUseCase
 import com.e_suratpermintaan.core.usecases.suratpermintaan.*
 import org.koin.dsl.module
@@ -96,6 +97,13 @@ val useCaseModule = module {
     }
     single {
         GetProfileUseCase(
+            get() as ProfileRepository,
+            get() as SchedulerProvider
+        )
+    }
+
+    single {
+        EditProfileUseCase(
             get() as ProfileRepository,
             get() as SchedulerProvider
         )

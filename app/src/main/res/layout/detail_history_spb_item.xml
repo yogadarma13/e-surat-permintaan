@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewSPB"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cardViewSPB"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="10dp"
-    app:cardElevation="3dp"
-    android:layout_marginHorizontal="16dp">
+    app:cardElevation="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,9 +21,9 @@
             android:id="@+id/expandedParentSPB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E4E1E1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            android:background="@color/colorBackground"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tvJenisDetailSPB"
@@ -33,7 +32,6 @@
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="16dp"
                 android:text="Jenis Barang"
-                android:textColor="@android:color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,11 +39,11 @@
                 android:id="@+id/imgExpandedParentSPB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
                 android:src="@drawable/ic_arrow_down"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginRight="16dp"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -53,9 +51,10 @@
             android:id="@+id/expandedChildSPB"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:visibility="gone"
-            android:paddingHorizontal="16dp"
+            android:background="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expandedParentSPB">
@@ -65,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kode Pekerjaan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Vol"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPB" />
 
@@ -85,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Satuan"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvQtySPB" />
 
@@ -95,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Fungsi"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPB" />
 
@@ -105,7 +104,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Target Tanggal\nDatang"
-                android:textColor="@android:color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvFungsiDetailSPB" />
 
@@ -115,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Keterangan/ \nTujuannya"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTargetDetailSPB" />
 
@@ -205,33 +203,35 @@
                 android:id="@+id/btnEditSPB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorWarning"
-                android:paddingHorizontal="32dp"
-                android:visibility="gone"
-                android:paddingVertical="12dp"
-                android:text="Edit"
                 android:layout_marginTop="8dp"
+                android:backgroundTint="@color/colorBlue"
+                android:paddingHorizontal="32dp"
+                android:text="Edit"
+                android:visibility="gone"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnHapus"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/btnHapusSPB"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
 
 
             <Button
                 android:id="@+id/btnHapusSPB"
-                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:backgroundTint="@android:color/holo_red_light"
                 android:paddingHorizontal="32dp"
-                android:paddingVertical="12dp"
                 android:text="Hapus"
-                android:textAllCaps="false"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btnEdit"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditSPB"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
 
 

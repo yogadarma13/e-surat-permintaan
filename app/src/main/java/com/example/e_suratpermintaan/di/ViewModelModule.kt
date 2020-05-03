@@ -17,6 +17,7 @@ import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetProyekFil
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetStatusFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.GetNotifikasiListUseCase
 import com.e_suratpermintaan.core.usecases.notifikasi.ReadNotifikasiUseCase
+import com.e_suratpermintaan.core.usecases.profile.EditProfileUseCase
 import com.e_suratpermintaan.core.usecases.profile.GetProfileUseCase
 import com.e_suratpermintaan.core.usecases.suratpermintaan.*
 import com.example.e_suratpermintaan.presentation.viewmodel.*
@@ -48,7 +49,8 @@ val viewModelModule = module {
     }
     viewModel {
         ProfileViewModel(
-            get() as GetProfileUseCase
+            get() as GetProfileUseCase,
+            get() as EditProfileUseCase
         )
     }
     viewModel {

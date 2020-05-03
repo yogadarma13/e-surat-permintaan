@@ -44,7 +44,16 @@ data class DataProfile(
 	val username: String? = null,
 
 	@field:SerializedName("desc")
-	val desc: String? = null
+	val desc: String? = null,
+
+	@field:SerializedName("token")
+	val token: String? = null,
+
+	@field:SerializedName("foto_profile")
+	val fotoProfile: String? = null,
+
+	@field:SerializedName("foto_ttd")
+	val fotoTtd: String? = null
 )
 
 data class JenisItemProfile(

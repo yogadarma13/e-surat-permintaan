@@ -8,6 +8,7 @@
     android:layout_marginVertical="10dp"
     android:clickable="true"
     android:focusable="true"
+    app:cardBackgroundColor="@android:color/white"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="10dp">
 
@@ -127,8 +128,8 @@
             android:id="@+id/cardStatusPermintaan"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             app:cardBackgroundColor="#E0E0E0"
             app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"

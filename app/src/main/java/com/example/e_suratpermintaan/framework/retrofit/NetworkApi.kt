@@ -26,6 +26,19 @@ interface NetworkApi {
         @Field("id_user") id_user: String
     ): Observable<ProfileResponse>
 
+    @Multipart
+    @POST("edit_profile")
+    fun edit_profile(
+        @Part("id") id: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("password_last") passwordLast: RequestBody,
+        @Part("passwordNew") passwordNew: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("desc") desc: RequestBody,
+        @Part file: MultipartBody.Part,
+        @Part ttd: MultipartBody.Part
+    ): Observable<EditProfileResponse>
+
     // ================================= SURAT PERMINTAAN =======================================
     @GET("DataAll")
     fun getDataAll(
@@ -178,7 +191,7 @@ interface NetworkApi {
     @POST("edit_file")
     fun updateFileLampiran(
         @Part("keterangan") keterangan: RequestBody,
-        @Part("file") file: MultipartBody.Part,
+        @Part file: MultipartBody.Part,
         @Part("id_file") id_file: RequestBody
     ): Observable<EditFileLampiranResponse>
 

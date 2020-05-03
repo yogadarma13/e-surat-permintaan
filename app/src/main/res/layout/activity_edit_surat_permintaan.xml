@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorBackground"
     android:layout_height="match_parent"
     tools:context=".presentation.activity.EditSuratPermintaanActivity">
 
@@ -44,72 +45,80 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true">
 
-                    <TextView
-                        android:id="@+id/tvAddIitem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:visibility="gone"
-                        android:drawableLeft="@drawable/ic_add"
-                        android:gravity="center_vertical"
-                        android:text="Tambah Item"
-                        android:textColor="@android:color/holo_blue_light"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <!--            <TextView-->
-                    <!--                android:id="@+id/tvAddLampiran"-->
-                    <!--                android:layout_width="wrap_content"-->
-                    <!--                android:layout_height="wrap_content"-->
-                    <!--                android:layout_margin="16dp"-->
-                    <!--                android:drawableLeft="@drawable/ic_add"-->
-                    <!--                android:gravity="center_vertical"-->
-                    <!--                android:text="Tambah Item"-->
-                    <!--                android:textColor="@android:color/holo_blue_light"-->
-                    <!--                app:layout_constraintLeft_toLeftOf="parent"-->
-                    <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-                    <TextView
-                        android:id="@+id/tvTextItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Items"
-                        android:textSize="20sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvAddIitem" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewEditItem"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/constraintEditItem"
                         android:layout_marginTop="16dp"
-                        android:nestedScrollingEnabled="false"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTextItem" />
+                        android:background="@android:color/white"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tvTextLampiran"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Lampiran"
-                        android:textSize="20sp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/recyclerViewEditItem" />
+                        <TextView
+                            android:id="@+id/tvAddIitem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:visibility="gone"
+                            android:drawableLeft="@drawable/ic_add"
+                            android:gravity="center_vertical"
+                            android:text="Tambah Item"
+                            android:textColor="@android:color/holo_blue_light"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvTextItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Items"
+                            android:textSize="20sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewEditLampiran"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewEditItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextItem" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/constraintEditLampiran"
                         android:layout_marginTop="16dp"
-                        android:nestedScrollingEnabled="false"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTextLampiran" />
+                        app:layout_constraintTop_toBottomOf="@+id/constraintEditItem"
+                        android:background="@android:color/white">
+
+                        <TextView
+                            android:id="@+id/tvTextLampiran"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Lampiran"
+                            android:textSize="20sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewEditLampiran"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextLampiran" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
