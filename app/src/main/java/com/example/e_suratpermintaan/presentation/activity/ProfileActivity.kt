@@ -2,10 +2,13 @@ package com.example.e_suratpermintaan.presentation.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.loader.content.CursorLoader
 import com.bumptech.glide.Glide
@@ -13,6 +16,7 @@ import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.FilePath
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -139,7 +143,7 @@ class ProfileActivity : BaseActivity() {
 
         if (requestCode == FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             val fileUri = data?.data
-            val filePath = getRealPathImageFromURI(fileUri as Uri)
+            val filePath = FilePath.getPath(this, fileUri as Uri)
 
             toastNotify(filePath)
 
@@ -152,7 +156,7 @@ class ProfileActivity : BaseActivity() {
 
         if (requestCode == PHOTO_SIGNATURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val fileUri = data?.data
-            val filePath = getRealPathImageFromURI(fileUri as Uri)
+            val filePath = FilePath.getPath(this, fileUri as Uri)
 
             toastNotify(filePath)
 
