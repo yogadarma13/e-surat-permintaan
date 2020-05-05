@@ -22,12 +22,11 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditFileSuratPermintaanViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
-import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.swipeRefreshLayout
 import kotlinx.android.synthetic.main.dialog_tambah_file.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_file.view.btnBatalTambahFile
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -137,33 +136,37 @@ class EditSuratPermintaanActivity : BaseActivity() {
             showDialogTambahFile()
         }
 
-//        editItemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
-//            val data = item as ItemsDetailSP
-//
-//            when (actionString) {
-//                BaseViewHolder.ROOTVIEW -> {
-//                    // Ignored
-//                }
-//                EditItemSuratPermintaanViewHolder.BTN_EDIT -> {
-//                    alertDialogEdit.show(data)
-//                }
-//                EditItemSuratPermintaanViewHolder.BTN_HAPUS -> {
-//                    val alertDialog =
-//                        AlertDialog.Builder(this)
-//                            .setTitle("Konfirmasi Hapus Item")
-//                            .setMessage("Apa anda yakin ingin menghapus item?")
-//                            .setPositiveButton("Hapus") { _, _ ->
-//                                disposable =
-//                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
-//                                        .subscribe(this::handleResponse, this::handleError)
-//                            }.setNegativeButton("Batal") { dialog, _ ->
-//                                dialog.dismiss()
-//                            }.create()
-//
-//                    alertDialog.show()
-//                }
-//            }
-//        }
+        editItemSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
+            val data = item as ItemsDetailSP
+
+            when (actionString) {
+                BaseViewHolder.ROOTVIEW -> {
+                    // Ignored
+                }
+                EditItemSuratPermintaanViewHolder.BTN_EDIT -> {
+                    alertDialogEdit.show(data)
+                }
+                EditItemSuratPermintaanViewHolder.BTN_HAPUS -> {
+                    val alertDialog =
+                        AlertDialog.Builder(this)
+                            .setTitle("Konfirmasi Hapus Item")
+                            .setMessage("Apa anda yakin ingin menghapus item?")
+                            .setPositiveButton("Hapus") { _, _ ->
+                                disposable =
+                                    itemSuratPermintaanViewModel.removeItem(data.id.toString())
+                                        .subscribe(this::handleResponse, this::handleError)
+                            }.setNegativeButton("Batal") { dialog, _ ->
+                                dialog.dismiss()
+                            }.create()
+
+                    alertDialog.show()
+                }
+                EditItemSuratPermintaanViewHolder.BTN_PENUGASAN -> {
+                    toastNotify("Maaf, masih belum diimplementasi")
+                }
+            }
+        }
+
         editFileSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
             val data = item as FileLampiranDetailSP
 

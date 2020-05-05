@@ -25,7 +25,6 @@ import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,7 +41,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         const val STATUS_SP_DELETED = "SP_DELETED"
         const val LAUNCH_EDIT_ACTIVITY: Int = 99
     }
-
 
 //    private lateinit var alertDialogEdit: EditItemDialog
 //    private lateinit var alertDialogTambah: TambahItemDialog

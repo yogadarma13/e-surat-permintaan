@@ -19,6 +19,7 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
     companion object {
         const val BTN_HAPUS = "btnHapus"
         const val BTN_EDIT = "btnEdit"
+        const val BTN_PENUGASAN = "btnPenugasan"
     }
 
     init {
@@ -37,17 +38,24 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
         rootView.tvVolume.text = data.qty
         rootView.tvSatuan.text = data.idSatuan
 
-        if (data.tombolEditItem == 1){
+        if (data.tombolEditItem == 1) {
             rootView.btnEdit.visibility = View.VISIBLE
             rootView.btnEdit.setOnClickListener {
                 listener.invoke(data, BTN_EDIT)
             }
         }
 
-        if (data.tombolHapusItem == 1){
+        if (data.tombolHapusItem == 1) {
             rootView.btnHapus.visibility = View.VISIBLE
             rootView.btnHapus.setOnClickListener {
                 listener.invoke(data, BTN_HAPUS)
+            }
+        }
+
+        if (data.tombolPenugasan == 1) {
+            rootView.btnPenugasan.visibility = View.VISIBLE
+            rootView.btnPenugasan.setOnClickListener {
+                listener.invoke(data, BTN_PENUGASAN)
             }
         }
 

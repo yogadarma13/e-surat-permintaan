@@ -26,11 +26,20 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val SPA = 0
         val SPB = 1
         val SPS = 2
+        const val BTN_HAPUS = "btnHapus"
+        const val BTN_EDIT = "btnEdit"
+        const val BTN_PENUGASAN = "btnPenugasan"
     }
 
     val itemList: ArrayList<ItemsDetailSP> = arrayListOf()
     val viewType: ArrayList<String> = arrayListOf()
     val persyaratanList = mutableMapOf<String, String>()
+
+    private var onItemClickListener: ((Any?, String?) -> Unit) = { _, _ -> }
+
+    fun setOnItemClickListener(listener: (item: Any?, actionString: String?) -> Unit) {
+        onItemClickListener = listener
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -48,18 +57,28 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
 
     override fun onBindViewHolder(holder: EditItemSuratPermintaanAdapter.ViewHolder, position: Int) {
         val data = itemList.get(position)
+
         when (getItemViewType(position)) {
             SPA -> {
                 val viewHolderSPA = holder as ViewHolderSPA
 
                 if (data.tombolEditItem == 1) {
                     viewHolderSPA.btnEditSPA.visibility = View.VISIBLE
+                    viewHolderSPA.btnEditSPA.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_EDIT)
+                    }
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPA.btnHapusSPA.visibility = View.VISIBLE
+                    viewHolderSPA.btnHapusSPA.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_HAPUS)
+                    }
                 }
                 if (data.tombolPenugasan == 1) {
                     viewHolderSPA.btnPenugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.btnPenugasanSPA.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_PENUGASAN)
+                    }
                 }
 
                 viewHolderSPA.jenisDetailSPA.text = data.idBarang
@@ -111,12 +130,21 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
 
                 if (data.tombolEditItem == 1) {
                     viewHolderSPB.btnEditSPB.visibility = View.VISIBLE
+                    viewHolderSPB.btnEditSPB.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_EDIT)
+                    }
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPB.btnHapusSPB.visibility = View.VISIBLE
+                    viewHolderSPB.btnHapusSPB.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_HAPUS)
+                    }
                 }
                 if (data.tombolPenugasan == 1) {
                     viewHolderSPB.btnPenugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.btnPenugasanSPB.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_PENUGASAN)
+                    }
                 }
 
                 viewHolderSPB.jenisDetailSPB.text = data.idBarang
@@ -166,12 +194,21 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
 
                 if (data.tombolEditItem == 1) {
                     viewHolderSPS.btnEditSPS.visibility = View.VISIBLE
+                    viewHolderSPS.btnEditSPS.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_EDIT)
+                    }
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPS.btnHapusSPS.visibility = View.VISIBLE
+                    viewHolderSPS.btnHapusSPS.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_HAPUS)
+                    }
                 }
                 if (data.tombolPenugasan == 1) {
                     viewHolderSPS.btnPenugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.btnPenugasanSPS.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_PENUGASAN)
+                    }
                 }
 
                 viewHolderSPS.jenisDetailSPS.text = data.idBarang
