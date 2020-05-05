@@ -58,6 +58,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPA.btnHapusSPA.visibility = View.VISIBLE
                 }
+                if (data.tombolPenugasan == 1) {
+                    viewHolderSPA.btnPenugasanSPA.visibility = View.VISIBLE
+                }
 
                 viewHolderSPA.jenisDetailSPA.text = data.idBarang
                 viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
@@ -112,6 +115,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPB.btnHapusSPB.visibility = View.VISIBLE
                 }
+                if (data.tombolPenugasan == 1) {
+                    viewHolderSPB.btnPenugasanSPB.visibility = View.VISIBLE
+                }
 
                 viewHolderSPB.jenisDetailSPB.text = data.idBarang
                 viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
@@ -163,6 +169,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPS.btnHapusSPS.visibility = View.VISIBLE
+                }
+                if (data.tombolPenugasan == 1) {
+                    viewHolderSPS.btnPenugasanSPS.visibility = View.VISIBLE
                 }
 
                 viewHolderSPS.jenisDetailSPS.text = data.idBarang
@@ -245,6 +254,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val imageExpandedParentSPA: ImageView = itemView.findViewById(R.id.imgExpandedParentSPA)
         val btnEditSPA: Button = itemView.findViewById(R.id.btnEditSPA)
         val btnHapusSPA: Button = itemView.findViewById(R.id.btnHapusSPA)
+        val btnPenugasanSPA: Button = itemView.findViewById(R.id.btnPenugasanSPA)
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
@@ -261,6 +271,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val imageExpandedParentSPB: ImageView = itemView.findViewById(R.id.imgExpandedParentSPB)
         val btnEditSPB: Button = itemView.findViewById(R.id.btnEditSPB)
         val btnHapusSPB: Button = itemView.findViewById(R.id.btnHapusSPB)
+        val btnPenugasanSPB: Button = itemView.findViewById(R.id.btnPenugasanSPB)
 
     }
 
@@ -278,6 +289,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val imageExpandedParentSPS: ImageView = itemView.findViewById(R.id.imgExpandedParentSPS)
         val btnEditSPS: Button = itemView.findViewById(R.id.btnEditSPS)
         val btnHapusSPS: Button = itemView.findViewById(R.id.btnHapusSPS)
+        val btnPenugasanSPS: Button = itemView.findViewById(R.id.btnPenugasanSPS)
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

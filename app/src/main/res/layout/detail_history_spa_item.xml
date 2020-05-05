@@ -51,9 +51,9 @@
             android:id="@+id/expandedChildSPA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:background="@android:color/white"
             android:paddingHorizontal="16dp"
+            android:visibility="gone"
             android:paddingVertical="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -222,42 +222,54 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPA" />
 
+            <Button
+                android:id="@+id/btnHapusSPA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:visibility="gone"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:text="Hapus"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPA" />
 
             <Button
                 android:id="@+id/btnEditSPA"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorBlue"
-                android:paddingHorizontal="32dp"
                 android:text="Edit"
                 android:visibility="gone"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPA"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@+id/btnHapusSPA"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPA" />
 
-
             <Button
-                android:id="@+id/btnHapusSPA"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnPenugasanSPA"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:visibility="gone"
-                android:layout_marginRight="8dp"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:paddingHorizontal="32dp"
-                android:text="Hapus"
+                android:backgroundTint="@color/colorGreen"
+                android:text="Penugasan"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btnEditSPA"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPA" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

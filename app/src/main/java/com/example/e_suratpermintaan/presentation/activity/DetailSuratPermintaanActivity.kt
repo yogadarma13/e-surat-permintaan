@@ -12,6 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.utils.Directory
+import com.example.e_suratpermintaan.external.utils.DownloadTask
+import com.example.e_suratpermintaan.external.utils.FileName
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.MASTER_PERSYARATAN
@@ -20,6 +23,7 @@ import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaa
 import com.example.e_suratpermintaan.presentation.adapter.ItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
+import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.ItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
@@ -146,6 +150,24 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             intent.putExtra(ID_SP_HISTORY, idSp)
             intent.putExtra(JENIS_SP_HISTORY, jenisSP)
             startActivity(intent)
+        }
+
+        fileSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
+            val data = item as FileLampiranDetailSP
+
+            when (actionString) {
+                BaseViewHolder.ROOTVIEW -> {
+                    // Ignored
+                }
+
+                FileSuratPermintaanViewHolder.BTN_FILE -> {
+                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
+                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
+                        val downloadTask = DownloadTask(this, fileName)
+                        downloadTask.execute(data.dir)
+                    }
+                }
+            }
         }
 
         btnAjukan.setOnClickListener {

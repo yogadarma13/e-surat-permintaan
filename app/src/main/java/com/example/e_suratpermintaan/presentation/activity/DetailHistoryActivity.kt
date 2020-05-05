@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
+import com.e_suratpermintaan.core.domain.entities.responses.FilesDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.MasterPersyaratanResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.utils.Directory
+import com.example.e_suratpermintaan.external.utils.DownloadTask
+import com.example.e_suratpermintaan.external.utils.FileName
 import com.example.e_suratpermintaan.presentation.adapter.DetailHistoryAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
@@ -40,8 +44,8 @@ class DetailHistoryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dataDetailHistory = intent.getStringExtra("detail_history")
-        jenisSP = intent.getStringExtra("jenis_sp")
+        dataDetailHistory = intent.getStringExtra(DETAIL_HISTORY_SP)
+        jenisSP = intent.getStringExtra(JENIS_SP_DETAIL_HISTORY)
 
         data = Gson().fromJson(dataDetailHistory, Array<DetailHistory>::class.java).toList()
         dataBaru = data.get(0)
@@ -70,7 +74,7 @@ class DetailHistoryActivity : BaseActivity() {
         disposable = masterViewModel.getPersyaratanList("all")
             .subscribe(this::handleResponse, this::handleError)
 
-//        setupListeners()
+        setupListeners()
         initRecyclerView()
     }
 
@@ -103,17 +107,36 @@ class DetailHistoryActivity : BaseActivity() {
         recyclerViewButtonDownloadLama.adapter = fileDownloadLamaAdapter
     }
 
-//    private fun setupListeners() {
-//        fileDownloadBaruAdapter.setOnItemClickListener {
-//            val dataFileBaru = it as FilesDetailHistory
-//            toastNotify(dataFileBaru.dir)
-//        }
-//
-//        fileDownloadLamaAdapter.setOnItemClickListener {
-//            val dataFileLama = it as FilesDetailHistory
-//            toastNotify(dataFileLama.dir)
-//        }
-//    }
+    private fun setupListeners() {
+        fileDownloadBaruAdapter.setOnItemClickListener { item, actionString ->
+            val data = item as FilesDetailHistory
+
+            when(actionString) {
+                FileDownloadViewHolder.BTN_FILE -> {
+                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
+                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
+                        val downloadTask = DownloadTask(this, fileName)
+                        downloadTask.execute(data.dir)
+                    }
+                }
+            }
+        }
+
+        fileDownloadLamaAdapter.setOnItemClickListener { item, actionString ->
+            val data = item as FilesDetailHistory
+
+            when(actionString) {
+                FileDownloadViewHolder.BTN_FILE -> {
+                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
+                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
+                        val downloadTask = DownloadTask(this, fileName)
+                        downloadTask.execute(data.dir)
+                    }
+                }
+            }
+        }
+
+    }
 
     private fun setDataDetailHistory() {
 

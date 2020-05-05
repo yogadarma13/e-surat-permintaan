@@ -7,6 +7,9 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import kotlinx.android.synthetic.main.file_download_item.view.*
 
 class FileDownloadViewHolder(private val rootView: View) : BaseViewHolder(rootView)  {
+    companion object {
+        const val BTN_FILE = "btn_file_history"
+    }
     override fun bind(
         item: Any?,
         position: Int,
@@ -17,11 +20,10 @@ class FileDownloadViewHolder(private val rootView: View) : BaseViewHolder(rootVi
         rootView.setOnClickListener {
             listener.invoke(data, ROOTVIEW)
         }
-
+        rootView.btnDownloadFile.setOnClickListener {
+            listener.invoke(data, BTN_FILE)
+        }
         rootView.btnDownloadFile.text = data.keterangan
 
-        rootView.btnDownloadFile.setOnClickListener {
-            Toast.makeText(rootView.context, data.dir, Toast.LENGTH_LONG).show()
-        }
     }
 }

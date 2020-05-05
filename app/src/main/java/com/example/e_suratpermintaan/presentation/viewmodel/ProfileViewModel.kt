@@ -25,8 +25,8 @@ class ProfileViewModel(
         passwordNew: RequestBody,
         name: RequestBody,
         desc: RequestBody,
-        file: MultipartBody.Part,
-        ttd: MultipartBody.Part
+        file: MultipartBody.Part?,
+        ttd: MultipartBody.Part?
     ): Observable<EditProfileResponse> =
         editProfileUseCase.invoke(id, email, passwordLast, passwordNew, name, desc, file, ttd)
 

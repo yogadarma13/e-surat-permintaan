@@ -200,38 +200,52 @@
                 app:layout_constraintTop_toBottomOf="@id/tvTargetDetailSPB" />
 
             <Button
+                android:id="@+id/btnHapusSPB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:visibility="gone"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:text="Hapus"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditSPB"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
+
+            <Button
                 android:id="@+id/btnEditSPB"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorBlue"
-                android:paddingHorizontal="32dp"
                 android:text="Edit"
                 android:visibility="gone"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPB"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@+id/btnHapusSPB"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
 
-
             <Button
-                android:id="@+id/btnHapusSPB"
-                android:layout_width="wrap_content"
+                android:id="@+id/btnPenugasanSPB"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:paddingHorizontal="32dp"
-                android:text="Hapus"
                 android:visibility="gone"
+                android:backgroundTint="@color/colorGreen"
+                android:text="Penugasan"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditSPB"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btnEditSPB"
                 app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
 
 

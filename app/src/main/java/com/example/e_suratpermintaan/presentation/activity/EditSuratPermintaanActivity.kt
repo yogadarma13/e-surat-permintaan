@@ -10,7 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.constants.FilePath
+import com.example.e_suratpermintaan.external.utils.Directory
+import com.example.e_suratpermintaan.external.utils.DownloadTask
+import com.example.e_suratpermintaan.external.utils.FileName
+import com.example.e_suratpermintaan.external.utils.FilePath
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
@@ -19,12 +22,12 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditFileSuratPermintaanViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.swipeRefreshLayout
 import kotlinx.android.synthetic.main.dialog_tambah_file.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_file.view.btnBatalTambahFile
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,7 +39,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     companion object {
         const val ID_SP_EDIT = "id_sp";
-        const val MASTER_PERSYARATAN ="master_persyaratan"
+        const val MASTER_PERSYARATAN = "master_persyaratan"
         const val PICKFILE_REQUEST_CODE = 999
     }
 
@@ -55,7 +58,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private var idFile: String? = null
     private var persyaratanList = mutableMapOf<String, String>()
     private lateinit var idUser: String
-    private lateinit var partLampiran: MultipartBody.Part
+    private var filePath: String? = null
 
     private lateinit var editItemSuratPermintaanAdapter: EditItemSuratPermintaanAdapter
     private lateinit var editFileSuratPermintaanAdapter: BaseAdapter<EditFileSuratPermintaanViewHolder>
@@ -66,7 +69,8 @@ class EditSuratPermintaanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EDIT)
-        persyaratanList = intent.getSerializableExtra(MASTER_PERSYARATAN) as MutableMap<String, String>
+        persyaratanList =
+            intent.getSerializableExtra(MASTER_PERSYARATAN) as MutableMap<String, String>
 
         editItemSuratPermintaanAdapter = EditItemSuratPermintaanAdapter()
 
@@ -109,7 +113,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
         startRefresh()
     }
 
-    private fun setupItemSuratPermintaanRecyclerView(){
+    private fun setupItemSuratPermintaanRecyclerView() {
 
         recyclerViewEditItem.layoutManager = LinearLayoutManager(this)
         recyclerViewEditItem.adapter = editItemSuratPermintaanAdapter
@@ -187,7 +191,11 @@ class EditSuratPermintaanActivity : BaseActivity() {
                 }
 
                 EditFileSuratPermintaanViewHolder.BTN_FILE -> {
-                    toastNotify(data.dir)
+                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
+                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
+                        val downloadTask = DownloadTask(this, fileName)
+                        downloadTask.execute(data.dir)
+                    }
                 }
             }
         }
@@ -227,7 +235,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     fun handleResponse(response: Any) {
         stopRefresh()
 
-        when(response) {
+        when (response) {
             is CreateItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
@@ -245,11 +253,13 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
             is CreateFileLampiranResponse -> {
                 toastNotify(response.message)
+                filePath = null
                 initApiRequest()
             }
 
             is EditFileLampiranResponse -> {
                 toastNotify(response.message)
+                filePath = null
                 initApiRequest()
             }
 
@@ -292,7 +302,6 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     editItemSuratPermintaanAdapter.notifyDataSetChanged()
 
 
-
                     val lampiranList = dataDetailSP.fileLampiran
 
                     lampiranList?.forEach {
@@ -306,6 +315,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
         }
     }
+
     private fun showDialogTambahFile() {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
@@ -322,17 +332,32 @@ class EditSuratPermintaanActivity : BaseActivity() {
             startActivityForResult(selectFile, PICKFILE_REQUEST_CODE)
         }
         dialogRootView.btnTambahFile.setOnClickListener {
-            if (partLampiran == null) {
-                toastNotify("File belum dipilih")
-            }
-            else {
-                val idSurat = RequestBody.create(MediaType.parse("text/plain"), idSp)
-                val keteranganFile = RequestBody.create(MediaType.parse("text/plain"), dialogRootView.etKeteranganFile.text.toString())
-                disposable = fileLampiranViewModel.addFile(idSurat, keteranganFile, partLampiran)
-                    .subscribe(this::handleResponse, this::handleError)
+            if (filePath.equals("none") || filePath.isNullOrEmpty()) {
+                toastNotify("File tidak ditemukan")
+                return@setOnClickListener
+            } else {
+                try {
+                    val file = File(filePath)
 
-                alertDialog.hide()
+                    val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+
+                    val partLampiran = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+
+                    val idSurat = RequestBody.create(MediaType.parse("text/plain"), idSp)
+                    val keteranganFile = RequestBody.create(
+                        MediaType.parse("text/plain"),
+                        dialogRootView.etKeteranganFile.text.toString()
+                    )
+                    disposable = fileLampiranViewModel.addFile(idSurat, keteranganFile, partLampiran)
+                        .subscribe(this::handleResponse, this::handleError)
+                } catch (e: Exception) {
+                    toastNotify("File tidak ditemukan")
+                }
             }
+            alertDialog.hide()
+        }
+        dialogRootView.btnBatalTambahFile.setOnClickListener {
+            alertDialog.hide()
         }
 
         alertDialog.setView(dialogRootView)
@@ -342,7 +367,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private fun showDialogEditFile(keterangan: String, id_file: String) {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Tambah File")
+                .setTitle("Edit File")
 
         val alertDialog = alertDialogBuilder.create()
 
@@ -358,18 +383,35 @@ class EditSuratPermintaanActivity : BaseActivity() {
             startActivityForResult(selectFile, PICKFILE_REQUEST_CODE)
         }
         dialogRootView.btnTambahFile.setOnClickListener {
-            if (partLampiran == null) {
-                toastNotify("File belum dipilih")
-            }
-            else {
-                val idFile = RequestBody.create(MediaType.parse("text/plain"), id_file)
-                val keteranganFile = RequestBody.create(MediaType.parse("text/plain"), dialogRootView.etKeteranganFile.text.toString())
+            val idFile = RequestBody.create(MediaType.parse("text/plain"), id_file)
+            val keteranganFile = RequestBody.create(
+                MediaType.parse("text/plain"),
+                dialogRootView.etKeteranganFile.text.toString()
+            )
+            var partLampiran: MultipartBody.Part
+
+            if (filePath.equals("none")) {
+                toastNotify("File tidak ditemukan")
+                filePath = null
+            } else {
+                if (filePath.isNullOrEmpty()) {
+                    val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                    partLampiran = MultipartBody.Part.createFormData("file", "", fileReqBody)
+                } else {
+                    val file = File(filePath)
+                    val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                    partLampiran = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+                }
+
                 disposable = fileLampiranViewModel.editFile(keteranganFile, partLampiran, idFile)
                     .subscribe(this::handleResponse, this::handleError)
-
-                alertDialog.hide()
             }
 
+            alertDialog.hide()
+
+        }
+        dialogRootView.btnBatalTambahFile.setOnClickListener {
+            alertDialog.hide()
         }
 
         alertDialog.setView(dialogRootView)
@@ -381,15 +423,13 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
         if (requestCode == PICKFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val fileUri = data?.data
-            val filePath = FilePath.getPath(this, fileUri as Uri)
+            filePath = FilePath.getPath(this, fileUri as Uri)
 
+            if (filePath.isNullOrEmpty()) {
+                filePath = "none"
+            }
             toastNotify(filePath)
 
-            val file = File(filePath)
-
-            val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-
-            partLampiran = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
         }
     }
 }

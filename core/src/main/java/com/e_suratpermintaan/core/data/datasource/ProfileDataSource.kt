@@ -16,7 +16,7 @@ interface ProfileDataSource {
                     passwordNew: RequestBody,
                     name: RequestBody,
                     desc: RequestBody,
-                    file: MultipartBody.Part,
-                    ttd: MultipartBody.Part): Observable<EditProfileResponse>
+                    file: MultipartBody.Part?,
+                    ttd: MultipartBody.Part?): Observable<EditProfileResponse>
 
 }

@@ -35,8 +35,8 @@ interface NetworkApi {
         @Part("passwordNew") passwordNew: RequestBody,
         @Part("name") name: RequestBody,
         @Part("desc") desc: RequestBody,
-        @Part file: MultipartBody.Part,
-        @Part ttd: MultipartBody.Part
+        @Part file: MultipartBody.Part?,
+        @Part ttd: MultipartBody.Part?
     ): Observable<EditProfileResponse>
 
     // ================================= SURAT PERMINTAAN =======================================

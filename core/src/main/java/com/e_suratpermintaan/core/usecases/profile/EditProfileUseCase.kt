@@ -17,8 +17,8 @@ class EditProfileUseCase(
                passwordNew: RequestBody,
                name: RequestBody,
                desc: RequestBody,
-               file: MultipartBody.Part,
-               ttd: MultipartBody.Part): Observable<EditProfileResponse> =
+               file: MultipartBody.Part?,
+               ttd: MultipartBody.Part?): Observable<EditProfileResponse> =
         profileRepository.editProfile(id, email, passwordLast, passwordNew, name, desc, file, ttd)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
