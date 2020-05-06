@@ -42,9 +42,6 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         const val LAUNCH_EDIT_ACTIVITY: Int = 99
     }
 
-//    private lateinit var alertDialogEdit: EditItemDialog
-//    private lateinit var alertDialogTambah: TambahItemDialog
-
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()

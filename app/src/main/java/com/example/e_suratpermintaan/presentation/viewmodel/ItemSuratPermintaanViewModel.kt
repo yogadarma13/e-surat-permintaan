@@ -3,22 +3,18 @@ package com.example.e_suratpermintaan.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.data.datasource.ItemSuratPermintaanDataSource
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
+import com.e_suratpermintaan.core.domain.entities.requests.PenugasanItemSP
 import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
-import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DeleteItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DetailItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.EditItemSPResponse
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.AddItemSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.EditItemSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.ReadDetailItemSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.RemoveItemSuratPermintaanUseCase
+import com.e_suratpermintaan.core.domain.entities.responses.*
+import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.*
 import io.reactivex.rxjava3.core.Observable
 
 class ItemSuratPermintaanViewModel(
     private val addItemSuratPermintaanUseCase: AddItemSuratPermintaanUseCase,
     private val removeItemSuratPermintaanUseCase: RemoveItemSuratPermintaanUseCase,
     private val editItemSuratPermintaanUseCase: EditItemSuratPermintaanUseCase,
-    private val readDetailItemSuratPermintaanUseCase: ReadDetailItemSuratPermintaanUseCase
+    private val readDetailItemSuratPermintaanUseCase: ReadDetailItemSuratPermintaanUseCase,
+    private val penugasanItemUseCase: SetPenugasanItemUseCase
 ) : ViewModel(), ItemSuratPermintaanDataSource {
 
     override fun addItem(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
@@ -33,4 +29,8 @@ class ItemSuratPermintaanViewModel(
 
     override fun readDetailItem(id: String): Observable<DetailItemSPResponse> =
         readDetailItemSuratPermintaanUseCase.invoke(id)
+
+    override fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse> =
+        penugasanItemUseCase.invoke(penugasanItemSP)
+
 }

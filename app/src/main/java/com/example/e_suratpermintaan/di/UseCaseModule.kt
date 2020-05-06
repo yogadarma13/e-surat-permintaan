@@ -6,10 +6,7 @@ import com.e_suratpermintaan.core.usecases.auth.DoLoginUseCase
 import com.e_suratpermintaan.core.usecases.filelampiran.AddFileLampiranUseCase
 import com.e_suratpermintaan.core.usecases.filelampiran.EditFileLampiranUseCase
 import com.e_suratpermintaan.core.usecases.filelampiran.RemoveFileLampiranUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.AddItemSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.EditItemSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.ReadDetailItemSuratPermintaanUseCase
-import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.RemoveItemSuratPermintaanUseCase
+import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.*
 import com.e_suratpermintaan.core.usecases.master.*
 import com.e_suratpermintaan.core.usecases.master.optionlist.GetPenugasanOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.GetStatusPenugasanOptionUseCase
@@ -198,6 +195,12 @@ val useCaseModule = module {
     }
     single {
         ReadDetailItemSuratPermintaanUseCase(
+            get() as ItemSuratPermintaanRepository,
+            get() as SchedulerProvider
+        )
+    }
+    single {
+        SetPenugasanItemUseCase(
             get() as ItemSuratPermintaanRepository,
             get() as SchedulerProvider
         )

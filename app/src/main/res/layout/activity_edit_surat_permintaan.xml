@@ -23,7 +23,9 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize" />
+                android:layout_height="?android:attr/actionBarSize"
+                app:titleTextColor="@android:color/white"
+                app:title="Edit Surat Permintaan"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

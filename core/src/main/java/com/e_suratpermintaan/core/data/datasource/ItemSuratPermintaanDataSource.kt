@@ -1,11 +1,9 @@
 package com.e_suratpermintaan.core.data.datasource
 
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
+import com.e_suratpermintaan.core.domain.entities.requests.PenugasanItemSP
 import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
-import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DeleteItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DetailItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.EditItemSPResponse
+import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 
 interface ItemSuratPermintaanDataSource {
@@ -16,4 +14,6 @@ interface ItemSuratPermintaanDataSource {
     fun editItem(updateItemSP: UpdateItemSP): Observable<EditItemSPResponse>
 
     fun readDetailItem(id: String): Observable<DetailItemSPResponse>
+
+    fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse>
 }

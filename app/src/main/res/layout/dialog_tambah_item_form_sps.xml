@@ -9,6 +9,7 @@
         android:id="@+id/tilWaktuPelaksanaan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <EditText
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/pick_date_show_btn_margin_right"
         android:src="@drawable/ic_date_range_black_30dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tilWaktuPelaksanaan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tilWaktuPelaksanaan"
@@ -36,6 +38,7 @@
         android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:visibility="gone"
         android:layout_marginTop="15dp"
         android:text="Persyaratan : "
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +51,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:visibility="gone"
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@+id/tvPersyaratan"
         tools:targetApi="lollipop" />

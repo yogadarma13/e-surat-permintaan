@@ -1,6 +1,5 @@
 package com.example.e_suratpermintaan.presentation.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.navigation.ActivityNavigator
@@ -23,12 +22,6 @@ class StarterActivity : BaseActivity() {
     private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
 
-    var isAllObservableComplete = false
-    var isSplashRequestStartMainActivity = false
-    var isLoginRequestStartMainActivity = false
-
-    var loginResponse: String = ""
-
     override fun layoutId(): Int = R.layout.activity_starter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +39,11 @@ class StarterActivity : BaseActivity() {
         // -----------------------------------------------------------
         val observableCC = masterViewModel.getCostCodeList("all")
 
-        val observableUom =masterViewModel.getUomList("all")
+        val observableUom = masterViewModel.getUomList("all")
+
+        val observablePenugasan = masterViewModel.getPenugasanOptionList()
+
+        val observableStatusPenugasan = masterViewModel.getStatusPenugasanOptionList()
 
         val observablePersyaratan = masterViewModel.getPersyaratanList("all")
 
@@ -56,7 +53,8 @@ class StarterActivity : BaseActivity() {
 
         val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
 
-        val observableJenisPermintaanFilter = masterViewModel.getJenisPermintaanFilterOptionList(idUser)
+        val observableJenisPermintaanFilter =
+            masterViewModel.getJenisPermintaanFilterOptionList(idUser)
 
         val concat1 = Observable.concat(
             observableCC.onErrorResumeNext { Observable.empty() },
@@ -64,6 +62,11 @@ class StarterActivity : BaseActivity() {
             observablePersyaratan.onErrorResumeNext { Observable.empty() })
 
         val concat2 = Observable.concat(
+            observablePenugasan.onErrorResumeNext { Observable.empty() },
+            observableStatusPenugasan.onErrorResumeNext { Observable.empty() }
+        )
+
+        val concat3 = Observable.concat(
             observableStatusFilter.onErrorResumeNext { Observable.empty() },
             observableJenisDataFilter.onErrorResumeNext { Observable.empty() },
             observableProyekFilter.onErrorResumeNext { Observable.empty() },
@@ -71,14 +74,15 @@ class StarterActivity : BaseActivity() {
 
         disposable = Observable.concat(
             concat1.onErrorResumeNext { Observable.empty() },
-            concat2.onErrorResumeNext { Observable.empty() })
+            concat2.onErrorResumeNext { Observable.empty() },
+            concat3.onErrorResumeNext { Observable.empty() })
             .subscribe(this::handleResponse, this::handleError)
 
         // Master API END
         // -----------------------------------------------------------
     }
 
-    fun initUserDataDependentApiRequest(){
+    fun initUserDataDependentApiRequest() {
         profileId = profilePreference.getProfile()?.id
         idUser = profileId.toString()
 
@@ -87,7 +91,8 @@ class StarterActivity : BaseActivity() {
 
         val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
 
-        val observableJenisPermintaanFilter = masterViewModel.getJenisPermintaanFilterOptionList(idUser)
+        val observableJenisPermintaanFilter =
+            masterViewModel.getJenisPermintaanFilterOptionList(idUser)
 
         disposable = Observable.concat(
             observableProyekFilter.onErrorResumeNext { Observable.empty() },
@@ -116,6 +121,16 @@ class StarterActivity : BaseActivity() {
             is MasterPersyaratanResponse -> {
                 sharedViewModel.setPersyaratanList(response.data)
                 Log.d("MYAPPSTARTER", "PERSYARATAN RESPONSE")
+            }
+
+            // PENUGASAN
+            // -----------------------------------------------------------
+            is MasterPenugasanOptionResponse -> {
+                sharedViewModel.setPenugasanList(response.data)
+            }
+
+            is MasterStatusPenugasanOptionResponse -> {
+                sharedViewModel.setStatusPenugasanList(response.data)
             }
 
             // Filter Option List

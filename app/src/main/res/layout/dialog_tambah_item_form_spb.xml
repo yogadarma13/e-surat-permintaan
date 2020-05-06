@@ -7,6 +7,7 @@
         android:id="@+id/tilFungsi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <EditText
@@ -20,6 +21,7 @@
         android:id="@+id/tilTarget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@id/tilFungsi"
         app:layout_constraintStart_toStartOf="@id/tilFungsi"
@@ -37,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/pick_date_show_btn_margin_right"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tilTarget"
         app:layout_constraintEnd_toEndOf="@id/tilTarget"
         app:layout_constraintTop_toTopOf="@id/tilTarget">

@@ -51,7 +51,7 @@ class SharedViewModel : ViewModel() {
 
     fun getStatusPenugasanList(): MutableLiveData<List<DataMasterOption?>?> = statusPenugasanList
 
-    fun setStatusPenugasnList(list: List<DataMasterOption?>?) {
+    fun setStatusPenugasanList(list: List<DataMasterOption?>?) {
         statusPenugasanList.value = list
     }
 

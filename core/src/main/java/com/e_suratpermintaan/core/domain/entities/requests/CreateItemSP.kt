@@ -44,9 +44,6 @@ data class CreateItemSP(
     val persyaratan: ArrayList<String>,
 
     @field:SerializedName("penugasan")
-    val penugasan: String,
-
-    @field:SerializedName("statusPenugasan")
     val statusPenugasan: String,
 
     @field:SerializedName("id_user")

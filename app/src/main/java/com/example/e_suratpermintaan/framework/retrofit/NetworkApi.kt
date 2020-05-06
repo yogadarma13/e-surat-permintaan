@@ -178,6 +178,11 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<DeleteItemSPResponse>
 
+    @POST("penugasan_item_sp")
+    fun setPenugasanItemSP(
+        @Body penugasanItemSP: PenugasanItemSP
+    ): Observable<PenugasanItemSPResponse>
+
     // ================================= FILE LAMPIRAN ==========================================
     @Multipart
     @POST("tambah_file")

@@ -16,12 +16,14 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPA
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPB
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPS
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.*
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.StatusPenugasanViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -40,14 +42,17 @@ class EditItemDialog(
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
+    companion object {
+        const val VISIBLE = 1
+    }
+
     private var alertDialogEdit: AlertDialog
     private var datePicker: MaterialDatePicker<Long>
 
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
-    private lateinit var penugasanAdapter: BaseFilterableAdapter<PenugasanViewHolder>
-    private lateinit var statusPenugasanAdapter: BaseFilterableAdapter<StatusPenugasanViewHolder>
+    private lateinit var statusPenugasanAdapter: BaseAdapter<StatusPenugasanViewHolder>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
 
     private var dialogRootView: View = View.inflate(activity, R.layout.dialog_edit_item, null)
@@ -169,13 +174,6 @@ class EditItemDialog(
             uomAdapter.notifyDataSetChanged()
         })
 
-        sharedViewModel.getPenugasanList().observe(activity, Observer {
-            it?.forEach { item ->
-                penugasanAdapter.itemList.add(item as DataMasterOption)
-            }
-            penugasanAdapter.notifyDataSetChanged()
-        })
-
         sharedViewModel.getStatusPenugasanList().observe(activity, Observer {
             it?.forEach { item ->
                 statusPenugasanAdapter.itemList.add(item as DataMasterOption)
@@ -201,10 +199,6 @@ class EditItemDialog(
         val jenisPermintaan = dataDetailSP.jenis.toString()
         val kodeSp = dataDetailSP.kode.toString()
 
-        if (dataProfile.roleId!!.toInt() != 1) {
-            dialogRootView.formKeterangan.visibility = View.VISIBLE
-        }
-
         when (jenisPermintaan) {
             JENIS_PERMINTAAN_SPA -> {
                 dialogRootView.formSPA.visibility = View.VISIBLE
@@ -217,17 +211,61 @@ class EditItemDialog(
             }
         }
 
-        if (dataDetailSP.inputKeterangan == 1) {
+        if (dataDetailSP.inputKodePekerjaan == VISIBLE) {
+            dialogRootView.tilKodePekerjaan.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputIdBarang == VISIBLE) {
+            dialogRootView.tilJenisBarang.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputQty == VISIBLE) {
+            dialogRootView.tilVolume.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputIdSatuan == VISIBLE) {
+            dialogRootView.tilSatuan.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputKapasitas == VISIBLE) {
+            dialogRootView.tilKapasitas.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputMerk == VISIBLE) {
+            dialogRootView.tilMerk.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputWaktuPemakaian == VISIBLE) {
+            dialogRootView.tilWaktuPemakaian.visibility = View.VISIBLE
+            dialogRootView.pickWaktuPemakaian.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputFungsi == VISIBLE) {
+            dialogRootView.tilFungsi.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputTarget == VISIBLE) {
+            dialogRootView.tilTarget.visibility = View.VISIBLE
+            dialogRootView.pickTarget.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputWaktuPelaksanaan == VISIBLE) {
+            dialogRootView.tilWaktuPelaksanaan.visibility = View.VISIBLE
+            dialogRootView.pickWaktuPelaksanaan.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputPersyaratan == VISIBLE) {
+            dialogRootView.tvPersyaratan.visibility = View.VISIBLE
+            dialogRootView.rvPersyaratan.visibility = View.VISIBLE
+        }
+
+        if (dataDetailSP.inputKeterangan == VISIBLE) {
             dialogRootView.tilKeterangan.visibility = View.VISIBLE
         }
 
-        if (dataDetailSP.inputPenugasan == 1) {
-            dialogRootView.tilPenugasan.visibility = View.VISIBLE
+        if (dataDetailSP.inputPenugasan == VISIBLE) {
+            dialogRootView.tilStatusPenugasan.visibility = View.VISIBLE
         }
-
-//        if (dataDetailSP.inputStatusPenugasan == 1) {
-//            dialogRootView.tilStatusPenugasan.visibility = View.VISIBLE
-//        }
 
         dialogRootView.btnEdit.setOnClickListener {
             // Untuk menghilangkan focus yang ada di input field
@@ -246,12 +284,6 @@ class EditItemDialog(
             val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
 
             val statusPenugasan = dialogRootView.etStatusPenugasan.text.toString()
-            val optionPenugasan = dialogRootView.etPenugasan.text.toString()
-//            val penugasan =
-//                (penugasanAdapter.itemList
-//                    .find { (it as DataMasterOption).option == optionPenugasan } as DataMasterOption)
-//                    .value.toString()
-            val penugasan = ""
 
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
@@ -281,7 +313,6 @@ class EditItemDialog(
                         waktuPemakaian,
                         waktuPelaksanaan,
                         persyaratanList,
-                        penugasan,
                         statusPenugasan,
                         dataProfile.id!!,
                         selectedItemId
@@ -308,7 +339,6 @@ class EditItemDialog(
         dialogRootView.rvKodePekerjaan.visibility = View.GONE
         dialogRootView.rvJenisBarang.visibility = View.GONE
         dialogRootView.rvSatuan.visibility = View.GONE
-        dialogRootView.rvPenugasan.visibility = View.GONE
         dialogRootView.rvStatusPenugasan.visibility = View.GONE
     }
 
@@ -359,23 +389,9 @@ class EditItemDialog(
         // ------------------------------ INIT UOM END --------------------------------------------
 
 
-        // ------------------------------ INIT PENUGASAN START -------------------------------------
-        penugasanAdapter =
-            BaseFilterableAdapter(R.layout.item_simple_row, PenugasanViewHolder::class.java)
-        penugasanAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etPenugasan.setText((item as DataMasterOption).option)
-            dialogRootView.rvPenugasan.visibility = View.GONE
-            activity.closeKeyboard(dialogRootView.etPenugasan)
-            dialogRootView.container.performClick()
-        }
-        dialogRootView.rvPenugasan.layoutManager = LinearLayoutManager(activity)
-        dialogRootView.rvPenugasan.adapter = uomAdapter
-        // ------------------------------ INIT PENUGASAN END ---------------------------------------
-
-
         // ------------------------------ INIT STATUS PENUGASAN START ------------------------------
         statusPenugasanAdapter =
-            BaseFilterableAdapter(R.layout.item_simple_row, StatusPenugasanViewHolder::class.java)
+            BaseAdapter(R.layout.item_simple_row, StatusPenugasanViewHolder::class.java)
         statusPenugasanAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etStatusPenugasan.setText((item as DataMasterOption).option)
             dialogRootView.rvStatusPenugasan.visibility = View.GONE
@@ -383,7 +399,7 @@ class EditItemDialog(
             dialogRootView.container.performClick()
         }
         dialogRootView.rvStatusPenugasan.layoutManager = LinearLayoutManager(activity)
-        dialogRootView.rvStatusPenugasan.adapter = uomAdapter
+        dialogRootView.rvStatusPenugasan.adapter = statusPenugasanAdapter
         // ------------------------------ INIT STATUS PENUGASAN END --------------------------------
 
 
@@ -439,38 +455,26 @@ class EditItemDialog(
             }
         })
 
-        dialogRootView.etPenugasan.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+        dialogRootView.etStatusPenugasan.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
+            } else {
+                dialogRootView.rvStatusPenugasan.visibility = View.GONE
+                activity.closeKeyboard(dialogRootView.etStatusPenugasan)
             }
+        }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                penugasanAdapter.filter.filter(s)
-                dialogRootView.rvPenugasan.visibility = View.VISIBLE
-            }
-        })
-
-        dialogRootView.etStatusPenugasan.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                statusPenugasanAdapter.filter.filter(s)
+        dialogRootView.etStatusPenugasan.setOnClickListener {
+            if (dialogRootView.rvStatusPenugasan.visibility == View.GONE) {
                 dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
             }
-        })
+        }
+
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {
+        dialogRootView.clearFocus()
+
         selectedItemId = itemsDetailSP.id.toString()
 
         dialogRootView.etKodePekerjaan.setText(itemsDetailSP.kodePekerjaan)

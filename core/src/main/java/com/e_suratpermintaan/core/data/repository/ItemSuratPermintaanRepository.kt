@@ -2,11 +2,9 @@ package com.e_suratpermintaan.core.data.repository
 
 import com.e_suratpermintaan.core.data.datasource.ItemSuratPermintaanDataSource
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
+import com.e_suratpermintaan.core.domain.entities.requests.PenugasanItemSP
 import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
-import com.e_suratpermintaan.core.domain.entities.responses.CreateItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DeleteItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.DetailItemSPResponse
-import com.e_suratpermintaan.core.domain.entities.responses.EditItemSPResponse
+import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 
 class ItemSuratPermintaanRepository(private val itemDataSource: ItemSuratPermintaanDataSource) :
@@ -17,7 +15,8 @@ class ItemSuratPermintaanRepository(private val itemDataSource: ItemSuratPermint
     override fun removeItem(id: String): Observable<DeleteItemSPResponse> =
         itemDataSource.removeItem(id)
 
-    override fun editItem(updateItemSP: UpdateItemSP
+    override fun editItem(
+        updateItemSP: UpdateItemSP
     ): Observable<EditItemSPResponse> =
         itemDataSource.editItem(
             updateItemSP
@@ -25,4 +24,7 @@ class ItemSuratPermintaanRepository(private val itemDataSource: ItemSuratPermint
 
     override fun readDetailItem(id: String): Observable<DetailItemSPResponse> =
         itemDataSource.readDetailItem(id)
+
+    override fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse> =
+        itemDataSource.setPenugasanItem(penugasanItemSP)
 }
