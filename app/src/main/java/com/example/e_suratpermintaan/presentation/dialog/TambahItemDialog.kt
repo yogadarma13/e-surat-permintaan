@@ -253,7 +253,7 @@ class TambahItemDialog(
         }
 
         if (dataDetailSP.inputKeterangan == VISIBLE) {
-            dialogRootView.tilKeterangan.visibility = View.VISIBLE
+            dialogRootView.formKeterangan.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputPenugasan == VISIBLE) {

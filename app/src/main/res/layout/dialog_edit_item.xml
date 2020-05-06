@@ -43,6 +43,7 @@
                     android:id="@+id/tilKodePekerjaan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -58,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/tilKodePekerjaan"
                     app:layout_constraintStart_toStartOf="@id/tilKodePekerjaan"
                     app:layout_constraintTop_toBottomOf="@id/tilKodePekerjaan">
@@ -74,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/tilJenisBarang"
                     app:layout_constraintStart_toStartOf="@id/tilJenisBarang"
                     app:layout_constraintTop_toBottomOf="@id/tilJenisBarang">
@@ -92,6 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/tilVolume"
                     app:layout_constraintStart_toStartOf="@id/tilVolume"
                     app:layout_constraintTop_toBottomOf="@id/tilVolume">
