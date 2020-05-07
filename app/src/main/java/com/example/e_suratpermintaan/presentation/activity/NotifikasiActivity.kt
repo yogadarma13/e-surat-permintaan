@@ -34,6 +34,11 @@ class NotifikasiActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (toolbar_notifikasi != null && toolbar != null) {
+            toolbar_notifikasi.text = getString(R.string.toolbar_notifikasi)
+            setSupportActionBar(toolbar)
+        }
+
         init()
 
     }

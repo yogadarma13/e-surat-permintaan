@@ -107,6 +107,12 @@ interface NetworkApi {
         @Query("id_sp") id_dp: String
     ): Observable<HistorySPResponse>
 
+    @FormUrlEncoded
+    @POST("edit_sp")
+    fun simpanEditSP(
+        @Field("id") id: String,
+        @Field("id_user") id_user: String
+    ): Observable<SimpanEditSPResponse>
 
     // =================================== MASTER ===============================================
     @GET("status_permintaan")

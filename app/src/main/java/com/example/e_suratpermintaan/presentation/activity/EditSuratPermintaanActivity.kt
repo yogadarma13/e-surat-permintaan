@@ -61,6 +61,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private var idFile: String? = null
     private var persyaratanList = mutableMapOf<String, String>()
     private var idUser: String? = null
+    private var idRole: String? = null
     private var filePath: String? = null
 
     private lateinit var editItemSuratPermintaanAdapter: EditItemSuratPermintaanAdapter
@@ -70,6 +71,11 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (toolbar_edit_detail != null && toolbar != null) {
+            toolbar_edit_detail.text = getString(R.string.toolbar_edit)
+            setSupportActionBar(toolbar)
+        }
 
         idSp = intent.extras?.getString(ID_SP_EDIT)
         persyaratanList =
@@ -82,6 +88,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
             dataProfile.let {
                 val profileId = it!!.id
+                idRole = it.roleId.toString()
                 if (profileId != null) {
                     idUser = profileId
                 }
@@ -212,9 +219,8 @@ class EditSuratPermintaanActivity : BaseActivity() {
         }
 
         btnSimpanEdit.setOnClickListener {
-            val intent = Intent()
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            disposable =  suratPermintaanViewModel.saveEdit(idSp.toString(), idUser.toString())
+                .subscribe(this::handleResponse, this::handleError)
         }
 
         swipeRefreshLayout.setOnRefreshListener {
@@ -309,13 +315,13 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
 
                     editItemSuratPermintaanAdapter.persyaratanList.putAll(persyaratanList)
+                    editItemSuratPermintaanAdapter.idRole = idRole
                     itemList?.forEach {
                         editItemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
                         editItemSuratPermintaanAdapter.viewType.add(dataDetailSP.jenis.toString())
                     }
 
                     editItemSuratPermintaanAdapter.notifyDataSetChanged()
-
 
                     val lampiranList = dataDetailSP.fileLampiran
 
@@ -326,6 +332,13 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     editFileSuratPermintaanAdapter.notifyDataSetChanged()
 
                 }
+            }
+
+            is SimpanEditSPResponse -> {
+                toastNotify(response.message)
+                val intent = Intent()
+                setResult(Activity.RESULT_OK, intent)
+                finish()
             }
 
         }

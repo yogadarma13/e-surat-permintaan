@@ -51,6 +51,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     private var kodeSp: String? = null
     private var persyaratanList = mutableMapOf<String, String>()
     private lateinit var idUser: String
+    private lateinit var idRole: String
     private lateinit var itemSuratPermintaanAdapter: ItemSuratPermintaanAdapter
     private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder>
     private var optionPrint = false
@@ -63,6 +64,11 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (toolbar_detail_sp != null && toolbar != null) {
+            toolbar_detail_sp.text = getString(R.string.toolbar_detail)
+            setSupportActionBar(toolbar)
+        }
+
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
         itemSuratPermintaanAdapter = ItemSuratPermintaanAdapter()
 
@@ -71,8 +77,10 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
             dataProfile.let {
                 val profileId = it!!.id
+                idRole = it.roleId.toString()
                 if (profileId != null) {
                     idUser = profileId
+
                 }
 
                 init()
@@ -272,6 +280,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
                     if (!itemList.isNullOrEmpty()) {
                         itemSuratPermintaanAdapter.persyaratanList.putAll(persyaratanList)
+                        itemSuratPermintaanAdapter.idRole = idRole
                         constraint_text_item.visibility = View.VISIBLE
                         itemList.forEach {
                             itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)

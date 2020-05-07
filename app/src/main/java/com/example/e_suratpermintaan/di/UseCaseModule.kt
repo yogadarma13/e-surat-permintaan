@@ -84,6 +84,12 @@ val useCaseModule = module {
             get() as SchedulerProvider
         )
     }
+    single {
+        SaveEditSuratPermintaanUseCase(
+            get() as SuratPermintaanRepository,
+            get() as SchedulerProvider
+        )
+    }
 
     // ================================================ LOGIN & PROFILE ======================================
     single {

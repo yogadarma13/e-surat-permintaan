@@ -36,4 +36,6 @@ interface SuratPermintaanDataSource {
     fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse>
 
     fun readHistory(id_sp: String): Observable<HistorySPResponse>
+
+    fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse>
 }

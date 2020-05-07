@@ -13,4 +13,10 @@
     <string name="firebase_onmessagereceived_intentfilter">com.e-suratpermintaan.fcm</string>
     <string name="IdSpKeyExtraforDetailSPActivity">id_sp</string>
     <string name="main_header_list_count_msg">Menampilkan %1$s entri</string>
+    <string name="toolbar_detail">Detail</string>
+    <string name="toolbar_edit">Edit Detail</string>
+    <string name="toolbar_history">Riwayat</string>
+    <string name="toolbar_detail_history">Detail Riwayat</string>
+    <string name="toolbar_profile">Profile</string>
+    <string name="toolbar_notifikasi">Notifikasi</string>
 </resources>

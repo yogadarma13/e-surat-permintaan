@@ -36,7 +36,8 @@ val viewModelModule = module {
             get() as VerifikasiSuratPermintaanUseCase,
             get() as AjukanSuratPermintaanUseCase,
             get() as CancelSuratPermintaanUseCase,
-            get() as ReadHistorySuratPermintaanUseCase
+            get() as ReadHistorySuratPermintaanUseCase,
+            get() as SaveEditSuratPermintaanUseCase
         )
     }
     viewModel {

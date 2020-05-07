@@ -45,6 +45,11 @@ class ProfileActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (toolbar_profile != null && toolbar != null) {
+            toolbar_profile.text = getString(R.string.toolbar_profile)
+            setSupportActionBar(toolbar)
+        }
+
         id = profilePreference.getProfile()?.id
         progressDialog = ProgressDialog(this)
 

@@ -34,6 +34,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
     val itemList: ArrayList<ItemsDetailSP> = arrayListOf()
     val viewType: ArrayList<String> = arrayListOf()
     val persyaratanList = mutableMapOf<String, String>()
+    var idRole: String? = null
 
     private var onItemClickListener: ((Any?, String?) -> Unit) = { _, _ -> }
 
@@ -88,6 +89,16 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPA.waktuDetailSPA.text = data.waktuPemakaian
                 viewHolderSPA.merkDetailSPA.text = data.merk
                 viewHolderSPA.qtyDetailSPA.text = data.qty
+                viewHolderSPA.penugasanSPA.text = data.kepada
+                viewHolderSPA.statusPenugasanSPA.text = data.penugasan
+
+                if (idRole.equals("3")){
+                    viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.statusPenugasanSPA.visibility = View.VISIBLE
+                }
+
                 var dataKeterangan: String? = ""
 
                 data.keterangan?.forEach {
@@ -153,6 +164,16 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPB.fungsiDetailSPB.text = data.fungsi
                 viewHolderSPB.targetDetailSPB.text = data.target
                 viewHolderSPB.qtyDetailSPB.text = data.qty
+                viewHolderSPB.penugasanSPB.text = data.kepada
+                viewHolderSPB.statusPenugasanSPB.text = data.penugasan
+
+                if (idRole.equals("3")){
+                    viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.statusPenugasanSPB.visibility = View.VISIBLE
+                }
+
                 var dataKeterangan: String? = ""
 
                 data.keterangan?.forEach {
@@ -216,6 +237,16 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPS.satuanDetailSPS.text = data.idSatuan
                 viewHolderSPS.waktuDetailSPS.text = data.waktuPelaksanaan
                 viewHolderSPS.qtyDetailSPS.text = data.qty
+                viewHolderSPS.penugasanSPS.text = data.kepada
+                viewHolderSPS.statusPenugasanSPS.text = data.penugasan
+
+                if (idRole.equals("3")){
+                    viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.penugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.statusPenugasanSPS.visibility = View.VISIBLE
+                }
+
                 var syarat: String? = ""
 
                 data.persyaratan?.forEach {
@@ -292,6 +323,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val btnEditSPA: Button = itemView.findViewById(R.id.btnEditSPA)
         val btnHapusSPA: Button = itemView.findViewById(R.id.btnHapusSPA)
         val btnPenugasanSPA: Button = itemView.findViewById(R.id.btnPenugasanSPA)
+        val labelPenugasanSPA: TextView = itemView.findViewById(R.id.labelPenugasanSPA)
+        val labelStatusPenugasanSPA: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPA)
+        val penugasanSPA: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPA)
+        val statusPenugasanSPA: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPA)
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
@@ -309,6 +344,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val btnEditSPB: Button = itemView.findViewById(R.id.btnEditSPB)
         val btnHapusSPB: Button = itemView.findViewById(R.id.btnHapusSPB)
         val btnPenugasanSPB: Button = itemView.findViewById(R.id.btnPenugasanSPB)
+        val labelPenugasanSPB: TextView = itemView.findViewById(R.id.labelPenugasanSPB)
+        val labelStatusPenugasanSPB: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPB)
+        val penugasanSPB: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPB)
+        val statusPenugasanSPB: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPB)
 
     }
 
@@ -327,6 +366,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val btnEditSPS: Button = itemView.findViewById(R.id.btnEditSPS)
         val btnHapusSPS: Button = itemView.findViewById(R.id.btnHapusSPS)
         val btnPenugasanSPS: Button = itemView.findViewById(R.id.btnPenugasanSPS)
+        val labelPenugasanSPS: TextView = itemView.findViewById(R.id.labelPenugasanSPS)
+        val labelStatusPenugasanSPS: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPS)
+        val penugasanSPS: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPS)
+        val statusPenugasanSPS: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPS)
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

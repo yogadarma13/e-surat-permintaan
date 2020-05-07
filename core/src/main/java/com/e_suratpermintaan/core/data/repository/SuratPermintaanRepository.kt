@@ -45,4 +45,7 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
         dataSource.readHistory(id_sp)
 
+    override fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse> =
+        dataSource.saveEdit(id, id_user)
+
 }

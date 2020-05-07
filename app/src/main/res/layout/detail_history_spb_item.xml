@@ -51,16 +51,16 @@
             android:id="@+id/expandedChildSPB"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@android:color/white"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:visibility="gone"
-            android:background="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expandedParentSPB">
 
             <TextView
-                android:id="@+id/textKode"
+                android:id="@+id/labelKode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Kode Pekerjaan"
@@ -69,7 +69,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textQty"
+                android:id="@+id/labelQty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPB" />
 
             <TextView
-                android:id="@+id/textSatuan"
+                android:id="@+id/labelSatuan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -89,7 +89,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvQtySPB" />
 
             <TextView
-                android:id="@+id/textFungsi"
+                android:id="@+id/labelFungsi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -99,16 +99,17 @@
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPB" />
 
             <TextView
-                android:id="@+id/textTarget"
+                android:id="@+id/labelTarget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Target Tanggal\nDatang"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvFungsiDetailSPB" />
 
             <TextView
-                android:id="@+id/textKeterangan"
+                android:id="@+id/labelKeterangan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -117,12 +118,34 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTargetDetailSPB" />
 
+            <TextView
+                android:id="@+id/labelPenugasanSPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Ditugaskan\nKepada"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKeteranganDetailSPB" />
+
+            <TextView
+                android:id="@+id/labelStatusPenugasanSPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Status\nPenugasan"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPB" />
+
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="right"
-                app:constraint_referenced_ids="textFungsi,textSatuan,textKode,textTarget,textQty,textKeterangan"
+                app:constraint_referenced_ids="labelFungsi,labelSatuan,labelKode,labelTarget,labelQty,labelKeterangan,labelPenugasanSPB,labelStatusPenugasanSPB"
                 tools:layout_editor_absoluteX="363dp" />
 
             <TextView
@@ -131,10 +154,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
-                android:text="Kode Pekerjaan"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Kode Pekerjaan" />
 
             <TextView
                 android:id="@+id/tvQtySPB"
@@ -143,10 +166,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:text="Qty"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPB"
+                tools:text="Qty" />
 
             <TextView
                 android:id="@+id/tvSatuanDetailSPB"
@@ -155,10 +178,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:text="Satuan"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvQtySPB" />
+                app:layout_constraintTop_toBottomOf="@id/tvQtySPB"
+                tools:text="Satuan" />
 
 
             <TextView
@@ -168,10 +191,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:text="Fungsi"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPB"
+                tools:text="Fungsi" />
 
             <TextView
                 android:id="@+id/tvTargetDetailSPB"
@@ -180,11 +203,11 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:lines="2"
-                android:text="Target Tanggal\nDatang"
+                android:minLines="2"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvFungsiDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@id/tvFungsiDetailSPB"
+                tools:text="Target Tanggal\nDatang" />
 
             <TextView
                 android:id="@+id/tvKeteranganDetailSPB"
@@ -193,60 +216,88 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                android:lines="2"
-                android:text="Keterangan/ \nTujuannya"
+                android:minLines="2"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTargetDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@id/tvTargetDetailSPB"
+                tools:text="Keterangan/ \nTujuannya" />
+
+            <TextView
+                android:id="@+id/tvPenugasanDetailSPB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:minLines="2"
+                android:visibility="gone"
+                app:layout_constraintLeft_toRightOf="@id/barrier3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKeteranganDetailSPB"
+                tools:text="IT" />
+
+            <TextView
+                android:id="@+id/tvStatusPenugasanDetailSPB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:minLines="2"
+                android:visibility="gone"
+                app:layout_constraintLeft_toRightOf="@id/barrier3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPB"
+                tools:text="Selesai" />
 
             <Button
                 android:id="@+id/btnHapusSPB"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:visibility="gone"
                 android:backgroundTint="@android:color/holo_red_light"
                 android:text="Hapus"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/btnEditSPB"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPB" />
 
             <Button
                 android:id="@+id/btnEditSPB"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorBlue"
                 android:text="Edit"
-                android:visibility="gone"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPB"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@+id/btnHapusSPB"
-                app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPB" />
 
             <Button
                 android:id="@+id/btnPenugasanSPB"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
                 android:backgroundTint="@color/colorGreen"
                 android:text="Penugasan"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@+id/btnEditSPB"
-                app:layout_constraintTop_toBottomOf="@+id/tvKeteranganDetailSPB" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPB" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,6 +44,11 @@ class DetailHistoryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (toolbar_detail_history != null && toolbar != null) {
+            toolbar_detail_history.text = getString(R.string.toolbar_detail_history)
+            setSupportActionBar(toolbar)
+        }
+
         dataDetailHistory = intent.getStringExtra(DETAIL_HISTORY_SP)
         jenisSP = intent.getStringExtra(JENIS_SP_DETAIL_HISTORY)
 

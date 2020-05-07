@@ -51,4 +51,7 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
         networkApi.getHistorySP(id_sp)
 
+    override fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse> =
+        networkApi.simpanEditSP(id, id_user)
+
 }

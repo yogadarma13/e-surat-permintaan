@@ -31,6 +31,7 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
     val itemList: ArrayList<ItemsDetailSP> = arrayListOf()
     val viewType: ArrayList<String> = arrayListOf()
     val persyaratanList = mutableMapOf<String, String>()
+    var idRole: String? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,6 +60,16 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPA.waktuDetailSPA.text = data.waktuPemakaian
                 viewHolderSPA.merkDetailSPA.text = data.merk
                 viewHolderSPA.qtyDetailSPA.text = data.qty
+                viewHolderSPA.penugasanSPA.text = data.kepada
+                viewHolderSPA.statusPenugasanSPA.text = data.penugasan
+
+                if (idRole.equals("3")){
+                    viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
+                    viewHolderSPA.statusPenugasanSPA.visibility = View.VISIBLE
+                }
+
                 var dataKeterangan: String? = ""
 
                 data.keterangan?.forEach {
@@ -105,6 +116,16 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPB.fungsiDetailSPB.text = data.fungsi
                 viewHolderSPB.targetDetailSPB.text = data.target
                 viewHolderSPB.qtyDetailSPB.text = data.qty
+                viewHolderSPB.penugasanSPB.text = data.kepada
+                viewHolderSPB.statusPenugasanSPB.text = data.penugasan
+
+                if (idRole.equals("3")){
+                    viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
+                    viewHolderSPB.statusPenugasanSPB.visibility = View.VISIBLE
+                }
+
                 var dataKeterangan: String? = ""
 
                 data.keterangan?.forEach {
@@ -149,6 +170,16 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPS.satuanDetailSPS.text = data.idSatuan
                 viewHolderSPS.waktuDetailSPS.text = data.waktuPelaksanaan
                 viewHolderSPS.qtyDetailSPS.text = data.qty
+                viewHolderSPS.penugasanSPS.text = data.kepada
+                viewHolderSPS.statusPenugasanSPS.text = data.penugasan
+
+                if (idRole.equals("3")){
+                    viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.penugasanSPS.visibility = View.VISIBLE
+                    viewHolderSPS.statusPenugasanSPS.visibility = View.VISIBLE
+                }
+
                 var syarat: String? = ""
 
                 data.persyaratan?.forEach {
@@ -222,6 +253,10 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
         val expandedParentSPA: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPA)
         val cardViewSPA: CardView = itemView.findViewById(R.id.cardViewSPA)
         val imageExpandedParentSPA: ImageView = itemView.findViewById(R.id.imgExpandedParentSPA)
+        val labelPenugasanSPA: TextView = itemView.findViewById(R.id.labelPenugasanSPA)
+        val labelStatusPenugasanSPA: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPA)
+        val penugasanSPA: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPA)
+        val statusPenugasanSPA: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPA)
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
@@ -236,6 +271,10 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
         val expandedParentSPB: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPB)
         val cardViewSPB: CardView = itemView.findViewById(R.id.cardViewSPB)
         val imageExpandedParentSPB: ImageView = itemView.findViewById(R.id.imgExpandedParentSPB)
+        val labelPenugasanSPB: TextView = itemView.findViewById(R.id.labelPenugasanSPB)
+        val labelStatusPenugasanSPB: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPB)
+        val penugasanSPB: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPB)
+        val statusPenugasanSPB: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPB)
 
     }
 
@@ -251,6 +290,10 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
         val expandedParentSPS: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPS)
         val cardViewSPS: CardView = itemView.findViewById(R.id.cardViewSPS)
         val imageExpandedParentSPS: ImageView = itemView.findViewById(R.id.imgExpandedParentSPS)
+        val labelPenugasanSPS: TextView = itemView.findViewById(R.id.labelPenugasanSPS)
+        val labelStatusPenugasanSPS: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPS)
+        val penugasanSPS: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPS)
+        val statusPenugasanSPS: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPS)
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

@@ -19,7 +19,8 @@ class SuratPermintaanViewModel(
     private val verifikasiSuratPermintaanUseCase: VerifikasiSuratPermintaanUseCase,
     private val ajukanSuratPermintaanUseCase: AjukanSuratPermintaanUseCase,
     private val cancelSuratPermintaanUseCase: CancelSuratPermintaanUseCase,
-    private val readHistorySuratPermintaanUseCase: ReadHistorySuratPermintaanUseCase
+    private val readHistorySuratPermintaanUseCase: ReadHistorySuratPermintaanUseCase,
+    private val saveEditSuratPermintaanUseCase: SaveEditSuratPermintaanUseCase
 ) : ViewModel(), SuratPermintaanDataSource {
 
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> =
@@ -72,5 +73,8 @@ class SuratPermintaanViewModel(
 
     override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
         readHistorySuratPermintaanUseCase.invoke(id_sp)
+
+    override fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse> =
+        saveEditSuratPermintaanUseCase.invoke(id, id_user)
 
 }

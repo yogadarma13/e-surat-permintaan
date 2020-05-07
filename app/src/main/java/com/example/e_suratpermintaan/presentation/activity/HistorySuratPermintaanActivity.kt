@@ -15,7 +15,7 @@ import com.example.e_suratpermintaan.presentation.adapter.HistoryAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_history_surat_permintaan.recyclerView
+import kotlinx.android.synthetic.main.activity_history_surat_permintaan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
@@ -36,6 +36,11 @@ class HistorySuratPermintaanActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (toolbar_history != null && toolbar != null) {
+            toolbar_history.text = getString(R.string.toolbar_history)
+            setSupportActionBar(toolbar)
+        }
 
         idSp = intent.extras?.getString(ID_SP_HISTORY)
         jenisSp = intent.extras?.getString(JENIS_SP_HISTORY)
