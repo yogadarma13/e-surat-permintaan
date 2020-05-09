@@ -39,11 +39,11 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     ): Observable<EditSPResponse> =
         networkApi.editSP(id, file, id_user)
 
-    override fun verifikasi(id_user: String, id: String, status: String, catatan: String): Observable<VerifikasiSPResponse> =
-        networkApi.verifikasiSP(id_user, id, status, catatan)
+    override fun verifikasi(id_user: RequestBody, id: RequestBody, status: RequestBody, catatan: RequestBody, file: MultipartBody.Part): Observable<VerifikasiSPResponse> =
+        networkApi.verifikasiSP(id_user, id, status, catatan, file)
 
-    override fun ajukan(id_user: String, id: String): Observable<AjukanSPResponse> =
-        networkApi.ajukanSP(id_user, id)
+    override fun ajukan(id_user: RequestBody, id: RequestBody, file: MultipartBody.Part): Observable<AjukanSPResponse> =
+        networkApi.ajukanSP(id_user, id, file)
 
     override fun cancel(id_user: String, id:String): Observable<BatalkanSPResponse> =
         networkApi.batalkanSP(id_user, id)

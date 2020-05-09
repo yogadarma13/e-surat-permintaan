@@ -79,20 +79,22 @@ interface NetworkApi {
         @Field("id") id: String
     ): Observable<DeleteSPResponse>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("ajukan_sp")
     fun ajukanSP(
-        @Field("id_user") id_user: String,
-        @Field("id") id: String
+        @Part("id_user") id_user: RequestBody,
+        @Part("id") id: RequestBody,
+        @Part file: MultipartBody.Part
     ): Observable<AjukanSPResponse>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("verifikasi_sp")
     fun verifikasiSP(
-        @Field("id_user") id_user: String,
-        @Field("id") id: String,
-        @Field("status") status: String,
-        @Field("catatan") catatan: String
+        @Part("id_user") id_user: RequestBody,
+        @Part("id") id: RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("catatan") catatan: RequestBody,
+        @Part file: MultipartBody.Part
     ): Observable<VerifikasiSPResponse>
 
     @FormUrlEncoded

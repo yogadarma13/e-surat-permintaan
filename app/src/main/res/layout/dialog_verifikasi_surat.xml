@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tanda Tangan"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/labelTtd"/>
+
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border_radius_riwayat"
+        android:id="@+id/signaturePadVerif"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:penColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/labelTtd"/>
+
+    <Button
+        android:id="@+id/btnClearTtdVerif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bersihkan papan tanda tangan"
+        android:textAllCaps="false"
+        android:enabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signaturePadVerif" />
+
+    <View
+        android:id="@+id/lineSeparatorVerif"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="1dp"
+        android:background="@color/separator_color"
+        app:layout_constraintTop_toBottomOf="@+id/btnClearTtdVerif"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/questionVerif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Apakah anda ingin memverifikasi surat permintaan ini?"
+        app:layout_constraintTop_toBottomOf="@id/lineSeparatorVerif"
+        tools:layout_editor_absoluteX="16dp" />
+
+
+    <Button
+        android:id="@+id/btnFixVerif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorBlue"
+        android:text="Iya"
+        android:layout_marginTop="16dp"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionVerif" />
+
+    <Button
+        android:id="@+id/btnCancelVerif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Batal"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionVerif" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

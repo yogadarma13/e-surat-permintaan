@@ -2,6 +2,7 @@ package com.example.e_suratpermintaan.presentation.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -15,6 +16,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.utils.Directory
 import com.example.e_suratpermintaan.external.utils.DownloadTask
 import com.example.e_suratpermintaan.external.utils.FileName
+import com.example.e_suratpermintaan.external.utils.Signature
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.MASTER_PERSYARATAN
@@ -27,12 +29,20 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
+import com.github.gcacace.signaturepad.utils.SignaturePadBindingAdapter
+import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
+import kotlinx.android.synthetic.main.dialog_ajukan_surat.*
+import kotlinx.android.synthetic.main.dialog_ajukan_surat.view.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
+import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.Serializable
+import java.io.*
 
 class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
@@ -175,18 +185,20 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
         btnAjukan.setOnClickListener {
 
-            val alertDialog =
-                AlertDialog.Builder(this)
-                    .setTitle("Konfirmasi Pengajuan")
-                    .setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
-                    .setPositiveButton("Ajukan") { _, _ ->
-                        disposable = suratPermintaanViewModel.ajukan(idUser, idSp.toString())
-                            .subscribe(this::handleResponse, this::handleError)
-                    }.setNegativeButton("Tutup") { dialog, _ ->
-                        dialog.dismiss()
-                    }.create()
+            showDialogPengajuan()
 
-            alertDialog.show()
+//            val alertDialog =
+//                AlertDialog.Builder(this)
+//                    .setTitle("Konfirmasi Pengajuan")
+//                    .setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
+//                    .setPositiveButton("Ajukan") { _, _ ->
+//                        disposable = suratPermintaanViewModel.ajukan(idUser, idSp.toString())
+//                            .subscribe(this::handleResponse, this::handleError)
+//                    }.setNegativeButton("Tutup") { dialog, _ ->
+//                        dialog.dismiss()
+//                    }.create()
+//
+//            alertDialog.show()
         }
 
         btnCancel.setOnClickListener {
@@ -207,19 +219,21 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
         btnAccept.setOnClickListener {
 
-            val alertDialog =
-                AlertDialog.Builder(this)
-                    .setTitle("Konfirmasi Penerimaan")
-                    .setMessage("Apa anda yakin ingin menerima permintaan ini?")
-                    .setPositiveButton("Terima") { _, _ ->
-                        disposable =
-                            suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
-                                .subscribe(this::handleResponse, this::handleError)
-                    }.setNegativeButton("Tutup") { dialog, _ ->
-                        dialog.dismiss()
-                    }.create()
+            showDialogVerifikasi()
 
-            alertDialog.show()
+//            val alertDialog =
+//                AlertDialog.Builder(this)
+//                    .setTitle("Konfirmasi Penerimaan")
+//                    .setMessage("Apa anda yakin ingin menerima permintaan ini?")
+//                    .setPositiveButton("Terima") { _, _ ->
+//                        disposable =
+//                            suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
+//                                .subscribe(this::handleResponse, this::handleError)
+//                    }.setNegativeButton("Tutup") { dialog, _ ->
+//                        dialog.dismiss()
+//                    }.create()
+//
+//            alertDialog.show()
         }
 
         btnDecline.setOnClickListener {
@@ -439,9 +453,149 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         dialogRootView.btnCatatan.setOnClickListener {
 
             val catatan = dialogRootView.etCatatanTolak.text.toString()
-            disposable = suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "1", catatan)
+
+            val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
+            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
+            val status = RequestBody.create(MediaType.parse("text/plain"), "1")
+            val ctt = RequestBody.create(MediaType.parse("text/plain"), catatan)
+
+            val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+            val filePart = MultipartBody.Part.createFormData("file", "", fileReqBody)
+
+            disposable = suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
                 .subscribe(this::handleResponse, this::handleError)
 
+            alertDialog.hide()
+        }
+
+        alertDialog.setView(dialogRootView)
+        alertDialog.show()
+    }
+
+    private fun showDialogPengajuan() {
+
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
+                .setTitle("Pengajuan Surat Permintaan")
+
+        val alertDialog = alertDialogBuilder.create()
+
+        val dialogRootView =
+            View.inflate(this, R.layout.dialog_ajukan_surat, null)
+
+        dialogRootView.signaturePadAjukan.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+            }
+
+            override fun onClear() {
+                dialogRootView.btnClearTtdAjukan.isEnabled = false
+            }
+
+            override fun onSigned() {
+                dialogRootView.btnClearTtdAjukan.isEnabled = true
+            }
+
+        })
+
+        dialogRootView.btnClearTtdAjukan.setOnClickListener {
+            dialogRootView.signaturePadAjukan.clear()
+        }
+
+        dialogRootView.btnFixAjukan.setOnClickListener {
+            var fileTtd: File? = null
+            var partTtd: MultipartBody.Part?
+            var ttdBitmap: Bitmap? = null
+
+            if (!dialogRootView.signaturePadAjukan.isEmpty) {
+                ttdBitmap = dialogRootView.signaturePadAjukan.transparentSignatureBitmap
+                fileTtd = Signature().saveSignature(this, ttdBitmap)
+            }
+
+            val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
+            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
+
+            partTtd = if (fileTtd != null) {
+                val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                MultipartBody.Part.createFormData("file", fileTtd!!.name, fileReqBody)
+            } else {
+                val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                MultipartBody.Part.createFormData("file", "", fileReqBody)
+            }
+
+            disposable = suratPermintaanViewModel.ajukan(userId, spId, partTtd)
+                .subscribe(this::handleResponse, this::handleError)
+
+            alertDialog.hide()
+        }
+
+        dialogRootView.btnCancelAjukan.setOnClickListener {
+            alertDialog.hide()
+        }
+
+        alertDialog.setView(dialogRootView)
+        alertDialog.show()
+    }
+
+    private fun showDialogVerifikasi() {
+
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
+                .setTitle("Verifikasi Surat Permintaan")
+
+        val alertDialog = alertDialogBuilder.create()
+
+        val dialogRootView =
+            View.inflate(this, R.layout.dialog_verifikasi_surat, null)
+
+        dialogRootView.signaturePadVerif.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+            }
+
+            override fun onClear() {
+                dialogRootView.btnClearTtdVerif.isEnabled = false
+            }
+
+            override fun onSigned() {
+                dialogRootView.btnClearTtdVerif.isEnabled = true
+            }
+
+        })
+
+        dialogRootView.btnClearTtdVerif.setOnClickListener {
+            dialogRootView.signaturePadVerif.clear()
+        }
+
+        dialogRootView.btnFixVerif.setOnClickListener {
+            var fileTtd: File? = null
+            var partTtd: MultipartBody.Part?
+            var ttdBitmap: Bitmap? = null
+
+            if (!dialogRootView.signaturePadVerif.isEmpty) {
+                ttdBitmap = dialogRootView.signaturePadVerif.transparentSignatureBitmap
+                fileTtd = Signature().saveSignature(this, ttdBitmap)
+            }
+
+            val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
+            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
+            val status = RequestBody.create(MediaType.parse("text/plain"), "0")
+            val catatan = RequestBody.create(MediaType.parse("text/plain"), "")
+
+            partTtd = if (fileTtd != null) {
+                val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                MultipartBody.Part.createFormData("file", fileTtd!!.name, fileReqBody)
+            } else {
+                val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                MultipartBody.Part.createFormData("file", "", fileReqBody)
+            }
+
+            disposable =
+                suratPermintaanViewModel.verifikasi(userId, spId, status, catatan, partTtd)
+                    .subscribe(this::handleResponse, this::handleError)
+
+            alertDialog.hide()
+        }
+
+        dialogRootView.btnCancelVerif.setOnClickListener {
             alertDialog.hide()
         }
 
