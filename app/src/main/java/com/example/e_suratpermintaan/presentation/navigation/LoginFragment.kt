@@ -2,7 +2,6 @@ package com.example.e_suratpermintaan.presentation.navigation
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -40,6 +39,7 @@ class LoginFragment : BaseFragment() {
     private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
+    private var isMainActivityStarted: Boolean = false
 
     override fun layoutId(): Int = R.layout.fragment_login
 
@@ -115,7 +115,7 @@ class LoginFragment : BaseFragment() {
                                 starterActivity,
                                 Observer { isIt ->
 
-                                    if (isIt){
+                                    if (isIt && !isMainActivityStarted) {
                                         toastNotify(response.message)
                                         progressBarOverlay.visibility = GONE
 
@@ -124,6 +124,7 @@ class LoginFragment : BaseFragment() {
                                                 Intent(starterActivity, MainActivity::class.java)
                                             )
                                             starterActivity.finish()
+                                            isMainActivityStarted = true
                                         }, 500)
                                     }
 

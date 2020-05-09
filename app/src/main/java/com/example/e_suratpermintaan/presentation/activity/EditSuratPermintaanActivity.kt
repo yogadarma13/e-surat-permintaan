@@ -15,6 +15,7 @@ import com.example.e_suratpermintaan.external.utils.DownloadTask
 import com.example.e_suratpermintaan.external.utils.FileName
 import com.example.e_suratpermintaan.external.utils.FilePath
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
+import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
@@ -337,6 +338,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
             is SimpanEditSPResponse -> {
                 toastNotify(response.message)
                 val intent = Intent()
+                intent.putExtra("status", STATUS_SP_EDITED)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }

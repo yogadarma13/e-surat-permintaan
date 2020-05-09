@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
+import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -95,7 +96,15 @@ class PenugasanItemDialog(
 
     fun show(itemsDetailSP: ItemsDetailSP) {
         itemDetailSP = itemsDetailSP
-        dialogRootView.spinnerKepada.text.clear()
+
+        val selectedObj = penugasanOptionList.find { it.value.toString() == itemsDetailSP.kepada }
+        val selectedOption = selectedObj?.option
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            dialogRootView.spinnerKepada.setText(selectedOption, false)
+        } else {
+            dialogRootView.spinnerKepada.setText(selectedOption)
+        }
         alertDialogEdit.show()
     }
 

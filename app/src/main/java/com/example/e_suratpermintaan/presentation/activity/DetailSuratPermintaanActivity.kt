@@ -29,11 +29,9 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
-import com.github.gcacace.signaturepad.utils.SignaturePadBindingAdapter
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
-import kotlinx.android.synthetic.main.dialog_ajukan_surat.*
 import kotlinx.android.synthetic.main.dialog_ajukan_surat.view.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
 import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
@@ -42,13 +40,15 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.*
+import java.io.File
+import java.io.Serializable
 
 class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
     companion object {
         const val ID_SP_EXTRA_KEY = "id_sp"
         const val STATUS_SP_DELETED = "SP_DELETED"
+        const val STATUS_SP_EDITED = "SP_EDITED"
         const val LAUNCH_EDIT_ACTIVITY: Int = 99
     }
 
@@ -105,6 +105,10 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         if (requestCode == LAUNCH_EDIT_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 initApiRequest()
+
+                val intent = Intent()
+                intent.putExtra("status", STATUS_SP_EDITED)
+                setResult(Activity.RESULT_OK, intent)
             }
         }
     }
@@ -483,7 +487,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         val dialogRootView =
             View.inflate(this, R.layout.dialog_ajukan_surat, null)
 
-        dialogRootView.signaturePadAjukan.setOnSignedListener(object : SignaturePad.OnSignedListener {
+        dialogRootView.signaturePadAjukan.setOnSignedListener(object :
+            SignaturePad.OnSignedListener {
             override fun onStartSigning() {
             }
 
@@ -515,7 +520,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
 
             partTtd = if (fileTtd != null) {
-                val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                val fileReqBody =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
                 MultipartBody.Part.createFormData("file", fileTtd!!.name, fileReqBody)
             } else {
                 val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
@@ -547,7 +553,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         val dialogRootView =
             View.inflate(this, R.layout.dialog_verifikasi_surat, null)
 
-        dialogRootView.signaturePadVerif.setOnSignedListener(object : SignaturePad.OnSignedListener {
+        dialogRootView.signaturePadVerif.setOnSignedListener(object :
+            SignaturePad.OnSignedListener {
             override fun onStartSigning() {
             }
 
@@ -581,7 +588,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             val catatan = RequestBody.create(MediaType.parse("text/plain"), "")
 
             partTtd = if (fileTtd != null) {
-                val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                val fileReqBody =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
                 MultipartBody.Part.createFormData("file", fileTtd!!.name, fileReqBody)
             } else {
                 val fileReqBody = RequestBody.create(MultipartBody.FORM, "")

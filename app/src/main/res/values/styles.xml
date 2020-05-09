@@ -26,6 +26,26 @@
         </item>
 
         <item name="materialThemeOverlay">@style/MyFabOverlay</item>
+         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="toolbarStyle">@style/MyToolbar</item>
+    </style>
+
+    <!-- Ini untuk styling warna hamburger icon, di drawer -->
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="MyToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="materialThemeOverlay">@style/MyThemeOverlay_Toolbar</item>
+    </style>
+
+    <!-- Ini untuk styling warna teksnya aja -->
+    <style name="MyThemeOverlay_Toolbar" parent="">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorPrimary">@android:color/white</item>
     </style>
 
     <style name="MyFabOverlay">

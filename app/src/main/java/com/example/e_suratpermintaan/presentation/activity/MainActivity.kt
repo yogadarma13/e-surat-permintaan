@@ -10,9 +10,10 @@ import android.os.Parcelable
 import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.PopupMenu
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
@@ -22,6 +23,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_DELETED
+import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
@@ -35,15 +37,19 @@ import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerJenis
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerProyek
 import kotlinx.android.synthetic.main.dialog_filter_sp.view.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
+
+class MainActivity : BaseActivity() {
+//    , PopupMenu.OnMenuItemClickListener
 
     companion object {
         const val LAUNCH_DETAIL_ACTIVITY: Int = 111
     }
 
+    private lateinit var drawerToggle: ActionBarDrawerToggle
     private var profileId: String? = null
     private lateinit var idUser: String
 
@@ -84,15 +90,58 @@ class MainActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
 
     override fun layoutId(): Int = R.layout.activity_main
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // The action bar home/up action should open or close the drawer.
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LAUNCH_DETAIL_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                when (data?.getStringExtra("status")) {
+                    STATUS_SP_DELETED -> {
+                        initApiRequest()
+                    }
+                    STATUS_SP_EDITED -> {
+                        initApiRequest()
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
+        setSupportActionBar(toolbar)
 
+        // This will display an Up icon (<-), we will replace it with hamburger later
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        setupNavigationDrawer()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ) {
+                // empty
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    1
+                )
             }
         }
 
@@ -138,20 +187,49 @@ class MainActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun setupNavigationDrawer() {
+        // Find our drawer view
+        drawerToggle = setupDrawerToggle()
 
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == LAUNCH_DETAIL_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
+        // Setup toggle to display hamburger icon with nice animation
+        drawerToggle.isDrawerIndicatorEnabled = true
+        drawerToggle.syncState()
 
-                when (data?.getStringExtra("status")) {
-                    STATUS_SP_DELETED -> {
-                        initApiRequest()
-                    }
+        // Tie DrawerLayout events to the ActionBarToggle
+        drawer_layout.addDrawerListener(drawerToggle)
+
+        val headerView = navigation_view.getHeaderView(0)
+        headerView.profileName.text = profilePreference.getProfile()?.name
+        navigation_view.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.detail_profile -> {
+                    startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+                }
+                R.id.logout -> {
+                    profilePreference.removeProfile()
+                    fcmPreference.removeUserTokenId()
+
+                    finish()
+                    startActivity(Intent(this, StarterActivity::class.java))
                 }
             }
+
+            //This is for closing the drawer after acting on it
+            drawer_layout.closeDrawer(GravityCompat.START)
+            true
         }
+    }
+
+    private fun setupDrawerToggle(): ActionBarDrawerToggle {
+        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
+        // and will not render the hamburger icon without it.
+        return ActionBarDrawerToggle(
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.drawer_open,
+            R.string.drawer_close
+        )
     }
 
     private fun initNotifikasiApiRequest() {
@@ -248,9 +326,9 @@ class MainActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     private fun setupListeners() {
-        btnProfile.setOnClickListener {
-            showMenuItemProfile(it)
-        }
+        //btnProfile.setOnClickListener {
+        //    showMenuItemProfile(it)
+        //}
 
         btnAjukan.setOnClickListener {
             alertDialogTambahSP.show()
@@ -463,30 +541,30 @@ class MainActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
         alertDialogFilterSP.setView(dialogRootView)
     }
 
-    private fun showMenuItemProfile(v: View) {
-        PopupMenu(this, v).apply {
-            setOnMenuItemClickListener(this@MainActivity)
-            inflate(R.menu.menu_item_profile)
-            show()
-        }
-    }
+//    private fun showMenuItemProfile(v: View) {
+//        PopupMenu(this, v).apply {
+//            setOnMenuItemClickListener(this@MainActivity)
+//            inflate(R.menu.menu_item_profile)
+//            show()
+//        }
+//    }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        return when(item?.itemId) {
-            R.id.menuProfile -> {
-                startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
-                true
-            }
-
-            R.id.menuLogout -> {
-                profilePreference.removeProfile()
-                fcmPreference.removeUserTokenId()
-
-                finish()
-                startActivity(Intent(this, StarterActivity::class.java))
-                true
-            }
-            else -> false
-        }
-    }
+//    override fun onMenuItemClick(item: MenuItem?): Boolean {
+//        return when (item?.itemId) {
+//            R.id.menuProfile -> {
+//                startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+//                true
+//            }
+//
+//            R.id.menuLogout -> {
+//                profilePreference.removeProfile()
+//                fcmPreference.removeUserTokenId()
+//
+//                finish()
+//                startActivity(Intent(this, StarterActivity::class.java))
+//                true
+//            }
+//            else -> false
+//        }
+//    }
 }
