@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
@@ -40,7 +41,6 @@ import kotlinx.android.synthetic.main.dialog_filter_sp.view.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class MainActivity : BaseActivity() {
 //    , PopupMenu.OnMenuItemClickListener
@@ -120,14 +120,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSupportActionBar(toolbar)
-
-        // This will display an Up icon (<-), we will replace it with hamburger later
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        setupNavigationDrawer()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -144,6 +136,12 @@ class MainActivity : BaseActivity() {
                 )
             }
         }
+
+        setSupportActionBar(toolbar)
+        // This will display an Up icon (<-), we will replace it with hamburger later
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        setupNavigationDrawer()
 
         initAdapters()
         setupTambahSPDialog()
@@ -198,8 +196,6 @@ class MainActivity : BaseActivity() {
         // Tie DrawerLayout events to the ActionBarToggle
         drawer_layout.addDrawerListener(drawerToggle)
 
-        val headerView = navigation_view.getHeaderView(0)
-        headerView.profileName.text = profilePreference.getProfile()?.name
         navigation_view.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detail_profile -> {
@@ -218,6 +214,13 @@ class MainActivity : BaseActivity() {
             drawer_layout.closeDrawer(GravityCompat.START)
             true
         }
+
+        val headerView = navigation_view.getHeaderView(0)
+        headerView.profileName.text = profilePreference.getProfile()?.name
+        headerView.role.text = profilePreference.getProfile()?.namaRole
+        headerView.email.text = profilePreference.getProfile()?.email
+        Glide.with(this).load(profilePreference.getProfile()?.fotoProfile)
+            .into(headerView.circleImageView)
     }
 
     private fun setupDrawerToggle(): ActionBarDrawerToggle {

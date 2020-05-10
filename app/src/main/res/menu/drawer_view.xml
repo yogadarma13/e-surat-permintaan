@@ -1,12 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/detail_profile"
-            android:icon="@drawable/ic_account_circle"
-            android:title="Detail Profile" />
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="Logout" />
-    </group>
+    <item android:title="Menu">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/detail_profile"
+                    android:icon="@drawable/ic_account_circle"
+                    android:title="Detail Profile" />
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_exit_to_app_black_24dp"
+                    android:title="Logout" />
+            </group>
+        </menu>
+    </item>
 </menu>

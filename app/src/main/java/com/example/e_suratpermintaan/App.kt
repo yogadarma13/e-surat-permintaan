@@ -32,7 +32,7 @@ class App : Application(), LifecycleObserver {
             )
         }
 
-        val appContext=this;
+        val appContext = this;
         ProcessLifecycleOwner.get().lifecycle.addObserver(this);
     }
 

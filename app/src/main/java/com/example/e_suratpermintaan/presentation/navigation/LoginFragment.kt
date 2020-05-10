@@ -39,7 +39,6 @@ class LoginFragment : BaseFragment() {
     private val sharedViewModel: SharedViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
-    private var isMainActivityStarted: Boolean = false
 
     override fun layoutId(): Int = R.layout.fragment_login
 
@@ -115,16 +114,18 @@ class LoginFragment : BaseFragment() {
                                 starterActivity,
                                 Observer { isIt ->
 
-                                    if (isIt && !isMainActivityStarted) {
+                                    if (isIt) {
                                         toastNotify(response.message)
                                         progressBarOverlay.visibility = GONE
 
                                         Handler().postDelayed({
-                                            starterActivity.startActivity(
+                                            val intent =
                                                 Intent(starterActivity, MainActivity::class.java)
+                                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                            starterActivity.startActivity(
+                                                intent
                                             )
                                             starterActivity.finish()
-                                            isMainActivityStarted = true
                                         }, 500)
                                     }
 
