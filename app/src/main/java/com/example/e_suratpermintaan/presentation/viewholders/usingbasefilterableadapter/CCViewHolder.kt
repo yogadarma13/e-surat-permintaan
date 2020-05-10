@@ -18,7 +18,8 @@ class CCViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
             listener(data, ROOTVIEW)
         }
 
-        rootView.textView.text = data.kodeCostcontrol
+        val textString = "${data.kodeCostcontrol} - ${data.deskripsi}"
+        rootView.textView.text = textString
     }
 
 }

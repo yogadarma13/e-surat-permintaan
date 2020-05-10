@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Parcelable
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -43,7 +44,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
-//    , PopupMenu.OnMenuItemClickListener
 
     companion object {
         const val LAUNCH_DETAIL_ACTIVITY: Int = 111
@@ -208,6 +208,16 @@ class MainActivity : BaseActivity() {
                     finish()
                     startActivity(Intent(this, StarterActivity::class.java))
                 }
+                R.id.semua -> {
+                    // 0 untuk nilai valuenya "semua"
+                    selectedJenisDataFilterValue = jenisDataOptionList[0].value.toString()
+                    initApiRequest()
+                }
+                R.id.menungguVerifikasi -> {
+                    // 1 untuk nilai valuenya "dataku"
+                    selectedJenisDataFilterValue = jenisDataOptionList[1].value.toString()
+                    initApiRequest()
+                }
             }
 
             //This is for closing the drawer after acting on it
@@ -329,9 +339,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupListeners() {
-        //btnProfile.setOnClickListener {
-        //    showMenuItemProfile(it)
-        //}
 
         btnAjukan.setOnClickListener {
             alertDialogTambahSP.show()
@@ -492,11 +499,6 @@ class MainActivity : BaseActivity() {
                     dialogRootView.spinnerProyek.text.clear()
                     dialogRootView.spinnerJenis.text.clear()
 
-                    selectedJenisDataFilterValue = ""
-                    selectedStatusFilterValue = ""
-                    selectedIdProyekFilterValue = ""
-                    selectedJenisPermintaanFilterValue = ""
-
                 }.create()
 
             confirmAlert.show()
@@ -509,7 +511,7 @@ class MainActivity : BaseActivity() {
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Ajukan Surat Permintaan")
+                .setTitle("Filter Surat Permintaan")
 
         alertDialogFilterSP = alertDialogBuilder.create()
 
@@ -521,11 +523,45 @@ class MainActivity : BaseActivity() {
         dialogRootView.spinnerStatus.setAdapter(statusOptionAdapter)
         dialogRootView.spinnerJenisData.setAdapter(jenisDataOptionAdapter)
 
+        dialogRootView.spinnerStatus.viewTreeObserver.addOnGlobalLayoutListener(object :
+            OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // Ensure you call it only once :
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    dialogRootView.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+                //} else {
+                    //dialogRootView.spinnerStatus.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                //}
+
+                // Here you can get the size :)
+                val spinnerCoord = intArrayOf(0, 0)
+                dialogRootView.spinnerStatus.getLocationOnScreen(spinnerCoord)
+                val spinnerBottom = spinnerCoord[1] + dialogRootView.spinnerStatus.height
+
+                val dialogRootViewCoord = intArrayOf(0, 0)
+                dialogRootView.getLocationOnScreen(dialogRootViewCoord)
+                val dialogRootViewBottom = dialogRootViewCoord[1] + dialogRootView.height
+
+                dialogRootView.spinnerStatus.dropDownHeight = dialogRootViewBottom - spinnerBottom
+            }
+        })
+
+        dialogRootView.btnFilterReset.setOnClickListener {
+            dialogRootView.spinnerProyek.text.clear()
+            dialogRootView.spinnerJenis.text.clear()
+            dialogRootView.spinnerStatus.text.clear()
+
+            selectedIdProyekFilterValue = ""
+            selectedJenisPermintaanFilterValue = ""
+            selectedStatusFilterValue = ""
+        }
+
         dialogRootView.btnFilterSubmit.setOnClickListener {
             val selectedProyek = dialogRootView.spinnerProyek.text.toString()
             val selectedJenis = dialogRootView.spinnerJenis.text.toString()
             val selectedStatus = dialogRootView.spinnerStatus.text.toString()
-            val selectedJenisData = dialogRootView.spinnerJenisData.text.toString()
+            // val selectedJenisData = dialogRootView.spinnerJenisData.text.toString()
 
             selectedIdProyekFilterValue =
                 proyekOptionList.find { it.option == selectedProyek }?.value ?: ""
@@ -533,8 +569,7 @@ class MainActivity : BaseActivity() {
                 jenisPermintaanOptionList.find { it.option == selectedJenis }?.value ?: ""
             selectedStatusFilterValue =
                 statusOptionList.find { it.option == selectedStatus }?.value ?: ""
-            selectedJenisDataFilterValue =
-                jenisDataOptionList.find { it.option == selectedJenisData }?.value ?: ""
+            // selectedJenisDataFilterValue = jenisDataOptionList.find { it.option == selectedJenisData }?.value ?: ""
 
             initApiRequest()
 
@@ -544,30 +579,4 @@ class MainActivity : BaseActivity() {
         alertDialogFilterSP.setView(dialogRootView)
     }
 
-//    private fun showMenuItemProfile(v: View) {
-//        PopupMenu(this, v).apply {
-//            setOnMenuItemClickListener(this@MainActivity)
-//            inflate(R.menu.menu_item_profile)
-//            show()
-//        }
-//    }
-
-//    override fun onMenuItemClick(item: MenuItem?): Boolean {
-//        return when (item?.itemId) {
-//            R.id.menuProfile -> {
-//                startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
-//                true
-//            }
-//
-//            R.id.menuLogout -> {
-//                profilePreference.removeProfile()
-//                fcmPreference.removeUserTokenId()
-//
-//                finish()
-//                startActivity(Intent(this, StarterActivity::class.java))
-//                true
-//            }
-//            else -> false
-//        }
-//    }
 }

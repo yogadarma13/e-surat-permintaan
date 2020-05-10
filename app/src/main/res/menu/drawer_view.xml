@@ -13,4 +13,19 @@
             </group>
         </menu>
     </item>
+
+    <item android:title="Surat Permintaan">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/semua"
+                    android:icon="@drawable/ic_assignment_turned_in_black_24dp"
+                    android:title="Semua Data" />
+                <item
+                    android:id="@+id/menungguVerifikasi"
+                    android:icon="@drawable/ic_hourglass_empty_black_24dp"
+                    android:title="Menunggu Verifikasi" />
+            </group>
+        </menu>
+    </item>
 </menu>
