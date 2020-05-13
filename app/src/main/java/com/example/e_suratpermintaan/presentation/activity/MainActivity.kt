@@ -111,7 +111,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
             } else if (requestCode == LAUNCH_EDIT_ACTIVITY) {
-                when (data?.getStringExtra("status")){
+                when (data?.getStringExtra("status")) {
                     STATUS_PROFILE_EDITED -> {
                         initDetailProfileRequest()
                     }
@@ -219,7 +219,7 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.semua -> {
                     // indeks 0 untuk nilai valuenya "semua"
-                    resetFilter()
+                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
                     selectedStatusFilterValue = statusOptionList[0].value.toString()
                     val selectedStatusFilterOption = statusOptionList[0].option.toString()
                     filterDialogRootView.spinnerStatus.setText(selectedStatusFilterOption, false)
@@ -227,7 +227,7 @@ class MainActivity : BaseActivity() {
                     initApiRequest()
                 }
                 R.id.menungguVerifikasi -> {
-                    resetFilter()
+                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
                     // selectedStatusFilterValue = ""
                     filterDialogRootView.tilStatus.visibility = View.GONE
                     filterDialogRootView.spinnerStatus.text.clear()
@@ -271,7 +271,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initDetailProfileRequest(){
+    private fun initDetailProfileRequest() {
         profileViewModel.getProfile(idUser).subscribe(
             { profileResponse ->
 
@@ -584,7 +584,7 @@ class MainActivity : BaseActivity() {
         })
 
         filterDialogRootView.btnFilterReset.setOnClickListener {
-            resetFilter()
+            resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
         }
 
         filterDialogRootView.btnFilterSubmit.setOnClickListener {
@@ -609,14 +609,24 @@ class MainActivity : BaseActivity() {
         alertDialogFilterSP.setView(filterDialogRootView)
     }
 
-    private fun resetFilter() {
+    private fun resetFilter(isStatusPermintaanVisible: Boolean) {
         filterDialogRootView.spinnerProyek.text.clear()
         filterDialogRootView.spinnerJenis.text.clear()
-        filterDialogRootView.spinnerStatus.text.clear()
 
         selectedIdProyekFilterValue = ""
         selectedJenisPermintaanFilterValue = ""
-        selectedStatusFilterValue = ""
+
+        if (!isStatusPermintaanVisible) {
+            // ini maksudnya untuk kalau user memilih menu item menunggu verifikasi
+            // nah status permintaannya kan ilang, jadi set statusFilterValue ke ""
+            // karna untuk menunggu verifikasi statusPermintaanya default ""
+            filterDialogRootView.spinnerStatus.text.clear()
+            selectedStatusFilterValue = ""
+        } else {
+            selectedStatusFilterValue = statusOptionList[0].value.toString()
+            val selectedStatusFilterOption = statusOptionList[0].option.toString()
+            filterDialogRootView.spinnerStatus.setText(selectedStatusFilterOption, false)
+        }
     }
 
 }
