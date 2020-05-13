@@ -418,11 +418,11 @@ class MainActivity : BaseActivity() {
             is NotifikasiResponse -> {
                 val notif = response.data?.get(0)
 
-                if (notif?.countUnread == 0) {
+                if (notif?.count == 0) {
                     tvCountUnreadNotif.visibility = View.GONE
                 } else {
                     tvCountUnreadNotif.visibility = View.VISIBLE
-                    tvCountUnreadNotif.text = notif?.countUnread.toString()
+                    tvCountUnreadNotif.text = notif?.count.toString()
                 }
             }
             is CreateSPResponse -> {

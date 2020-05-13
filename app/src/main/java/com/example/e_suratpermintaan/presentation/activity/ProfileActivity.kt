@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
@@ -12,10 +13,15 @@ import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.utils.FilePath
+import com.example.e_suratpermintaan.external.utils.Signature
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
+import com.github.gcacace.signaturepad.views.SignaturePad
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.dialog_choose_signature_profile.view.*
+import kotlinx.android.synthetic.main.dialog_signature_pad_profile.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,7 +44,7 @@ class ProfileActivity : BaseActivity() {
     private lateinit var progressDialog: ProgressDialog
     private var id: String? = null
     private var filePath: String? = null
-    private var ttdPath: String? = null
+    private var fileTtd: File? = null
 
     override fun layoutId(): Int = R.layout.activity_profile
 
@@ -71,6 +77,7 @@ class ProfileActivity : BaseActivity() {
         btnSimpanProfile.setOnClickListener {
             progressDialog.setTitle("Memperbaharui Profile")
             progressDialog.setMessage("Mohon Tunggu...")
+            progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
 
             val nama = etNamaProfile.text.toString()
@@ -101,13 +108,12 @@ class ProfileActivity : BaseActivity() {
                     partFile = MultipartBody.Part.createFormData("file", "", fileReqBody)
                 }
 
-                if (!ttdPath.isNullOrEmpty()) {
-                    val ttd = File(ttdPath)
-                    val ttdReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), ttd)
-                    partTtd = MultipartBody.Part.createFormData("ttd", ttd.name, ttdReqBody)
+                partTtd = if (fileTtd != null) {
+                    val ttdReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                    MultipartBody.Part.createFormData("ttd", fileTtd!!.name, ttdReqBody)
                 } else {
                     val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
-                    partTtd = MultipartBody.Part.createFormData("ttd", "", fileReqBody)
+                    MultipartBody.Part.createFormData("ttd", "", fileReqBody)
                 }
 
                 disposable = provileViewModel.editProfile(idUser, emailUser, passLamaUser, passBaruUser, namaUser, deskripsiUser, partFile, partTtd)
@@ -123,9 +129,7 @@ class ProfileActivity : BaseActivity() {
         }
 
         btnUploadTtd.setOnClickListener {
-            val selectTtd = Intent(Intent.ACTION_PICK)
-            selectTtd.setType("image/*")
-            startActivityForResult(selectTtd, PHOTO_SIGNATURE_REQUEST_CODE)
+            showDialogMethodOption()
         }
 
     }
@@ -160,7 +164,7 @@ class ProfileActivity : BaseActivity() {
             is EditProfileResponse -> {
                 toastNotify(response.message)
                 filePath = null
-                ttdPath = null
+                fileTtd = null
                 progressDialog.dismiss()
                 initApiRequest()
             }
@@ -192,15 +196,89 @@ class ProfileActivity : BaseActivity() {
 
         if (requestCode == PHOTO_SIGNATURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val fileUri = data?.data
+            var ttdPath: String? = null
             ttdPath = FilePath.getPath(this, fileUri as Uri)
 
             if (!ttdPath.isNullOrEmpty()) {
-                tvTextNameTtd.text = ttdPath?.substring(ttdPath!!.lastIndexOf("/")+1)
+//                tvTextNameTtd.text = ttdPath?.substring(ttdPath!!.lastIndexOf("/")+1)
+                toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                toastNotify(ttdPath)
+                fileTtd = File(ttdPath)
+            } else {
+                toastNotify("File Tdak ditemukan")
             }
 
-            toastNotify(ttdPath)
-
         }
+    }
+
+    private fun showDialogMethodOption() {
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
+                .setTitle("Unggah Tanda Tangan")
+
+        val alertDialog = alertDialogBuilder.create()
+
+        val dialogRootView =
+            View.inflate(this, R.layout.dialog_choose_signature_profile, null)
+
+        dialogRootView.tvCreateSignatureProfile.setOnClickListener {
+            showDialogSignaturePad()
+            alertDialog.hide()
+        }
+
+        dialogRootView.tvGetSignatureProfile.setOnClickListener {
+            val selectTtd = Intent(Intent.ACTION_PICK)
+            selectTtd.setType("image/*")
+            startActivityForResult(selectTtd, PHOTO_SIGNATURE_REQUEST_CODE)
+
+            alertDialog.hide()
+        }
+
+        alertDialog.setView(dialogRootView)
+        alertDialog.show()
+    }
+
+    private fun showDialogSignaturePad() {
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
+                .setTitle("Unggah Tanda Tangan")
+
+        val alertDialog = alertDialogBuilder.create()
+
+        val dialogRootView =
+            View.inflate(this, R.layout.dialog_signature_pad_profile, null)
+
+        dialogRootView.signaturePadProfile.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+            }
+
+            override fun onClear() {
+                dialogRootView.btnSaveTtdProfile.isEnabled = false
+                dialogRootView.btnClearTtdProfile.isEnabled = false
+            }
+
+            override fun onSigned() {
+                dialogRootView.btnSaveTtdProfile.isEnabled = true
+                dialogRootView.btnClearTtdProfile.isEnabled = true
+            }
+
+        })
+
+        dialogRootView.btnSaveTtdProfile.setOnClickListener {
+            val ttdBitmap = dialogRootView.signaturePadProfile.transparentSignatureBitmap
+            fileTtd = Signature().saveSignature(this, ttdBitmap)
+            if (fileTtd != null) {
+                toastNotify("Tanda tangan telah dibuat\nSilahkan menyimpan perubahan")
+            }
+            alertDialog.hide()
+        }
+
+        dialogRootView.btnClearTtdProfile.setOnClickListener {
+            dialogRootView.signaturePadProfile.clear()
+        }
+
+        alertDialog.setView(dialogRootView)
+        alertDialog.show()
     }
 
 }
