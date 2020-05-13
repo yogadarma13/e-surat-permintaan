@@ -163,6 +163,8 @@ class ProfileActivity : BaseActivity() {
 
             is EditProfileResponse -> {
                 toastNotify(response.message)
+                setResult(Activity.RESULT_OK, intent)
+
                 filePath = null
                 fileTtd = null
                 progressDialog.dismiss()

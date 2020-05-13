@@ -23,6 +23,7 @@ import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_DETAIL_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_PROFILE_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_PROFILE_EDITED
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_DELETED
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_EDITED
@@ -101,7 +102,6 @@ class MainActivity : BaseActivity() {
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == LAUNCH_DETAIL_ACTIVITY) {
-
                 when (data?.getStringExtra("status")) {
                     STATUS_SP_DELETED -> {
                         initApiRequest()
@@ -110,9 +110,7 @@ class MainActivity : BaseActivity() {
                         initApiRequest()
                     }
                 }
-
             } else if (requestCode == LAUNCH_EDIT_ACTIVITY) {
-
                 when (data?.getStringExtra("status")){
                     STATUS_PROFILE_EDITED -> {
                         initDetailProfileRequest()
@@ -157,6 +155,10 @@ class MainActivity : BaseActivity() {
         initApiRequest()
         initDetailProfileRequest()
 
+        populateMaster()
+    }
+
+    private fun populateMaster() {
         sharedMasterData.getOnNotifikasiReceived().observe(this, Observer {
             // val idSp = it
             initNotifikasiApiRequest()
@@ -205,7 +207,8 @@ class MainActivity : BaseActivity() {
         navigation_view.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detail_profile -> {
-                    startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+                    val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+                    startActivityForResult(intent, LAUNCH_PROFILE_ACTIVITY)
                 }
                 R.id.logout -> {
                     profilePreference.removeProfile()
