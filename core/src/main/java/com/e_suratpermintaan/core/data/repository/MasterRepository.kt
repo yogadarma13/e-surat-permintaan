@@ -22,8 +22,8 @@ class MasterRepository(private val masterDataSource: MasterDataSource) :
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         masterDataSource.getUomList(id)
 
-    override fun getStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse> =
-        masterDataSource.getStatusFilterOptionList()
+    override fun getStatusFilterOptionList(id_user: String): Observable<MasterStatusFilterOptionResponse> =
+        masterDataSource.getStatusFilterOptionList(id_user)
 
     override fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse> =
         masterDataSource.getJenisDataFilterOptionList()

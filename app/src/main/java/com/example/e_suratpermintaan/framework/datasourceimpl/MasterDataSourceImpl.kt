@@ -22,8 +22,8 @@ class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSourc
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         networkApi.getMasterUom(id)
 
-    override fun getStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse> =
-        networkApi.getMasterStatusFilterOptionList()
+    override fun getStatusFilterOptionList(id_user: String): Observable<MasterStatusFilterOptionResponse> =
+        networkApi.getMasterStatusFilterOptionList(id_user)
 
     override fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse> =
         networkApi.getMasterJenisDataFilterOptionList()

@@ -9,8 +9,8 @@ class GetStatusFilterOptionUseCase(
     private val masterProyekRepository: MasterRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(): Observable<MasterStatusFilterOptionResponse> =
-        masterProyekRepository.getStatusFilterOptionList()
+    fun invoke(id_user: String): Observable<MasterStatusFilterOptionResponse> =
+        masterProyekRepository.getStatusFilterOptionList(id_user)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }

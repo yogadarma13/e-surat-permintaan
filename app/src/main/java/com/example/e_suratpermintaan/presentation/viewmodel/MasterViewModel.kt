@@ -41,8 +41,8 @@ class MasterViewModel(
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         getUomListUseCase.invoke(id)
 
-    override fun getStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse> =
-        getMasterStatusFilterOptionUseCase.invoke()
+    override fun getStatusFilterOptionList(id_user: String): Observable<MasterStatusFilterOptionResponse> =
+        getMasterStatusFilterOptionUseCase.invoke(id_user)
 
     override fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse> =
         getMasterJenisDataFilterOptionUseCase.invoke()

@@ -49,6 +49,7 @@ class MainActivity : BaseActivity() {
         const val LAUNCH_DETAIL_ACTIVITY: Int = 111
     }
 
+    private lateinit var filterDialogRootView: View
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private var profileId: String? = null
     private lateinit var idUser: String
@@ -209,13 +210,17 @@ class MainActivity : BaseActivity() {
                     startActivity(Intent(this, StarterActivity::class.java))
                 }
                 R.id.semua -> {
-                    // 0 untuk nilai valuenya "semua"
-                    selectedJenisDataFilterValue = jenisDataOptionList[0].value.toString()
+                    // indeks 0 untuk nilai valuenya "semua"
+                    resetFilter()
+                    selectedStatusFilterValue = statusOptionList[0].value.toString()
+                    filterDialogRootView.tilStatus.visibility = View.VISIBLE
                     initApiRequest()
                 }
                 R.id.menungguVerifikasi -> {
-                    // 1 untuk nilai valuenya "dataku"
-                    selectedJenisDataFilterValue = jenisDataOptionList[1].value.toString()
+                    resetFilter()
+                    // selectedStatusFilterValue = ""
+                    filterDialogRootView.tilStatus.visibility = View.GONE
+                    filterDialogRootView.spinnerStatus.text.clear()
                     initApiRequest()
                 }
             }
@@ -253,26 +258,17 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initApiRequest() {
-        proyekList.clear()
-        jenisList.clear()
-
-        // jenisPermintaanOptionList.clear()
-        // proyekOptionList.clear()
-        // statusOptionList.clear()
-        // jenisDataOptionList.clear()
-        spAdapter.itemList.clear()
-
         tv_show_length_entry.text = getString(
             R.string.main_header_list_count_msg,
             "0"
         )
 
+        proyekList.clear()
+        jenisList.clear()
+        spAdapter.itemList.clear()
+
         proyekAdapter.notifyDataSetChanged()
         jenisAdapter.notifyDataSetChanged()
-        jenisPermintaanOptionAdapter.notifyDataSetChanged()
-        proyekOptionAdapter.notifyDataSetChanged()
-        statusOptionAdapter.notifyDataSetChanged()
-        jenisDataOptionAdapter.notifyDataSetChanged()
         spAdapter.notifyDataSetChanged()
 
         profileId = profilePreference.getProfile()?.id
@@ -515,20 +511,20 @@ class MainActivity : BaseActivity() {
 
         alertDialogFilterSP = alertDialogBuilder.create()
 
-        val dialogRootView =
+        filterDialogRootView =
             View.inflate(this, R.layout.dialog_filter_sp, null)
 
-        dialogRootView.spinnerProyek.setAdapter(proyekOptionAdapter)
-        dialogRootView.spinnerJenis.setAdapter(jenisPermintaanOptionAdapter)
-        dialogRootView.spinnerStatus.setAdapter(statusOptionAdapter)
-        dialogRootView.spinnerJenisData.setAdapter(jenisDataOptionAdapter)
+        filterDialogRootView.spinnerProyek.setAdapter(proyekOptionAdapter)
+        filterDialogRootView.spinnerJenis.setAdapter(jenisPermintaanOptionAdapter)
+        filterDialogRootView.spinnerStatus.setAdapter(statusOptionAdapter)
+        filterDialogRootView.spinnerJenisData.setAdapter(jenisDataOptionAdapter)
 
-        dialogRootView.spinnerStatus.viewTreeObserver.addOnGlobalLayoutListener(object :
+        filterDialogRootView.spinnerStatus.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 // Ensure you call it only once :
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    dialogRootView.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    filterDialogRootView.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
                 //} else {
                     //dialogRootView.spinnerStatus.viewTreeObserver.removeGlobalOnLayoutListener(this)
@@ -536,31 +532,25 @@ class MainActivity : BaseActivity() {
 
                 // Here you can get the size :)
                 val spinnerCoord = intArrayOf(0, 0)
-                dialogRootView.spinnerStatus.getLocationOnScreen(spinnerCoord)
-                val spinnerBottom = spinnerCoord[1] + dialogRootView.spinnerStatus.height
+                filterDialogRootView.spinnerStatus.getLocationOnScreen(spinnerCoord)
+                val spinnerBottom = spinnerCoord[1] + filterDialogRootView.spinnerStatus.height
 
                 val dialogRootViewCoord = intArrayOf(0, 0)
-                dialogRootView.getLocationOnScreen(dialogRootViewCoord)
-                val dialogRootViewBottom = dialogRootViewCoord[1] + dialogRootView.height
+                filterDialogRootView.getLocationOnScreen(dialogRootViewCoord)
+                val dialogRootViewBottom = dialogRootViewCoord[1] + filterDialogRootView.height
 
-                dialogRootView.spinnerStatus.dropDownHeight = dialogRootViewBottom - spinnerBottom
+                filterDialogRootView.spinnerStatus.dropDownHeight = dialogRootViewBottom - spinnerBottom
             }
         })
 
-        dialogRootView.btnFilterReset.setOnClickListener {
-            dialogRootView.spinnerProyek.text.clear()
-            dialogRootView.spinnerJenis.text.clear()
-            dialogRootView.spinnerStatus.text.clear()
-
-            selectedIdProyekFilterValue = ""
-            selectedJenisPermintaanFilterValue = ""
-            selectedStatusFilterValue = ""
+        filterDialogRootView.btnFilterReset.setOnClickListener {
+            resetFilter()
         }
 
-        dialogRootView.btnFilterSubmit.setOnClickListener {
-            val selectedProyek = dialogRootView.spinnerProyek.text.toString()
-            val selectedJenis = dialogRootView.spinnerJenis.text.toString()
-            val selectedStatus = dialogRootView.spinnerStatus.text.toString()
+        filterDialogRootView.btnFilterSubmit.setOnClickListener {
+            val selectedProyek = filterDialogRootView.spinnerProyek.text.toString()
+            val selectedJenis = filterDialogRootView.spinnerJenis.text.toString()
+            val selectedStatus = filterDialogRootView.spinnerStatus.text.toString()
             // val selectedJenisData = dialogRootView.spinnerJenisData.text.toString()
 
             selectedIdProyekFilterValue =
@@ -576,7 +566,17 @@ class MainActivity : BaseActivity() {
             alertDialogFilterSP.hide()
         }
 
-        alertDialogFilterSP.setView(dialogRootView)
+        alertDialogFilterSP.setView(filterDialogRootView)
+    }
+
+    private fun resetFilter() {
+        filterDialogRootView.spinnerProyek.text.clear()
+        filterDialogRootView.spinnerJenis.text.clear()
+        filterDialogRootView.spinnerStatus.text.clear()
+
+        selectedIdProyekFilterValue = ""
+        selectedJenisPermintaanFilterValue = ""
+        selectedStatusFilterValue = ""
     }
 
 }

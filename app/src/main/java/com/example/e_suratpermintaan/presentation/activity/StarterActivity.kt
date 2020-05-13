@@ -47,9 +47,9 @@ class StarterActivity : BaseActivity() {
 
         val observablePersyaratan = masterViewModel.getPersyaratanList("all")
 
-        val observableStatusFilter = masterViewModel.getStatusFilterOptionList()
-
         val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
+
+        val observableStatusFilter = masterViewModel.getStatusFilterOptionList(idUser)
 
         val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
 
@@ -67,8 +67,8 @@ class StarterActivity : BaseActivity() {
         )
 
         val concat3 = Observable.concat(
-            observableStatusFilter.onErrorResumeNext { Observable.empty() },
             observableJenisDataFilter.onErrorResumeNext { Observable.empty() },
+            observableStatusFilter.onErrorResumeNext { Observable.empty() },
             observableProyekFilter.onErrorResumeNext { Observable.empty() },
             observableJenisPermintaanFilter.onErrorResumeNext { Observable.empty() })
 
@@ -88,6 +88,7 @@ class StarterActivity : BaseActivity() {
 
         // Master request api - START
         // -----------------------------------------------------------
+        val observableStatusFilter = masterViewModel.getStatusFilterOptionList(idUser)
 
         val observableProyekFilter = masterViewModel.getProyekFilterOptionList(idUser)
 
@@ -95,6 +96,7 @@ class StarterActivity : BaseActivity() {
             masterViewModel.getJenisPermintaanFilterOptionList(idUser)
 
         disposable = Observable.concat(
+            observableStatusFilter.onErrorResumeNext { Observable.empty() },
             observableProyekFilter.onErrorResumeNext { Observable.empty() },
             observableJenisPermintaanFilter.onErrorResumeNext { Observable.empty() })
             .subscribe(this::handleResponse, this::handleError)
@@ -135,14 +137,15 @@ class StarterActivity : BaseActivity() {
 
             // Filter Option List
             // -----------------------------------------------------------
-            is MasterStatusFilterOptionResponse -> {
-                sharedViewModel.setStatusFilterOptionList(response.data)
-                Log.d("MYAPPSTARTER", "STATUS FILTER RESPONSE")
-            }
 
             is MasterJenisDataFilterOptionResponse -> {
                 sharedViewModel.setJenisDataFilterOptionList(response.data)
                 Log.d("MYAPPSTARTER", "JENIS DATA FILTER RESPONSE")
+            }
+
+            is MasterStatusFilterOptionResponse -> {
+                sharedViewModel.setStatusFilterOptionList(response.data)
+                Log.d("MYAPPSTARTER", "STATUS FILTER RESPONSE")
             }
 
             is MasterProyekFilterOptionResponse -> {

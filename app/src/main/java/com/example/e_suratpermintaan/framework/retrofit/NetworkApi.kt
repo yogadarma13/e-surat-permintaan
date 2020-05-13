@@ -50,8 +50,8 @@ interface NetworkApi {
         @Query("id_user") id_user: String,
         @Query("proyek") proyek: String,
         @Query("status_permintaan") status_permintaan: String,
-        @Query("jenis_permintaan") jenis_permintaan: String,
-        @Query("jenis_data") jenis_data: String
+        @Query("jenis_permintaan") jenis_permintaan: String
+        // @Query("jenis_data") jenis_data: String
     ): Observable<MyDataResponse>
 
     @GET("detail")
@@ -118,7 +118,9 @@ interface NetworkApi {
 
     // =================================== MASTER ===============================================
     @GET("status_permintaan")
-    fun getMasterStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse>
+    fun getMasterStatusFilterOptionList(
+        @Query("id_user") id_user: String
+    ): Observable<MasterStatusFilterOptionResponse>
 
     @GET("jenis_data")
     fun getMasterJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse>

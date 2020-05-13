@@ -15,7 +15,7 @@ interface MasterDataSource {
 
     fun getUomList(id: String): Observable<MasterUOMResponse>
 
-    fun getStatusFilterOptionList(): Observable<MasterStatusFilterOptionResponse>
+    fun getStatusFilterOptionList(id_user: String): Observable<MasterStatusFilterOptionResponse>
 
     fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse>
 
