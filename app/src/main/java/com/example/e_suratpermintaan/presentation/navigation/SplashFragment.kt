@@ -17,7 +17,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import com.google.firebase.iid.FirebaseInstanceId
 import org.koin.android.ext.android.inject
 import java.io.IOException
@@ -30,7 +30,7 @@ class SplashFragment : BaseFragment() {
 
     private lateinit var handler: Handler
 
-    private val sharedMasterViewModel: SharedMasterViewModel by inject()
+    private val sharedMasterData: SharedMasterData by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
@@ -82,7 +82,7 @@ class SplashFragment : BaseFragment() {
         } else {
             val starterActivity = (requireActivity() as StarterActivity)
 
-            sharedMasterViewModel.isAllMasterObservableResponseComplete.observe(
+            sharedMasterData.isAllMasterObservableResponseComplete.observe(
                 starterActivity,
                 Observer { isIt ->
 

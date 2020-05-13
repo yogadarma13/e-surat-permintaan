@@ -13,6 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_DELETED
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_EDITED
+import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.external.utils.Directory
 import com.example.e_suratpermintaan.external.utils.DownloadTask
 import com.example.e_suratpermintaan.external.utils.FileName
@@ -44,13 +48,6 @@ import java.io.File
 import java.io.Serializable
 
 class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
-
-    companion object {
-        const val ID_SP_EXTRA_KEY = "id_sp"
-        const val STATUS_SP_DELETED = "SP_DELETED"
-        const val STATUS_SP_EDITED = "SP_EDITED"
-        const val LAUNCH_EDIT_ACTIVITY: Int = 99
-    }
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
@@ -270,7 +267,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         stopRefresh()
     }
 
-    fun handleResponse(response: Any) {
+    private fun handleResponse(response: Any) {
         stopRefresh()
 
         when (response) {
@@ -459,7 +456,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             val catatan = dialogRootView.etCatatanTolak.text.toString()
 
             val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
-            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
+            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
             val status = RequestBody.create(MediaType.parse("text/plain"), "1")
             val ctt = RequestBody.create(MediaType.parse("text/plain"), catatan)
 
@@ -508,8 +505,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
         dialogRootView.btnFixAjukan.setOnClickListener {
             var fileTtd: File? = null
-            var partTtd: MultipartBody.Part?
-            var ttdBitmap: Bitmap? = null
+            val partTtd: MultipartBody.Part?
+            val ttdBitmap: Bitmap?
 
             if (!dialogRootView.signaturePadAjukan.isEmpty) {
                 ttdBitmap = dialogRootView.signaturePadAjukan.transparentSignatureBitmap
@@ -517,12 +514,12 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             }
 
             val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
-            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
+            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
 
             partTtd = if (fileTtd != null) {
                 val fileReqBody =
                     RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
-                MultipartBody.Part.createFormData("file", fileTtd!!.name, fileReqBody)
+                MultipartBody.Part.createFormData("file", fileTtd.name, fileReqBody)
             } else {
                 val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
                 MultipartBody.Part.createFormData("file", "", fileReqBody)
@@ -574,8 +571,8 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
         dialogRootView.btnFixVerif.setOnClickListener {
             var fileTtd: File? = null
-            var partTtd: MultipartBody.Part?
-            var ttdBitmap: Bitmap? = null
+            val partTtd: MultipartBody.Part?
+            val ttdBitmap: Bitmap?
 
             if (!dialogRootView.signaturePadVerif.isEmpty) {
                 ttdBitmap = dialogRootView.signaturePadVerif.transparentSignatureBitmap
@@ -583,14 +580,14 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             }
 
             val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
-            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp)
+            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
             val status = RequestBody.create(MediaType.parse("text/plain"), "0")
             val catatan = RequestBody.create(MediaType.parse("text/plain"), "")
 
             partTtd = if (fileTtd != null) {
                 val fileReqBody =
                     RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
-                MultipartBody.Part.createFormData("file", fileTtd!!.name, fileReqBody)
+                MultipartBody.Part.createFormData("file", fileTtd.name, fileReqBody)
             } else {
                 val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
                 MultipartBody.Part.createFormData("file", "", fileReqBody)

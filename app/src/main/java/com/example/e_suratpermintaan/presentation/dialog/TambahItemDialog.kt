@@ -25,7 +25,7 @@ import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterabl
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.StatusPenugasanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
@@ -38,7 +38,7 @@ import java.util.*
 
 class TambahItemDialog(
     private val activity: EditSuratPermintaanActivity,
-    private val sharedMasterViewModel: SharedMasterViewModel,
+    private val sharedMasterData: SharedMasterData,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
@@ -146,7 +146,7 @@ class TambahItemDialog(
     }
 
     private fun populateAdapterList() {
-        sharedMasterViewModel.getCostCodeList().observe(activity, Observer {
+        sharedMasterData.getCostCodeList().observe(activity, Observer {
             it?.forEach { item ->
                 ccAdapter.itemList.add(item as DataMasterCC)
                 jenisBarangAdapter.itemList.add(item)
@@ -159,7 +159,7 @@ class TambahItemDialog(
             jenisBarangAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterViewModel.getUomList().observe(activity, Observer {
+        sharedMasterData.getUomList().observe(activity, Observer {
             it?.forEach { item ->
                 uomAdapter.itemList.add(item as DataMasterUOM)
             }
@@ -167,14 +167,14 @@ class TambahItemDialog(
             uomAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterViewModel.getStatusPenugasanList().observe(activity, Observer {
+        sharedMasterData.getStatusPenugasanList().observe(activity, Observer {
             it?.forEach { item ->
                 statusPenugasanAdapter.itemList.add(item as DataMasterOption)
             }
             statusPenugasanAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterViewModel.getPersyaratanList().observe(activity, Observer {
+        sharedMasterData.getPersyaratanList().observe(activity, Observer {
             it?.forEach { item ->
                 // harus di uncheck untuk menghilangkan data "checked" untuk
                 // data yang baru saja ditambahkan sebelum ini

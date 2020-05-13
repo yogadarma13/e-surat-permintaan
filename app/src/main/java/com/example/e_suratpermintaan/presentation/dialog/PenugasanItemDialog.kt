@@ -1,7 +1,6 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
-import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -15,13 +14,13 @@ import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_penugasan_item.view.*
 
 class PenugasanItemDialog(
     private val activity: EditSuratPermintaanActivity,
-    private val sharedMasterViewModel: SharedMasterViewModel,
+    private val sharedMasterData: SharedMasterData,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
@@ -56,7 +55,7 @@ class PenugasanItemDialog(
     }
 
     private fun populateAdapters() {
-        sharedMasterViewModel.getPenugasanList().observe(activity, Observer {
+        sharedMasterData.getPenugasanList().observe(activity, Observer {
             it?.forEach { item ->
                 penugasanOptionList.add(item as DataMasterOption)
             }
@@ -99,12 +98,7 @@ class PenugasanItemDialog(
 
         val selectedObj = penugasanOptionList.find { it.value.toString() == itemsDetailSP.kepada }
         val selectedOption = selectedObj?.option
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            dialogRootView.spinnerKepada.setText(selectedOption, false)
-        } else {
-            dialogRootView.spinnerKepada.setText(selectedOption)
-        }
+        dialogRootView.spinnerKepada.setText(selectedOption, false)
         alertDialogEdit.show()
     }
 

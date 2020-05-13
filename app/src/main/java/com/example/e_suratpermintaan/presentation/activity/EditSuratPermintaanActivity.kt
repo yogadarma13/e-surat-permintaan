@@ -15,7 +15,6 @@ import com.example.e_suratpermintaan.external.utils.DownloadTask
 import com.example.e_suratpermintaan.external.utils.FileName
 import com.example.e_suratpermintaan.external.utils.FilePath
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
@@ -27,7 +26,7 @@ import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.E
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.FileLampiranViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
@@ -55,7 +54,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
     private val fileLampiranViewModel: FileLampiranViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
-    private val sharedMasterViewModel: SharedMasterViewModel by inject()
+    private val sharedMasterData: SharedMasterData by inject()
 
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
@@ -101,12 +100,12 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     private fun init() {
         alertDialogTambah =
-            TambahItemDialog(this, sharedMasterViewModel, itemSuratPermintaanViewModel)
+            TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
 
-        alertDialogEdit = EditItemDialog(this, sharedMasterViewModel, itemSuratPermintaanViewModel)
+        alertDialogEdit = EditItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
 
         alertDialogPenugasan =
-            PenugasanItemDialog(this, sharedMasterViewModel, itemSuratPermintaanViewModel)
+            PenugasanItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
 
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
@@ -220,7 +219,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
         }
 
         btnSimpanEdit.setOnClickListener {
-            disposable =  suratPermintaanViewModel.saveEdit(idSp.toString(), idUser.toString())
+            disposable = suratPermintaanViewModel.saveEdit(idSp.toString(), idUser.toString())
                 .subscribe(this::handleResponse, this::handleError)
         }
 
@@ -338,7 +337,6 @@ class EditSuratPermintaanActivity : BaseActivity() {
             is SimpanEditSPResponse -> {
                 toastNotify(response.message)
                 val intent = Intent()
-                intent.putExtra("status", STATUS_SP_EDITED)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }

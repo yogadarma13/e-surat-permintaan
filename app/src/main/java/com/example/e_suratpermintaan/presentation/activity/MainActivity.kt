@@ -21,18 +21,18 @@ import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_DETAIL_ACTIVITY
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_PROFILE_EDITED
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_DELETED
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_EDITED
+import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_DELETED
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
-import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
@@ -45,10 +45,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {
 
-    companion object {
-        const val LAUNCH_DETAIL_ACTIVITY: Int = 111
-    }
-
     private lateinit var filterDialogRootView: View
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private var profileId: String? = null
@@ -59,10 +55,11 @@ class MainActivity : BaseActivity() {
     private var selectedJenisPermintaanFilterValue: String = ""
     private var selectedIdProyekFilterValue: String = ""
 
+    private val profileViewModel: ProfileViewModel by viewModel()
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val notifikasiViewModel: NotifikasiViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
-    private val sharedMasterViewModel: SharedMasterViewModel by inject()
+    private val sharedMasterData: SharedMasterData by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
@@ -102,9 +99,8 @@ class MainActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == LAUNCH_DETAIL_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == LAUNCH_DETAIL_ACTIVITY) {
 
                 when (data?.getStringExtra("status")) {
                     STATUS_SP_DELETED -> {
@@ -112,6 +108,14 @@ class MainActivity : BaseActivity() {
                     }
                     STATUS_SP_EDITED -> {
                         initApiRequest()
+                    }
+                }
+
+            } else if (requestCode == LAUNCH_EDIT_ACTIVITY) {
+
+                when (data?.getStringExtra("status")){
+                    STATUS_PROFILE_EDITED -> {
+                        initDetailProfileRequest()
                     }
                 }
             }
@@ -151,34 +155,35 @@ class MainActivity : BaseActivity() {
         setupListeners()
 
         initApiRequest()
+        initDetailProfileRequest()
 
-        sharedMasterViewModel.getOnNotifikasiReceived().observe(this, Observer {
+        sharedMasterData.getOnNotifikasiReceived().observe(this, Observer {
             // val idSp = it
             initNotifikasiApiRequest()
         })
 
-        sharedMasterViewModel.getStatusFilterOptionList().observe(this, Observer {
+        sharedMasterData.getStatusFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 statusOptionList.add(item as DataMasterOption)
             }
             statusOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterViewModel.getJenisDataFilterOptionList().observe(this, Observer {
+        sharedMasterData.getJenisDataFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 jenisDataOptionList.add(item as DataMasterOption)
             }
             jenisDataOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterViewModel.getProyekFilterOptionList().observe(this, Observer {
+        sharedMasterData.getProyekFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 proyekOptionList.add(item as DataMasterOption)
             }
             proyekOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterViewModel.getJenisPermintaanFilterOptionList().observe(this, Observer {
+        sharedMasterData.getJenisPermintaanFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 jenisPermintaanOptionList.add(item as DataMasterOption)
             }
@@ -213,6 +218,8 @@ class MainActivity : BaseActivity() {
                     // indeks 0 untuk nilai valuenya "semua"
                     resetFilter()
                     selectedStatusFilterValue = statusOptionList[0].value.toString()
+                    val selectedStatusFilterOption = statusOptionList[0].option.toString()
+                    filterDialogRootView.spinnerStatus.setText(selectedStatusFilterOption, false)
                     filterDialogRootView.tilStatus.visibility = View.VISIBLE
                     initApiRequest()
                 }
@@ -230,6 +237,10 @@ class MainActivity : BaseActivity() {
             true
         }
 
+        initNavHeaderProfile()
+    }
+
+    private fun initNavHeaderProfile() {
         val headerView = navigation_view.getHeaderView(0)
         headerView.profileName.text = profilePreference.getProfile()?.name
         headerView.role.text = profilePreference.getProfile()?.namaRole
@@ -255,6 +266,30 @@ class MainActivity : BaseActivity() {
             disposable = notifikasiViewModel.getNotifikasiList(profileId.toString())
                 .subscribe(this::handleResponse, this::handleError)
         }
+    }
+
+    private fun initDetailProfileRequest(){
+        profileViewModel.getProfile(idUser).subscribe(
+            { profileResponse ->
+
+                var dataProfile: DataProfile? = DataProfile()
+
+                profileResponse.data?.forEach { it ->
+                    dataProfile = it
+                }
+
+                if (dataProfile != null) {
+                    profilePreference.saveProfile(dataProfile)
+                } else {
+                    toastNotify(getString(R.string.profile_get_error_message))
+                }
+
+                initNavHeaderProfile()
+            },
+            { error ->
+                toastNotify(error.message.toString())
+            }
+        )
     }
 
     private fun initApiRequest() {
@@ -363,6 +398,7 @@ class MainActivity : BaseActivity() {
             }
 
             initApiRequest()
+            initDetailProfileRequest()
         }
     }
 
@@ -523,11 +559,11 @@ class MainActivity : BaseActivity() {
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 // Ensure you call it only once :
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    filterDialogRootView.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                }
+                filterDialogRootView.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(
+                    this
+                )
                 //} else {
-                    //dialogRootView.spinnerStatus.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                //dialogRootView.spinnerStatus.viewTreeObserver.removeGlobalOnLayoutListener(this)
                 //}
 
                 // Here you can get the size :)
@@ -539,7 +575,8 @@ class MainActivity : BaseActivity() {
                 filterDialogRootView.getLocationOnScreen(dialogRootViewCoord)
                 val dialogRootViewBottom = dialogRootViewCoord[1] + filterDialogRootView.height
 
-                filterDialogRootView.spinnerStatus.dropDownHeight = dialogRootViewBottom - spinnerBottom
+                filterDialogRootView.spinnerStatus.dropDownHeight =
+                    dialogRootViewBottom - spinnerBottom
             }
         })
 

@@ -18,11 +18,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.e_suratpermintaan.core.domain.entities.connection.ConnectionModel
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData
 import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.MobileData
 import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.WifiData
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
 import org.json.JSONArray
@@ -33,7 +34,7 @@ import retrofit2.HttpException
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    private val sharedMasterViewModel: SharedMasterViewModel by inject()
+    private val sharedMasterData: SharedMasterData by inject()
 
     var isConnectedToInternet: Boolean = true
     private lateinit var connectionLiveData: ConnectionLiveData
@@ -49,12 +50,12 @@ abstract class BaseActivity : AppCompatActivity() {
             val idSP: String? = intent.getStringExtra("id_sp")
 
             if (bodyValue.toString().isNotEmpty() && idSP.toString().isNotEmpty()) {
-                sharedMasterViewModel.setOnNotifikasiReceived(idSP.toString())
+                sharedMasterData.setOnNotifikasiReceived(idSP.toString())
 
                 snackNotify(getWindowContentRootView(), bodyValue!!, "Lihat", View.OnClickListener {
                     val activityIntent =
                         Intent(applicationContext, DetailSuratPermintaanActivity::class.java)
-                    activityIntent.putExtra(DetailSuratPermintaanActivity.ID_SP_EXTRA_KEY, idSP)
+                    activityIntent.putExtra(ID_SP_EXTRA_KEY, idSP)
                     startActivity(activityIntent)
                 })
             }

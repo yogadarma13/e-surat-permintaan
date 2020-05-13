@@ -13,9 +13,9 @@ import androidx.core.content.ContextCompat
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.example.e_suratpermintaan.App
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.external.constants.PreferenceConstants
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson

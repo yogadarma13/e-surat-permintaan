@@ -4,13 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.e_suratpermintaan.core.domain.entities.requests.ReadNotifikasi
 import com.e_suratpermintaan.core.domain.entities.responses.DataNotifikasi
 import com.e_suratpermintaan.core.domain.entities.responses.NotifItem
 import com.e_suratpermintaan.core.domain.entities.responses.NotifikasiResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
-import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity.Companion.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.NotifikasiViewHolder
@@ -25,7 +24,7 @@ class NotifikasiActivity : BaseActivity() {
     private val readNotifikasiViewModel: NotifikasiViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
-//    private lateinit var notifikasiAdapter: NotifikasiAdapter
+    //    private lateinit var notifikasiAdapter: NotifikasiAdapter
     private lateinit var notifikasiAdapter: BaseAdapter<NotifikasiViewHolder>
     private var idUser: String? = null
 
@@ -47,7 +46,8 @@ class NotifikasiActivity : BaseActivity() {
 
     private fun init() {
 //        notifikasiAdapter = NotifikasiAdapter()
-        notifikasiAdapter = BaseAdapter(R.layout.notifikasi_unread_list, NotifikasiViewHolder::class.java)
+        notifikasiAdapter =
+            BaseAdapter(R.layout.notifikasi_unread_list, NotifikasiViewHolder::class.java)
         getNotifikasi(idUser)
         setupListeners()
         initRecyclerView()

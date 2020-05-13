@@ -8,7 +8,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import io.reactivex.rxjava3.core.Observable
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,7 +19,7 @@ class StarterActivity : BaseActivity() {
     private lateinit var idUser: String
 
     private val masterViewModel: MasterViewModel by viewModel()
-    private val sharedMasterViewModel: SharedMasterViewModel by inject()
+    private val sharedMasterData: SharedMasterData by inject()
     private val profilePreference: ProfilePreference by inject()
 
     override fun layoutId(): Int = R.layout.activity_starter
@@ -111,53 +111,53 @@ class StarterActivity : BaseActivity() {
             // CRUD ITEM Field List
             // -----------------------------------------------------------
             is MasterCCResponse -> {
-                sharedMasterViewModel.setCostCodeList(response.data)
+                sharedMasterData.setCostCodeList(response.data)
                 Log.d("MYAPPSTARTER", "CC RESPONSE")
             }
 
             is MasterUOMResponse -> {
-                sharedMasterViewModel.setUomList(response.data)
+                sharedMasterData.setUomList(response.data)
                 Log.d("MYAPPSTARTER", "UOM RESPONSE")
             }
 
             is MasterPersyaratanResponse -> {
-                sharedMasterViewModel.setPersyaratanList(response.data)
+                sharedMasterData.setPersyaratanList(response.data)
                 Log.d("MYAPPSTARTER", "PERSYARATAN RESPONSE")
             }
 
             // PENUGASAN
             // -----------------------------------------------------------
             is MasterPenugasanOptionResponse -> {
-                sharedMasterViewModel.setPenugasanList(response.data)
+                sharedMasterData.setPenugasanList(response.data)
             }
 
             is MasterStatusPenugasanOptionResponse -> {
-                sharedMasterViewModel.setStatusPenugasanList(response.data)
+                sharedMasterData.setStatusPenugasanList(response.data)
             }
 
             // Filter Option List
             // -----------------------------------------------------------
 
             is MasterJenisDataFilterOptionResponse -> {
-                sharedMasterViewModel.setJenisDataFilterOptionList(response.data)
+                sharedMasterData.setJenisDataFilterOptionList(response.data)
                 Log.d("MYAPPSTARTER", "JENIS DATA FILTER RESPONSE")
             }
 
             is MasterStatusFilterOptionResponse -> {
-                sharedMasterViewModel.setStatusFilterOptionList(response.data)
+                sharedMasterData.setStatusFilterOptionList(response.data)
                 Log.d("MYAPPSTARTER", "STATUS FILTER RESPONSE")
             }
 
             is MasterProyekFilterOptionResponse -> {
-                sharedMasterViewModel.setProyekFilterOptionList(response.data)
+                sharedMasterData.setProyekFilterOptionList(response.data)
                 Log.d("MYAPPSTARTER", "PROYEK FILTER RESPONSE")
             }
 
             is MasterJenisPermintaanFilterOptionResponse -> {
-                sharedMasterViewModel.setJenisPermintaanFilterOptionList(response.data)
+                sharedMasterData.setJenisPermintaanFilterOptionList(response.data)
                 Log.d("MYAPPSTARTER", "JENIS PERMINTAAN FILTER RESPONSE")
 
-                sharedMasterViewModel.isAllMasterObservableResponseComplete.value = true
+                sharedMasterData.isAllMasterObservableResponseComplete.value = true
             }
         }
     }

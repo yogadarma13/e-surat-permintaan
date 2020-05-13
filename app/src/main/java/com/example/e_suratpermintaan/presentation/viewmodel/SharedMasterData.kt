@@ -1,10 +1,9 @@
 package com.example.e_suratpermintaan.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.e_suratpermintaan.core.domain.entities.responses.*
 
-class SharedMasterViewModel : ViewModel() {
+class SharedMasterData {
 
     val isAllMasterObservableResponseComplete:MutableLiveData<Boolean> = MutableLiveData()
 
