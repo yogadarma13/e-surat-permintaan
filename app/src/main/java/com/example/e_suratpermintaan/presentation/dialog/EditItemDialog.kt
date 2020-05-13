@@ -78,10 +78,12 @@ class EditItemDialog(
         val builder = MaterialDatePicker.Builder.datePicker()
         datePicker = builder.build()
 
+        hideAllRecyclerViews()
         setupRecyclerViews()
         populateAdapters()
         setupDatePickerListener()
         setupTextChangeListener()
+        setupOnFocusChangeListener()
     }
 
     private val waktuPemakaianDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
@@ -455,6 +457,36 @@ class EditItemDialog(
             }
         })
 
+    }
+
+    private fun setupOnFocusChangeListener() {
+        dialogRootView.etKodePekerjaan.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                dialogRootView.rvKodePekerjaan.visibility = View.VISIBLE
+            } else {
+                dialogRootView.rvKodePekerjaan.visibility = View.GONE
+                activity.closeKeyboard(dialogRootView.etKodePekerjaan)
+            }
+        }
+
+        dialogRootView.etJenisBarang.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                dialogRootView.rvJenisBarang.visibility = View.VISIBLE
+            } else {
+                dialogRootView.rvJenisBarang.visibility = View.GONE
+                activity.closeKeyboard(dialogRootView.etJenisBarang)
+            }
+        }
+
+        dialogRootView.etSatuan.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                dialogRootView.rvSatuan.visibility = View.VISIBLE
+            } else {
+                dialogRootView.rvSatuan.visibility = View.GONE
+                activity.closeKeyboard(dialogRootView.etSatuan)
+            }
+        }
+
         dialogRootView.etStatusPenugasan.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
@@ -463,13 +495,6 @@ class EditItemDialog(
                 activity.closeKeyboard(dialogRootView.etStatusPenugasan)
             }
         }
-
-        dialogRootView.etStatusPenugasan.setOnClickListener {
-            if (dialogRootView.rvStatusPenugasan.visibility == View.GONE) {
-                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
-            }
-        }
-
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {

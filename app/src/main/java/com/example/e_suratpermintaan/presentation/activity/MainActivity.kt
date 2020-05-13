@@ -219,18 +219,17 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.semua -> {
                     // indeks 0 untuk nilai valuenya "semua"
-                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
                     selectedStatusFilterValue = statusOptionList[0].value.toString()
                     val selectedStatusFilterOption = statusOptionList[0].option.toString()
+
                     filterDialogRootView.spinnerStatus.setText(selectedStatusFilterOption, false)
                     filterDialogRootView.tilStatus.visibility = View.VISIBLE
+                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
                     initApiRequest()
                 }
                 R.id.menungguVerifikasi -> {
-                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
-                    // selectedStatusFilterValue = ""
                     filterDialogRootView.tilStatus.visibility = View.GONE
-                    filterDialogRootView.spinnerStatus.text.clear()
+                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
                     initApiRequest()
                 }
             }
