@@ -48,6 +48,9 @@ class ViewHolderFactory {
                 FileSuratPermintaanViewHolder::class.java -> FileSuratPermintaanViewHolder(
                     view
                 )
+                NotifikasiViewHolder::class.java -> NotifikasiViewHolder(
+                    view
+                )
                 else -> EmptyViewHolder(view)
             }
         }
