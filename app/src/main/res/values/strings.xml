@@ -22,4 +22,10 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="filter_sp_dialog_title">Filter Surat Permintaan</string>
+    <string name="ajukan_sp_dialog_title">Ajukan Surat Permintaan</string>
+    <string name="confirmation_dialog_title">Konfirmasi</string>
+    <string name="pengajuan_confirmation_dialog_message">Apakah Anda yakin ingin menambah pengajuan?</string>
+    <string name="yes_btn_text">Ya</string>
+    <string name="must_choose_toast_msg">\"Silakan pilih \"</string>
 </resources>

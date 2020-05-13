@@ -481,7 +481,7 @@ class MainActivity : BaseActivity() {
     private fun setupTambahSPDialog() {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Ajukan Surat Permintaan")
+                .setTitle(getString(R.string.ajukan_sp_dialog_title))
 
         alertDialogTambahSP = alertDialogBuilder.create()
 
@@ -498,7 +498,7 @@ class MainActivity : BaseActivity() {
             var toastString = ""
 
             if (selectedProyek.isEmpty() || selectedJenis.isEmpty()) {
-                toastString = "Silakan pilih "
+                toastString = getString(R.string.must_choose_toast_msg)
 
                 toastString = if (selectedProyek.isEmpty() xor selectedJenis.isEmpty()) {
                     if (selectedProyek.isEmpty()) {
@@ -520,9 +520,9 @@ class MainActivity : BaseActivity() {
             val namaJenis = jenisList.find { it.nama == selectedJenis }?.nama.toString()
 
             val confirmAlert = MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Konfirmasi")
-                .setMessage("Apakah Anda yakin ingin menambah pengajuan?")
-                .setPositiveButton("Ya") { _, _ ->
+                .setTitle(getString(R.string.confirmation_dialog_title))
+                .setMessage(getString(R.string.pengajuan_confirmation_dialog_message))
+                .setPositiveButton(getString(R.string.yes_btn_text)) { _, _ ->
 
                     val createSP = CreateSP(idProyek, namaJenis, idUser)
                     disposable = suratPermintaanViewModel.add(createSP)
@@ -545,7 +545,7 @@ class MainActivity : BaseActivity() {
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Filter Surat Permintaan")
+                .setTitle(getString(R.string.filter_sp_dialog_title))
 
         alertDialogFilterSP = alertDialogBuilder.create()
 
