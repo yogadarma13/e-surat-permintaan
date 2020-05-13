@@ -27,7 +27,7 @@ import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.E
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.FileLampiranViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
@@ -55,7 +55,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
     private val fileLampiranViewModel: FileLampiranViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
-    private val sharedViewModel: SharedViewModel by inject()
+    private val sharedMasterViewModel: SharedMasterViewModel by inject()
 
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
@@ -101,12 +101,12 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     private fun init() {
         alertDialogTambah =
-            TambahItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+            TambahItemDialog(this, sharedMasterViewModel, itemSuratPermintaanViewModel)
 
-        alertDialogEdit = EditItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+        alertDialogEdit = EditItemDialog(this, sharedMasterViewModel, itemSuratPermintaanViewModel)
 
         alertDialogPenugasan =
-            PenugasanItemDialog(this, sharedViewModel, itemSuratPermintaanViewModel)
+            PenugasanItemDialog(this, sharedMasterViewModel, itemSuratPermintaanViewModel)
 
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()

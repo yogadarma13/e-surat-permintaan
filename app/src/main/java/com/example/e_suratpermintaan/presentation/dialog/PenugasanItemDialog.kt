@@ -15,13 +15,13 @@ import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_penugasan_item.view.*
 
 class PenugasanItemDialog(
     private val activity: EditSuratPermintaanActivity,
-    private val sharedViewModel: SharedViewModel,
+    private val sharedMasterViewModel: SharedMasterViewModel,
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
 ) {
 
@@ -56,7 +56,7 @@ class PenugasanItemDialog(
     }
 
     private fun populateAdapters() {
-        sharedViewModel.getPenugasanList().observe(activity, Observer {
+        sharedMasterViewModel.getPenugasanList().observe(activity, Observer {
             it?.forEach { item ->
                 penugasanOptionList.add(item as DataMasterOption)
             }

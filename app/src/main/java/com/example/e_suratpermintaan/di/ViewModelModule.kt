@@ -23,7 +23,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     single {
-        SharedViewModel()
+        SharedMasterViewModel()
     }
     viewModel {
         SuratPermintaanViewModel(

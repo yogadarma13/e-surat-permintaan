@@ -31,7 +31,7 @@ import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,7 +62,7 @@ class MainActivity : BaseActivity() {
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val notifikasiViewModel: NotifikasiViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
-    private val sharedViewModel: SharedViewModel by inject()
+    private val sharedMasterViewModel: SharedMasterViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
@@ -152,33 +152,33 @@ class MainActivity : BaseActivity() {
 
         initApiRequest()
 
-        sharedViewModel.getOnNotifikasiReceived().observe(this, Observer {
+        sharedMasterViewModel.getOnNotifikasiReceived().observe(this, Observer {
             // val idSp = it
             initNotifikasiApiRequest()
         })
 
-        sharedViewModel.getStatusFilterOptionList().observe(this, Observer {
+        sharedMasterViewModel.getStatusFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 statusOptionList.add(item as DataMasterOption)
             }
             statusOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedViewModel.getJenisDataFilterOptionList().observe(this, Observer {
+        sharedMasterViewModel.getJenisDataFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 jenisDataOptionList.add(item as DataMasterOption)
             }
             jenisDataOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedViewModel.getProyekFilterOptionList().observe(this, Observer {
+        sharedMasterViewModel.getProyekFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 proyekOptionList.add(item as DataMasterOption)
             }
             proyekOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedViewModel.getJenisPermintaanFilterOptionList().observe(this, Observer {
+        sharedMasterViewModel.getJenisPermintaanFilterOptionList().observe(this, Observer {
             it?.forEach { item ->
                 jenisPermintaanOptionList.add(item as DataMasterOption)
             }

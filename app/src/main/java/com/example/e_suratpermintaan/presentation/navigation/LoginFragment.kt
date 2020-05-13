@@ -22,7 +22,7 @@ import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,7 +36,7 @@ class LoginFragment : BaseFragment() {
     private val profileViewModel: ProfileViewModel by viewModel()
     private val authViewModel: AuthViewModel by viewModel()
 
-    private val sharedViewModel: SharedViewModel by inject()
+    private val sharedMasterViewModel: SharedMasterViewModel by inject()
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
@@ -110,7 +110,7 @@ class LoginFragment : BaseFragment() {
                             profilePreference.saveProfile(dataProfile)
 
                             starterActivity.initUserDataDependentApiRequest()
-                            sharedViewModel.isAllMasterObservableResponseComplete.observe(
+                            sharedMasterViewModel.isAllMasterObservableResponseComplete.observe(
                                 starterActivity,
                                 Observer { isIt ->
 
