@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This DrawerLayout has two children at the root  -->
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!-- This DrawerLayout has two children at the root  -->
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,7 +62,6 @@
                 </LinearLayout>
 
             </com.google.android.material.appbar.MaterialToolbar>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -74,57 +70,67 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nestedScrollView"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/deepCoordinatorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/listCountStatusBar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true">
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    app:elevation="0dp">
 
-                    <TextView
-                        android:id="@+id/text_surat_permintaan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Surat Permintaan"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_show_length_entry"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="@+id/text_surat_permintaan"
-                        app:layout_constraintTop_toBottomOf="@+id/text_surat_permintaan" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:id="@+id/listCountStatusContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:nestedScrollingEnabled="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_show_length_entry"
-                        tools:listitem="@layout/item_surat_permintaan_row"
-                        tools:targetApi="lollipop" />
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_collapseMode="pin">
 
-            </androidx.core.widget.NestedScrollView>
+                            <TextView
+                                android:id="@+id/text_surat_permintaan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="Surat Permintaan"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
+                            <TextView
+                                android:id="@+id/tv_show_length_entry"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="@+id/text_surat_permintaan"
+                                app:layout_constraintTop_toBottomOf="@+id/text_surat_permintaan" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:listitem="@layout/item_surat_permintaan_row"
+                    tools:targetApi="lollipop" />
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

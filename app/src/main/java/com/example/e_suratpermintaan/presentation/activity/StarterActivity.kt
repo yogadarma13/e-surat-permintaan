@@ -157,6 +157,7 @@ class StarterActivity : BaseActivity() {
                 sharedMasterData.setJenisPermintaanFilterOptionList(response.data)
                 Log.d("MYAPPSTARTER", "JENIS PERMINTAAN FILTER RESPONSE")
 
+                if (sharedMasterData.isAllMasterObservableResponseComplete.value == null)
                 sharedMasterData.isAllMasterObservableResponseComplete.value = true
             }
         }

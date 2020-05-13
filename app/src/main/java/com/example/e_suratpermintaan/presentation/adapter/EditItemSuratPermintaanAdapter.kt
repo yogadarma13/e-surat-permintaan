@@ -92,7 +92,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPA.penugasanSPA.text = data.kepada
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
 
-                if (idRole.equals("3")){
+                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
                     viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
@@ -167,7 +167,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPB.penugasanSPB.text = data.kepada
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
 
-                if (idRole.equals("3")){
+                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
                     viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
@@ -240,7 +240,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPS.penugasanSPS.text = data.kepada
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
 
-                if (idRole.equals("3")){
+                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
                     viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.penugasanSPS.visibility = View.VISIBLE

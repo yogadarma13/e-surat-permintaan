@@ -485,6 +485,12 @@ class TambahItemDialog(
                 activity.closeKeyboard(dialogRootView.etStatusPenugasan)
             }
         }
+
+        dialogRootView.etStatusPenugasan.setOnClickListener {
+            if (dialogRootView.rvStatusPenugasan.visibility == View.GONE){
+                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
+            }
+        }
     }
 
     fun show() {

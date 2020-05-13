@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -34,6 +35,7 @@ import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.*
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
@@ -44,7 +46,8 @@ import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity() {
+
+class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private lateinit var filterDialogRootView: View
     private lateinit var drawerToggle: ActionBarDrawerToggle
@@ -366,6 +369,17 @@ class MainActivity : BaseActivity() {
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = spAdapter
+        recyclerView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+
+            if ((recyclerView.layoutManager as LinearLayoutManager)
+                    .findLastCompletelyVisibleItemPosition() == spAdapter.itemList.size - 1
+            ) {
+                turnOffToolbarScrolling()
+            } else {
+                turnOnToolbarScrolling()
+            }
+
+        }
 
         if (spListState != null)
             recyclerView.layoutManager?.onRestoreInstanceState(spListState)
@@ -402,6 +416,18 @@ class MainActivity : BaseActivity() {
             initApiRequest()
             initDetailProfileRequest()
         }
+
+        tv_show_length_entry.viewTreeObserver.addOnGlobalLayoutListener(object :
+            OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                tv_show_length_entry.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                val params = recyclerView.layoutParams
+                params.height = deepCoordinatorLayout.height
+                recyclerView.layoutParams = params
+                recyclerView.requestLayout()
+            }
+        })
     }
 
     private fun startRefresh() {
@@ -628,4 +654,44 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    // https://stackoverflow.com/questions/30779667/android-collapsingtoolbarlayout-and-swiperefreshlayout-get-stuck/33776549
+    // great solution : https://stackoverflow.com/a/30785823
+    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+        swipeRefreshLayout.isEnabled = (verticalOffset == 0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listCountStatusBar.addOnOffsetChangedListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        listCountStatusBar.removeOnOffsetChangedListener(this)
+    }
+
+    private fun turnOffToolbarScrolling() {
+        //turn off scrolling
+        val toolbarLayoutParams =
+            listCountStatusContainer.layoutParams as AppBarLayout.LayoutParams
+        toolbarLayoutParams.scrollFlags = 0
+        listCountStatusContainer.layoutParams = toolbarLayoutParams
+        val appBarLayoutParams =
+            listCountStatusBar.layoutParams as CoordinatorLayout.LayoutParams
+        appBarLayoutParams.behavior = null
+        listCountStatusBar.layoutParams = appBarLayoutParams
+    }
+
+    private fun turnOnToolbarScrolling() {
+        //turn on scrolling
+        val toolbarLayoutParams =
+            listCountStatusContainer.layoutParams as AppBarLayout.LayoutParams
+        toolbarLayoutParams.scrollFlags =
+            AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+        listCountStatusContainer.layoutParams = toolbarLayoutParams
+        val appBarLayoutParams =
+            listCountStatusBar.layoutParams as CoordinatorLayout.LayoutParams
+        appBarLayoutParams.behavior = AppBarLayout.Behavior()
+        listCountStatusBar.layoutParams = appBarLayoutParams
+    }
 }
