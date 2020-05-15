@@ -35,7 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/border_radius_riwayat"
+        android:background="@drawable/border_radius_stroke_grey"
         android:hint="Keterangan File"
         android:paddingHorizontal="8dp"
         android:paddingVertical="16dp"

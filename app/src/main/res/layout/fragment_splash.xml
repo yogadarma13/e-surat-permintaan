@@ -21,7 +21,7 @@
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/logo_white"
+        android:src="@drawable/logo_white_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/img_ripple"
         app:layout_constraintStart_toStartOf="@+id/img_ripple"

@@ -21,7 +21,7 @@
     <ImageView
         android:layout_width="144dp"
         android:layout_height="144dp"
-        android:src="@drawable/logo_white"
+        android:src="@drawable/logo_white_2"
         app:layout_constraintBottom_toBottomOf="@+id/imge_ripple_welcome"
         app:layout_constraintEnd_toEndOf="@+id/imge_ripple_welcome"
         app:layout_constraintStart_toStartOf="@+id/imge_ripple_welcome"
@@ -46,7 +46,7 @@
         android:gravity="center"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
-        android:text="di E-Surat Permintaan\nJagat Baja Prima"
+        android:text="di E-Surat Permintaan\nPT Jagat Konstruksi"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="@+id/textView2"

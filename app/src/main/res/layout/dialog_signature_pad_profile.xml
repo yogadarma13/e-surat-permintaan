@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/border_radius_riwayat"
+        android:background="@drawable/border_radius_stroke_grey"
         app:layout_constraintTop_toTopOf="parent"
         app:penColor="@android:color/black" />
 

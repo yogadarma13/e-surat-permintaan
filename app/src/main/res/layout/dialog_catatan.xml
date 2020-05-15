@@ -11,7 +11,7 @@
         android:id="@+id/etCatatanTolak"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_radius_riwayat"
+        android:background="@drawable/border_radius_stroke_grey"
         android:paddingVertical="16dp"
         android:paddingHorizontal="8dp"
         android:hint="Catatan"
