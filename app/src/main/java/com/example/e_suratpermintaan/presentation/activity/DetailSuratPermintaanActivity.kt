@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
@@ -47,7 +48,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.Serializable
 
-class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickListener {
+class DetailSuratPermintaanActivity : BaseActivity() {
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
@@ -61,6 +62,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     private lateinit var idRole: String
     private lateinit var itemSuratPermintaanAdapter: ItemSuratPermintaanAdapter
     private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder>
+    private lateinit var itemPrint: MenuItem
     private var optionPrint = false
     private var optionEdit = false
     private var optionDelete = false
@@ -110,6 +112,25 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_item_sp, menu)
+
+        itemPrint = menu?.findItem(R.id.menuCetakSP)!!
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menuCetakSP -> {
+                val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
+                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(i)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun init() {
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
@@ -152,9 +173,9 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
     private fun setupActionListeners() {
 
 
-        three_dot.setOnClickListener {
-            showMenuItem(it)
-        }
+//        three_dot.setOnClickListener {
+//            showMenuItem(it)
+//        }
 
         btnHistory.setOnClickListener {
             val intent = Intent(
@@ -241,6 +262,28 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
             showDialogCatatan()
         }
 
+        btnEdit.setOnClickListener {
+            val intent = Intent(this, EditSuratPermintaanActivity::class.java)
+            intent.putExtra(ID_SP_EDIT, idSp)
+            intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
+            startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
+        }
+
+        btnDelete.setOnClickListener {
+            val alertDialog =
+                    AlertDialog.Builder(this)
+                        .setTitle("Konfirmasi Penghapusan")
+                        .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
+                        .setPositiveButton("Ya, Hapus") { _, _ ->
+                            disposable = suratPermintaanViewModel.remove(idSp.toString())
+                                .subscribe(this::handleResponse, this::handleError)
+                        }.setNegativeButton("Tutup") { dialog, _ ->
+                            dialog.dismiss()
+                        }.create()
+
+                alertDialog.show()
+        }
+
         swipeRefreshLayout.setOnRefreshListener {
             if (!isConnectedToInternet) {
                 toastNotify("Please turn on the internet")
@@ -250,6 +293,7 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
             initApiRequest()
         }
+
     }
 
     private fun startRefresh() {
@@ -324,31 +368,45 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
                     if (dataDetailSP?.tombolAjukan == 1) {
                         btnAjukan.visibility = View.VISIBLE
+                    } else {
+                        btnAjukan.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolBatalkan == 1) {
                         btnCancel.visibility = View.VISIBLE
+                    } else {
+                        btnCancel.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolTerima == 1) {
                         btnAccept.visibility = View.VISIBLE
+                    } else {
+                        btnAccept.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolTolak == 1) {
                         btnDecline.visibility = View.VISIBLE
-                    }
-
-                    if (dataDetailSP?.tombolCetak == 1) {
-                        optionPrint = true
+                    } else {
+                        btnDecline.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolEdit == 1) {
-                        optionEdit = true
+                        btnEdit.visibility = View.VISIBLE
+                    } else {
+                        btnEdit.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolHapus == 1) {
-                        optionDelete = true
+                        btnDelete.visibility = View.VISIBLE
+                    } else {
+                        btnDelete.visibility = View.GONE
                     }
+
+                    itemPrint.isVisible = dataDetailSP?.tombolCetak == 1
+//
+//                    if (dataDetailSP?.tombolHapus == 1) {
+//                        optionDelete = true
+//                    }
 
                 }
 
@@ -356,20 +414,32 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
 
             is AjukanSPResponse -> {
                 toastNotify(response.message)
-                btnAjukan.visibility = View.GONE
-                btnCancel.visibility = View.GONE
+                initApiRequest()
+//                btnAjukan.visibility = View.GONE
+//                btnCancel.visibility = View.GONE
+//                btnEdit.visibility = View.GONE
+//                btnAccept.visibility = View.GONE
+//                btnDecline.visibility = View.GONE
             }
 
             is BatalkanSPResponse -> {
                 toastNotify(response.message)
-                btnAjukan.visibility = View.GONE
-                btnCancel.visibility = View.GONE
+                initApiRequest()
+//                btnAjukan.visibility = View.GONE
+//                btnCancel.visibility = View.GONE
+//                btnEdit.visibility = View.GONE
+//                btnAccept.visibility = View.GONE
+//                btnDecline.visibility = View.GONE
             }
 
             is VerifikasiSPResponse -> {
                 toastNotify(response.message)
-                btnAccept.visibility = View.GONE
-                btnDecline.visibility = View.GONE
+                initApiRequest()
+//                btnAjukan.visibility = View.GONE
+//                btnCancel.visibility = View.GONE
+//                btnEdit.visibility = View.GONE
+//                btnAccept.visibility = View.GONE
+//                btnDecline.visibility = View.GONE
             }
 
             is DeleteSPResponse -> {
@@ -390,55 +460,55 @@ class DetailSuratPermintaanActivity : BaseActivity(), PopupMenu.OnMenuItemClickL
         }
     }
 
-    private fun showMenuItem(v: View) {
+//    private fun showMenuItem(v: View) {
+//
+//        PopupMenu(this, v).apply {
+//
+//            setOnMenuItemClickListener(this@DetailSuratPermintaanActivity)
+//            inflate(R.menu.menu_item_sp)
+//            if (optionPrint) menu.findItem(R.id.menuCetakSP).isVisible = true
+//            if (optionEdit) menu.findItem(R.id.menuEditSP).isVisible = true
+//            if (optionDelete) menu.findItem(R.id.menuHapusSP).isVisible = true
+//
+//            show()
+//        }
+//
+//    }
 
-        PopupMenu(this, v).apply {
-
-            setOnMenuItemClickListener(this@DetailSuratPermintaanActivity)
-            inflate(R.menu.menu_item_sp)
-            if (optionPrint) menu.findItem(R.id.menuCetakSP).isVisible = true
-            if (optionEdit) menu.findItem(R.id.menuEditSP).isVisible = true
-            if (optionDelete) menu.findItem(R.id.menuHapusSP).isVisible = true
-
-            show()
-        }
-
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.menuCetakSP -> {
-                val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(i)
-
-                true
-            }
-            R.id.menuEditSP -> {
-                val intent = Intent(this, EditSuratPermintaanActivity::class.java)
-                intent.putExtra(ID_SP_EDIT, idSp)
-                intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
-                startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
-                true
-            }
-            R.id.menuHapusSP -> {
-                val alertDialog =
-                    AlertDialog.Builder(this)
-                        .setTitle("Konfirmasi Penghapusan")
-                        .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
-                        .setPositiveButton("Ya, Hapus") { _, _ ->
-                            disposable = suratPermintaanViewModel.remove(idSp.toString())
-                                .subscribe(this::handleResponse, this::handleError)
-                        }.setNegativeButton("Tutup") { dialog, _ ->
-                            dialog.dismiss()
-                        }.create()
-
-                alertDialog.show()
-                true
-            }
-            else -> false
-        }
-    }
+//    override fun onMenuItemClick(item: MenuItem?): Boolean {
+//        return when (item?.itemId) {
+//            R.id.menuCetakSP -> {
+//                val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
+//                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+//                startActivity(i)
+//
+//                true
+//            }
+//            R.id.menuEditSP -> {
+//                val intent = Intent(this, EditSuratPermintaanActivity::class.java)
+//                intent.putExtra(ID_SP_EDIT, idSp)
+//                intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
+//                startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
+//                true
+//            }
+//            R.id.menuHapusSP -> {
+//                val alertDialog =
+//                    AlertDialog.Builder(this)
+//                        .setTitle("Konfirmasi Penghapusan")
+//                        .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
+//                        .setPositiveButton("Ya, Hapus") { _, _ ->
+//                            disposable = suratPermintaanViewModel.remove(idSp.toString())
+//                                .subscribe(this::handleResponse, this::handleError)
+//                        }.setNegativeButton("Tutup") { dialog, _ ->
+//                            dialog.dismiss()
+//                        }.create()
+//
+//                alertDialog.show()
+//                true
+//            }
+//            else -> false
+//        }
+//    }
 
     private fun showDialogCatatan() {
 

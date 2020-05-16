@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorBackground"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".presentation.activity.DetailSuratPermintaanActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,14 +26,13 @@
                 android:layout_height="?android:attr/actionBarSize">
 
                 <TextView
+                    android:id="@+id/toolbar_detail_sp"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    tools:text="@string/toolbar_detail"
-                    android:id="@+id/toolbar_detail_sp"
-                    android:layout_marginRight="16dp"
                     android:textColor="@android:color/white"
-                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+                    tools:text="@string/toolbar_detail" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -74,21 +73,37 @@
 
                         <TextView
                             android:id="@+id/tv_kode_sp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            app:layout_constraintEnd_toStartOf="@+id/btnDelete"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_judul_detail"
                             tools:text="B-AAA-3" />
 
-                        <ImageView
-                            android:id="@+id/three_dot"
+                        <Button
+                            android:id="@+id/btnDelete"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_menu_detail"
+                            android:backgroundTint="@android:color/white"
+                            android:drawableLeft="@drawable/ic_delete"
+                            android:text="Hapus"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <!--                        <ImageView-->
+                        <!--                            android:id="@+id/three_dot"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:src="@drawable/ic_menu_detail"-->
+                        <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                        <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -253,10 +268,10 @@
                         android:id="@+id/constraint_text_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         android:layout_marginTop="12dp"
                         android:background="@android:color/white"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tvlabelDetailBarang"
@@ -271,8 +286,8 @@
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
                             android:layout_marginTop="8dp"
+                            android:nestedScrollingEnabled="false"
                             app:layout_constraintTop_toBottomOf="@+id/tvlabelDetailBarang"
                             tools:targetApi="lollipop" />
 
@@ -283,9 +298,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="gone"
                         android:background="@android:color/white"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tvLabelDetailLampiran"
@@ -300,9 +315,9 @@
                             android:id="@+id/recyclerViewFile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:nestedScrollingEnabled="false"
                             app:layout_constraintTop_toBottomOf="@+id/tvLabelDetailLampiran"
-                            android:layout_marginTop="8dp"
                             tools:targetApi="lollipop" />
 
 
@@ -314,8 +329,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="16dp"
-                        android:paddingVertical="12dp"
                         android:backgroundTint="@android:color/white"
+                        android:paddingVertical="12dp"
                         android:text="Riwayat"
                         android:textAllCaps="false"
                         android:textColor="@color/colorPrimary" />
@@ -343,60 +358,76 @@
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:paddingHorizontal="32dp"
+            android:layout_marginRight="4dp"
             android:paddingVertical="12dp"
             android:text="Batalkan"
             android:textAllCaps="false"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@id/btnAjukan"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDecline"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btnAjukan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:backgroundTint="@color/colorGreen"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="12dp"
-            android:text="Ajukan"
-            android:textAllCaps="false"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnCancel"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btnDecline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="32dp"
+            android:layout_marginRight="4dp"
             android:paddingVertical="12dp"
-            android:layout_marginRight="8dp"
             android:text="Tolak"
             android:textAllCaps="false"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnEdit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnCancel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorBlue"
+            android:paddingVertical="12dp"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnAjukan"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnDecline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnAjukan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:backgroundTint="@color/colorGreen"
+            android:paddingVertical="12dp"
+            android:text="Ajukan"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnAccept"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnEdit"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btnAccept"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
             android:backgroundTint="@color/colorGreen"
-            android:paddingHorizontal="32dp"
             android:paddingVertical="12dp"
-            android:layout_marginLeft="8dp"
             android:text="Terima"
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnDecline"
+            app:layout_constraintStart_toEndOf="@+id/btnAjukan"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
