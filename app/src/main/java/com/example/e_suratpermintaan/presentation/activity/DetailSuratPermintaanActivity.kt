@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
@@ -30,6 +31,7 @@ import com.example.e_suratpermintaan.presentation.adapter.ItemSuratPermintaanAda
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -49,6 +51,7 @@ import java.io.Serializable
 
 class DetailSuratPermintaanActivity : BaseActivity() {
 
+    private val sharedMasterData: SharedMasterData by inject()
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
@@ -137,18 +140,26 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun initApiRequest() {
-        disposable = masterViewModel.getPersyaratanList("all")
-            .subscribe(this::handleResponse, this::handleError)
+        sharedMasterData.getPersyaratanList().observe(this@DetailSuratPermintaanActivity, Observer {
+            it?.forEach { item ->
+                // harus di uncheck untuk menghilangkan data "checked" untuk
+                // data yang baru saja ditambahkan sebelum ini
+                // Karna sharedViewModel berubah datanya karna diset "checked"
+                item?.isChecked = false
 
-        disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
-            .subscribe(this::handleResponse, this::handleError)
+                persyaratanList[item?.id.toString()] = item?.nama.toString()
+            }
 
-        itemSuratPermintaanAdapter.itemList.clear()
-        itemSuratPermintaanAdapter.notifyDataSetChanged()
+            disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)
+                .subscribe(this::handleResponse, this::handleError)
 
-        fileSuratPermintaanAdapter.itemList.clear()
-        fileSuratPermintaanAdapter.notifyDataSetChanged()
-        startRefresh()
+            itemSuratPermintaanAdapter.itemList.clear()
+            itemSuratPermintaanAdapter.notifyDataSetChanged()
+
+            fileSuratPermintaanAdapter.itemList.clear()
+            fileSuratPermintaanAdapter.notifyDataSetChanged()
+            startRefresh()
+        })
     }
 
     private fun setupItemSuratPermintaanRecyclerView() {
@@ -170,7 +181,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun setupActionListeners() {
-
 
 //        three_dot.setOnClickListener {
 //            showMenuItem(it)
@@ -449,13 +459,13 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 finish()
             }
 
-            is MasterPersyaratanResponse -> {
-                val dataPersyaratan = response.data
-
-                dataPersyaratan?.forEach {
-                    persyaratanList[it?.id.toString()] = it?.nama.toString()
-                }
-            }
+//            is MasterPersyaratanResponse -> {
+//                val dataPersyaratan = response.data
+//
+//                dataPersyaratan?.forEach {
+//                    persyaratanList[it?.id.toString()] = it?.nama.toString()
+//                }
+//            }
         }
     }
 

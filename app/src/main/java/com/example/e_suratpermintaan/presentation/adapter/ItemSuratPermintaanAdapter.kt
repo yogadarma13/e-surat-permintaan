@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,8 +20,9 @@ import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetai
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
+import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 
-class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdapter.ViewHolder>() {
+class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAdapter.ViewHolder>() {
 
     companion object {
         val SPA = 0
@@ -64,7 +66,10 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                        RoleConstants.GA
+                    )
+                ) {
                     viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
@@ -121,7 +126,10 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                        RoleConstants.GA
+                    )
+                ) {
                     viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
@@ -176,20 +184,43 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                        RoleConstants.GA
+                    )
+                ) {
                     viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.penugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.statusPenugasanSPS.visibility = View.VISIBLE
                 }
 
-                var syarat: String? = ""
 
-                data.persyaratan?.forEach {
-                    val dataSyarat = it as PersyaratanItemDetailSP
-                    syarat += "${persyaratanList[dataSyarat.persyaratan]}\n"
+                val parent = viewHolderSPS.persyaratanDetailSPS
+                parent.removeAllViews()
+                persyaratanList.forEach { itemMaster ->
+
+                    val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_simple_checkbox, parent, false)
+
+                    var isChecked = false
+                    data.persyaratan?.forEach { persyaratanItem ->
+                        val dataSyarat = persyaratanItem as PersyaratanItemDetailSP
+                        if (itemMaster.key == dataSyarat.persyaratan) {
+                            isChecked = true
+                        }
+                    }
+
+                    if (isChecked) {
+                        view.checkbox.isChecked = true
+                    }
+
+                    view.checkbox.text = itemMaster.value
+                    view.checkbox.setOnCheckedChangeListener { _, checked ->
+                        view.checkbox.isChecked = !checked
+                    }
+
+                    parent.addView(view)
                 }
-                viewHolderSPS.persyaratanDetailSPS.text = syarat
 
 
                 var dataKeterangan: String? = ""
@@ -285,7 +316,7 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
         val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
         val kodeDetailSPS: TextView = itemView.findViewById(R.id.tvKodeDetailSPS)
         val satuanDetailSPS: TextView = itemView.findViewById(R.id.tvSatuanDetailSPS)
-        val persyaratanDetailSPS: TextView = itemView.findViewById(R.id.tvPersyaratanDetailSPS)
+        val persyaratanDetailSPS: LinearLayout = itemView.findViewById(R.id.tvPersyaratanDetailSPS)
         val waktuDetailSPS: TextView = itemView.findViewById(R.id.tvWaktuDetailSPS)
         val qtyDetailSPS: TextView = itemView.findViewById(R.id.tvQtySPS)
         val keteranganDetailSPS: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPS)

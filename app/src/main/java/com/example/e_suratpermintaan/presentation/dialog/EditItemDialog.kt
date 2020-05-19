@@ -64,7 +64,7 @@ class EditItemDialog(
     private lateinit var selectedItemId: String
 
     init {
-        // https://stackoverflow.com/questions/45731372/disabling-android-o-auto-fill-service-for-an-application/45733114
+        // https://stackoverflow.com/questions/445731372/disabling-android-o-auto-fill-service-for-an-application/45733114
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
         }

@@ -197,7 +197,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPS"
                 tools:text="Waktu\nPelaksanaan" />
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/tvPersyaratanDetailSPS"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPS"
-                tools:text="Persyaratan" />
+                android:orientation="vertical" />
 
             <TextView
                 android:id="@+id/tvKeteranganDetailSPS"
