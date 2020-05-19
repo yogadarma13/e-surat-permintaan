@@ -21,9 +21,9 @@ import androidx.lifecycle.Observer
 import com.e_suratpermintaan.core.domain.entities.connection.ConnectionModel
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
-import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData
-import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.MobileData
-import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.WifiData
+import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveData
+import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveData.Companion.MobileData
+import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveData.Companion.WifiData
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.google.android.material.snackbar.Snackbar

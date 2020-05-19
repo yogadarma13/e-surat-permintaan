@@ -8,9 +8,8 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import com.e_suratpermintaan.core.domain.entities.responses.FileLampiranDetailSP
-import com.e_suratpermintaan.core.domain.entities.responses.FilesDetailHistory
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.animations.SlideAnimation
+import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import kotlinx.android.synthetic.main.item_file_lampiran_row.view.*
 

@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.external.utils
+package com.example.e_suratpermintaan.framework.utils
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -19,8 +19,7 @@ class Signature {
         var fos: FileOutputStream? = null
         try {
             fos = FileOutputStream(fileTtd)
-        }
-        catch(e: FileNotFoundException) {
+        } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPA
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPB
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPS
@@ -57,6 +58,8 @@ class EditItemDialog(
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
 
     private var dialogRootView: View = View.inflate(activity, R.layout.dialog_edit_item, null)
+
+    private lateinit var userRoleId: String
 
     private lateinit var selectedItemId: String
 
@@ -116,6 +119,7 @@ class EditItemDialog(
     fun initDialogViewEdit(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
         dialogRootView.etVolume.setText("0.0")
         setupAlertDialog(dataProfile, dataDetailSP)
+        userRoleId = dataProfile.roleId.toString()
     }
 
     private fun setupDatePickerListener() {
@@ -364,8 +368,11 @@ class EditItemDialog(
         ccAdapter = BaseFilterableAdapter(R.layout.item_simple_row, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etKodePekerjaan.setText((item as DataMasterCC).kodeCostcontrol)
-            dialogRootView.etJenisBarang.setText(item.deskripsi)
-            dialogRootView.etSatuan.setText(item.uom)
+
+            if (userRoleId != RoleConstants.CC) {
+                dialogRootView.etJenisBarang.setText(item.deskripsi)
+                dialogRootView.etSatuan.setText(item.uom)
+            }
 
             // Perlu ini karna pas setText recyclerview suggestion nya si kodePekerjaan, jenisBarang,
             // & satuan muncul. Jadi harusnya di hide.

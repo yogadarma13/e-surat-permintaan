@@ -6,7 +6,7 @@ import android.view.View
 import androidx.navigation.findNavController
 
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
+import com.example.e_suratpermintaan.framework.utils.NavOptionsHelper
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
 

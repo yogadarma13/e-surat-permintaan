@@ -9,7 +9,6 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
@@ -18,10 +17,10 @@ import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_DELETED
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
-import com.example.e_suratpermintaan.external.utils.Directory
-import com.example.e_suratpermintaan.external.utils.DownloadTask
-import com.example.e_suratpermintaan.external.utils.FileName
-import com.example.e_suratpermintaan.external.utils.Signature
+import com.example.e_suratpermintaan.framework.utils.Directory
+import com.example.e_suratpermintaan.framework.utils.DownloadTask
+import com.example.e_suratpermintaan.framework.utils.FileName
+import com.example.e_suratpermintaan.framework.utils.Signature
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.MASTER_PERSYARATAN

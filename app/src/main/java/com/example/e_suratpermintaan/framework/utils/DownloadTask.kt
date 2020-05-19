@@ -1,6 +1,5 @@
-package com.example.e_suratpermintaan.external.utils
+package com.example.e_suratpermintaan.framework.utils
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -15,7 +14,7 @@ import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class DownloadTask(context: Context, fileName: String): AsyncTask<String, Int, String>() {
+class DownloadTask(context: Context, fileName: String) : AsyncTask<String, Int, String>() {
 
     private val context = context
     private lateinit var mWakeLock: PowerManager.WakeLock
@@ -40,7 +39,8 @@ class DownloadTask(context: Context, fileName: String): AsyncTask<String, Int, S
             val fileLength: Int = connection.getContentLength()
             input = connection.getInputStream()
             output = FileOutputStream(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/E-SuratPermintaan/" + fileName
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    .toString() + "/E-SuratPermintaan/" + fileName
             )
             val data = ByteArray(4096)
             var total: Long = 0
@@ -98,7 +98,8 @@ class DownloadTask(context: Context, fileName: String): AsyncTask<String, Int, S
         mWakeLock?.release()
 
         mProgressDialog.dismiss()
-        if (result != null) Toast.makeText(context, "Download error: $result", Toast.LENGTH_LONG).show()
+        if (result != null) Toast.makeText(context, "Download error: $result", Toast.LENGTH_LONG)
+            .show()
         else {
             Toast.makeText(
                 context,

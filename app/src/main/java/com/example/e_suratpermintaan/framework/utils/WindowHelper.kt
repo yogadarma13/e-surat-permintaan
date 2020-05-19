@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.framework.helpers
+package com.example.e_suratpermintaan.framework.utils
 
 import android.app.Activity
 import android.graphics.Color

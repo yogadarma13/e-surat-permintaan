@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.framework.connection
+package com.example.e_suratpermintaan.framework.utils.connection
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.framework.providers
+package com.example.e_suratpermintaan.framework.utils
 
 import com.e_suratpermintaan.core.rx.SchedulerProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

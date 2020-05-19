@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -18,7 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.animations.SlideAnimation
+import com.example.e_suratpermintaan.external.constants.RoleConstants
+import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 
 class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdapter.ViewHolder>() {
 
@@ -64,7 +64,7 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
-                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
@@ -121,7 +121,7 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
-                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
@@ -176,7 +176,7 @@ class ItemSuratPermintaanAdapter(): RecyclerView.Adapter<ItemSuratPermintaanAdap
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
-                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.penugasanSPS.visibility = View.VISIBLE

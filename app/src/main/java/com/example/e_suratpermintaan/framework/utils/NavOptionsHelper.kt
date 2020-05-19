@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.framework.helpers
+package com.example.e_suratpermintaan.framework.utils
 
 import androidx.navigation.NavOptions
 import com.example.e_suratpermintaan.R
@@ -8,7 +8,8 @@ class NavOptionsHelper {
     private var builder: NavOptions.Builder = NavOptions.Builder()
 
     companion object {
-        fun getInstance(): NavOptionsHelper = NavOptionsHelper()
+        fun getInstance(): NavOptionsHelper =
+            NavOptionsHelper()
     }
 
     fun addDefaultAnim(): NavOptionsHelper {
@@ -45,7 +46,7 @@ class NavOptionsHelper {
         return this
     }
 
-    fun clearBackStack(fragmentIdToClear: Int):NavOptionsHelper {
+    fun clearBackStack(fragmentIdToClear: Int): NavOptionsHelper {
         builder = builder
             .setLaunchSingleTop(true)
             .setPopUpTo(fragmentIdToClear, true)

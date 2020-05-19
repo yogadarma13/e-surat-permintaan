@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.animations.SlideAnimation
+import com.example.e_suratpermintaan.external.constants.RoleConstants
+import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 
 class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermintaanAdapter.ViewHolder>() {
 
@@ -92,7 +93,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPA.penugasanSPA.text = data.kepada
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
 
-                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
@@ -167,7 +168,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPB.penugasanSPB.text = data.kepada
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
 
-                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
@@ -240,7 +241,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPS.penugasanSPS.text = data.kepada
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
 
-                if (idRole.equals("3") || idRole.equals("7") || idRole.equals("8")){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.penugasanSPS.visibility = View.VISIBLE

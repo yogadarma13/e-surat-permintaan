@@ -12,8 +12,8 @@ import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.utils.FilePath
-import com.example.e_suratpermintaan.external.utils.Signature
+import com.example.e_suratpermintaan.framework.utils.FilePath
+import com.example.e_suratpermintaan.framework.utils.Signature
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel

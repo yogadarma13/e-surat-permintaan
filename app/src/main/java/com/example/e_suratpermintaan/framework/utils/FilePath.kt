@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.external.utils
+package com.example.e_suratpermintaan.framework.utils
 
 import android.annotation.SuppressLint
 import android.content.ContentUris
@@ -79,10 +79,17 @@ object FilePath {
             ) {
                 var cursor: Cursor? = null
                 try {
-                    cursor = context.contentResolver.query(uri, arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null)
+                    cursor = context.contentResolver.query(
+                        uri,
+                        arrayOf(MediaStore.MediaColumns.DISPLAY_NAME),
+                        null,
+                        null,
+                        null
+                    )
                     cursor!!.moveToNext()
                     val fileName = cursor.getString(0)
-                    val path = Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName
+                    val path = Environment.getExternalStorageDirectory()
+                        .toString() + "/Download/" + fileName
                     if (!TextUtils.isEmpty(path)) {
                         return path
                     }
@@ -93,7 +100,10 @@ object FilePath {
                 if (id.startsWith("raw:")) {
                     return id.replaceFirst("raw:".toRegex(), "")
                 }
-                val contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads"), java.lang.Long.valueOf(id))
+                val contentUri = ContentUris.withAppendedId(
+                    Uri.parse("content://downloads"),
+                    java.lang.Long.valueOf(id)
+                )
 
                 return getDataColumn(
                     context,
@@ -158,15 +168,18 @@ object FilePath {
      * @return The value of the _data column, which is typically a file path.
      * @author Niks
      */
-    private fun getDataColumn(context: Context, uri: Uri?, selection: String?,
-                              selectionArgs: Array<String>?): String? {
+    private fun getDataColumn(
+        context: Context, uri: Uri?, selection: String?,
+        selectionArgs: Array<String>?
+    ): String? {
 
         var cursor: Cursor? = null
         val column = "_data"
         val projection = arrayOf(column)
 
         try {
-            cursor = context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
+            cursor =
+                context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
             if (cursor != null && cursor.moveToFirst()) {
                 val index = cursor.getColumnIndexOrThrow(column)
                 return cursor.getString(index)

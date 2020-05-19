@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.helpers.NavOptionsHelper
-import com.example.e_suratpermintaan.framework.helpers.WindowHelper.transparentStatusBar
+import com.example.e_suratpermintaan.framework.utils.NavOptionsHelper
+import com.example.e_suratpermintaan.framework.utils.WindowHelper.transparentStatusBar
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.MainActivity

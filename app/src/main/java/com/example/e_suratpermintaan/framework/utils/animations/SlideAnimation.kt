@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.framework.animations
+package com.example.e_suratpermintaan.framework.utils.animations
 
 import android.view.View
 import android.view.animation.Animation

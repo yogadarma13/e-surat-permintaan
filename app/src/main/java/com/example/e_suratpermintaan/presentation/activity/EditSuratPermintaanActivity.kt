@@ -10,10 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.external.utils.Directory
-import com.example.e_suratpermintaan.external.utils.DownloadTask
-import com.example.e_suratpermintaan.external.utils.FileName
-import com.example.e_suratpermintaan.external.utils.FilePath
+import com.example.e_suratpermintaan.framework.utils.Directory
+import com.example.e_suratpermintaan.framework.utils.DownloadTask
+import com.example.e_suratpermintaan.framework.utils.FileName
+import com.example.e_suratpermintaan.framework.utils.FilePath
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity

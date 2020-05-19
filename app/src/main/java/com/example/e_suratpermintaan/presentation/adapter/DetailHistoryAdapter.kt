@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItem
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.framework.animations.SlideAnimation
+import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 
 class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolder>() {
 
