@@ -269,9 +269,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:background="@android:color/white"
-                        android:padding="16dp"
-                        android:visibility="gone">
+                        android:background="@android:color/white">
 
                         <TextView
                             android:id="@+id/tvlabelDetailBarang"
@@ -279,6 +277,8 @@
                             android:layout_height="wrap_content"
                             android:text="Detail Barang"
                             android:textStyle="bold"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
