@@ -16,11 +16,11 @@ data class MasterProyekResponse(
 
 data class DataMasterProyek(
 
-	@field:SerializedName("nama")
-	val nama: String? = null,
+	@field:SerializedName("option")
+	val option: String? = null,
 
-	@field:SerializedName("id")
-	val id: String? = null
+	@field:SerializedName("value")
+	val value: String? = null
 ) {
-	override fun toString(): String = nama.toString()
+	override fun toString(): String = option.toString()
 }

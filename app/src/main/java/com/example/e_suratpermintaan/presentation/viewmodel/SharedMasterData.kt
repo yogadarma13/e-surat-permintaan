@@ -16,13 +16,13 @@ class SharedMasterData {
     private val penugasanList: MutableLiveData<List<DataMasterOption?>?> = MutableLiveData()
     private val statusPenugasanList: MutableLiveData<List<DataMasterOption?>?> = MutableLiveData()
 
-    private val statusOptionList: MutableLiveData<List<DataMasterOption?>?> =
+    private var statusOptionList: MutableLiveData<List<DataMasterOption?>?> =
         MutableLiveData()
-    private val jenisDataOptionList: MutableLiveData<List<DataMasterOption?>?> =
+    private var jenisDataOptionList: MutableLiveData<List<DataMasterOption?>?> =
         MutableLiveData()
-    private val proyekOptionList: MutableLiveData<List<DataMasterOption?>?> =
+    private var proyekOptionList: MutableLiveData<List<DataMasterOption?>?>? =
         MutableLiveData()
-    private val jenisPermintaanOptionList: MutableLiveData<List<DataMasterOption?>?> =
+    private var jenisPermintaanOptionList: MutableLiveData<List<DataMasterOption?>?>? =
         MutableLiveData()
 
     private val onNotifikasiReceived: MutableLiveData<String> = MutableLiveData()
@@ -85,22 +85,26 @@ class SharedMasterData {
         jenisDataOptionList.value = list
     }
 
-    fun getProyekFilterOptionList(): MutableLiveData<List<DataMasterOption?>?> =
+    fun getProyekFilterOptionList(): MutableLiveData<List<DataMasterOption?>?>? =
         proyekOptionList
 
     fun setProyekFilterOptionList(list: List<DataMasterOption?>?) {
         // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-        if (proyekOptionList.value != null) return
-        proyekOptionList.value = list
+        if (proyekOptionList?.value != null) {
+            proyekOptionList?.value = null
+        }
+        proyekOptionList?.value = list
     }
 
-    fun getJenisPermintaanFilterOptionList(): MutableLiveData<List<DataMasterOption?>?> =
+    fun getJenisPermintaanFilterOptionList(): MutableLiveData<List<DataMasterOption?>?>? =
         jenisPermintaanOptionList
 
     fun setJenisPermintaanFilterOptionList(list: List<DataMasterOption?>?) {
         // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-        if (jenisPermintaanOptionList.value != null) return
-        jenisPermintaanOptionList.value = list
+        if (jenisPermintaanOptionList?.value != null) {
+            jenisPermintaanOptionList?.value = null
+        }
+        jenisPermintaanOptionList?.value = list
     }
 
     fun getOnNotifikasiReceived(): MutableLiveData<String> = onNotifikasiReceived
