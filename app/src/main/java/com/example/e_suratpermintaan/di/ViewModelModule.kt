@@ -17,6 +17,7 @@ import com.e_suratpermintaan.core.usecases.notifikasi.ReadNotifikasiUseCase
 import com.e_suratpermintaan.core.usecases.profile.EditProfileUseCase
 import com.e_suratpermintaan.core.usecases.profile.GetProfileUseCase
 import com.e_suratpermintaan.core.usecases.suratpermintaan.*
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

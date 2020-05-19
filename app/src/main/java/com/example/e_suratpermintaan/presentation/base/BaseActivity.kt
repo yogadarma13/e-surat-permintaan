@@ -1,10 +1,12 @@
 package com.example.e_suratpermintaan.presentation.base
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +25,7 @@ import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData
 import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.MobileData
 import com.example.e_suratpermintaan.framework.connection.ConnectionLiveData.Companion.WifiData
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
 import org.json.JSONArray
@@ -115,6 +117,13 @@ abstract class BaseActivity : AppCompatActivity() {
         closeKeyboard(this)
         findAndSetEditTextFocusChangeListenerRecursively(window.decorView)
         setupInternetObserver()
+
+        disableAutofill()
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private fun disableAutofill() {
+        window.decorView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
     }
 
     override fun onDestroy() {

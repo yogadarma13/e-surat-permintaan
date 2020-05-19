@@ -8,7 +8,7 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import io.reactivex.rxjava3.core.Observable
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -25,7 +26,7 @@ import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterabl
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.StatusPenugasanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
@@ -58,6 +59,11 @@ class TambahItemDialog(
     private var dialogRootView: View = View.inflate(activity, R.layout.dialog_tambah_item, null)
 
     init {
+        // https://stackoverflow.com/questions/45731372/disabling-android-o-auto-fill-service-for-an-application/45733114
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+        }
+
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         val alertDialogBuilder =
@@ -277,8 +283,6 @@ class TambahItemDialog(
             val target = dialogRootView.formSPB.etTarget.text.toString()
             val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
 
-            val statusPenugasan = dialogRootView.etStatusPenugasan.text.toString()
-
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
                 val data = it as DataMasterPersyaratan
@@ -306,7 +310,7 @@ class TambahItemDialog(
                         waktuPemakaian,
                         waktuPelaksanaan,
                         persyaratanList,
-                        statusPenugasan,
+                        "",
                         dataProfile.id!!
                     )
                     activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)

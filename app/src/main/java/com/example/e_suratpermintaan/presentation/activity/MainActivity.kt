@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -33,6 +34,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.*
 import com.google.android.material.appbar.AppBarLayout
@@ -54,7 +56,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     private var profileId: String? = null
     private lateinit var idUser: String
 
-    private var selectedJenisDataFilterValue: String = ""
     private var selectedStatusFilterValue: String = ""
     private var selectedJenisPermintaanFilterValue: String = ""
     private var selectedIdProyekFilterValue: String = ""
@@ -76,8 +77,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     private val proyekOptionList: ArrayList<DataMasterOption> = arrayListOf()
     private val jenisPermintaanOptionList: ArrayList<DataMasterOption> = arrayListOf()
     private val statusOptionList: ArrayList<DataMasterOption> = arrayListOf()
-    private val jenisDataOptionList: ArrayList<DataMasterOption> =
-        arrayListOf()
 
     private lateinit var jenisAdapter: ArrayAdapter<DataMasterJenis>
     private lateinit var proyekAdapter: ArrayAdapter<DataMasterProyek>
@@ -85,7 +84,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     private lateinit var proyekOptionAdapter: ArrayAdapter<DataMasterOption>
     private lateinit var jenisPermintaanOptionAdapter: ArrayAdapter<DataMasterOption>
     private lateinit var statusOptionAdapter: ArrayAdapter<DataMasterOption>
-    private lateinit var jenisDataOptionAdapter: ArrayAdapter<DataMasterOption>
 
     private var spListState: Parcelable? = null
     private lateinit var spAdapter: BaseAdapter<MyDataViewHolder>
@@ -163,25 +161,23 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private fun populateMaster() {
         sharedMasterData.getOnNotifikasiReceived().observe(this, Observer {
-            // val idSp = it
             initNotifikasiApiRequest()
         })
 
         sharedMasterData.getStatusFilterOptionList().observe(this, Observer {
+            statusOptionList.clear()
             it?.forEach { item ->
                 statusOptionList.add(item as DataMasterOption)
             }
             statusOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getJenisDataFilterOptionList().observe(this, Observer {
-            it?.forEach { item ->
-                jenisDataOptionList.add(item as DataMasterOption)
-            }
-            jenisDataOptionAdapter.notifyDataSetChanged()
-        })
-
         sharedMasterData.getProyekFilterOptionList()?.observe(this, Observer {
+            if (proyekOptionList.size > 0){
+                Log.d("OBSERVER", proyekOptionList.size.toString() + " ZOMBIE OBSERVER " + System.currentTimeMillis().toString())
+                proyekOptionList.clear()
+            }
+
             it?.forEach { item ->
                 proyekOptionList.add(item as DataMasterOption)
             }
@@ -189,6 +185,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         })
 
         sharedMasterData.getJenisPermintaanFilterOptionList()?.observe(this, Observer {
+            jenisPermintaanOptionList.clear()
             it?.forEach { item ->
                 jenisPermintaanOptionList.add(item as DataMasterOption)
             }
@@ -326,7 +323,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                 selectedIdProyekFilterValue,
                 selectedStatusFilterValue,
                 selectedJenisPermintaanFilterValue,
-                selectedJenisDataFilterValue
+                ""
             )
                 .subscribe(this::handleResponse, this::handleError)
 
@@ -357,9 +354,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
         statusOptionAdapter =
             ArrayAdapter(this, R.layout.material_spinner_item, statusOptionList)
-
-        jenisDataOptionAdapter =
-            ArrayAdapter(this, R.layout.material_spinner_item, jenisDataOptionList)
 
         spAdapter = BaseAdapter(
             R.layout.item_surat_permintaan_row, MyDataViewHolder::class.java
@@ -581,7 +575,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         filterDialogRootView.spinnerProyek.setAdapter(proyekOptionAdapter)
         filterDialogRootView.spinnerJenis.setAdapter(jenisPermintaanOptionAdapter)
         filterDialogRootView.spinnerStatus.setAdapter(statusOptionAdapter)
-        filterDialogRootView.spinnerJenisData.setAdapter(jenisDataOptionAdapter)
 
         filterDialogRootView.spinnerStatus.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
@@ -616,7 +609,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             val selectedProyek = filterDialogRootView.spinnerProyek.text.toString()
             val selectedJenis = filterDialogRootView.spinnerJenis.text.toString()
             val selectedStatus = filterDialogRootView.spinnerStatus.text.toString()
-            // val selectedJenisData = dialogRootView.spinnerJenisData.text.toString()
 
             selectedIdProyekFilterValue =
                 proyekOptionList.find { it.option == selectedProyek }?.value ?: ""
@@ -624,7 +616,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                 jenisPermintaanOptionList.find { it.option == selectedJenis }?.value ?: ""
             selectedStatusFilterValue =
                 statusOptionList.find { it.option == selectedStatus }?.value ?: ""
-            // selectedJenisDataFilterValue = jenisDataOptionList.find { it.option == selectedJenisData }?.value ?: ""
 
             initApiRequest()
 

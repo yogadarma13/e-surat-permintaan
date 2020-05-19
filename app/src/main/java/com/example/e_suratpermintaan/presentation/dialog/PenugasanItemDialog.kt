@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
+import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -14,7 +15,7 @@ import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_penugasan_item.view.*
 
@@ -32,6 +33,11 @@ class PenugasanItemDialog(
     private var dialogRootView: View = View.inflate(activity, R.layout.dialog_penugasan_item, null)
 
     init {
+        // https://stackoverflow.com/questions/45731372/disabling-android-o-auto-fill-service-for-an-application/45733114
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+        }
+
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         val alertDialogBuilder =
@@ -78,6 +84,7 @@ class PenugasanItemDialog(
                 itemDetailSP.id.toString(),
                 selectedPenugasanKepadaValue
             )
+
             activity.disposable = itemSuratPermintaanViewModel.setPenugasanItem(penugasanItemSP)
                 .subscribe(this::handleResponse, this::handleError)
 

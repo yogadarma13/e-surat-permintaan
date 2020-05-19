@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -19,13 +20,13 @@ import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
+import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.StatusPenugasanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SharedMasterData
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_edit_item.view.*
@@ -60,12 +61,17 @@ class EditItemDialog(
     private lateinit var selectedItemId: String
 
     init {
-        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
+        // https://stackoverflow.com/questions/45731372/disabling-android-o-auto-fill-service-for-an-application/45733114
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+        }
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
 //            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
 //        }
+
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
@@ -265,64 +271,80 @@ class EditItemDialog(
             dialogRootView.formKeterangan.visibility = View.VISIBLE
         }
 
+        if (dataDetailSP.inputPenugasan == VISIBLE) {
+            dialogRootView.tilStatusPenugasan.visibility = View.VISIBLE
+        }
+
         dialogRootView.btnEdit.setOnClickListener {
-            // Untuk menghilangkan focus yang ada di input field
-            dialogRootView.clearFocus()
-
-            val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
-            val jenisBarang = dialogRootView.etJenisBarang.text.toString()
-            val volume = dialogRootView.etVolume.text.toString()
-            val satuan = dialogRootView.etSatuan.text.toString()
-            val waktuPemakaian = dialogRootView.etWaktuPemakaian.text.toString()
-
-            val kapasitas = dialogRootView.formSPA.etKapasitas.text.toString()
-            val merk = dialogRootView.formSPA.etMerk.text.toString()
-            val fungsi = dialogRootView.formSPB.etFungsi.text.toString()
-            val target = dialogRootView.formSPB.etTarget.text.toString()
-            val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
-
-            val persyaratanList: ArrayList<String> = arrayListOf()
-            persyaratanAdapter.itemList.forEach {
-                val data = it as DataMasterPersyaratan
-                if (data.isChecked) {
-                    persyaratanList.add(data.id.toString())
-                }
-            }
-
-            val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
-
-            val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setTitle("Edit Item")
-                .setMessage("Apakah Anda yakin ingin mengupdate item?")
-                .setPositiveButton("Ya") { _, _ ->
-                    val updateItemSP = UpdateItemSP(
-                        kodeSp,
-                        kodePekerjaan,
-                        jenisBarang,
-                        satuan,
-                        volume,
-                        fungsi,
-                        target,
-                        keterangan,
-                        kapasitas,
-                        merk,
-                        waktuPemakaian,
-                        waktuPelaksanaan,
-                        persyaratanList,
-                        dataProfile.id!!,
-                        selectedItemId
-                    )
-                    activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
-                        .subscribe(this::handleResponse, this::handleError)
-
-                    alertDialogEdit.hide()
-
-                }.create()
-
-            confirmationDialog.show()
+            onSubmited(kodeSp, dataProfile)
         }
 
         alertDialogEdit.setView(dialogRootView)
+    }
+
+    private fun onSubmited(
+        kodeSp: String,
+        dataProfile: DataProfile
+    ) {
+        // Untuk menghilangkan focus yang ada di input field
+        dialogRootView.clearFocus()
+
+        val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
+        val jenisBarang = dialogRootView.etJenisBarang.text.toString()
+        val volume = dialogRootView.etVolume.text.toString()
+        val satuan = dialogRootView.etSatuan.text.toString()
+        val waktuPemakaian = dialogRootView.etWaktuPemakaian.text.toString()
+
+        val kapasitas = dialogRootView.formSPA.etKapasitas.text.toString()
+        val merk = dialogRootView.formSPA.etMerk.text.toString()
+        val fungsi = dialogRootView.formSPB.etFungsi.text.toString()
+        val target = dialogRootView.formSPB.etTarget.text.toString()
+        val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
+
+        val statusPenugasanOption = dialogRootView.etStatusPenugasan.text.toString()
+        val statusPenugasanValue = (statusPenugasanAdapter.itemList.find
+        { (it as DataMasterOption).option == statusPenugasanOption } as DataMasterOption).value.toString()
+
+        val persyaratanList: ArrayList<String> = arrayListOf()
+        persyaratanAdapter.itemList.forEach {
+            val data = it as DataMasterPersyaratan
+            if (data.isChecked) {
+                persyaratanList.add(data.id.toString())
+            }
+        }
+
+        val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
+
+        val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+            .setTitle("Edit Item")
+            .setMessage("Apakah Anda yakin ingin mengupdate item?")
+            .setPositiveButton("Ya") { _, _ ->
+                val updateItemSP = UpdateItemSP(
+                    kodeSp,
+                    kodePekerjaan,
+                    jenisBarang,
+                    satuan,
+                    volume,
+                    fungsi,
+                    target,
+                    keterangan,
+                    kapasitas,
+                    merk,
+                    waktuPemakaian,
+                    waktuPelaksanaan,
+                    persyaratanList,
+                    statusPenugasanValue,
+                    dataProfile.id!!,
+                    selectedItemId
+                )
+                activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
+                    .subscribe(this::handleResponse, this::handleError)
+
+                alertDialogEdit.hide()
+
+            }.create()
+
+        confirmationDialog.show()
     }
 
     private fun preventKeyboardFromPushingViews(dialog: Dialog?) {
@@ -382,6 +404,20 @@ class EditItemDialog(
         dialogRootView.rvSatuan.layoutManager = LinearLayoutManager(activity)
         dialogRootView.rvSatuan.adapter = uomAdapter
         // ------------------------------ INIT UOM END --------------------------------------------
+
+
+        // -------------------------- INIT STATUS PENUGASAN START ---------------------------------
+        statusPenugasanAdapter =
+            BaseAdapter(R.layout.item_simple_row, StatusPenugasanViewHolder::class.java)
+        statusPenugasanAdapter.setOnItemClickListener { item, _ ->
+            dialogRootView.etStatusPenugasan.setText((item as DataMasterOption).option)
+            dialogRootView.rvStatusPenugasan.visibility = View.GONE
+            activity.closeKeyboard(dialogRootView.etStatusPenugasan)
+            dialogRootView.container.performClick()
+        }
+        dialogRootView.rvStatusPenugasan.layoutManager = LinearLayoutManager(activity)
+        dialogRootView.rvStatusPenugasan.adapter = statusPenugasanAdapter
+        // --------------------------- INIT STATUS PENUGASAN END ----------------------------------
 
 
         // ----------------------------- INIT PERSYARATAN START -----------------------------------
@@ -465,6 +501,19 @@ class EditItemDialog(
                 activity.closeKeyboard(dialogRootView.etSatuan)
             }
         }
+
+        dialogRootView.etStatusPenugasan.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
+            } else {
+                dialogRootView.rvStatusPenugasan.visibility = View.GONE
+                activity.closeKeyboard(dialogRootView.etStatusPenugasan)
+            }
+        }
+
+        dialogRootView.etStatusPenugasan.setOnClickListener {
+            dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
+        }
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {
@@ -484,6 +533,8 @@ class EditItemDialog(
         dialogRootView.formSPB.etFungsi.setText(itemsDetailSP.fungsi)
         dialogRootView.formSPB.etTarget.setText(itemsDetailSP.target)
         dialogRootView.formSPS.etWaktuPelaksanaan.setText(itemsDetailSP.waktuPelaksanaan)
+
+        dialogRootView.etStatusPenugasan.setText(itemsDetailSP.penugasan)
 
         alertDialogEdit.show()
         hideAllRecyclerViews()
