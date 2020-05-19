@@ -181,14 +181,14 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             jenisDataOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getProyekFilterOptionList().observe(this, Observer {
+        sharedMasterData.getProyekFilterOptionList()?.observe(this, Observer {
             it?.forEach { item ->
                 proyekOptionList.add(item as DataMasterOption)
             }
             proyekOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getJenisPermintaanFilterOptionList().observe(this, Observer {
+        sharedMasterData.getJenisPermintaanFilterOptionList()?.observe(this, Observer {
             it?.forEach { item ->
                 jenisPermintaanOptionList.add(item as DataMasterOption)
             }
@@ -542,7 +542,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                 return@setOnClickListener
             }
 
-            val idProyek = proyekList.find { it.nama == selectedProyek }?.id.toString()
+            val idProyek = proyekList.find { it.option == selectedProyek }?.value.toString()
             val namaJenis = jenisList.find { it.nama == selectedJenis }?.nama.toString()
 
             val confirmAlert = MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
