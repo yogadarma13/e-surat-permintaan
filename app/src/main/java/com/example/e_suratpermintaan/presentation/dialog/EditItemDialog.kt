@@ -265,10 +265,6 @@ class EditItemDialog(
             dialogRootView.formKeterangan.visibility = View.VISIBLE
         }
 
-        if (dataDetailSP.inputPenugasan == VISIBLE) {
-            dialogRootView.tilStatusPenugasan.visibility = View.VISIBLE
-        }
-
         dialogRootView.btnEdit.setOnClickListener {
             // Untuk menghilangkan focus yang ada di input field
             dialogRootView.clearFocus()
@@ -284,8 +280,6 @@ class EditItemDialog(
             val fungsi = dialogRootView.formSPB.etFungsi.text.toString()
             val target = dialogRootView.formSPB.etTarget.text.toString()
             val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
-
-            val statusPenugasan = dialogRootView.etStatusPenugasan.text.toString()
 
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
@@ -315,7 +309,6 @@ class EditItemDialog(
                         waktuPemakaian,
                         waktuPelaksanaan,
                         persyaratanList,
-                        statusPenugasan,
                         dataProfile.id!!,
                         selectedItemId
                     )
@@ -389,20 +382,6 @@ class EditItemDialog(
         dialogRootView.rvSatuan.layoutManager = LinearLayoutManager(activity)
         dialogRootView.rvSatuan.adapter = uomAdapter
         // ------------------------------ INIT UOM END --------------------------------------------
-
-
-        // ------------------------------ INIT STATUS PENUGASAN START ------------------------------
-        statusPenugasanAdapter =
-            BaseAdapter(R.layout.item_simple_row, StatusPenugasanViewHolder::class.java)
-        statusPenugasanAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etStatusPenugasan.setText((item as DataMasterOption).option)
-            dialogRootView.rvStatusPenugasan.visibility = View.GONE
-            activity.closeKeyboard(dialogRootView.etStatusPenugasan)
-            dialogRootView.container.performClick()
-        }
-        dialogRootView.rvStatusPenugasan.layoutManager = LinearLayoutManager(activity)
-        dialogRootView.rvStatusPenugasan.adapter = statusPenugasanAdapter
-        // ------------------------------ INIT STATUS PENUGASAN END --------------------------------
 
 
         // ----------------------------- INIT PERSYARATAN START -----------------------------------
@@ -486,21 +465,6 @@ class EditItemDialog(
                 activity.closeKeyboard(dialogRootView.etSatuan)
             }
         }
-
-        dialogRootView.etStatusPenugasan.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
-            } else {
-                dialogRootView.rvStatusPenugasan.visibility = View.GONE
-                activity.closeKeyboard(dialogRootView.etStatusPenugasan)
-            }
-        }
-
-        dialogRootView.etStatusPenugasan.setOnClickListener {
-            if (dialogRootView.rvStatusPenugasan.visibility == View.GONE){
-                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
-            }
-        }
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {
@@ -512,10 +476,11 @@ class EditItemDialog(
         dialogRootView.etJenisBarang.setText(itemsDetailSP.idBarang)
         dialogRootView.etVolume.setText(itemsDetailSP.qty)
         dialogRootView.etSatuan.setText(itemsDetailSP.idSatuan)
-        dialogRootView.etWaktuPemakaian.setText(itemsDetailSP.waktuPemakaian)
 
         dialogRootView.formSPA.etKapasitas.setText(itemsDetailSP.kapasitas)
         dialogRootView.formSPA.etMerk.setText(itemsDetailSP.merk)
+        dialogRootView.formSPA.etWaktuPemakaian.setText(itemsDetailSP.waktuPemakaian)
+
         dialogRootView.formSPB.etFungsi.setText(itemsDetailSP.fungsi)
         dialogRootView.formSPB.etTarget.setText(itemsDetailSP.target)
         dialogRootView.formSPS.etWaktuPelaksanaan.setText(itemsDetailSP.waktuPelaksanaan)

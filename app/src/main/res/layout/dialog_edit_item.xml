@@ -150,22 +150,22 @@
                     app:layout_constraintTop_toBottomOf="@id/formContainer"
                     layout="@layout/dialog_edit_item_form_keterangan" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tilStatusPenugasan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@id/formKeterangan"
-                    app:layout_constraintStart_toStartOf="@id/formKeterangan"
-                    app:layout_constraintTop_toBottomOf="@id/formKeterangan">
-                    <!-- Google themselves instruct us to use the deprecated editable attribute -->
-                    <EditText
-                        android:id="@+id/etStatusPenugasan"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Status Penugasan" />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/tilStatusPenugasan"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/formKeterangan"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/formKeterangan"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/formKeterangan">-->
+<!--                    &lt;!&ndash; Google themselves instruct us to use the deprecated editable attribute &ndash;&gt;-->
+<!--                    <EditText-->
+<!--                        android:id="@+id/etStatusPenugasan"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint="Status Penugasan" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvKodePekerjaan"

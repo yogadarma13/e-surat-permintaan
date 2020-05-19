@@ -43,9 +43,6 @@ data class UpdateItemSP(
     @field:SerializedName("persyaratan")
     val persyaratan: ArrayList<String>,
 
-    @field:SerializedName("penugasan")
-    val statusPenugasan: String,
-
     @field:SerializedName("id_user")
     val id_user: String,
 
