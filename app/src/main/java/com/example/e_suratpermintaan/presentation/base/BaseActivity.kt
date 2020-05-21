@@ -25,9 +25,10 @@ import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveDa
 import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveData.Companion.MobileData
 import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveData.Companion.WifiData
 import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaanActivity
-import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
+import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
+import org.greenrobot.eventbus.EventBus
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

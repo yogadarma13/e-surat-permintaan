@@ -9,12 +9,17 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.FILE_ITEM_DELETED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.FILE_ITEM_EDITED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_DELETED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_EDITED
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.Directory
 import com.example.e_suratpermintaan.framework.utils.DownloadTask
 import com.example.e_suratpermintaan.framework.utils.FileName
 import com.example.e_suratpermintaan.framework.utils.FilePath
-import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
@@ -22,11 +27,11 @@ import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.PenugasanItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
+import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditFileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.FileLampiranViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
-import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
@@ -34,6 +39,7 @@ import kotlinx.android.synthetic.main.dialog_tambah_file.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -257,36 +263,43 @@ class EditSuratPermintaanActivity : BaseActivity() {
                 toastNotify(response.message)
                 initApiRequest()
             }
+
             is CreateItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }
 
             is EditItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }
 
             is DeleteItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_DELETED))
             }
 
             is CreateFileLampiranResponse -> {
                 toastNotify(response.message)
                 filePath = null
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(FILE_ITEM_EDITED))
             }
 
             is EditFileLampiranResponse -> {
                 toastNotify(response.message)
                 filePath = null
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(FILE_ITEM_EDITED))
             }
 
             is DeleteFileLampiranResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(FILE_ITEM_DELETED))
             }
 
             is DetailSPResponse -> {
@@ -336,8 +349,6 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
             is SimpanEditSPResponse -> {
                 toastNotify(response.message)
-                val intent = Intent()
-                setResult(Activity.RESULT_OK, intent)
                 finish()
             }
 

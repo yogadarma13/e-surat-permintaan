@@ -1,4 +1,4 @@
-package com.example.e_suratpermintaan.presentation.shareddata
+package com.example.e_suratpermintaan.presentation.sharedlivedata
 
 import androidx.lifecycle.MutableLiveData
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterCC
@@ -30,40 +30,30 @@ class SharedMasterData {
     fun getCostCodeList(): MutableLiveData<List<DataMasterCC?>?> = costCodeList
 
     fun setCostCodeList(list: List<DataMasterCC?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (costCodeList.value != null) return
         costCodeList.value = list
     }
 
     fun getUomList(): MutableLiveData<List<DataMasterUOM?>?> = uomList
 
     fun setUomList(list: List<DataMasterUOM?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (uomList.value != null) return
         uomList.value = list
     }
 
     fun getPersyaratanList(): MutableLiveData<List<DataMasterPersyaratan?>?> = persyaratanList
 
     fun setPersyaratanList(list: List<DataMasterPersyaratan?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (persyaratanList.value != null) return
         persyaratanList.value = list
     }
 
     fun getPenugasanList(): MutableLiveData<List<DataMasterOption?>?> = penugasanList
 
     fun setPenugasanList(list: List<DataMasterOption?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (penugasanList.value != null) return
         penugasanList.value = list
     }
 
     fun getStatusPenugasanList(): MutableLiveData<List<DataMasterOption?>?> = statusPenugasanList
 
     fun setStatusPenugasanList(list: List<DataMasterOption?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (statusPenugasanList.value != null) return
         statusPenugasanList.value = list
     }
 
@@ -71,8 +61,6 @@ class SharedMasterData {
         statusOptionList
 
     fun setStatusFilterOptionList(list: List<DataMasterOption?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (statusOptionList.value != null) return
         statusOptionList.value = list
     }
 
@@ -80,8 +68,6 @@ class SharedMasterData {
         jenisDataOptionList
 
     fun setJenisDataFilterOptionList(list: List<DataMasterOption?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (jenisDataOptionList.value != null) return
         jenisDataOptionList.value = list
     }
 
@@ -89,10 +75,6 @@ class SharedMasterData {
         proyekOptionList
 
     fun setProyekFilterOptionList(list: List<DataMasterOption?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (proyekOptionList?.value != null) {
-//            proyekOptionList?.value = null
-//        }
         proyekOptionList?.value = list
     }
 
@@ -100,18 +82,12 @@ class SharedMasterData {
         jenisPermintaanOptionList
 
     fun setJenisPermintaanFilterOptionList(list: List<DataMasterOption?>?) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (jenisPermintaanOptionList?.value != null) {
-//            jenisPermintaanOptionList?.value = null
-//        }
         jenisPermintaanOptionList?.value = list
     }
 
     fun getOnNotifikasiReceived(): MutableLiveData<String> = onNotifikasiReceived
 
     fun setOnNotifikasiReceived(idSp: String) {
-        // ini untuk menghindari data dipopulate lebih dari sekali (duplikasi)
-//        if (onNotifikasiReceived.value != null) return
         onNotifikasiReceived.value = idSp
     }
 

@@ -22,21 +22,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_DETAIL_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_PROFILE_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_PROFILE_EDITED
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_DELETED
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
-import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
+import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
-import com.example.e_suratpermintaan.presentation.viewmodel.*
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,9 +47,11 @@ import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerJenis
 import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerProyek
 import kotlinx.android.synthetic.main.dialog_filter_sp.view.*
 import kotlinx.android.synthetic.main.nav_header.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
@@ -98,20 +102,28 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onSuratPermintaanDataChange(suratPermintaanDataChange: SuratPermintaanDataChange) {
+        if (suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_DELETED) {
+            initApiRequest()
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == LAUNCH_DETAIL_ACTIVITY) {
-                when (data?.getStringExtra("status")) {
-                    STATUS_SP_DELETED -> {
-                        initApiRequest()
-                    }
-                    STATUS_SP_EDITED -> {
-                        initApiRequest()
-                    }
-                }
-            } else if (requestCode == LAUNCH_EDIT_ACTIVITY) {
+            if (requestCode == LAUNCH_EDIT_ACTIVITY) {
                 when (data?.getStringExtra("status")) {
                     STATUS_PROFILE_EDITED -> {
                         initDetailProfileRequest()
@@ -173,8 +185,12 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         })
 
         sharedMasterData.getProyekFilterOptionList()?.observe(this, Observer {
-            if (proyekOptionList.size > 0){
-                Log.d("OBSERVER", proyekOptionList.size.toString() + " ZOMBIE OBSERVER " + System.currentTimeMillis().toString())
+            if (proyekOptionList.size > 0) {
+                Log.d(
+                    "OBSERVER",
+                    proyekOptionList.size.toString() + " ZOMBIE OBSERVER " + System.currentTimeMillis()
+                        .toString()
+                )
                 proyekOptionList.clear()
             }
 

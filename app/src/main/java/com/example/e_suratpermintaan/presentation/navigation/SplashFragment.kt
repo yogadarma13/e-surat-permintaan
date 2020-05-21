@@ -17,7 +17,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
-import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
+import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.google.firebase.iid.FirebaseInstanceId
 import org.koin.android.ext.android.inject
 import java.io.IOException

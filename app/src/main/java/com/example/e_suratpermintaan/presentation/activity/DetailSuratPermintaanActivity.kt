@@ -1,6 +1,5 @@
 package com.example.e_suratpermintaan.presentation.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -13,16 +12,20 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.FILE_ITEM_DELETED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.FILE_ITEM_EDITED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_DELETED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_EDITED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_DELETED
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_DELETED
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_SP_EDITED
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
+import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.Directory
 import com.example.e_suratpermintaan.framework.utils.DownloadTask
 import com.example.e_suratpermintaan.framework.utils.FileName
 import com.example.e_suratpermintaan.framework.utils.Signature
-import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.MASTER_PERSYARATAN
 import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.ID_SP_HISTORY
@@ -31,7 +34,7 @@ import com.example.e_suratpermintaan.presentation.adapter.ItemSuratPermintaanAda
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import com.example.e_suratpermintaan.presentation.shareddata.SharedMasterData
+import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -44,6 +47,9 @@ import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -100,20 +106,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == LAUNCH_EDIT_ACTIVITY) {
-            if (resultCode == Activity.RESULT_OK) {
-                initApiRequest()
-
-                val intent = Intent()
-                intent.putExtra("status", STATUS_SP_EDITED)
-                setResult(Activity.RESULT_OK, intent)
-            }
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_item_sp, menu)
 
@@ -123,7 +115,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.menuCetakSP -> {
                 val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
                 val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -280,17 +272,17 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         btnDelete.setOnClickListener {
             val alertDialog =
-                    AlertDialog.Builder(this)
-                        .setTitle("Konfirmasi Penghapusan")
-                        .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
-                        .setPositiveButton("Ya, Hapus") { _, _ ->
-                            disposable = suratPermintaanViewModel.remove(idSp.toString())
-                                .subscribe(this::handleResponse, this::handleError)
-                        }.setNegativeButton("Tutup") { dialog, _ ->
-                            dialog.dismiss()
-                        }.create()
+                AlertDialog.Builder(this)
+                    .setTitle("Konfirmasi Penghapusan")
+                    .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
+                    .setPositiveButton("Ya, Hapus") { _, _ ->
+                        disposable = suratPermintaanViewModel.remove(idSp.toString())
+                            .subscribe(this::handleResponse, this::handleError)
+                    }.setNegativeButton("Tutup") { dialog, _ ->
+                        dialog.dismiss()
+                    }.create()
 
-                alertDialog.show()
+            alertDialog.show()
         }
 
         swipeRefreshLayout.setOnRefreshListener {
@@ -308,6 +300,27 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     private fun startRefresh() {
         if (!isConnectedToInternet) return
         swipeRefreshLayout.isRefreshing = true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onSuratPermintaanDataChange(suratPermintaanDataChange: SuratPermintaanDataChange) {
+        if (suratPermintaanDataChange.changeType == ITEM_EDITED ||
+            suratPermintaanDataChange.changeType == ITEM_DELETED ||
+            suratPermintaanDataChange.changeType == FILE_ITEM_EDITED ||
+            suratPermintaanDataChange.changeType == FILE_ITEM_DELETED
+        ) {
+            initApiRequest()
+        }
     }
 
     private fun stopRefresh() {
@@ -453,9 +466,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
             is DeleteSPResponse -> {
                 toastNotify(response.message)
-                val intent = Intent()
-                intent.putExtra("status", STATUS_SP_DELETED)
-                setResult(Activity.RESULT_OK, intent)
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_DELETED))
                 finish()
             }
 
