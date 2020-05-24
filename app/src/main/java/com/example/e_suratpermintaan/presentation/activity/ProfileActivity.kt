@@ -5,7 +5,10 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
@@ -22,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.dialog_choose_signature_profile.view.*
 import kotlinx.android.synthetic.main.dialog_signature_pad_profile.view.*
+import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -51,11 +55,6 @@ class ProfileActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (toolbar_profile != null && toolbar != null) {
-            toolbar_profile.text = getString(R.string.toolbar_profile)
-            setSupportActionBar(toolbar)
-        }
-
         id = profilePreference.getProfile()?.id
         progressDialog = ProgressDialog(this)
 
@@ -64,8 +63,30 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun init() {
+        setupTollbar()
         setupListeners()
         initApiRequest()
+    }
+
+    private fun setupTollbar() {
+        if (toolbar_profile != null && toolbar != null) {
+            toolbar_profile.text = getString(R.string.toolbar_profile)
+            setSupportActionBar(toolbar)
+            if (supportActionBar != null) {
+                supportActionBar!!.setDisplayShowTitleEnabled(false)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                supportActionBar!!.setDisplayShowHomeEnabled(true)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initApiRequest() {
@@ -140,6 +161,8 @@ class ProfileActivity : BaseActivity() {
             is ProfileResponse -> {
                 var dataProfile: DataProfile? = DataProfile()
 
+
+
                 response.data?.forEach {
                     dataProfile = it
                 }
@@ -151,14 +174,17 @@ class ProfileActivity : BaseActivity() {
                 etDeskripsiProfile.setText(dataProfile?.desc)
                 tvUsernameProfile.text = dataProfile?.username
 
-                var jenis = ""
 
+                linearLayoutJenisProfile.removeAllViews()
                 dataProfile?.jenis?.forEach {
-                    jenis += "${it?.jenis}\n"
+                    val view = LayoutInflater.from(this).inflate(R.layout.item_simple_checkbox, linearLayoutJenisProfile, false)
+                    view.checkbox.isChecked = true
+                    view.checkbox.text = it?.jenis
+                    view.checkbox.setOnCheckedChangeListener { _, checked ->
+                        view.checkbox.isChecked = !checked
+                    }
+                    linearLayoutJenisProfile.addView(view)
                 }
-
-                tvJenisProfile.text = jenis
-
             }
 
             is EditProfileResponse -> {

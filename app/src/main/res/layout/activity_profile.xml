@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorBackground"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".presentation.activity.ProfileActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,17 +14,16 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize" >
+            android:layout_height="?android:attr/actionBarSize">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginRight="16dp"
-                tools:text="@string/toolbar_profile"
                 android:id="@+id/toolbar_profile"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textColor="@android:color/white"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+                tools:text="@string/toolbar_profile" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -57,7 +56,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/imgFotoProfile" />
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,41 +64,41 @@
                 android:padding="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/imgFotoProfile">
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tvLabelFile"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="File"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tvLabelFile"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="File"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--                <Button-->
-<!--                    android:id="@+id/btnFileProfile"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:paddingHorizontal="16dp"-->
-<!--                    android:backgroundTint="@color/colorGreen"-->
-<!--                    android:text="Pilih file"-->
-<!--                    android:textAllCaps="false"-->
-<!--                    android:paddingVertical="10dp"-->
-<!--                    android:background="@drawable/border_transparant"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/tvLabelFile" />-->
+                <!--                <Button-->
+                <!--                    android:id="@+id/btnFileProfile"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="8dp"-->
+                <!--                    android:paddingHorizontal="16dp"-->
+                <!--                    android:backgroundTint="@color/colorGreen"-->
+                <!--                    android:text="Pilih file"-->
+                <!--                    android:textAllCaps="false"-->
+                <!--                    android:paddingVertical="10dp"-->
+                <!--                    android:background="@drawable/border_transparant"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/tvLabelFile" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tvTextNameFile"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="8dp"-->
-<!--                    android:textStyle="italic"-->
-<!--                    android:textColor="@android:color/darker_gray"-->
-<!--                    android:text="Tidak ada file yang dipilih"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/btnFileProfile"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toEndOf="@+id/btnFileProfile"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/btnFileProfile" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tvTextNameFile"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginLeft="8dp"-->
+                <!--                    android:textStyle="italic"-->
+                <!--                    android:textColor="@android:color/darker_gray"-->
+                <!--                    android:text="Tidak ada file yang dipilih"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/btnFileProfile"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/btnFileProfile"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/btnFileProfile" />-->
 
                 <TextView
                     android:id="@+id/tvLabelNama"
@@ -109,16 +107,16 @@
                     android:text="Nama"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/etNamaProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/border_transparant"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="10dp"
-                    android:background="@drawable/border_transparant"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelNama" />
 
@@ -136,10 +134,10 @@
                     android:id="@+id/etEmailProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_transparant"
-                    android:paddingVertical="10dp"
-                    android:paddingHorizontal="16dp"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/border_transparant"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelEmail" />
 
@@ -154,12 +152,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/etEmailProfile" />
 
                 <TextView
-                    android:background="@drawable/border_radius_stroke_grey"
-                    android:padding="16dp"
                     android:id="@+id/tvUsernameProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/border_radius_stroke_grey"
+                    android:padding="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelUsername" />
 
@@ -174,12 +172,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvUsernameProfile" />
 
                 <TextView
-                    android:background="@drawable/border_radius_stroke_grey"
                     android:id="@+id/tvRoleProfile"
-                    android:padding="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/border_radius_stroke_grey"
+                    android:padding="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelRole" />
 
@@ -187,56 +185,56 @@
                     android:id="@+id/tvLabelJenis"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:text="Jenis Permintaan"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvRoleProfile" />
 
-                <TextView
-                    android:id="@+id/tvJenisProfile"
+                <LinearLayout
+                    android:id="@+id/linearLayoutJenisProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_marginTop="8dp"
-                    tools:text="SPA"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvLabelJenis" />
+                    app:layout_constraintTop_toBottomOf="@id/tvLabelJenis"/>
 
                 <TextView
                     android:id="@+id/tvLabelDeskripsi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:text="Deskripsi"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvJenisProfile" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutJenisProfile" />
 
                 <EditText
                     android:id="@+id/etDeskripsiProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/border_transparant"
                     android:padding="16dp"
-                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelDeskripsi" />
 
                 <View
+                    android:id="@+id/lineSeparatorProfile"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/separator_color"
-                    app:layout_constraintTop_toBottomOf="@id/etDeskripsiProfile"
                     android:layout_marginTop="16dp"
-                    android:id="@+id/lineSeparatorProfile"/>
+                    android:background="@color/separator_color"
+                    app:layout_constraintTop_toBottomOf="@id/etDeskripsiProfile" />
 
                 <TextView
                     android:id="@+id/tvLabelPassLama"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginTop="16dp"
                     android:text="Password Lama"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lineSeparatorProfile" />
 
@@ -244,10 +242,10 @@
                     android:id="@+id/etPassLamaProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Isi password lama"
-                    android:paddingHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/border_radius_stroke_grey"
+                    android:hint="Isi password lama"
+                    android:paddingHorizontal="16dp"
                     android:paddingVertical="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelPassLama" />
@@ -257,8 +255,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textStyle="bold"
                     android:text="Password Baru"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etPassLamaProfile" />
 
@@ -266,11 +264,11 @@
                     android:id="@+id/etPassBaruProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/border_radius_stroke_grey"
+                    android:hint="Isi password baru"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="10dp"
-                    android:hint="Isi password baru"
-                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelPassBaru" />
 
@@ -279,8 +277,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:textStyle="bold"
                     android:text="Konfirmasi Password Baru"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etPassBaruProfile" />
 
@@ -290,9 +288,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/border_radius_stroke_grey"
-                    android:paddingVertical="10dp"
-                    android:paddingHorizontal="16dp"
                     android:hint="Ketik ulang password baru"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelConfirmPassBaru" />
 
@@ -301,49 +299,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:textStyle="bold"
                     android:text="Tanda Tangan"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etConfirmPassBaruProfile" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintTtd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:id="@+id/constraintTtd"
                     android:background="@drawable/border_transparant"
                     app:layout_constraintTop_toBottomOf="@id/tvLabelTtd">
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tvTextNameTtd"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Silahkan upload TTD anda"-->
-<!--                        android:layout_marginBottom="8dp"-->
-<!--                        app:layout_constraintBottom_toTopOf="@+id/btnUploadTtd"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/tvTextNameTtd"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:text="Silahkan upload TTD anda"-->
+                    <!--                        android:layout_marginBottom="8dp"-->
+                    <!--                        app:layout_constraintBottom_toTopOf="@+id/btnUploadTtd"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent" />-->
 
                     <Button
+                        android:id="@+id/btnUploadTtd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Upload TTD"
                         android:layout_marginVertical="48dp"
+                        android:text="Upload TTD"
                         android:textAllCaps="false"
-                        android:id="@+id/btnUploadTtd"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
                     android:id="@+id/btnSimpanProfile"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Simpan"
                     android:textAllCaps="false"
-                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/constraintTtd" />

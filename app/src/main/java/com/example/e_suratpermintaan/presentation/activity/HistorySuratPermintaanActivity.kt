@@ -3,6 +3,7 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,11 +38,6 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (toolbar_history != null && toolbar != null) {
-            toolbar_history.text = getString(R.string.toolbar_history)
-            setSupportActionBar(toolbar)
-        }
-
         idSp = intent.extras?.getString(ID_SP_HISTORY)
         jenisSp = intent.extras?.getString(JENIS_SP_HISTORY)
 
@@ -49,10 +45,32 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     }
 
     private fun init() {
+        setupTollbar()
         historyAdapter = HistoryAdapter()
         initRecyclerView()
         getHistory()
         setupListener()
+    }
+
+    private fun setupTollbar() {
+        if (toolbar_history != null && toolbar != null) {
+            toolbar_history.text = getString(R.string.toolbar_history)
+            setSupportActionBar(toolbar)
+            if (supportActionBar != null) {
+                supportActionBar!!.setDisplayShowTitleEnabled(false)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                supportActionBar!!.setDisplayShowHomeEnabled(true)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView() {

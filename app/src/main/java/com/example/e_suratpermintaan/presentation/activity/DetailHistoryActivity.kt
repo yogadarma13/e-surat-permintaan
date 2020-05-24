@@ -1,6 +1,7 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
@@ -44,11 +45,6 @@ class DetailHistoryActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (toolbar_detail_history != null && toolbar != null) {
-            toolbar_detail_history.text = getString(R.string.toolbar_detail_history)
-            setSupportActionBar(toolbar)
-        }
-
         dataDetailHistory = intent.getStringExtra(DETAIL_HISTORY_SP)
         jenisSP = intent.getStringExtra(JENIS_SP_DETAIL_HISTORY)
 
@@ -79,8 +75,30 @@ class DetailHistoryActivity : BaseActivity() {
         disposable = masterViewModel.getPersyaratanList("all")
             .subscribe(this::handleResponse, this::handleError)
 
+        setupTollbar()
         setupListeners()
         initRecyclerView()
+    }
+
+    private fun setupTollbar() {
+        if (toolbar_detail_history != null && toolbar != null) {
+            toolbar_detail_history.text = getString(R.string.toolbar_detail_history)
+            setSupportActionBar(toolbar)
+            if (supportActionBar != null) {
+                supportActionBar!!.setDisplayShowTitleEnabled(false)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                supportActionBar!!.setDisplayShowHomeEnabled(true)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun handleResponse(response: MasterPersyaratanResponse) {

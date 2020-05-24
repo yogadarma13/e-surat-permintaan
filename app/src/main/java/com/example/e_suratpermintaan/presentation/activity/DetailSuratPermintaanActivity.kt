@@ -81,11 +81,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (toolbar_detail_sp != null && toolbar != null) {
-            toolbar_detail_sp.text = getString(R.string.toolbar_detail)
-            setSupportActionBar(toolbar)
-        }
-
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
         itemSuratPermintaanAdapter = ItemSuratPermintaanAdapter()
 
@@ -121,14 +116,31 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(i)
             }
+
+            android.R.id.home -> {
+                onBackPressed()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun init() {
+        setupTollbar()
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
         initApiRequest()
+    }
+
+    private fun setupTollbar() {
+        if (toolbar_detail_sp != null && toolbar != null) {
+            toolbar_detail_sp.text = getString(R.string.toolbar_detail)
+            setSupportActionBar(toolbar)
+            if (supportActionBar != null) {
+                supportActionBar!!.setDisplayShowTitleEnabled(false)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                supportActionBar!!.setDisplayShowHomeEnabled(true)
+            }
+        }
     }
 
     private fun initApiRequest() {

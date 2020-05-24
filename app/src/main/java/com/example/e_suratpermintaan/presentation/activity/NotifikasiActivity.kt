@@ -2,6 +2,7 @@ package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.DataNotifikasi
@@ -33,11 +34,6 @@ class NotifikasiActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (toolbar_notifikasi != null && toolbar != null) {
-            toolbar_notifikasi.text = getString(R.string.toolbar_notifikasi)
-            setSupportActionBar(toolbar)
-        }
-
         idUser = profilePreference.getProfile()?.id
 
         init()
@@ -46,12 +42,34 @@ class NotifikasiActivity : BaseActivity() {
 
     private fun init() {
 //        notifikasiAdapter = NotifikasiAdapter()
+        setupTollbar()
         notifikasiAdapter =
             BaseAdapter(R.layout.notifikasi_unread_list, NotifikasiViewHolder::class.java)
         getNotifikasi(idUser)
         setupListeners()
         initRecyclerView()
 
+    }
+
+    private fun setupTollbar() {
+        if (toolbar_notifikasi != null && toolbar != null) {
+            toolbar_notifikasi.text = getString(R.string.toolbar_notifikasi)
+            setSupportActionBar(toolbar)
+            if (supportActionBar != null) {
+                supportActionBar!!.setDisplayShowTitleEnabled(false)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                supportActionBar!!.setDisplayShowHomeEnabled(true)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView() {

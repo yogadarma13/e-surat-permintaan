@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -78,11 +79,6 @@ class EditSuratPermintaanActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (toolbar_edit_detail != null && toolbar != null) {
-            toolbar_edit_detail.text = getString(R.string.toolbar_edit)
-            setSupportActionBar(toolbar)
-        }
-
         idSp = intent.extras?.getString(ID_SP_EDIT)
         persyaratanList =
             intent.getSerializableExtra(MASTER_PERSYARATAN) as MutableMap<String, String>
@@ -113,9 +109,31 @@ class EditSuratPermintaanActivity : BaseActivity() {
         alertDialogPenugasan =
             PenugasanItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
 
+        setupTollbar()
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
         initApiRequest()
+    }
+
+    private fun setupTollbar() {
+        if (toolbar_edit_detail != null && toolbar != null) {
+            toolbar_edit_detail.text = getString(R.string.toolbar_edit)
+            setSupportActionBar(toolbar)
+            if (supportActionBar != null) {
+                supportActionBar!!.setDisplayShowTitleEnabled(false)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                supportActionBar!!.setDisplayShowHomeEnabled(true)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initApiRequest() {

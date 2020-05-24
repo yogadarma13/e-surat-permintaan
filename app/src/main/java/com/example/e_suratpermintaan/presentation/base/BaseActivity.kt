@@ -119,7 +119,8 @@ abstract class BaseActivity : AppCompatActivity() {
         findAndSetEditTextFocusChangeListenerRecursively(window.decorView)
         setupInternetObserver()
 
-        disableAutofill()
+        // ini aku komen dlu soalnya kalo selain oreo dia masih error
+//        disableAutofill()
     }
 
     @TargetApi(Build.VERSION_CODES.O)
