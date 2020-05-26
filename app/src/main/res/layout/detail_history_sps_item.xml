@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="16dp"
-                android:text="Jenis Barang"
+                tools:text="Jenis Barang"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +63,7 @@
                 android:id="@+id/labelKode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kode Pekerjaan"
+                android:text="@string/label_kode_pekerjaan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Vol"
+                android:text="@string/label_vol"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPS" />
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Satuan"
+                android:text="@string/label_satuan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvQtySPS" />
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Waktu\nPelaksanaan"
+                android:text="@string/label_waktu_pelaksanaan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPS" />
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Persyaratan"
+                android:text="@string/label_persyaratan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPS" />
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Keterangan/ \nTujuannya"
+                android:text="@string/label_keterangan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPersyaratanDetailSPS" />
@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Ditugaskan\nKepada"
+                android:text="@string/label_ditugaskan_kepada"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Status\nPenugasan"
+                android:text="@string/label_status_penugasan"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"

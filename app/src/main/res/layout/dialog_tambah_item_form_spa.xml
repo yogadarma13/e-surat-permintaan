@@ -7,6 +7,7 @@
         android:id="@+id/tilKapasitas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
@@ -22,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:boxBackgroundColor="@android:color/white"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@id/tilKapasitas"
         app:layout_constraintStart_toStartOf="@id/tilKapasitas"
@@ -40,6 +42,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_marginTop="5dp"
+        app:boxBackgroundColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@id/tilMerk"
         app:layout_constraintStart_toStartOf="@id/tilMerk"
         app:layout_constraintTop_toBottomOf="@+id/tilMerk">

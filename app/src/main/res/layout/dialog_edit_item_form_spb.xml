@@ -7,6 +7,7 @@
         android:id="@+id/tilFungsi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
@@ -21,6 +22,7 @@
         android:id="@+id/tilTarget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@id/tilFungsi"

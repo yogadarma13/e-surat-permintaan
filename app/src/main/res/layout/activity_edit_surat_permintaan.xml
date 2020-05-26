@@ -84,7 +84,8 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
                             android:text="Items"
-                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,9 +116,9 @@
                             android:layout_margin="16dp"
                             android:drawableLeft="@drawable/ic_add"
                             android:gravity="center_vertical"
+                            android:visibility="gone"
                             android:text="Tambah Lampiran"
                             android:textColor="@android:color/holo_blue_light"
-                            android:visibility="gone"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -128,7 +129,8 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
                             android:text="Lampiran"
-                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

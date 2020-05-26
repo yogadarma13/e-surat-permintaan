@@ -101,7 +101,7 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginTop="16dp"
-                                android:text="Surat Permintaan"
+                                android:text="@string/surat_permintaan"
                                 android:textColor="@android:color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:text="Filter data"
+                    android:text="@string/filter_data"
                     android:textSize="16sp" />
 
             </LinearLayout>

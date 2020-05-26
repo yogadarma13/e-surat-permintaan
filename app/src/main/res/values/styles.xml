@@ -10,6 +10,8 @@
 
         <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="android:windowBackground">@color/colorBackground</item>
+
+        <!-- Untuk styling panah back -->
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white</item>
 
         <!-- Customize your theme here. -->

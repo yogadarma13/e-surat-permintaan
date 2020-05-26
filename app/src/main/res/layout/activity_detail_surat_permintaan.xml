@@ -66,7 +66,7 @@
                             android:id="@+id/tv_judul_detail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Detail Permintaan Barang"
+                            android:text="@string/detail_permintaan_barang"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -88,7 +88,7 @@
                             android:layout_height="wrap_content"
                             android:backgroundTint="@android:color/white"
                             android:drawableLeft="@drawable/ic_delete"
-                            android:text="Hapus"
+                            android:text="@string/delete_btn_text"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary"
                             android:visibility="gone"
@@ -119,7 +119,7 @@
                             android:id="@+id/tv1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Proyek"
+                            android:text="@string/label_proyek"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -129,7 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Lokasi"
+                            android:text="@string/label_location"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv1" />
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Kode"
+                            android:text="@string/label_code"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv2" />
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Tanggal"
+                            android:text="@string/label_date"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv3" />
@@ -159,7 +159,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Pukul"
+                            android:text="@string/label_time"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv4" />
@@ -169,7 +169,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Status Permintaan"
+                            android:text="@string/label_status_permintaan"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv5" />
@@ -179,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Jenis"
+                            android:text="@string/label_jenis"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv6" />
@@ -268,6 +268,7 @@
                         android:id="@+id/constraint_text_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="12dp"
                         android:background="@android:color/white">
 
@@ -277,7 +278,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
-                            android:text="Detail Barang"
+                            android:text="@string/label_detail_barang"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -297,16 +298,17 @@
                         android:id="@+id/constraint_text_file"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="12dp"
-                        android:background="@android:color/white"
-                        android:padding="16dp"
-                        android:visibility="gone">
+                        android:background="@android:color/white">
 
                         <TextView
                             android:id="@+id/tvLabelDetailLampiran"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="File Lampiran"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/label_file_lampiran"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -331,9 +333,9 @@
                         android:layout_marginTop="16dp"
                         android:backgroundTint="@android:color/white"
                         android:paddingVertical="12dp"
-                        android:text="Riwayat"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary" />
+                        android:text="@string/history_btn_text"
+                        android:textColor="@color/colorPrimary"
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
 
@@ -360,7 +362,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
             android:paddingVertical="12dp"
-            android:text="Batalkan"
+            android:text="@string/cancel_btn_text"
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -375,7 +377,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
             android:paddingVertical="12dp"
-            android:text="Tolak"
+            android:text="@string/decline_btn_text"
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -390,7 +392,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorBlue"
             android:paddingVertical="12dp"
-            android:text="Edit"
+            android:text="@string/edit_btn_text"
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -406,7 +408,7 @@
             android:layout_marginLeft="4dp"
             android:backgroundTint="@color/colorGreen"
             android:paddingVertical="12dp"
-            android:text="Ajukan"
+            android:text="@string/ajukan_btn_text"
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -422,7 +424,7 @@
             android:layout_marginLeft="4dp"
             android:backgroundTint="@color/colorGreen"
             android:paddingVertical="12dp"
-            android:text="Terima"
+            android:text="@string/accept_btn_text"
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

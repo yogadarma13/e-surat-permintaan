@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="20dp"
-                android:text="Jenis Barang"
+                tools:text="Jenis Barang"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +63,7 @@
                 android:id="@+id/labelKode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kode Pekerjaan"
+                android:text="@string/label_kode_pekerjaan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Vol"
+                android:text="@string/label_vol"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPA" />
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Satuan"
+                android:text="@string/label_satuan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvQtySPA" />
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Kapasitas"
+                android:text="@string/label_capacity"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPA" />
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Merk"
+                android:text="@string/label_merk"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKapasitasDetailSPA" />
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Waktu\nPemakaian"
+                android:text="@string/label_time_use"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvMerkDetailSPA" />
@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Keterangan/ \nTujuannya"
+                android:text="@string/label_keterangan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPA" />
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Ditugaskan\nKepada"
+                android:text="@string/label_ditugaskan_kepada"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:visibility="gone"
-                android:text="Status\nPenugasan"
+                android:text="@string/label_status_penugasan"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPA" />
@@ -281,7 +281,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:backgroundTint="@android:color/holo_red_light"
-                android:text="Hapus"
+                android:text="@string/delete_btn_text"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -296,7 +296,7 @@
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/colorBlue"
                 android:visibility="gone"
-                android:text="Edit"
+                android:text="@string/edit_btn_text"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPA"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -313,7 +313,7 @@
                 android:layout_marginTop="8dp"
                 android:visibility="gone"
                 android:backgroundTint="@color/colorGreen"
-                android:text="Penugasan"
+                android:text="@string/penugasan_btn_text"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
