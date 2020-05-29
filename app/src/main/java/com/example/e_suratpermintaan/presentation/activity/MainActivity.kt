@@ -500,10 +500,12 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                 }
             }
             is CreateSPResponse -> {
-
-                toastNotify(response.message)
+//                toastNotify(response.message)
                 initApiRequest()
 
+                val intent = Intent(this, EditSuratPermintaanActivity::class.java)
+                intent.putExtra(EditSuratPermintaanActivity.ID_SP_EDIT, response.idSp.toString())
+                startActivity(intent)
             }
         }
     }

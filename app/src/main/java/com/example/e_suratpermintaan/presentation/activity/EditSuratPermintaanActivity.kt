@@ -8,6 +8,7 @@ import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
@@ -80,8 +81,8 @@ class EditSuratPermintaanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EDIT)
-        persyaratanList =
-            intent.getSerializableExtra(MASTER_PERSYARATAN) as MutableMap<String, String>
+//        persyaratanList =
+//            intent.getSerializableExtra(MASTER_PERSYARATAN) as MutableMap<String, String>
 
         editItemSuratPermintaanAdapter = EditItemSuratPermintaanAdapter()
 
@@ -128,7 +129,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }
@@ -138,16 +139,22 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     private fun initApiRequest() {
         if (idUser != null) {
-            disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser.toString())
-                .subscribe(this::handleResponse, this::handleError)
+            sharedMasterData.getPersyaratanList().observe(this, Observer {
+                it?.forEach { item ->
 
-            editItemSuratPermintaanAdapter.itemList.clear()
-            editItemSuratPermintaanAdapter.notifyDataSetChanged()
+                    persyaratanList[item?.id.toString()] = item?.nama.toString()
+                }
+                disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser.toString())
+                    .subscribe(this::handleResponse, this::handleError)
 
-            editFileSuratPermintaanAdapter.itemList.clear()
-            editFileSuratPermintaanAdapter.notifyDataSetChanged()
+                editItemSuratPermintaanAdapter.itemList.clear()
+                editItemSuratPermintaanAdapter.notifyDataSetChanged()
 
-            startRefresh()
+                editFileSuratPermintaanAdapter.itemList.clear()
+                editFileSuratPermintaanAdapter.notifyDataSetChanged()
+
+                startRefresh()
+            })
         }
     }
 

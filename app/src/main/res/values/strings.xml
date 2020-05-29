@@ -29,7 +29,7 @@
     <string name="yes_btn_text">Ya</string>
     <string name="must_choose_toast_msg">\"Silakan pilih \"</string>
     <string name="nothing_data">Tidak ada data</string>
-    <string name="detail_permintaan_barang">Detail Permintaan Barang</string>
+    <string name="label_detail_surat_permintaan">Detail Surat Permintaan</string>
     <string name="delete_btn_text">Hapus</string>
     <string name="label_proyek">Proyek</string>
     <string name="label_location">Lokasi</string>
@@ -38,7 +38,7 @@
     <string name="label_time">Pukul</string>
     <string name="label_status_permintaan">Status Permintaan</string>
     <string name="label_jenis">Jenis</string>
-    <string name="label_detail_barang">Detail Barang</string>
+    <string name="label_item_surat_permintaan">Item Surat Permintaan</string>
     <string name="label_file_lampiran">File Lampiran</string>
     <string name="history_btn_text">Riwayat</string>
     <string name="cancel_btn_text">Batalkan</string>

@@ -92,9 +92,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 idRole = it.roleId.toString()
                 if (profileId != null) {
                     idUser = profileId
-
                 }
-
                 init()
             }
         }
@@ -278,7 +276,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnEdit.setOnClickListener {
             val intent = Intent(this, EditSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EDIT, idSp)
-            intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
+//            intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
             startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
         }
 

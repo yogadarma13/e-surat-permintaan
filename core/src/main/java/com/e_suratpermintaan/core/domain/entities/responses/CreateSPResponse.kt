@@ -13,6 +13,9 @@ data class CreateSPResponse(
 	@field:SerializedName("message")
 	val message: String? = null,
 
+	@field:SerializedName("id_sp")
+	val idSp: Int? = null,
+
 	@field:SerializedName("status")
 	val status: Boolean? = null
 )

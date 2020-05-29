@@ -169,6 +169,7 @@
             android:layout_marginRight="8dp"
             android:paddingHorizontal="32dp"
             android:paddingVertical="12dp"
+            android:backgroundTint="@color/colorBlue"
             android:text="Simpan"
             android:textAllCaps="false"
             android:visibility="gone"
