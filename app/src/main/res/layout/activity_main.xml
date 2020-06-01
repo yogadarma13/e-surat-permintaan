@@ -52,7 +52,7 @@
                             android:layout_gravity="right"
                             android:background="@drawable/circle_background_count_unread"
                             android:gravity="center"
-                            android:text="1"
+                            tools:text="1"
                             android:textColor="@android:color/white"
                             android:textStyle="bold"
                             android:visibility="gone" />

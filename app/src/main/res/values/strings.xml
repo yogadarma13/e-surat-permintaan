@@ -77,4 +77,15 @@
     <string name="label_target_tanggal_datang">Target Tanggal\nDatang</string>
     <string name="label_waktu_pelaksanaan">Waktu\nPelaksanaan</string>
     <string name="label_persyaratan">Persyaratan</string>
+    <string name="label_item">Item</string>
+    <string name="tambah_item_text">Tambah Item</string>
+    <string name="tambah_lampiran_text">Tambah Lampiran</string>
+    <string name="label_lampiran">Lampiran</string>
+    <string name="below_app_name_text">Masuk untuk melanjutkan</string>
+    <string name="label_email_address">Email Address</string>
+    <string name="label_password">Password</string>
+    <string name="login_btn_text">Masuk</string>
+    <string name="welcome_text">Selamat Datang</string>
+    <string name="welcome_app_name_text">di E-Surat Permintaan\nPT Jagat Konstruksi</string>
+    <string name="next_btn_text">Lanjutkan</string>
 </resources>
