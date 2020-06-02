@@ -84,8 +84,8 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
                             android:text="@string/label_item"
-                            android:textStyle="bold"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,9 +116,9 @@
                             android:layout_margin="16dp"
                             android:drawableLeft="@drawable/ic_add"
                             android:gravity="center_vertical"
-                            android:visibility="gone"
                             android:text="@string/tambah_lampiran_text"
                             android:textColor="@android:color/holo_blue_light"
+                            android:visibility="gone"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -129,8 +129,8 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
                             android:text="@string/label_lampiran"
-                            android:textStyle="bold"
                             android:textSize="18sp"
+                            android:textStyle="bold"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -166,10 +166,9 @@
             android:id="@+id/btnSimpanEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:backgroundTint="@color/colorBlue"
             android:paddingHorizontal="32dp"
             android:paddingVertical="12dp"
-            android:backgroundTint="@color/colorBlue"
             android:text="@string/save_btn_text"
             android:textAllCaps="false"
             android:visibility="gone"

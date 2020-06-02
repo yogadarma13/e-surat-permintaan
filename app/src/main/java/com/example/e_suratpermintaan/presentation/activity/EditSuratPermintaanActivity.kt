@@ -336,14 +336,20 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
                     if (dataDetailSP?.tombolTambahItem == 1) {
                         tvAddItem.visibility = View.VISIBLE
+                    } else {
+                        tvAddItem.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolTambahFile == 1) {
                         tvAddLampiran.visibility = View.VISIBLE
+                    } else {
+                        tvAddLampiran.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolSimpan == 1) {
                         btnSimpanEdit.visibility = View.VISIBLE
+                    } else {
+                        btnSimpanEdit.visibility = View.GONE
                     }
 
                     alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)

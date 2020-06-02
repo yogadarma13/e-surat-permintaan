@@ -71,18 +71,24 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     viewHolderSPA.btnEditSPA.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_EDIT)
                     }
+                } else {
+                    viewHolderSPA.btnEditSPA.visibility = View.GONE
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPA.btnHapusSPA.visibility = View.VISIBLE
                     viewHolderSPA.btnHapusSPA.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_HAPUS)
                     }
+                } else {
+                    viewHolderSPA.btnHapusSPA.visibility = View.GONE
                 }
                 if (data.tombolPenugasan == 1) {
                     viewHolderSPA.btnPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.btnPenugasanSPA.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_PENUGASAN)
                     }
+                } else {
+                    viewHolderSPA.btnPenugasanSPA.visibility = View.GONE
                 }
 
                 viewHolderSPA.jenisDetailSPA.text = data.idBarang
@@ -147,18 +153,24 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     viewHolderSPB.btnEditSPB.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_EDIT)
                     }
+                } else {
+                    viewHolderSPB.btnEditSPB.visibility = View.GONE
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPB.btnHapusSPB.visibility = View.VISIBLE
                     viewHolderSPB.btnHapusSPB.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_HAPUS)
                     }
+                } else {
+                    viewHolderSPB.btnHapusSPB.visibility = View.GONE
                 }
                 if (data.tombolPenugasan == 1) {
                     viewHolderSPB.btnPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.btnPenugasanSPB.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_PENUGASAN)
                     }
+                } else {
+                    viewHolderSPB.btnPenugasanSPB.visibility = View.GONE
                 }
 
                 viewHolderSPB.jenisDetailSPB.text = data.idBarang
@@ -221,18 +233,24 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     viewHolderSPS.btnEditSPS.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_EDIT)
                     }
+                } else {
+                    viewHolderSPS.btnEditSPS.visibility = View.GONE
                 }
                 if (data.tombolHapusItem == 1) {
                     viewHolderSPS.btnHapusSPS.visibility = View.VISIBLE
                     viewHolderSPS.btnHapusSPS.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_HAPUS)
                     }
+                } else {
+                    viewHolderSPS.btnHapusSPS.visibility = View.GONE
                 }
                 if (data.tombolPenugasan == 1) {
                     viewHolderSPS.btnPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.btnPenugasanSPS.setOnClickListener {
                         onItemClickListener.invoke(data, BTN_PENUGASAN)
                     }
+                } else {
+                    viewHolderSPS.btnPenugasanSPS.visibility = View.GONE
                 }
 
                 viewHolderSPS.jenisDetailSPS.text = data.idBarang
