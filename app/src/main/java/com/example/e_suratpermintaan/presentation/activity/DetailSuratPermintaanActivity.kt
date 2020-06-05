@@ -110,7 +110,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuCetakSP -> {
-                val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
+                val url = "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}"
                 val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(i)
             }
