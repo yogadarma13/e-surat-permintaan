@@ -283,6 +283,10 @@ class TambahItemDialog(
             val target = dialogRootView.formSPB.etTarget.text.toString()
             val waktuPelaksanaan = dialogRootView.formSPS.etWaktuPelaksanaan.text.toString()
 
+            val statusPenugasanOption = dialogRootView.etStatusPenugasan.text.toString()
+            val statusPenugasanValue = (statusPenugasanAdapter.itemList.find
+            { (it as DataMasterOption).option == statusPenugasanOption } as DataMasterOption).value.toString()
+
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
                 val data = it as DataMasterPersyaratan
@@ -292,6 +296,8 @@ class TambahItemDialog(
             }
 
             val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
+
+            Log.d("TESSSSSS", statusPenugasanValue)
 
             val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
                 .setMessage("Apakah Anda yakin ingin menambah item?")
@@ -310,7 +316,7 @@ class TambahItemDialog(
                         waktuPemakaian,
                         waktuPelaksanaan,
                         persyaratanList,
-                        "",
+                        statusPenugasanValue,
                         dataProfile.id!!
                     )
                     activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
