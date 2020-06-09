@@ -64,6 +64,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private val profilePreference: ProfilePreference by inject()
     private val sharedMasterData: SharedMasterData by inject()
 
+    private var dataDetailSP: DataDetailSP? = null
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
     private var idFile: String? = null
@@ -292,6 +293,9 @@ class EditSuratPermintaanActivity : BaseActivity() {
             is CreateItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+                alertDialogTambah =
+                    TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
+                alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }
 
@@ -332,7 +336,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
                 detailSPResponse.let {
 
-                    val dataDetailSP = detailSPResponse?.get(0)
+                    dataDetailSP = detailSPResponse?.get(0)
 
                     if (dataDetailSP?.tombolTambahItem == 1) {
                         tvAddItem.visibility = View.VISIBLE
@@ -353,21 +357,21 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     }
 
                     alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
-                    alertDialogEdit.initDialogViewEdit(dataProfile!!, dataDetailSP)
+                    alertDialogEdit.initDialogViewEdit(dataProfile!!, dataDetailSP!!)
                     alertDialogPenugasan.initDialogViewPenugasan(dataProfile!!)
 
-                    val itemList: List<ItemsDetailSP?>? = dataDetailSP.items
+                    val itemList: List<ItemsDetailSP?>? = dataDetailSP!!.items
 
                     editItemSuratPermintaanAdapter.persyaratanList.putAll(persyaratanList)
                     editItemSuratPermintaanAdapter.idRole = idRole
                     itemList?.forEach {
                         editItemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
-                        editItemSuratPermintaanAdapter.viewType.add(dataDetailSP.jenis.toString())
+                        editItemSuratPermintaanAdapter.viewType.add(dataDetailSP!!.jenis.toString())
                     }
 
                     editItemSuratPermintaanAdapter.notifyDataSetChanged()
 
-                    val lampiranList = dataDetailSP.fileLampiran
+                    val lampiranList = dataDetailSP!!.fileLampiran
 
                     lampiranList?.forEach {
                         editFileSuratPermintaanAdapter.itemList.add(it as FileLampiranDetailSP)

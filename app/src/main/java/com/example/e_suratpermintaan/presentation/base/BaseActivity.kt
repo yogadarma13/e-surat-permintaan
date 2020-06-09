@@ -120,7 +120,9 @@ abstract class BaseActivity : AppCompatActivity() {
         setupInternetObserver()
 
         // ini aku komen dlu soalnya kalo selain oreo dia masih error
-//        disableAutofill()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            disableAutofill()
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)

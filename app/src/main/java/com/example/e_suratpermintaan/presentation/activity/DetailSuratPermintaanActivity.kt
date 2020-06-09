@@ -27,7 +27,6 @@ import com.example.e_suratpermintaan.framework.utils.DownloadTask
 import com.example.e_suratpermintaan.framework.utils.FileName
 import com.example.e_suratpermintaan.framework.utils.Signature
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
-import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.MASTER_PERSYARATAN
 import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.ID_SP_HISTORY
 import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.JENIS_SP_HISTORY
 import com.example.e_suratpermintaan.presentation.adapter.ItemSuratPermintaanAdapter
@@ -53,7 +52,6 @@ import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
-import java.io.Serializable
 
 class DetailSuratPermintaanActivity : BaseActivity() {
 
@@ -126,7 +124,19 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         setupTollbar()
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
+
+        swipeRefreshLayout.setOnRefreshListener {
+            if (!isConnectedToInternet) {
+                toastNotify("Please turn on the internet")
+                stopRefresh()
+                return@setOnRefreshListener
+            }
+
+            initApiRequest()
+        }
+
         initApiRequest()
+        startRefresh()
     }
 
     private fun setupTollbar() {
@@ -160,15 +170,10 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
             fileSuratPermintaanAdapter.itemList.clear()
             fileSuratPermintaanAdapter.notifyDataSetChanged()
-            startRefresh()
         })
     }
 
     private fun setupItemSuratPermintaanRecyclerView() {
-//        itemSuratPermintaanAdapter = BaseAdapter(
-//            R.layout.item_surat_permintaan_item_row,
-//            ItemSuratPermintaanViewHolder::class.java
-//        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = itemSuratPermintaanAdapter
@@ -183,10 +188,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun setupActionListeners() {
-
-//        three_dot.setOnClickListener {
-//            showMenuItem(it)
-//        }
 
         btnHistory.setOnClickListener {
             val intent = Intent(
@@ -220,18 +221,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
             showDialogPengajuan()
 
-//            val alertDialog =
-//                AlertDialog.Builder(this)
-//                    .setTitle("Konfirmasi Pengajuan")
-//                    .setMessage("Apa anda yakin ingin mengajukan permintaan ini?")
-//                    .setPositiveButton("Ajukan") { _, _ ->
-//                        disposable = suratPermintaanViewModel.ajukan(idUser, idSp.toString())
-//                            .subscribe(this::handleResponse, this::handleError)
-//                    }.setNegativeButton("Tutup") { dialog, _ ->
-//                        dialog.dismiss()
-//                    }.create()
-//
-//            alertDialog.show()
         }
 
         btnCancel.setOnClickListener {
@@ -254,19 +243,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
             showDialogVerifikasi()
 
-//            val alertDialog =
-//                AlertDialog.Builder(this)
-//                    .setTitle("Konfirmasi Penerimaan")
-//                    .setMessage("Apa anda yakin ingin menerima permintaan ini?")
-//                    .setPositiveButton("Terima") { _, _ ->
-//                        disposable =
-//                            suratPermintaanViewModel.verifikasi(idUser, idSp.toString(), "0", "")
-//                                .subscribe(this::handleResponse, this::handleError)
-//                    }.setNegativeButton("Tutup") { dialog, _ ->
-//                        dialog.dismiss()
-//                    }.create()
-//
-//            alertDialog.show()
         }
 
         btnDecline.setOnClickListener {
@@ -276,7 +252,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         btnEdit.setOnClickListener {
             val intent = Intent(this, EditSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EDIT, idSp)
-//            intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
             startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
         }
 
@@ -293,16 +268,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                     }.create()
 
             alertDialog.show()
-        }
-
-        swipeRefreshLayout.setOnRefreshListener {
-            if (!isConnectedToInternet) {
-                toastNotify("Please turn on the internet")
-                stopRefresh()
-                return@setOnRefreshListener
-            }
-
-            initApiRequest()
         }
 
     }
@@ -394,10 +359,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
                     fileSuratPermintaanAdapter.notifyDataSetChanged()
 
-//                    if (dataDetailSP?.tombolTambahItem == 1){
-//                        tvAddItem.visibility = View.VISIBLE
-//                    }
-
                     if (dataDetailSP?.tombolAjukan == 1) {
                         btnAjukan.visibility = View.VISIBLE
                     } else {
@@ -435,10 +396,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                     }
 
                     itemPrint.isVisible = dataDetailSP?.tombolCetak == 1
-//
-//                    if (dataDetailSP?.tombolHapus == 1) {
-//                        optionDelete = true
-//                    }
 
                 }
 
@@ -447,31 +404,16 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             is AjukanSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
-//                btnAjukan.visibility = View.GONE
-//                btnCancel.visibility = View.GONE
-//                btnEdit.visibility = View.GONE
-//                btnAccept.visibility = View.GONE
-//                btnDecline.visibility = View.GONE
             }
 
             is BatalkanSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
-//                btnAjukan.visibility = View.GONE
-//                btnCancel.visibility = View.GONE
-//                btnEdit.visibility = View.GONE
-//                btnAccept.visibility = View.GONE
-//                btnDecline.visibility = View.GONE
             }
 
             is VerifikasiSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
-//                btnAjukan.visibility = View.GONE
-//                btnCancel.visibility = View.GONE
-//                btnEdit.visibility = View.GONE
-//                btnAccept.visibility = View.GONE
-//                btnDecline.visibility = View.GONE
             }
 
             is DeleteSPResponse -> {
@@ -480,13 +422,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 finish()
             }
 
-//            is MasterPersyaratanResponse -> {
-//                val dataPersyaratan = response.data
-//
-//                dataPersyaratan?.forEach {
-//                    persyaratanList[it?.id.toString()] = it?.nama.toString()
-//                }
-//            }
         }
     }
 

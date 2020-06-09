@@ -118,7 +118,7 @@
          an overlay for the ExposedDropdownMenu style  -->
     <style name="AppTheme.ExposedDropdownMenu.MaterialThemeOverlay" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- background color of dropdown (popup) items -->
-        <item name="colorSurface">#bdc3c7</item>
+        <item name="colorSurface">@color/colorMidGrey</item>
         <!--
          When this overlay is applied, the AutoCompleteTextView
          loses padding. Luckily, we can restore it by defining
