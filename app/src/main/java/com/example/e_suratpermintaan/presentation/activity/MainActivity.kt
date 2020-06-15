@@ -159,16 +159,20 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         setupNavigationDrawer()
 
+        profileId = profilePreference.getProfile()?.id
+        idUser = profileId.toString()
+
+        initDetailProfileRequest()
+        populateMaster()
+
         initAdapters()
-        setupTambahSPDialog()
-        setupFilterSPDialog()
         setupRecyclerView()
         setupListeners()
 
-        initApiRequest()
-        initDetailProfileRequest()
+        setupTambahSPDialog()
+        setupFilterSPDialog()
 
-        populateMaster()
+        initApiRequest()
     }
 
     private fun populateMaster() {
@@ -324,15 +328,12 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         jenisAdapter.notifyDataSetChanged()
         spAdapter.notifyDataSetChanged()
 
-        profileId = profilePreference.getProfile()?.id
         val roleId = profilePreference.getProfile()?.roleId
-
         if (!roleId.equals("1")) {
             btnAjukan.visibility = View.GONE
         }
 
         if (profileId != null) {
-            idUser = profileId.toString()
 
             disposable = suratPermintaanViewModel.readMyData(
                 idUser,

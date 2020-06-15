@@ -18,6 +18,7 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_DELETED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_EDITED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_DELETED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_EDITED
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
@@ -296,6 +297,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         ) {
             initApiRequest()
         }
+
+        EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
     }
 
     private fun stopRefresh() {

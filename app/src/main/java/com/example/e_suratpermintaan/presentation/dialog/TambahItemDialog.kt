@@ -269,7 +269,8 @@ class TambahItemDialog(
 
         dialogRootView.btnTambah.setOnClickListener {
             // Untuk menghilangkan focus yang ada di input field
-            dialogRootView.clearFocus()
+            // dialogRootView.clearFocus()
+            dialogRootView.performClick()
 
             val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
             val jenisBarang = dialogRootView.etJenisBarang.text.toString()

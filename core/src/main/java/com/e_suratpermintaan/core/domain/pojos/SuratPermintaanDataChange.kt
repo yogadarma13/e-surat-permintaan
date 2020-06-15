@@ -8,6 +8,7 @@ class SuratPermintaanDataChange(var changeType: Int) {
         const val FILE_ITEM_EDITED = 2
         const val FILE_ITEM_DELETED = 3
         const val SP_DELETED = 4
+        const val SP_EDITED = 5
     }
 
 }
