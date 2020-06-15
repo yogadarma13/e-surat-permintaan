@@ -307,7 +307,7 @@ class EditItemDialog(
 
         val statusPenugasanOption = dialogRootView.etStatusPenugasan.text.toString()
         val statusPenugasanValue = (statusPenugasanAdapter.itemList.find
-        { (it as DataMasterOption).option == statusPenugasanOption } as DataMasterOption).value.toString()
+        { (it as DataMasterOption).option == statusPenugasanOption } as DataMasterOption?)?.value.toString()
 
         val persyaratanList: ArrayList<String> = arrayListOf()
         persyaratanAdapter.itemList.forEach {
@@ -337,7 +337,7 @@ class EditItemDialog(
                     waktuPemakaian,
                     waktuPelaksanaan,
                     persyaratanList,
-                    statusPenugasanValue,
+                    statusPenugasanValue.toString(),
                     dataProfile.id!!,
                     selectedItemId
                 )
