@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
@@ -57,8 +58,9 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
     private lateinit var filterDialogRootView: View
     private lateinit var drawerToggle: ActionBarDrawerToggle
-    private var profileId: String? = null
+    private var profile: DataProfile? = null
     private lateinit var idUser: String
+    private lateinit var roleId: String
 
     private var selectedStatusFilterValue: String = ""
     private var selectedJenisPermintaanFilterValue: String = ""
@@ -157,10 +159,12 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         // This will display an Up icon (<-), we will replace it with hamburger later
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        setupNavigationDrawer()
 
-        profileId = profilePreference.getProfile()?.id
-        idUser = profileId.toString()
+        profile = profilePreference.getProfile()
+        idUser = profile?.id.toString()
+        roleId = profile?.roleId.toString()
+
+        setupNavigationDrawer()
 
         initDetailProfileRequest()
         populateMaster()
@@ -214,6 +218,9 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun setupNavigationDrawer() {
+        val menu: Menu = navigation_view.menu
+        val menuItemMasterData: MenuItem = menu.findItem(R.id.menuMasterData)
+        menuItemMasterData.isVisible = roleId == "0"
         // Find our drawer view
         drawerToggle = setupDrawerToggle()
 
@@ -252,6 +259,10 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                     resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
                     initApiRequest()
                 }
+                R.id.masterData -> {
+                    val intent = Intent(this, WebViewActivity::class.java)
+                    startActivity(intent)
+                }
             }
 
             //This is for closing the drawer after acting on it
@@ -284,8 +295,8 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun initNotifikasiApiRequest() {
-        if (profileId != null) {
-            disposable = notifikasiViewModel.getNotifikasiList(profileId.toString())
+        if (profile?.id != null) {
+            disposable = notifikasiViewModel.getNotifikasiList(profile?.id.toString())
                 .subscribe(this::handleResponse, this::handleError)
         }
     }
@@ -333,7 +344,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             btnAjukan.visibility = View.GONE
         }
 
-        if (profileId != null) {
+        if (profile?.id != null) {
 
             disposable = suratPermintaanViewModel.readMyData(
                 idUser,

@@ -28,4 +28,17 @@
             </group>
         </menu>
     </item>
+
+    <item android:title="Master Data"
+        android:id="@+id/menuMasterData"
+        android:visible="false">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/masterData"
+                    android:icon="@drawable/ic_assignment_turned_in_black_24dp"
+                    android:title="Master Data" />
+            </group>
+        </menu>
+    </item>
 </menu>
