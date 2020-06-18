@@ -88,4 +88,5 @@
     <string name="welcome_text">Selamat Datang</string>
     <string name="welcome_app_name_text">di E-Surat Permintaan\nPT Jagat Konstruksi</string>
     <string name="next_btn_text">Lanjutkan</string>
+    <string name="toolbar_master_data">Master Data</string>
 </resources>
