@@ -8,6 +8,7 @@ import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,9 +42,11 @@ import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewM
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
+import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.progressBarOverlay
 import kotlinx.android.synthetic.main.dialog_ajukan_surat.view.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
 import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -70,10 +73,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     private lateinit var itemSuratPermintaanAdapter: ItemSuratPermintaanAdapter
     private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder>
     private lateinit var itemPrint: MenuItem
-    private var optionPrint = false
-    private var optionEdit = false
-    private var optionDelete = false
     private var jenisSP: String? = null
+    private var alertDialog: AlertDialog? = null
 
     override fun layoutId(): Int = R.layout.activity_detail_surat_permintaan
 
@@ -226,18 +227,29 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         btnCancel.setOnClickListener {
 
-            val alertDialog =
+            alertDialog =
                 AlertDialog.Builder(this)
                     .setTitle("Konfirmasi Pembatalan")
                     .setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
                     .setPositiveButton("Batalkan") { _, _ ->
+                        progressBarOverlay.visibility = View.VISIBLE
+                        window.setFlags(
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        )
+//                        btnAccept.isEnabled = false
+//                        btnAjukan.isEnabled = false
+//                        btnCancel.isEnabled = false
+//                        btnDecline.isEnabled = false
+//                        btnDelete.isEnabled = false
+//                        btn
                         disposable = suratPermintaanViewModel.cancel(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
                         dialog.dismiss()
                     }.create()
 
-            alertDialog.show()
+            alertDialog?.show()
         }
 
         btnAccept.setOnClickListener {
@@ -257,18 +269,23 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         }
 
         btnDelete.setOnClickListener {
-            val alertDialog =
+            alertDialog =
                 AlertDialog.Builder(this)
                     .setTitle("Konfirmasi Penghapusan")
                     .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
                     .setPositiveButton("Ya, Hapus") { _, _ ->
+                        progressBarOverlay.visibility = View.VISIBLE
+                        window.setFlags(
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        )
                         disposable = suratPermintaanViewModel.remove(idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
                         dialog.dismiss()
                     }.create()
 
-            alertDialog.show()
+            alertDialog?.show()
         }
 
     }
@@ -309,6 +326,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         super.handleError(error)
 
         stopRefresh()
+        progressBarOverlay.visibility = View.GONE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     private fun handleResponse(response: Any) {
@@ -405,21 +424,29 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             }
 
             is AjukanSPResponse -> {
+                progressBarOverlay.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 initApiRequest()
             }
 
             is BatalkanSPResponse -> {
+                progressBarOverlay.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 initApiRequest()
             }
 
             is VerifikasiSPResponse -> {
+                progressBarOverlay.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 initApiRequest()
             }
 
             is DeleteSPResponse -> {
+                progressBarOverlay.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_DELETED))
                 finish()
@@ -484,12 +511,17 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
                 .setTitle("Berikan Catatan")
 
-        val alertDialog = alertDialogBuilder.create()
+        alertDialog = alertDialogBuilder.create()
 
         val dialogRootView =
             View.inflate(this, R.layout.dialog_catatan, null)
 
         dialogRootView.btnCatatan.setOnClickListener {
+            progressBarOverlay.visibility = View.VISIBLE
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
 
             val catatan = dialogRootView.etCatatanTolak.text.toString()
 
@@ -504,11 +536,11 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             disposable = suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
                 .subscribe(this::handleResponse, this::handleError)
 
-            alertDialog.hide()
+            alertDialog?.hide()
         }
 
-        alertDialog.setView(dialogRootView)
-        alertDialog.show()
+        alertDialog?.setView(dialogRootView)
+        alertDialog?.show()
     }
 
     private fun showDialogPengajuan() {
@@ -517,7 +549,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
                 .setTitle("Pengajuan Surat Permintaan")
 
-        val alertDialog = alertDialogBuilder.create()
+        alertDialog = alertDialogBuilder.create()
 
         val dialogRootView =
             View.inflate(this, R.layout.dialog_ajukan_surat, null)
@@ -542,6 +574,11 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         }
 
         dialogRootView.btnFixAjukan.setOnClickListener {
+            progressBarOverlay.visibility = View.VISIBLE
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
             var fileTtd: File? = null
             val partTtd: MultipartBody.Part?
             val ttdBitmap: Bitmap?
@@ -566,15 +603,15 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             disposable = suratPermintaanViewModel.ajukan(userId, spId, partTtd)
                 .subscribe(this::handleResponse, this::handleError)
 
-            alertDialog.hide()
+            alertDialog?.hide()
         }
 
         dialogRootView.btnCancelAjukan.setOnClickListener {
-            alertDialog.hide()
+            alertDialog?.hide()
         }
 
-        alertDialog.setView(dialogRootView)
-        alertDialog.show()
+        alertDialog?.setView(dialogRootView)
+        alertDialog?.show()
     }
 
     private fun showDialogVerifikasi() {
@@ -583,7 +620,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
                 .setTitle("Verifikasi Surat Permintaan")
 
-        val alertDialog = alertDialogBuilder.create()
+        alertDialog = alertDialogBuilder.create()
 
         val dialogRootView =
             View.inflate(this, R.layout.dialog_verifikasi_surat, null)
@@ -608,6 +645,11 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         }
 
         dialogRootView.btnFixVerif.setOnClickListener {
+            progressBarOverlay.visibility = View.VISIBLE
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
             var fileTtd: File? = null
             val partTtd: MultipartBody.Part?
             val ttdBitmap: Bitmap?
@@ -635,15 +677,25 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 suratPermintaanViewModel.verifikasi(userId, spId, status, catatan, partTtd)
                     .subscribe(this::handleResponse, this::handleError)
 
-            alertDialog.hide()
+            alertDialog?.hide()
         }
 
         dialogRootView.btnCancelVerif.setOnClickListener {
-            alertDialog.hide()
+            alertDialog?.hide()
         }
 
-        alertDialog.setView(dialogRootView)
-        alertDialog.show()
+        alertDialog?.setView(dialogRootView)
+        alertDialog?.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        alertDialog?.dismiss()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        alertDialog?.dismiss()
     }
 
 }
