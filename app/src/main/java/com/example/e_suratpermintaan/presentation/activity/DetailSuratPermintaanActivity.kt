@@ -313,9 +313,8 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             suratPermintaanDataChange.changeType == FILE_ITEM_DELETED
         ) {
             initApiRequest()
+            EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
         }
-
-        EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
     }
 
     private fun stopRefresh() {

@@ -118,6 +118,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     fun onSuratPermintaanDataChange(suratPermintaanDataChange: SuratPermintaanDataChange) {
         if (suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_DELETED) {
             initApiRequest()
+            EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
         }
     }
 
