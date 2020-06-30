@@ -21,8 +21,7 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_AJUKAN
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_BATAL
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_DELETED
-import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_EDITED
-import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_TERIMA
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_VERIFIKASI
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
@@ -49,7 +48,6 @@ import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.progressB
 import kotlinx.android.synthetic.main.dialog_ajukan_surat.view.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
 import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
-import kotlinx.android.synthetic.main.fragment_login.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -439,14 +437,20 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_BATAL))
                 initApiRequest()
+                Handler().postDelayed(Runnable {
+                    finish()
+                }, 1000)
             }
 
             is VerifikasiSPResponse -> {
                 progressBarOverlay.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
-                EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_TERIMA))
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_VERIFIKASI))
                 initApiRequest()
+                Handler().postDelayed(Runnable {
+                    finish()
+                }, 1000)
             }
 
             is DeleteSPResponse -> {
