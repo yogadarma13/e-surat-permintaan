@@ -9,6 +9,10 @@ class SuratPermintaanDataChange(var changeType: Int) {
         const val FILE_ITEM_DELETED = 3
         const val SP_DELETED = 4
         const val SP_EDITED = 5
+        const val SP_TERIMA = 6
+        const val SP_TOLAK = 7
+        const val SP_BATAL = 8
+        const val SP_AJUKAN = 9
     }
 
 }

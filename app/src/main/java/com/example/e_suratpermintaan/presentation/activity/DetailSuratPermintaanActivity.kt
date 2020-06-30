@@ -18,8 +18,11 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.FILE_ITEM_EDITED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_DELETED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_EDITED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_AJUKAN
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_BATAL
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_DELETED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_EDITED
+import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_TERIMA
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
@@ -426,6 +429,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 progressBarOverlay.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_AJUKAN))
                 initApiRequest()
             }
 
@@ -433,6 +437,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 progressBarOverlay.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_BATAL))
                 initApiRequest()
             }
 
@@ -440,6 +445,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                 progressBarOverlay.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_TERIMA))
                 initApiRequest()
             }
 

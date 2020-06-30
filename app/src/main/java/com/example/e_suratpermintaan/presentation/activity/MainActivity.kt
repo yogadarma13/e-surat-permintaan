@@ -116,7 +116,11 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onSuratPermintaanDataChange(suratPermintaanDataChange: SuratPermintaanDataChange) {
-        if (suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_DELETED) {
+        if (suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_DELETED ||
+            suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_BATAL ||
+            suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_AJUKAN ||
+            suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_TERIMA ||
+            suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_TOLAK) {
             initApiRequest()
             EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
         }
