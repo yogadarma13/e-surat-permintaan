@@ -129,9 +129,9 @@ class NetworkClient {
                     //.addInterceptor(offlineInterceptor(context))
                     .addNetworkInterceptor(networkInterceptor(context)) // only used when network is on
 
-                httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS)
-                httpClientBuilder.readTimeout(30, TimeUnit.SECONDS)
-                httpClientBuilder.writeTimeout(30, TimeUnit.SECONDS)
+                httpClientBuilder.connectTimeout(120, TimeUnit.SECONDS)
+                httpClientBuilder.readTimeout(120, TimeUnit.SECONDS)
+                httpClientBuilder.writeTimeout(120, TimeUnit.SECONDS)
 
                 val client = httpClientBuilder.build()
 
