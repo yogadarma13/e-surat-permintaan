@@ -89,4 +89,7 @@
     <string name="welcome_app_name_text">di E-Surat Permintaan\nPT Jagat Konstruksi</string>
     <string name="next_btn_text">Lanjutkan</string>
     <string name="toolbar_master_data">Master Data</string>
+    <string name="konfirmasi_simpan_text_message">Apakah file lampiran spesifikasi sudah diupload?</string>
+    <string name="dialog_btn_simpan_data">Simpan Data</string>
+    <string name="dialog_btn_tutup">Tutup</string>
 </resources>

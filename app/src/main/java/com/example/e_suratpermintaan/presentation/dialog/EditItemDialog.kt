@@ -543,6 +543,7 @@ class EditItemDialog(
         dialogRootView.formSPS.etWaktuPelaksanaan.setText(itemsDetailSP.waktuPelaksanaan)
 
         dialogRootView.etStatusPenugasan.setText(itemsDetailSP.penugasan)
+        dialogRootView.etKeterangan.setText("")
 
         alertDialogEdit.show()
         hideAllRecyclerViews()

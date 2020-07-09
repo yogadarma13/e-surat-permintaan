@@ -37,7 +37,9 @@ import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanV
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
+import kotlinx.android.synthetic.main.dialog_konfirmasi_simpan.view.*
 import kotlinx.android.synthetic.main.dialog_tambah_file.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_file.view.etKeteranganFile
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -251,8 +253,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
         }
 
         btnSimpanEdit.setOnClickListener {
-            disposable = suratPermintaanViewModel.saveEdit(idSp.toString(), idUser.toString())
-                .subscribe(this::handleResponse, this::handleError)
+            showDialogKonfirmasiSimpan()
         }
 
         swipeRefreshLayout.setOnRefreshListener {
@@ -388,6 +389,30 @@ class EditSuratPermintaanActivity : BaseActivity() {
             }
 
         }
+    }
+
+    private fun showDialogKonfirmasiSimpan(){
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
+                .setTitle("Konfirmasi Simpan")
+
+        val alertDialog = alertDialogBuilder.create()
+
+        val dialogRootView =
+            View.inflate(this, R.layout.dialog_konfirmasi_simpan, null)
+
+        dialogRootView.btnSimpan.setOnClickListener {
+            disposable = suratPermintaanViewModel.saveEdit(idSp.toString(), idUser.toString())
+                .subscribe(this::handleResponse, this::handleError)
+            alertDialog.hide()
+        }
+
+        dialogRootView.btnTutup.setOnClickListener {
+            alertDialog.hide()
+        }
+
+        alertDialog.setView(dialogRootView)
+        alertDialog.show()
     }
 
     private fun showDialogTambahFile() {
