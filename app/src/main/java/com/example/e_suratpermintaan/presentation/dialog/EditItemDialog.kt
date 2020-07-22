@@ -340,7 +340,9 @@ class EditItemDialog(
                     persyaratanList,
                     statusPenugasanValue.toString(),
                     dataProfile.id!!,
-                    selectedItemId
+                    selectedItemId,
+                    // NANTI INI DIAMBIL DARI API KATEGORI
+                    "SUBKON"
                 )
                 activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
                     .subscribe(this::handleResponse, this::handleError)

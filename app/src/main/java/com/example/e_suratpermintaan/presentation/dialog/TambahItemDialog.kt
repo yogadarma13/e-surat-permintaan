@@ -318,7 +318,9 @@ class TambahItemDialog(
                         waktuPelaksanaan,
                         persyaratanList,
                         statusPenugasanValue.toString(),
-                        dataProfile.id!!
+                        dataProfile.id!!,
+                        // NANTI INI DIAMBIL DARI API KATEGORI
+                        "SUBKON"
                     )
                     activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
                         .subscribe(this::handleResponse, this::handleError)

@@ -179,6 +179,12 @@ val useCaseModule = module {
             get() as SchedulerProvider
         )
     }
+    single {
+        GetKategoriListUseCase(
+            get() as MasterRepository,
+            get() as SchedulerProvider
+        )
+    }
 
     // ===================================== SURAT PERMINTAAN (ITEM) ====================================
     single {

@@ -47,5 +47,8 @@ data class CreateItemSP(
     val statusPenugasan: String,
 
     @field:SerializedName("id_user")
-    val id_user: String
+    val id_user: String,
+
+    @field:SerializedName("kategori")
+    val kategori: String
 )

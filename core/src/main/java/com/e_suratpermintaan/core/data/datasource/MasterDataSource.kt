@@ -26,4 +26,6 @@ interface MasterDataSource {
     fun getPenugasanOptionList(): Observable<MasterPenugasanOptionResponse>
 
     fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse>
+
+    fun getKategoriList(): Observable<KategoriResponse>
 }

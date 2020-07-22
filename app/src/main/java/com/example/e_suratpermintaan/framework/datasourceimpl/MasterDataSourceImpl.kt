@@ -40,4 +40,5 @@ class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSourc
     override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
         networkApi.getMasterStatusPenugasanOptionList()
 
+    override fun getKategoriList(): Observable<KategoriResponse> = networkApi.getKategori()
 }

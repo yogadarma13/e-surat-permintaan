@@ -50,5 +50,8 @@ data class UpdateItemSP(
     val id_user: String,
 
     @field:SerializedName("id_item_sp")
-    val id_item_sp: String
+    val id_item_sp: String,
+
+    @field:SerializedName("kategori")
+    val kategori: String
 )

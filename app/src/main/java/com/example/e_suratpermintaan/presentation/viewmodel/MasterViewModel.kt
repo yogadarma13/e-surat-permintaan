@@ -23,7 +23,8 @@ class MasterViewModel(
     private val getMasterProyekFilterOptionUseCase: GetProyekFilterOptionUseCase,
     private val getMasterJenisPermintaanFilterOptionUseCase: GetJenisPermintaanFilterOptionUseCase,
     private val getMasterPenugasanOptionUseCase: GetPenugasanOptionUseCase,
-    private val getMasterStatusPenugasanOptionUseCase: GetStatusPenugasanOptionUseCase
+    private val getMasterStatusPenugasanOptionUseCase: GetStatusPenugasanOptionUseCase,
+    private val getKategoriListUseCase: GetKategoriListUseCase
 ) : ViewModel(), MasterDataSource {
 
     override fun getProyekList(id_user: String): Observable<MasterProyekResponse> =
@@ -58,4 +59,6 @@ class MasterViewModel(
 
     override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
         getMasterStatusPenugasanOptionUseCase.invoke()
+
+    override fun getKategoriList(): Observable<KategoriResponse> = getKategoriListUseCase.invoke()
 }

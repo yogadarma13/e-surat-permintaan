@@ -166,6 +166,9 @@ interface NetworkApi {
         @Query("id") id: String
     ): Observable<MasterUOMResponse>
 
+    @GET("datakategori")
+    fun getKategori(): Observable<KategoriResponse>
+
     // ================================= SURAT PERMINTAAN (ITEM) ================================
     @POST("create_item_sp")
     fun createItemSP(
