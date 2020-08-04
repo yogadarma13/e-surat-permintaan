@@ -15,6 +15,9 @@ class ViewHolderFactory {
                 UomViewHolder::class.java -> UomViewHolder(
                     view
                 )
+                KategoriViewHolder::class.java -> KategoriViewHolder(
+                    view
+                )
                 JenisBarangViewHolder::class.java -> JenisBarangViewHolder(
                     view
                 )

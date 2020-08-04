@@ -41,6 +41,8 @@ class StarterActivity : BaseActivity() {
 
         val observableUom = masterViewModel.getUomList("all")
 
+        val observableKategori = masterViewModel.getKategoriList()
+
         val observablePenugasan = masterViewModel.getPenugasanOptionList()
 
         val observableStatusPenugasan = masterViewModel.getStatusPenugasanOptionList()
@@ -59,6 +61,7 @@ class StarterActivity : BaseActivity() {
         val concat1 = Observable.concat(
             observableCC.onErrorResumeNext { Observable.empty() },
             observableUom.onErrorResumeNext { Observable.empty() },
+            observableKategori.onErrorResumeNext { Observable.empty() },
             observablePersyaratan.onErrorResumeNext { Observable.empty() })
 
         val concat2 = Observable.concat(
@@ -118,6 +121,11 @@ class StarterActivity : BaseActivity() {
             is MasterUOMResponse -> {
                 sharedMasterData.setUomList(response.data)
                 Log.d("MYAPPSTARTER", "UOM RESPONSE")
+            }
+
+            is KategoriResponse -> {
+                sharedMasterData.setKategoriList(response.data)
+                Log.d("MYAPPSTARTER", "KATEGORI RESPONSE")
             }
 
             is MasterPersyaratanResponse -> {

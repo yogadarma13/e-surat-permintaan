@@ -53,7 +53,10 @@ data class DataDetailItem(
     val kapasitas: String? = null,
 
     @field:SerializedName("persyaratan")
-    val persyaratan: List<PersyaratanDetailItem?>? = null
+    val persyaratan: List<PersyaratanDetailItem?>? = null,
+
+    @field:SerializedName("kategori")
+    val kategori: String? = null
 
 )
 

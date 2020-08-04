@@ -91,8 +91,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     viewHolderSPA.btnPenugasanSPA.visibility = View.GONE
                 }
 
-                viewHolderSPA.jenisDetailSPA.text = data.idBarang
                 viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
+                viewHolderSPA.kategoriDetailSPA.text = data.kategori
+                viewHolderSPA.jenisDetailSPA.text = data.idBarang
                 viewHolderSPA.satuanDetailSPA.text = data.idSatuan
                 viewHolderSPA.kapasitasDetailSPA.text = data.kapasitas
                 viewHolderSPA.waktuDetailSPA.text = data.waktuPemakaian
@@ -173,8 +174,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     viewHolderSPB.btnPenugasanSPB.visibility = View.GONE
                 }
 
-                viewHolderSPB.jenisDetailSPB.text = data.idBarang
                 viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
+                viewHolderSPB.kategoriDetailSPB.text = data.kategori
+                viewHolderSPB.jenisDetailSPB.text = data.idBarang
                 viewHolderSPB.satuanDetailSPB.text = data.idSatuan
                 viewHolderSPB.fungsiDetailSPB.text = data.fungsi
                 viewHolderSPB.targetDetailSPB.text = data.target
@@ -253,8 +255,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     viewHolderSPS.btnPenugasanSPS.visibility = View.GONE
                 }
 
-                viewHolderSPS.jenisDetailSPS.text = data.idBarang
                 viewHolderSPS.kodeDetailSPS.text = data.kodePekerjaan
+                viewHolderSPS.kategoriDetailSPS.text = data.kategori
+                viewHolderSPS.jenisDetailSPS.text = data.idBarang
                 viewHolderSPS.satuanDetailSPS.text = data.idSatuan
                 viewHolderSPS.waktuDetailSPS.text = data.waktuPelaksanaan
                 viewHolderSPS.qtyDetailSPS.text = data.qty
@@ -350,8 +353,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class ViewHolderSPA(itemView: View) : ViewHolder(itemView) {
-        val jenisDetailSPA: TextView = itemView.findViewById(R.id.tvJenisDetailSPA)
         val kodeDetailSPA: TextView = itemView.findViewById(R.id.tvKodeDetailSPA)
+        val kategoriDetailSPA: TextView = itemView.findViewById(R.id.tvKategoriSPA)
+        val jenisDetailSPA: TextView = itemView.findViewById(R.id.tvJenisDetailSPA)
         val satuanDetailSPA: TextView = itemView.findViewById(R.id.tvSatuanDetailSPA)
         val kapasitasDetailSPA: TextView = itemView.findViewById(R.id.tvKapasitasDetailSPA)
         val merkDetailSPA: TextView = itemView.findViewById(R.id.tvMerkDetailSPA)
@@ -372,8 +376,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
-        val jenisDetailSPB: TextView = itemView.findViewById(R.id.tvJenisDetailSPB)
         val kodeDetailSPB: TextView = itemView.findViewById(R.id.tvKodeDetailSPB)
+        val kategoriDetailSPB: TextView = itemView.findViewById(R.id.tvKategoriSPB)
+        val jenisDetailSPB: TextView = itemView.findViewById(R.id.tvJenisDetailSPB)
         val satuanDetailSPB: TextView = itemView.findViewById(R.id.tvSatuanDetailSPB)
         val fungsiDetailSPB: TextView = itemView.findViewById(R.id.tvFungsiDetailSPB)
         val targetDetailSPB: TextView = itemView.findViewById(R.id.tvTargetDetailSPB)
@@ -394,8 +399,9 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
     }
 
     inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
-        val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
         val kodeDetailSPS: TextView = itemView.findViewById(R.id.tvKodeDetailSPS)
+        val kategoriDetailSPS: TextView = itemView.findViewById(R.id.tvKategoriSPS)
+        val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
         val satuanDetailSPS: TextView = itemView.findViewById(R.id.tvSatuanDetailSPS)
         val persyaratanDetailSPS: LinearLayout = itemView.findViewById(R.id.tvPersyaratanDetailSPS)
         val waktuDetailSPS: TextView = itemView.findViewById(R.id.tvWaktuDetailSPS)

@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -23,18 +22,37 @@ import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseFilterableAdapter
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.CCViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.JenisBarangViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.StatusPenugasanViewHolder
-import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.UomViewHolder
+import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.*
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_edit_item.view.*
+import kotlinx.android.synthetic.main.dialog_edit_item.view.container
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etJenisBarang
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etKategori
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etKodePekerjaan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etSatuan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etStatusPenugasan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.etVolume
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formKeterangan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPA
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPB
+import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPS
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvJenisBarang
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvKategori
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvKodePekerjaan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvSatuan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.rvStatusPenugasan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.tilJenisBarang
+import kotlinx.android.synthetic.main.dialog_edit_item.view.tilKodePekerjaan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.tilSatuan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.tilStatusPenugasan
+import kotlinx.android.synthetic.main.dialog_edit_item.view.tilVolume
 import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spa.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spb.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_sps.view.*
+import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,6 +72,8 @@ class EditItemDialog(
     private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
     private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
     private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
+    private lateinit var kategoriAdapter: BaseFilterableAdapter<KategoriViewHolder>
+
     private lateinit var statusPenugasanAdapter: BaseAdapter<StatusPenugasanViewHolder>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
 
@@ -169,13 +189,20 @@ class EditItemDialog(
             it?.forEach { item ->
                 ccAdapter.itemList.add(item as DataMasterCC)
                 jenisBarangAdapter.itemList.add(item)
-                Log.d("MYAPP", item.toString())
             }
             ccAdapter.oldItemList = ccAdapter.itemList
             ccAdapter.notifyDataSetChanged()
 
             jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
             jenisBarangAdapter.notifyDataSetChanged()
+        })
+
+        sharedMasterData.getKategoriList().observe(activity, Observer {
+            it?.forEach { item ->
+                kategoriAdapter.itemList.add(item as DataKategori)
+            }
+            kategoriAdapter.oldItemList = kategoriAdapter.itemList
+            kategoriAdapter.notifyDataSetChanged()
         })
 
         sharedMasterData.getUomList().observe(activity, Observer {
@@ -295,6 +322,7 @@ class EditItemDialog(
         dialogRootView.performClick()
 
         val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
+        val kategori = dialogRootView.etKategori.text.toString()
         val jenisBarang = dialogRootView.etJenisBarang.text.toString()
         val volume = dialogRootView.etVolume.text.toString()
         val satuan = dialogRootView.etSatuan.text.toString()
@@ -338,11 +366,10 @@ class EditItemDialog(
                     waktuPemakaian,
                     waktuPelaksanaan,
                     persyaratanList,
-                    statusPenugasanValue.toString(),
+                    statusPenugasanValue,
                     dataProfile.id!!,
                     selectedItemId,
-                    // NANTI INI DIAMBIL DARI API KATEGORI
-                    "SUBKON"
+                    kategori
                 )
                 activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
                     .subscribe(this::handleResponse, this::handleError)
@@ -361,6 +388,7 @@ class EditItemDialog(
 
     private fun hideAllRecyclerViews() {
         dialogRootView.rvKodePekerjaan.visibility = View.GONE
+        dialogRootView.rvKategori.visibility = View.GONE
         dialogRootView.rvJenisBarang.visibility = View.GONE
         dialogRootView.rvSatuan.visibility = View.GONE
         dialogRootView.rvStatusPenugasan.visibility = View.GONE
@@ -387,6 +415,20 @@ class EditItemDialog(
         dialogRootView.rvKodePekerjaan.layoutManager = LinearLayoutManager(activity)
         dialogRootView.rvKodePekerjaan.adapter = ccAdapter
         // ------------------------------ INIT CC END ---------------------------------------------
+
+
+        // ------------------------------ INIT KATEGORI START ------------------------------------------
+        kategoriAdapter =
+            BaseFilterableAdapter(R.layout.item_simple_row, KategoriViewHolder::class.java)
+        kategoriAdapter.setOnItemClickListener { item, _ ->
+            dialogRootView.etKategori.setText((item as DataKategori).kategori)
+            dialogRootView.rvKategori.visibility = View.GONE
+            activity.closeKeyboard(dialogRootView.etSatuan)
+            dialogRootView.container.performClick()
+        }
+        dialogRootView.rvKategori.layoutManager = LinearLayoutManager(activity)
+        dialogRootView.rvKategori.adapter = kategoriAdapter
+        // ------------------------------ INIT KATEGORI END --------------------------------------------
 
 
         // ------------------------------ INIT JENIS START ----------------------------------------
@@ -454,6 +496,21 @@ class EditItemDialog(
             }
         })
 
+        dialogRootView.etKategori.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (dialogRootView.etKategori.isFocused) {
+                    kategoriAdapter.filter.filter(s)
+                    dialogRootView.rvKategori.visibility = View.VISIBLE
+                }
+            }
+        })
+
         dialogRootView.etJenisBarang.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -490,6 +547,15 @@ class EditItemDialog(
                 dialogRootView.rvKodePekerjaan.visibility = View.VISIBLE
             } else {
                 dialogRootView.rvKodePekerjaan.visibility = View.GONE
+                activity.closeKeyboard(dialogRootView.etKodePekerjaan)
+            }
+        }
+
+        dialogRootView.etKategori.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                dialogRootView.rvKategori.visibility = View.VISIBLE
+            } else {
+                dialogRootView.rvKategori.visibility = View.GONE
                 activity.closeKeyboard(dialogRootView.etKodePekerjaan)
             }
         }
@@ -531,7 +597,10 @@ class EditItemDialog(
 
         selectedItemId = itemsDetailSP.id.toString()
 
+        activity.toastNotify(itemsDetailSP.kategori)
+
         dialogRootView.etKodePekerjaan.setText(itemsDetailSP.kodePekerjaan)
+        dialogRootView.etKategori.setText(itemsDetailSP.kategori)
         dialogRootView.etJenisBarang.setText(itemsDetailSP.idBarang)
         dialogRootView.etVolume.setText(itemsDetailSP.qty)
         dialogRootView.etSatuan.setText(itemsDetailSP.idSatuan)

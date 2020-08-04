@@ -145,6 +145,9 @@ data class DataDetailSP(
 
 data class ItemsDetailSP(
 
+	@field:SerializedName("kategori")
+	val kategori: String? = null,
+
 	@field:SerializedName("persyaratan")
 	val persyaratan: List<PersyaratanItemDetailSP?>? = null,
 

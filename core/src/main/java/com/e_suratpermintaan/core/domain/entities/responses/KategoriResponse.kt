@@ -18,4 +18,8 @@ data class DataKategori(
 
 	@field:SerializedName("kategori")
 	val kategori: String? = null
-)
+) {
+	override fun toString(): String {
+		return kategori.toString()
+	}
+}

@@ -69,6 +69,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/labelKategori"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/label_kategori"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPS" />
+
+            <TextView
                 android:id="@+id/labelQty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +86,7 @@
                 android:text="@string/label_vol"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPS" />
+                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPS" />
 
             <TextView
                 android:id="@+id/labelSatuan"
@@ -160,7 +170,7 @@
                 tools:text="Kode Pekerjaan" />
 
             <TextView
-                android:id="@+id/tvQtySPS"
+                android:id="@+id/tvKategoriSPS"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -169,6 +179,18 @@
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPS"
+                tools:text="Kategori" />
+
+            <TextView
+                android:id="@+id/tvQtySPS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toRightOf="@id/barrier3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPS"
                 tools:text="Qty" />
 
             <TextView

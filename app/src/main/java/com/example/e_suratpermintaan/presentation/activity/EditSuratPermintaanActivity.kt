@@ -52,7 +52,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     companion object {
         const val ID_SP_EDIT = "id_sp"
-        const val MASTER_PERSYARATAN = "master_persyaratan"
+        // const val MASTER_PERSYARATAN = "master_persyaratan"
         const val PICKFILE_REQUEST_CODE = 999
     }
 
@@ -69,7 +69,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private var dataDetailSP: DataDetailSP? = null
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
-    private var idFile: String? = null
+    // private var idFile: String? = null
     private var persyaratanList = mutableMapOf<String, String>()
     private var idUser: String? = null
     private var idRole: String? = null
@@ -294,9 +294,11 @@ class EditSuratPermintaanActivity : BaseActivity() {
             is CreateItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+
                 alertDialogTambah =
                     TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
                 alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
+
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }
 
@@ -391,7 +393,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
         }
     }
 
-    private fun showDialogKonfirmasiSimpan(){
+    private fun showDialogKonfirmasiSimpan() {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
                 .setTitle("Konfirmasi Simpan")
@@ -477,7 +479,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
             View.inflate(this, R.layout.dialog_tambah_file, null)
 
         dialogRootView.etKeteranganFile.setText(keterangan)
-        dialogRootView.btnTambahFile.text = "Edit File"
+        dialogRootView.btnTambahFile.text = getString(R.string.btn_edit_file)
 
         dialogRootView.btnPilihFile.setOnClickListener {
             val selectFile = Intent(Intent.ACTION_GET_CONTENT)

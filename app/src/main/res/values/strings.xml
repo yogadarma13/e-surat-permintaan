@@ -92,4 +92,6 @@
     <string name="konfirmasi_simpan_text_message">Apakah file lampiran spesifikasi sudah diupload?</string>
     <string name="dialog_btn_simpan_data">Simpan Data</string>
     <string name="dialog_btn_tutup">Tutup</string>
+    <string name="btn_edit_file">Edit File</string>
+    <string name="label_kategori">Kategori</string>
 </resources>

@@ -1,10 +1,7 @@
 package com.example.e_suratpermintaan.presentation.sharedlivedata
 
 import androidx.lifecycle.MutableLiveData
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterCC
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterOption
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterPersyaratan
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
+import com.e_suratpermintaan.core.domain.entities.responses.*
 
 class SharedMasterData {
 
@@ -12,6 +9,7 @@ class SharedMasterData {
 
     private val costCodeList: MutableLiveData<List<DataMasterCC?>?> = MutableLiveData()
     private val uomList: MutableLiveData<List<DataMasterUOM?>?> = MutableLiveData()
+    private val kategoriList: MutableLiveData<List<DataKategori?>?> = MutableLiveData()
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()
     private val penugasanList: MutableLiveData<List<DataMasterOption?>?> = MutableLiveData()
     private val statusPenugasanList: MutableLiveData<List<DataMasterOption?>?> = MutableLiveData()
@@ -37,6 +35,12 @@ class SharedMasterData {
 
     fun setUomList(list: List<DataMasterUOM?>?) {
         uomList.value = list
+    }
+
+    fun getKategoriList(): MutableLiveData<List<DataKategori?>?> = kategoriList
+
+    fun setKategoriList(list: List<DataKategori?>?) {
+        kategoriList.value = list
     }
 
     fun getPersyaratanList(): MutableLiveData<List<DataMasterPersyaratan?>?> = persyaratanList
