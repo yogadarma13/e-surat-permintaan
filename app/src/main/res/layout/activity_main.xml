@@ -25,7 +25,7 @@
                     android:layout_width="100dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/logo_white_2bak" />
+                    android:src="@drawable/logo_white_2" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
