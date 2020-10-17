@@ -94,4 +94,5 @@
     <string name="dialog_btn_tutup">Tutup</string>
     <string name="btn_edit_file">Edit File</string>
     <string name="label_kategori">Kategori</string>
+    <string name="label_jenis_barang">Jenis Barang</string>
 </resources>

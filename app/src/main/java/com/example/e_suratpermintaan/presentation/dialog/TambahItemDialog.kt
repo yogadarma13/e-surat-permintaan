@@ -279,7 +279,7 @@ class TambahItemDialog(
 
             val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
             val jenisBarang = dialogRootView.etJenisBarang.text.toString()
-            val kategori = dialogRootView.etJenisBarang.text.toString()
+            val kategori = dialogRootView.etKategori.text.toString()
             val volume = dialogRootView.etVolume.text.toString()
             val satuan = dialogRootView.etSatuan.text.toString()
             val waktuPemakaian = dialogRootView.etWaktuPemakaian.text.toString()
@@ -459,7 +459,7 @@ class TambahItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKategori.isFocused) {
-                    kategoriAdapter.filter.filter(s)
+                    kategoriAdapter.filter.filter("")
                     dialogRootView.rvKategori.visibility = View.VISIBLE
                 }
             }
@@ -512,6 +512,11 @@ class TambahItemDialog(
                 dialogRootView.rvKategori.visibility = View.GONE
                 activity.closeKeyboard(dialogRootView.etKodePekerjaan)
             }
+        }
+
+        dialogRootView.etKategori.setOnClickListener { _ ->
+            dialogRootView.rvKategori.visibility = View.VISIBLE
+            activity.closeKeyboard(dialogRootView.etKodePekerjaan)
         }
 
         dialogRootView.etJenisBarang.setOnFocusChangeListener { _, hasFocus ->

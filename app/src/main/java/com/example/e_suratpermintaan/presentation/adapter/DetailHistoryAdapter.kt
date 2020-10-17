@@ -17,9 +17,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItem
-import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
+import kotlinx.android.synthetic.main.detail_history_spa_item.view.*
+import kotlinx.android.synthetic.main.detail_history_spb_item.view.*
+import kotlinx.android.synthetic.main.detail_history_spb_item.view.labelKategori
 import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 
 class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolder>() {
@@ -52,6 +54,9 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                 val viewHolderSPA = holder as ViewHolderSPA
 
                 viewHolderSPA.jenisDetailSPA.text = data.idBarang
+                viewHolderSPA.jenisBarangSPA.text = data.idBarang
+                viewHolderSPA.expandedChildSPA.labelKategori.visibility = View.GONE
+                viewHolderSPA.kategoriDetailSPA.visibility = View.GONE
                 viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
                 viewHolderSPA.satuanDetailSPA.text = data.idSatuan
                 viewHolderSPA.kapasitasDetailSPA.text = data.kapasitas
@@ -100,6 +105,9 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
 
                 viewHolderSPB.jenisDetailSPB.text = data.idBarang
                 viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
+                viewHolderSPB.jenisBarangSPB.text = data.idBarang
+                viewHolderSPB.expandedChildSPB.labelKategori.visibility = View.GONE
+                viewHolderSPB.kategoriDetailSPB.visibility = View.GONE
                 viewHolderSPB.satuanDetailSPB.text = data.idSatuan
                 viewHolderSPB.fungsiDetailSPB.text = data.fungsi
                 viewHolderSPB.targetDetailSPB.text = data.target
@@ -145,6 +153,9 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
 
                 viewHolderSPS.jenisDetailSPS.text = data.idBarang
                 viewHolderSPS.kodeDetailSPS.text = data.kodePekerjaan
+                viewHolderSPS.jenisBarangSPS.text = data.idBarang
+                viewHolderSPS.expandedChildSPS.labelKategori.visibility = View.GONE
+                viewHolderSPS.kategoriDetailSPS.visibility = View.GONE
                 viewHolderSPS.satuanDetailSPS.text = data.idSatuan
                 viewHolderSPS.waktuDetailSPS.text = data.waktuPelaksanaan
                 viewHolderSPS.qtyDetailSPS.text = data.qty
@@ -160,12 +171,12 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                     var isChecked = false
                     data.persyaratan?.forEach { persyaratanItem ->
                         val dataSyarat = persyaratanItem as PersyaratanItem
-                        if (itemMaster.key == dataSyarat.persyaratan){
+                        if (itemMaster.key == dataSyarat.persyaratan) {
                             isChecked = true
                         }
                     }
 
-                    if (isChecked){
+                    if (isChecked) {
                         view.checkbox.isChecked = true
                     }
 
@@ -176,7 +187,6 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
 
                     parent.addView(view)
                 }
-
 
 
                 var dataKeterangan: String? = ""
@@ -233,6 +243,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
     inner class ViewHolderSPA(itemView: View) : ViewHolder(itemView) {
         val jenisDetailSPA: TextView = itemView.findViewById(R.id.tvJenisDetailSPA)
         val kodeDetailSPA: TextView = itemView.findViewById(R.id.tvKodeDetailSPA)
+        val jenisBarangSPA: TextView = itemView.findViewById(R.id.tvJenisBarangSPA)
+        val kategoriDetailSPA: TextView = itemView.findViewById(R.id.tvKategoriSPA)
         val satuanDetailSPA: TextView = itemView.findViewById(R.id.tvSatuanDetailSPA)
         val kapasitasDetailSPA: TextView = itemView.findViewById(R.id.tvKapasitasDetailSPA)
         val merkDetailSPA: TextView = itemView.findViewById(R.id.tvMerkDetailSPA)
@@ -248,6 +260,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
         val jenisDetailSPB: TextView = itemView.findViewById(R.id.tvJenisDetailSPB)
         val kodeDetailSPB: TextView = itemView.findViewById(R.id.tvKodeDetailSPB)
+        val jenisBarangSPB: TextView = itemView.findViewById(R.id.tvJenisBarangSPB)
+        val kategoriDetailSPB: TextView = itemView.findViewById(R.id.tvKategoriSPB)
         val satuanDetailSPB: TextView = itemView.findViewById(R.id.tvSatuanDetailSPB)
         val fungsiDetailSPB: TextView = itemView.findViewById(R.id.tvFungsiDetailSPB)
         val targetDetailSPB: TextView = itemView.findViewById(R.id.tvTargetDetailSPB)
@@ -263,6 +277,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
     inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
         val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
         val kodeDetailSPS: TextView = itemView.findViewById(R.id.tvKodeDetailSPS)
+        val jenisBarangSPS: TextView = itemView.findViewById(R.id.tvJenisBarangSPS)
+        val kategoriDetailSPS: TextView = itemView.findViewById(R.id.tvKategoriSPS)
         val satuanDetailSPS: TextView = itemView.findViewById(R.id.tvSatuanDetailSPS)
         val persyaratanDetailSPS: LinearLayout = itemView.findViewById(R.id.tvPersyaratanDetailSPS)
         val waktuDetailSPS: TextView = itemView.findViewById(R.id.tvWaktuDetailSPS)

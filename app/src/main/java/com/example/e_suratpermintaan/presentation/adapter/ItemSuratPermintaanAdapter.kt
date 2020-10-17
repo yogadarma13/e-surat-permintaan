@@ -56,6 +56,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                 val viewHolderSPA = holder as ViewHolderSPA
 
                 viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
+                viewHolderSPA.jenisBarangSPA.text = data.idBarang
                 viewHolderSPA.kategoriDetailSPA.text = data.kategori
                 viewHolderSPA.jenisDetailSPA.text = data.idBarang
                 viewHolderSPA.satuanDetailSPA.text = data.idSatuan
@@ -118,6 +119,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                 val viewHolderSPB = holder as ViewHolderSPB
 
                 viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
+                viewHolderSPB.jenisBarangSPB.text = data.idBarang
                 viewHolderSPB.kategoriDetailSPB.text = data.kategori
                 viewHolderSPB.jenisDetailSPB.text = data.idBarang
                 viewHolderSPB.satuanDetailSPB.text = data.idSatuan
@@ -178,6 +180,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                 val viewHolderSPS = holder as ViewHolderSPS
 
                 viewHolderSPS.kodeDetailSPS.text = data.kodePekerjaan
+                viewHolderSPS.jenisBarangSPS.text = data.idBarang
                 viewHolderSPS.kategoriDetailSPS.text = data.kategori
                 viewHolderSPS.jenisDetailSPS.text = data.idBarang
                 viewHolderSPS.satuanDetailSPS.text = data.idSatuan
@@ -279,6 +282,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
 
     inner class ViewHolderSPA(itemView: View) : ViewHolder(itemView) {
         val kodeDetailSPA: TextView = itemView.findViewById(R.id.tvKodeDetailSPA)
+        val jenisBarangSPA: TextView = itemView.findViewById(R.id.tvJenisBarangSPA)
         val kategoriDetailSPA: TextView = itemView.findViewById(R.id.tvKategoriSPA)
         val jenisDetailSPA: TextView = itemView.findViewById(R.id.tvJenisDetailSPA)
         val satuanDetailSPA: TextView = itemView.findViewById(R.id.tvSatuanDetailSPA)
@@ -299,6 +303,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
         val kodeDetailSPB: TextView = itemView.findViewById(R.id.tvKodeDetailSPB)
+        val jenisBarangSPB: TextView = itemView.findViewById(R.id.tvJenisBarangSPB)
         val kategoriDetailSPB: TextView = itemView.findViewById(R.id.tvKategoriSPB)
         val jenisDetailSPB: TextView = itemView.findViewById(R.id.tvJenisDetailSPB)
         val satuanDetailSPB: TextView = itemView.findViewById(R.id.tvSatuanDetailSPB)
@@ -319,6 +324,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
 
     inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
         val kodeDetailSPS: TextView = itemView.findViewById(R.id.tvKodeDetailSPS)
+        val jenisBarangSPS: TextView = itemView.findViewById(R.id.tvJenisBarangSPS)
         val kategoriDetailSPS: TextView = itemView.findViewById(R.id.tvKategoriSPS)
         val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
         val satuanDetailSPS: TextView = itemView.findViewById(R.id.tvSatuanDetailSPS)

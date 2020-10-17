@@ -2,7 +2,6 @@ package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,6 @@ import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewM
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_history_surat_permintaan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.Serializable
 
 class HistorySuratPermintaanActivity : BaseActivity() {
 
@@ -30,8 +28,8 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     private val historyViewModel: SuratPermintaanViewModel by viewModel()
 
     private lateinit var historyAdapter: HistoryAdapter
-    private var idSp : String? = null
-    private var jenisSp : String? = null
+    private var idSp: String? = null
+    private var jenisSp: String? = null
 
     override fun layoutId(): Int = R.layout.activity_history_surat_permintaan
 
@@ -65,7 +63,7 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }
@@ -80,11 +78,12 @@ class HistorySuratPermintaanActivity : BaseActivity() {
 
     private fun setupListener() {
         historyAdapter.setOnClickListener(object :
-        HistoryAdapter.OnClickItemListener {
+            HistoryAdapter.OnClickItemListener {
             override fun onClick(view: View, item: List<DetailHistory?>?) {
                 val gson = Gson()
                 val json = gson.toJson(item)
-                val intent = Intent(this@HistorySuratPermintaanActivity, DetailHistoryActivity::class.java)
+                val intent =
+                    Intent(this@HistorySuratPermintaanActivity, DetailHistoryActivity::class.java)
                 intent.putExtra(DETAIL_HISTORY_SP, json)
                 intent.putExtra(JENIS_SP_DETAIL_HISTORY, jenisSp)
                 startActivity(intent)

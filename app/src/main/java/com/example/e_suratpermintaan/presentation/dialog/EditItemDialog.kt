@@ -505,7 +505,7 @@ class EditItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKategori.isFocused) {
-                    kategoriAdapter.filter.filter(s)
+                    kategoriAdapter.filter.filter("")
                     dialogRootView.rvKategori.visibility = View.VISIBLE
                 }
             }
@@ -558,6 +558,11 @@ class EditItemDialog(
                 dialogRootView.rvKategori.visibility = View.GONE
                 activity.closeKeyboard(dialogRootView.etKodePekerjaan)
             }
+        }
+
+        dialogRootView.etKategori.setOnClickListener { _ ->
+            dialogRootView.rvKategori.visibility = View.VISIBLE
+            activity.closeKeyboard(dialogRootView.etKodePekerjaan)
         }
 
         dialogRootView.etJenisBarang.setOnFocusChangeListener { _, hasFocus ->
