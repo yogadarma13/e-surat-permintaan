@@ -174,6 +174,7 @@ class ProfileActivity : BaseActivity() {
                 etDeskripsiProfile.setText(dataProfile?.desc)
                 tvUsernameProfile.text = dataProfile?.username
 
+                toastNotify(dataProfile?.fotoProfile.toString())
 
                 linearLayoutJenisProfile.removeAllViews()
                 dataProfile?.jenis?.forEach {
