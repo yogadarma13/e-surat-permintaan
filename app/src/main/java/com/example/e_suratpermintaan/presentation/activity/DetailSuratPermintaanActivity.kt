@@ -111,9 +111,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuCetakSP -> {
-                val url = "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}"
-                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(i)
+                printRequest()
             }
 
             android.R.id.home -> {
@@ -121,6 +119,12 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun printRequest() {
+        val url = "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}"
+        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(i)
     }
 
     private fun init() {
@@ -227,7 +231,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         }
 
         btnCancel.setOnClickListener {
-
             alertDialog =
                 AlertDialog.Builder(this)
                     .setTitle("Konfirmasi Pembatalan")
@@ -238,12 +241,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         )
-//                        btnAccept.isEnabled = false
-//                        btnAjukan.isEnabled = false
-//                        btnCancel.isEnabled = false
-//                        btnDecline.isEnabled = false
-//                        btnDelete.isEnabled = false
-//                        btn
                         disposable = suratPermintaanViewModel.cancel(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
@@ -254,13 +251,11 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         }
 
         btnAccept.setOnClickListener {
-
-            showDialogVerifikasi()
-
+            showVerificationDialog()
         }
 
         btnDecline.setOnClickListener {
-            showDialogCatatan()
+            showDeclineDialog()
         }
 
         btnEdit.setOnClickListener {
@@ -288,7 +283,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
             alertDialog?.show()
         }
-
     }
 
     private fun startRefresh() {
@@ -514,7 +508,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 //        }
 //    }
 
-    private fun showDialogCatatan() {
+    private fun showDeclineDialog() {
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
@@ -623,7 +617,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         alertDialog?.show()
     }
 
-    private fun showDialogVerifikasi() {
+    private fun showVerificationDialog() {
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)

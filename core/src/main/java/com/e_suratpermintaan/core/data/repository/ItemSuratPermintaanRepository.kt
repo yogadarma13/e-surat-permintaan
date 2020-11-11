@@ -15,12 +15,8 @@ class ItemSuratPermintaanRepository(private val itemDataSource: ItemSuratPermint
     override fun removeItem(id: String): Observable<DeleteItemSPResponse> =
         itemDataSource.removeItem(id)
 
-    override fun editItem(
-        updateItemSP: UpdateItemSP
-    ): Observable<EditItemSPResponse> =
-        itemDataSource.editItem(
-            updateItemSP
-        )
+    override fun editItem(updateItemSP: UpdateItemSP): Observable<EditItemSPResponse> =
+        itemDataSource.editItem(updateItemSP)
 
     override fun readDetailItem(id: String): Observable<DetailItemSPResponse> =
         itemDataSource.readDetailItem(id)
