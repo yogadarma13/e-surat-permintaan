@@ -10,7 +10,6 @@ class AddItemSuratPermintaanUseCase(
     private val itemSuratPermintaanRepository: ItemSuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-
     fun invoke(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
         itemSuratPermintaanRepository.addItem(createItemSP)
             .subscribeOn(schedulerProvider.io)

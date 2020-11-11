@@ -243,11 +243,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                     startActivityForResult(intent, LAUNCH_PROFILE_ACTIVITY)
                 }
                 R.id.logout -> {
-                    profilePreference.removeProfile()
-                    fcmPreference.removeUserTokenId()
-
-                    finish()
-                    startActivity(Intent(this, StarterActivity::class.java))
+                    logout()
                 }
                 R.id.semua -> {
                     // indeks 0 untuk nilai valuenya "semua"
@@ -276,6 +272,14 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         }
 
         initNavHeaderProfile()
+    }
+
+    private fun logout() {
+        profilePreference.removeProfile()
+        fcmPreference.removeUserTokenId()
+
+        finish()
+        startActivity(Intent(this, StarterActivity::class.java))
     }
 
     private fun initNavHeaderProfile() {
