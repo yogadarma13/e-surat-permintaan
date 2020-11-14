@@ -14,7 +14,9 @@ class ItemSuratPermintaanViewModel(
     private val removeItemSuratPermintaanUseCase: RemoveItemSuratPermintaanUseCase,
     private val editItemSuratPermintaanUseCase: EditItemSuratPermintaanUseCase,
     private val readDetailItemSuratPermintaanUseCase: ReadDetailItemSuratPermintaanUseCase,
-    private val penugasanItemUseCase: SetPenugasanItemUseCase
+    private val penugasanItemUseCase: SetPenugasanItemUseCase,
+    private val processItemSuratPermintaanUseCase: ProcessItemSuratPermintaanUseCase,
+    private val unProcessItemSuratPermintaanUseCase: UnProcessItemSuratPermintaanUseCase
 ) : ViewModel(), ItemSuratPermintaanDataSource {
 
     override fun addItem(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
@@ -32,5 +34,19 @@ class ItemSuratPermintaanViewModel(
 
     override fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse> =
         penugasanItemUseCase.invoke(penugasanItemSP)
+
+    override fun processItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse> =
+        processItemSuratPermintaanUseCase.invoke(idSp, idItem, idUser)
+
+    override fun unProcessItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse> =
+        unProcessItemSuratPermintaanUseCase.invoke(idSp, idItem, idUser)
 
 }

@@ -200,7 +200,16 @@ data class ItemsDetailSP(
 	val kapasitas: String? = null,
 
 	@field:SerializedName("penugasan")
-	val penugasan: String? = null
+	val penugasan: String? = null,
+
+	@field:SerializedName("process_by")
+	val processBy: String? = null,
+
+	@field:SerializedName("tombol_process")
+	val tombolProcess: Int? = null,
+
+	@field:SerializedName("tombol_un_process")
+	val tombolUnProcess: Int? = null
 )
 
 data class FileLampiranDetailSP(

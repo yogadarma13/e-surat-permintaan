@@ -16,4 +16,8 @@ interface ItemSuratPermintaanDataSource {
     fun readDetailItem(id: String): Observable<DetailItemSPResponse>
 
     fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse>
+
+    fun processItem(idSp: String, idItem: String, idUser: String): Observable<ProcessItemSPResponse>
+
+    fun unProcessItem(idSp: String, idItem: String, idUser: String): Observable<ProcessItemSPResponse>
 }

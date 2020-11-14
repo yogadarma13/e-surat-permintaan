@@ -23,4 +23,16 @@ class ItemSuratPermintaanRepository(private val itemDataSource: ItemSuratPermint
 
     override fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse> =
         itemDataSource.setPenugasanItem(penugasanItemSP)
+
+    override fun processItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse> = itemDataSource.processItem(idSp, idItem, idUser)
+
+    override fun unProcessItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse> = itemDataSource.unProcessItem(idSp, idItem, idUser)
 }

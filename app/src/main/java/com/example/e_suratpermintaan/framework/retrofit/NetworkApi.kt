@@ -196,6 +196,20 @@ interface NetworkApi {
         @Body penugasanItemSP: PenugasanItemSP
     ): Observable<PenugasanItemSPResponse>
 
+    @GET("process")
+    fun processItemSP(
+        @Query("id_sp") idSp: String,
+        @Query("id_item") idItem: String,
+        @Query("id_user") idUser: String
+    ): Observable<ProcessItemSPResponse>
+
+    @GET("un_process")
+    fun unProcessItemSP(
+        @Query("id_sp") idSp: String,
+        @Query("id_item") idItem: String,
+        @Query("id_user") idUser: String
+    ): Observable<ProcessItemSPResponse>
+
     // ================================= FILE LAMPIRAN ==========================================
     @Multipart
     @POST("tambah_file")

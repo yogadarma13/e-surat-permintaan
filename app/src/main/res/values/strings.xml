@@ -72,7 +72,10 @@
     <string name="label_keterangan">Keterangan/ \nTujuannya</string>
     <string name="label_ditugaskan_kepada">Ditugaskan\nKepada</string>
     <string name="label_status_penugasan">Status\nPenugasan</string>
+    <string name="label_process_by_penugasan">Process by</string>
     <string name="penugasan_btn_text">Penugasan</string>
+    <string name="process_btn_text">Process</string>
+    <string name="un_process_btn_text">Un-Process</string>
     <string name="label_function">Fungsi</string>
     <string name="label_target_tanggal_datang">Target Tanggal\nDatang</string>
     <string name="label_waktu_pelaksanaan">Waktu\nPelaksanaan</string>
@@ -95,4 +98,6 @@
     <string name="btn_edit_file">Edit File</string>
     <string name="label_kategori">Kategori</string>
     <string name="label_jenis_barang">Jenis Barang</string>
+    <string name="print_surat_permintaan">Cetak Surat Permintaan</string>
+    <string name="print_by_process">Print By Process</string>
 </resources>

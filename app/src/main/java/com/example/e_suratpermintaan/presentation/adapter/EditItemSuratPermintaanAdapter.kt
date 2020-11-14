@@ -32,6 +32,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         const val BTN_HAPUS = "btnHapus"
         const val BTN_EDIT = "btnEdit"
         const val BTN_PENUGASAN = "btnPenugasan"
+        const val BTN_PROCESS = "btnProcess"
+        const val BTN_UNPROCESS = "btnUnProcess"
     }
 
     val itemList: ArrayList<ItemsDetailSP> = arrayListOf()
@@ -90,6 +92,22 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 } else {
                     viewHolderSPA.btnPenugasanSPA.visibility = View.GONE
                 }
+                if (data.tombolProcess == 1) {
+                    viewHolderSPA.btnProcessSPA.visibility = View.VISIBLE
+                    viewHolderSPA.btnProcessSPA.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_PROCESS)
+                    }
+                } else {
+                    viewHolderSPA.btnProcessSPA.visibility = View.GONE
+                }
+                if (data.tombolUnProcess == 1) {
+                    viewHolderSPA.btnUnProcessSPA.visibility = View.VISIBLE
+                    viewHolderSPA.btnUnProcessSPA.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_UNPROCESS)
+                    }
+                } else {
+                    viewHolderSPA.btnUnProcessSPA.visibility = View.GONE
+                }
 
                 viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
                 viewHolderSPA.jenisBarangSPA.text = data.idBarang
@@ -102,6 +120,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPA.qtyDetailSPA.text = data.qty
                 viewHolderSPA.penugasanSPA.text = data.kepada
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
+                viewHolderSPA.processByPenugasanSPA.text = data.processBy
 
                 if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
@@ -174,6 +193,22 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 } else {
                     viewHolderSPB.btnPenugasanSPB.visibility = View.GONE
                 }
+                if (data.tombolProcess == 1) {
+                    viewHolderSPB.btnProcessSPB.visibility = View.VISIBLE
+                    viewHolderSPB.btnProcessSPB.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_PROCESS)
+                    }
+                } else {
+                    viewHolderSPB.btnProcessSPB.visibility = View.GONE
+                }
+                if (data.tombolUnProcess == 1) {
+                    viewHolderSPB.btnUnProcessSPB.visibility = View.VISIBLE
+                    viewHolderSPB.btnUnProcessSPB.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_UNPROCESS)
+                    }
+                } else {
+                    viewHolderSPB.btnUnProcessSPB.visibility = View.GONE
+                }
 
                 viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
                 viewHolderSPB.jenisBarangSPB.text = data.idBarang
@@ -185,6 +220,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPB.qtyDetailSPB.text = data.qty
                 viewHolderSPB.penugasanSPB.text = data.kepada
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
+                viewHolderSPB.processByPenugasanSPB.text = data.processBy
 
                 if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
@@ -256,6 +292,22 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 } else {
                     viewHolderSPS.btnPenugasanSPS.visibility = View.GONE
                 }
+                if (data.tombolProcess == 1) {
+                    viewHolderSPS.btnProcessSPS.visibility = View.VISIBLE
+                    viewHolderSPS.btnProcessSPS.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_PROCESS)
+                    }
+                } else {
+                    viewHolderSPS.btnProcessSPS.visibility = View.GONE
+                }
+                if (data.tombolUnProcess == 1) {
+                    viewHolderSPS.btnUnProcessSPS.visibility = View.VISIBLE
+                    viewHolderSPS.btnUnProcessSPS.setOnClickListener {
+                        onItemClickListener.invoke(data, BTN_UNPROCESS)
+                    }
+                } else {
+                    viewHolderSPS.btnUnProcessSPS.visibility = View.GONE
+                }
 
                 viewHolderSPS.kodeDetailSPS.text = data.kodePekerjaan
                 viewHolderSPS.jenisBarangSPS.text = data.idBarang
@@ -266,6 +318,7 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPS.qtyDetailSPS.text = data.qty
                 viewHolderSPS.penugasanSPS.text = data.kepada
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
+                viewHolderSPS.processByPenugasanSPS.text = data.processBy
 
                 if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
                     viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
@@ -373,10 +426,13 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val btnEditSPA: Button = itemView.findViewById(R.id.btnEditSPA)
         val btnHapusSPA: Button = itemView.findViewById(R.id.btnHapusSPA)
         val btnPenugasanSPA: Button = itemView.findViewById(R.id.btnPenugasanSPA)
+        val btnProcessSPA: Button = itemView.findViewById(R.id.btnProcessSPA)
+        val btnUnProcessSPA: Button = itemView.findViewById(R.id.btnUnProcessSPA)
         val labelPenugasanSPA: TextView = itemView.findViewById(R.id.labelPenugasanSPA)
         val labelStatusPenugasanSPA: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPA)
         val penugasanSPA: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPA)
         val statusPenugasanSPA: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPA)
+        val processByPenugasanSPA: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPA)
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
@@ -396,11 +452,13 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val btnEditSPB: Button = itemView.findViewById(R.id.btnEditSPB)
         val btnHapusSPB: Button = itemView.findViewById(R.id.btnHapusSPB)
         val btnPenugasanSPB: Button = itemView.findViewById(R.id.btnPenugasanSPB)
+        val btnProcessSPB: Button = itemView.findViewById(R.id.btnProcessSPB)
+        val btnUnProcessSPB: Button = itemView.findViewById(R.id.btnUnProcessSPB)
         val labelPenugasanSPB: TextView = itemView.findViewById(R.id.labelPenugasanSPB)
         val labelStatusPenugasanSPB: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPB)
         val penugasanSPB: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPB)
         val statusPenugasanSPB: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPB)
-
+        val processByPenugasanSPB: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPB)
     }
 
     inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
@@ -420,10 +478,13 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val btnEditSPS: Button = itemView.findViewById(R.id.btnEditSPS)
         val btnHapusSPS: Button = itemView.findViewById(R.id.btnHapusSPS)
         val btnPenugasanSPS: Button = itemView.findViewById(R.id.btnPenugasanSPS)
+        val btnProcessSPS: Button = itemView.findViewById(R.id.btnProcessSPS)
+        val btnUnProcessSPS: Button = itemView.findViewById(R.id.btnUnProcessSPS)
         val labelPenugasanSPS: TextView = itemView.findViewById(R.id.labelPenugasanSPS)
         val labelStatusPenugasanSPS: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPS)
         val penugasanSPS: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPS)
         val statusPenugasanSPS: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPS)
+        val processByPenugasanSPS: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPS)
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

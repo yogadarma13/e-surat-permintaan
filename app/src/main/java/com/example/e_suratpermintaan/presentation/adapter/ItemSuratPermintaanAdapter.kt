@@ -66,6 +66,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                 viewHolderSPA.qtyDetailSPA.text = data.qty
                 viewHolderSPA.penugasanSPA.text = data.kepada
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
+                viewHolderSPA.processByPenugasanSPA.text = data.processBy
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
                 if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
@@ -128,6 +129,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                 viewHolderSPB.qtyDetailSPB.text = data.qty
                 viewHolderSPB.penugasanSPB.text = data.kepada
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
+                viewHolderSPB.processByPenugasanSPB.text = data.processBy
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
                 if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
@@ -188,6 +190,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                 viewHolderSPS.qtyDetailSPS.text = data.qty
                 viewHolderSPS.penugasanSPS.text = data.kepada
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
+                viewHolderSPS.processByPenugasanSPS.text = data.processBy
 
                 // 3 -> CC  |  7 -> IT  |  8 -> GA
                 if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
@@ -299,6 +302,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
         val labelStatusPenugasanSPA: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPA)
         val penugasanSPA: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPA)
         val statusPenugasanSPA: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPA)
+        val processByPenugasanSPA: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPA)
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
@@ -319,7 +323,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
         val labelStatusPenugasanSPB: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPB)
         val penugasanSPB: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPB)
         val statusPenugasanSPB: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPB)
-
+        val processByPenugasanSPB: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPB)
     }
 
     inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
@@ -340,6 +344,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
         val labelStatusPenugasanSPS: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPS)
         val penugasanSPS: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPS)
         val statusPenugasanSPS: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPS)
+        val processByPenugasanSPS: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPS)
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

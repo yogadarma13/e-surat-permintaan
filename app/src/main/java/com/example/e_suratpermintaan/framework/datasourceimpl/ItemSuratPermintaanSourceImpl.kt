@@ -25,4 +25,16 @@ class ItemSuratPermintaanSourceImpl(private val networkApi: NetworkApi) :
 
     override fun setPenugasanItem(penugasanItemSP: PenugasanItemSP): Observable<PenugasanItemSPResponse> =
         networkApi.setPenugasanItemSP(penugasanItemSP)
+
+    override fun processItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse> = networkApi.processItemSP(idSp, idItem, idUser)
+
+    override fun unProcessItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse> = networkApi.unProcessItemSP(idSp, idItem, idUser)
 }

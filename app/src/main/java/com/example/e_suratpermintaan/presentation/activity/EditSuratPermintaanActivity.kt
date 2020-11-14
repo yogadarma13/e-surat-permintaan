@@ -213,6 +213,12 @@ class EditSuratPermintaanActivity : BaseActivity() {
                 EditItemSuratPermintaanViewHolder.BTN_PENUGASAN -> {
                     alertDialogPenugasan.show(data)
                 }
+                EditItemSuratPermintaanViewHolder.BTN_PROCESS -> {
+                    processItemSuratPermintaan(idSp.toString(), data.id.toString(), idUser.toString())
+                }
+                EditItemSuratPermintaanViewHolder.BTN_UNPROCESS -> {
+                    unProcessItemSuratPermintaan(idSp.toString(), data.id.toString(), idUser.toString())
+                }
             }
         }
 
@@ -267,6 +273,15 @@ class EditSuratPermintaanActivity : BaseActivity() {
         }
     }
 
+
+    private fun processItemSuratPermintaan(idSp: String, idItem: String, idUser: String) {
+        itemSuratPermintaanViewModel.processItem(idSp, idItem, idUser).subscribe(this::handleResponse, this::handleError)
+    }
+
+    private fun unProcessItemSuratPermintaan(idSp: String, idItem: String, idUser: String) {
+        itemSuratPermintaanViewModel.unProcessItem(idSp, idItem, idUser).subscribe(this::handleResponse, this::handleError)
+    }
+
     private fun startRefresh() {
         if (!isConnectedToInternet) return
         swipeRefreshLayout.isRefreshing = true
@@ -312,6 +327,10 @@ class EditSuratPermintaanActivity : BaseActivity() {
                 toastNotify(response.message)
                 initApiRequest()
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_DELETED))
+            }
+            is ProcessItemSPResponse -> {
+                initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }
 
             is CreateFileLampiranResponse -> {

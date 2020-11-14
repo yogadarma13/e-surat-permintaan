@@ -44,9 +44,9 @@ import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewM
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
-import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.progressBarOverlay
 import kotlinx.android.synthetic.main.dialog_ajukan_surat.view.*
 import kotlinx.android.synthetic.main.dialog_catatan.view.*
+import kotlinx.android.synthetic.main.dialog_print.view.*
 import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -111,7 +111,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menuCetakSP -> {
-                printRequest()
+                showDialogPrint()
             }
 
             android.R.id.home -> {
@@ -121,10 +121,29 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun printRequest() {
-        val url = "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}"
-        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(i)
+    private fun showDialogPrint() {
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme).setTitle("Pilihan cetak")
+
+        alertDialog = alertDialogBuilder.create()
+
+        val dialogRootView = View.inflate(this, R.layout.dialog_print, null)
+
+        dialogRootView.tvPrintSP.setOnClickListener {
+            val url = "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}"
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(i)
+        }
+
+        dialogRootView.tvPrintByProses.setOnClickListener {
+            val url =
+                "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}?id_user=${idUser}"
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(i)
+        }
+
+        alertDialog?.setView(dialogRootView)
+        alertDialog?.show()
     }
 
     private fun init() {
@@ -457,56 +476,6 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         }
     }
-
-//    private fun showMenuItem(v: View) {
-//
-//        PopupMenu(this, v).apply {
-//
-//            setOnMenuItemClickListener(this@DetailSuratPermintaanActivity)
-//            inflate(R.menu.menu_item_sp)
-//            if (optionPrint) menu.findItem(R.id.menuCetakSP).isVisible = true
-//            if (optionEdit) menu.findItem(R.id.menuEditSP).isVisible = true
-//            if (optionDelete) menu.findItem(R.id.menuHapusSP).isVisible = true
-//
-//            show()
-//        }
-//
-//    }
-
-//    override fun onMenuItemClick(item: MenuItem?): Boolean {
-//        return when (item?.itemId) {
-//            R.id.menuCetakSP -> {
-//                val url = "https://dev.karyastudio.com/e-spb/master/surat_permintaan/print/${idSp}"
-//                val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//                startActivity(i)
-//
-//                true
-//            }
-//            R.id.menuEditSP -> {
-//                val intent = Intent(this, EditSuratPermintaanActivity::class.java)
-//                intent.putExtra(ID_SP_EDIT, idSp)
-//                intent.putExtra(MASTER_PERSYARATAN, persyaratanList as Serializable)
-//                startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
-//                true
-//            }
-//            R.id.menuHapusSP -> {
-//                val alertDialog =
-//                    AlertDialog.Builder(this)
-//                        .setTitle("Konfirmasi Penghapusan")
-//                        .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
-//                        .setPositiveButton("Ya, Hapus") { _, _ ->
-//                            disposable = suratPermintaanViewModel.remove(idSp.toString())
-//                                .subscribe(this::handleResponse, this::handleError)
-//                        }.setNegativeButton("Tutup") { dialog, _ ->
-//                            dialog.dismiss()
-//                        }.create()
-//
-//                alertDialog.show()
-//                true
-//            }
-//            else -> false
-//        }
-//    }
 
     private fun showDeclineDialog() {
 

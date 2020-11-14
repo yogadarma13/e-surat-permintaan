@@ -20,6 +20,8 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
         const val BTN_HAPUS = "btnHapus"
         const val BTN_EDIT = "btnEdit"
         const val BTN_PENUGASAN = "btnPenugasan"
+        const val BTN_PROCESS = "btnProcess"
+        const val BTN_UNPROCESS = "btnUnProcess"
     }
 
     init {
@@ -56,6 +58,20 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
             rootView.btnPenugasan.visibility = View.VISIBLE
             rootView.btnPenugasan.setOnClickListener {
                 listener.invoke(data, BTN_PENUGASAN)
+            }
+        }
+
+        if (data.tombolProcess == 1) {
+            rootView.btnProcess.visibility = View.VISIBLE
+            rootView.btnProcess.setOnClickListener {
+                listener.invoke(data, BTN_PROCESS)
+            }
+        }
+
+        if (data.tombolUnProcess == 1) {
+            rootView.btnUnProcess.visibility = View.VISIBLE
+            rootView.btnUnProcess.setOnClickListener {
+                listener.invoke(data, BTN_UNPROCESS)
             }
         }
 

@@ -217,6 +217,18 @@ val useCaseModule = module {
             get() as SchedulerProvider
         )
     }
+    single {
+        ProcessItemSuratPermintaanUseCase(
+            get() as ItemSuratPermintaanRepository,
+            get() as SchedulerProvider
+        )
+    }
+    single {
+        UnProcessItemSuratPermintaanUseCase(
+            get() as ItemSuratPermintaanRepository,
+            get() as SchedulerProvider
+        )
+    }
 
     // =================================== FILE LAMPIRAN ===========================================
     single {

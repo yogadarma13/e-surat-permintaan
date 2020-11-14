@@ -160,6 +160,16 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPB" />
 
+            <TextView
+                android:id="@+id/labelProcessByPenugasanSPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/label_process_by_penugasan"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStatusPenugasanDetailSPB" />
+
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier3"
                 android:layout_width="wrap_content"
@@ -294,55 +304,106 @@
                 app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPB"
                 tools:text="Selesai" />
 
-            <Button
-                android:id="@+id/btnHapusSPB"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvProcessByPenugasanDetailSPB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                tools:text="Hello"
+                app:layout_constraintLeft_toRightOf="@id/barrier3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStatusPenugasanDetailSPB" />
+
+            <LinearLayout
+                android:id="@+id/linearButtonDetailSPB"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="Hapus"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditSPB"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPB" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPB">
 
-            <Button
-                android:id="@+id/btnEditSPB"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnHapusSPB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:text="@string/delete_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+
+                <Button
+                    android:id="@+id/btnEditSPB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorBlue"
+                    android:text="@string/edit_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPA"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnHapusSPA"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+
+                <Button
+                    android:id="@+id/btnPenugasanSPB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/colorGreen"
+                    android:text="@string/penugasan_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnEditSPB"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPB" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="@color/colorBlue"
-                android:text="Edit"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPB"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/btnHapusSPB"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPB" />
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/linearButtonDetailSPB"
+                android:layout_marginTop="8dp">
 
-            <Button
-                android:id="@+id/btnPenugasanSPB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="@color/colorGreen"
-                android:text="Penugasan"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/btnEditSPB"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPB" />
+                <Button
+                    android:id="@+id/btnProcessSPB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/green_history"
+                    android:text="@string/process_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@id/btnHapusSPB"
+                    app:layout_constraintTop_toBottomOf="@+id/btnPenugasanSPB" />
 
+                <Button
+                    android:id="@+id/btnUnProcessSPB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:text="@string/un_process_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/btnPenugasanSPB"
+                    app:layout_constraintTop_toBottomOf="@+id/btnPenugasanSPB" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

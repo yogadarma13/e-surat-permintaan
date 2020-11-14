@@ -31,9 +31,9 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="20dp"
-                tools:text="Jenis Barang"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Jenis Barang" />
 
             <ImageView
                 android:id="@+id/imgExpandedParentSPA"
@@ -164,11 +164,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
                 android:text="@string/label_status_penugasan"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPA" />
+
+            <TextView
+                android:id="@+id/labelProcessByPenugasanSPA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/label_process_by_penugasan"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStatusPenugasanDetailSPA" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier3"
@@ -184,10 +194,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:gravity="center_vertical"
-                tools:text="Kode Pekerjaan"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Kode Pekerjaan" />
 
             <TextView
                 android:id="@+id/tvJenisBarangSPA"
@@ -220,10 +230,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                tools:text="Qty"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPA"
+                tools:text="Qty" />
 
             <TextView
                 android:id="@+id/tvSatuanDetailSPA"
@@ -232,10 +242,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                tools:text="Satuan"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvQtySPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvQtySPA"
+                tools:text="Satuan" />
 
             <TextView
                 android:id="@+id/tvKapasitasDetailSPA"
@@ -244,10 +254,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                tools:text="Kapasitas"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvSatuanDetailSPA"
+                tools:text="Kapasitas" />
 
             <TextView
                 android:id="@+id/tvMerkDetailSPA"
@@ -256,10 +266,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
-                tools:text="Kapasitas"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKapasitasDetailSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvKapasitasDetailSPA"
+                tools:text="Kapasitas" />
 
             <TextView
                 android:id="@+id/tvWaktuDetailSPA"
@@ -269,10 +279,10 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:minLines="2"
-                tools:text="Target Tanggal"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvMerkDetailSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvMerkDetailSPA"
+                tools:text="Target Tanggal" />
 
             <TextView
                 android:id="@+id/tvKeteranganDetailSPA"
@@ -282,10 +292,10 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:minLines="2"
-                tools:text="Keterangan"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvWaktuDetailSPA"
+                tools:text="Keterangan" />
 
             <TextView
                 android:id="@+id/tvPenugasanDetailSPA"
@@ -296,10 +306,10 @@
                 android:gravity="center_vertical"
                 android:minLines="2"
                 android:visibility="gone"
-                tools:text="IT"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKeteranganDetailSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvKeteranganDetailSPA"
+                tools:text="IT" />
 
             <TextView
                 android:id="@+id/tvStatusPenugasanDetailSPA"
@@ -307,62 +317,114 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:minLines="2"
-                tools:text="Selesai"
+                android:visibility="gone"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvPenugasanDetailSPA"
+                tools:text="Selesai" />
 
-            <Button
-                android:id="@+id/btnHapusSPA"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tvProcessByPenugasanDetailSPA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toRightOf="@id/barrier3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStatusPenugasanDetailSPA"
+                tools:text="Hello" />
+
+            <LinearLayout
+                android:id="@+id/linearButtonDetailSPA"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="@string/delete_btn_text"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPA" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA">
 
-            <Button
-                android:id="@+id/btnEditSPA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="@color/colorBlue"
-                android:visibility="gone"
-                android:text="@string/edit_btn_text"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPA"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/btnHapusSPA"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPA" />
+                <Button
+                    android:id="@+id/btnHapusSPA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:text="@string/delete_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnEditSPA"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
 
-            <Button
-                android:id="@+id/btnPenugasanSPA"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnEditSPA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorBlue"
+                    android:text="@string/edit_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPA"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnHapusSPA"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+
+                <Button
+                    android:id="@+id/btnPenugasanSPA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/colorGreen"
+                    android:text="@string/penugasan_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnEditSPA"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:backgroundTint="@color/colorGreen"
-                android:text="@string/penugasan_btn_text"
-                android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/btnEditSPA"
-                app:layout_constraintTop_toBottomOf="@+id/tvStatusPenugasanDetailSPA" />
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/linearButtonDetailSPA"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/btnProcessSPA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/green_history"
+                    android:text="@string/process_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@id/btnHapusSPA"
+                    app:layout_constraintTop_toBottomOf="@+id/btnPenugasanSPA" />
+
+                <Button
+                    android:id="@+id/btnUnProcessSPA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:text="@string/un_process_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/btnPenugasanSPA"
+                    app:layout_constraintTop_toBottomOf="@+id/btnPenugasanSPA" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
