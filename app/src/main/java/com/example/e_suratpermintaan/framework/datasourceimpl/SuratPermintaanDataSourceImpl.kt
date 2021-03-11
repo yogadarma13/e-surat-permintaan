@@ -1,7 +1,7 @@
 package com.example.e_suratpermintaan.framework.datasourceimpl
 
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
-import com.e_suratpermintaan.core.domain.entities.requests.*
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.framework.retrofit.NetworkApi
 import io.reactivex.rxjava3.core.Observable

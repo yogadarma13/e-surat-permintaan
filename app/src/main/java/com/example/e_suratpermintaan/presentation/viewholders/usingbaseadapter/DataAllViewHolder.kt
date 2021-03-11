@@ -17,9 +17,6 @@ class DataAllViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
             listener.invoke(data, ROOTVIEW)
         }
 
-//        rootView.tvKode.text = data.kode
-//        rootView.tvTanggalPengajuan.text = data.tanggalPengajuan
-//        rootView.tvStatusPermintaan.text = data.statusPermintaan
     }
 
 }

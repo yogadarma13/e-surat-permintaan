@@ -19,7 +19,7 @@
         android:id="@+id/welcomeFragment"
         android:name="com.example.e_suratpermintaan.presentation.navigation.WelcomeFragment"
         android:label="fragment_welcome_screen"
-        tools:layout="@layout/fragment_welcome" >
+        tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcomeScreen_to_loginFragment"
             app:destination="@id/loginFragment" />

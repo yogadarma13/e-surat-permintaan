@@ -11,7 +11,11 @@ class AddFileLampiranUseCase(
     private val fileLampiranRepository: FileLampiranRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(id: RequestBody, keterangan: RequestBody, file: MultipartBody.Part): Observable<CreateFileLampiranResponse> =
+    fun invoke(
+        id: RequestBody,
+        keterangan: RequestBody,
+        file: MultipartBody.Part
+    ): Observable<CreateFileLampiranResponse> =
         fileLampiranRepository.addFile(id, keterangan, file)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)

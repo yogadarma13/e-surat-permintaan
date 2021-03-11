@@ -7,6 +7,7 @@ import android.transition.TransitionSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
@@ -66,7 +67,12 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
                     )
                 }
                 rootView.expandableLayout.visibility = View.VISIBLE
-                rootView.expandableIcon.setImageDrawable(rootView.context.resources.getDrawable(R.drawable.ic_up))
+                rootView.expandableIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        rootView.context,
+                        R.drawable.ic_arrow_up
+                    )
+                )
             } else {
                 val animation: Animation =
                     SlideAnimation(rootView.expandableLayout, rootView.expandableLayout.height, 0)
@@ -89,7 +95,12 @@ class ItemSuratPermintaanViewHolder(private val rootView: View) :
                 })
                 rootView.expandableLayout.animation = animation
                 rootView.expandableLayout.startAnimation(animation)
-                rootView.expandableIcon.setImageDrawable(rootView.context.resources.getDrawable(R.drawable.ic_down))
+                rootView.expandableIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        rootView.context,
+                        R.drawable.ic_arrow_down
+                    )
+                )
             }
 
         }

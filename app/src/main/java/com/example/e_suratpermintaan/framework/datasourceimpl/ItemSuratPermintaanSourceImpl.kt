@@ -19,7 +19,6 @@ class ItemSuratPermintaanSourceImpl(private val networkApi: NetworkApi) :
     override fun editItem(updateItemSP: UpdateItemSP): Observable<EditItemSPResponse> =
         networkApi.updateItemSP(updateItemSP)
 
-
     override fun readDetailItem(id: String): Observable<DetailItemSPResponse> =
         networkApi.detailItemSP(id)
 

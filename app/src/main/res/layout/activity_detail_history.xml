@@ -96,18 +96,18 @@
                 android:id="@+id/constraintDetailLama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/constraintDetailBaru"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@id/constraintDetailBaru">
 
                 <TextView
                     android:id="@+id/tvTextLama"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Lama" />

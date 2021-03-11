@@ -2,24 +2,23 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/left_border">
         <shape>
-            <solid android:color="#E0E0E0"/>
+            <solid android:color="#E0E0E0" />
             <corners
                 android:bottomLeftRadius="8dp"
                 android:bottomRightRadius="8dp"
                 android:topLeftRadius="8dp"
-                android:topRightRadius="8dp"/>
+                android:topRightRadius="8dp" />
         </shape>
     </item>
 
-    <item
-        android:top="8dp">
+    <item android:top="8dp">
         <shape>
-            <solid android:color="@android:color/white"/>
+            <solid android:color="@android:color/white" />
             <corners
                 android:bottomLeftRadius="8dp"
                 android:bottomRightRadius="8dp"
                 android:topLeftRadius="0dp"
-                android:topRightRadius="0dp"/>
+                android:topRightRadius="0dp" />
         </shape>
     </item>
 </layer-list>

@@ -8,16 +8,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.FilePath
 import com.example.e_suratpermintaan.framework.utils.Signature
-import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
 import com.github.gcacace.signaturepad.views.SignaturePad
@@ -81,7 +80,7 @@ class ProfileActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }
@@ -122,7 +121,8 @@ class ProfileActivity : BaseActivity() {
 
                 if (!filePath.isNullOrEmpty()) {
                     val file = File(filePath)
-                    val fileReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                    val fileReqBody =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
                     partFile = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
                 } else {
                     val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
@@ -130,14 +130,24 @@ class ProfileActivity : BaseActivity() {
                 }
 
                 partTtd = if (fileTtd != null) {
-                    val ttdReqBody = RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                    val ttdReqBody =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
                     MultipartBody.Part.createFormData("ttd", fileTtd!!.name, ttdReqBody)
                 } else {
                     val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
                     MultipartBody.Part.createFormData("ttd", "", fileReqBody)
                 }
 
-                disposable = provileViewModel.editProfile(idUser, emailUser, passLamaUser, passBaruUser, namaUser, deskripsiUser, partFile, partTtd)
+                disposable = provileViewModel.editProfile(
+                    idUser,
+                    emailUser,
+                    passLamaUser,
+                    passBaruUser,
+                    namaUser,
+                    deskripsiUser,
+                    partFile,
+                    partTtd
+                )
                     .subscribe(this::handleResponse, this::handleError)
 
             }
@@ -161,8 +171,6 @@ class ProfileActivity : BaseActivity() {
             is ProfileResponse -> {
                 var dataProfile: DataProfile? = DataProfile()
 
-
-
                 response.data?.forEach {
                     dataProfile = it
                 }
@@ -178,7 +186,8 @@ class ProfileActivity : BaseActivity() {
 
                 linearLayoutJenisProfile.removeAllViews()
                 dataProfile?.jenis?.forEach {
-                    val view = LayoutInflater.from(this).inflate(R.layout.item_simple_checkbox, linearLayoutJenisProfile, false)
+                    val view = LayoutInflater.from(this)
+                        .inflate(R.layout.item_simple_checkbox, linearLayoutJenisProfile, false)
                     view.checkbox.isChecked = true
                     view.checkbox.text = it?.jenis
                     view.checkbox.setOnCheckedChangeListener { _, checked ->
@@ -198,7 +207,6 @@ class ProfileActivity : BaseActivity() {
                 initApiRequest()
             }
         }
-
     }
 
     override fun handleError(error: Throwable) {
@@ -211,12 +219,11 @@ class ProfileActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+        if (requestCode == FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val fileUri = data?.data
             filePath = FilePath.getPath(this, fileUri as Uri)
 
             if (!filePath.isNullOrEmpty()) {
-//                tvTextNameFile.text = filePath?.substring(filePath!!.lastIndexOf("/")+1)
                 toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
             }
 
@@ -229,14 +236,12 @@ class ProfileActivity : BaseActivity() {
             ttdPath = FilePath.getPath(this, fileUri as Uri)
 
             if (!ttdPath.isNullOrEmpty()) {
-//                tvTextNameTtd.text = ttdPath?.substring(ttdPath!!.lastIndexOf("/")+1)
                 toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
                 toastNotify(ttdPath)
                 fileTtd = File(ttdPath)
             } else {
                 toastNotify("File Tdak ditemukan")
             }
-
         }
     }
 
@@ -277,7 +282,8 @@ class ProfileActivity : BaseActivity() {
         val dialogRootView =
             View.inflate(this, R.layout.dialog_signature_pad_profile, null)
 
-        dialogRootView.signaturePadProfile.setOnSignedListener(object : SignaturePad.OnSignedListener {
+        dialogRootView.signaturePadProfile.setOnSignedListener(object :
+            SignaturePad.OnSignedListener {
             override fun onStartSigning() {
             }
 
@@ -290,7 +296,6 @@ class ProfileActivity : BaseActivity() {
                 dialogRootView.btnSaveTtdProfile.isEnabled = true
                 dialogRootView.btnClearTtdProfile.isEnabled = true
             }
-
         })
 
         dialogRootView.btnSaveTtdProfile.setOnClickListener {
@@ -309,5 +314,4 @@ class ProfileActivity : BaseActivity() {
         alertDialog.setView(dialogRootView)
         alertDialog.show()
     }
-
 }

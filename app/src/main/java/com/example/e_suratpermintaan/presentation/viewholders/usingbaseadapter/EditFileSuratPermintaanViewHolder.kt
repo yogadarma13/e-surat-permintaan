@@ -7,6 +7,7 @@ import android.transition.TransitionSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
 import com.e_suratpermintaan.core.domain.entities.responses.FileLampiranDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
@@ -31,18 +32,22 @@ class EditFileSuratPermintaanViewHolder(private val rootView: View) :
 
         rootView.tvKeteranganFile.text = data.keterangan
 
-        if (data.tombolEditFile == 1){
+        if (data.tombolEditFile == 1) {
             rootView.btnEditFile.visibility = View.VISIBLE
             rootView.btnEditFile.setOnClickListener {
                 listener.invoke(data, BTN_EDIT)
             }
+        } else {
+            rootView.btnEditFile.visibility = View.GONE
         }
 
-        if (data.tombolHapusFile == 1){
+        if (data.tombolHapusFile == 1) {
             rootView.btnHapusFile.visibility = View.VISIBLE
             rootView.btnHapusFile.setOnClickListener {
                 listener.invoke(data, BTN_HAPUS)
             }
+        } else {
+            rootView.btnHapusFile.visibility = View.GONE
         }
 
         rootView.btnFile.setOnClickListener {
@@ -62,10 +67,19 @@ class EditFileSuratPermintaanViewHolder(private val rootView: View) :
                     )
                 }
                 rootView.expandableLayoutFile.visibility = View.VISIBLE
-                rootView.expandableIcon.setImageDrawable(rootView.context.resources.getDrawable(R.drawable.ic_up))
+                rootView.expandableIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        rootView.context,
+                        R.drawable.ic_arrow_up
+                    )
+                )
             } else {
                 val animation: Animation =
-                    SlideAnimation(rootView.expandableLayoutFile, rootView.expandableLayoutFile.height, 0)
+                    SlideAnimation(
+                        rootView.expandableLayoutFile,
+                        rootView.expandableLayoutFile.height,
+                        0
+                    )
 
                 animation.interpolator = DecelerateInterpolator()
                 animation.duration = 150
@@ -85,7 +99,12 @@ class EditFileSuratPermintaanViewHolder(private val rootView: View) :
                 })
                 rootView.expandableLayoutFile.animation = animation
                 rootView.expandableLayoutFile.startAnimation(animation)
-                rootView.expandableIcon.setImageDrawable(rootView.context.resources.getDrawable(R.drawable.ic_down))
+                rootView.expandableIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        rootView.context,
+                        R.drawable.ic_arrow_down
+                    )
+                )
             }
 
         }

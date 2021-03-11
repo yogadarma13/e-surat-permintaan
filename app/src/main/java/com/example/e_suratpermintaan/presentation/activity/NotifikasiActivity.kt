@@ -25,7 +25,6 @@ class NotifikasiActivity : BaseActivity() {
     private val readNotifikasiViewModel: NotifikasiViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
-    //    private lateinit var notifikasiAdapter: NotifikasiAdapter
     private lateinit var notifikasiAdapter: BaseAdapter<NotifikasiViewHolder>
     private var idUser: String? = null
 
@@ -41,7 +40,6 @@ class NotifikasiActivity : BaseActivity() {
     }
 
     private fun init() {
-//        notifikasiAdapter = NotifikasiAdapter()
         setupTollbar()
         notifikasiAdapter =
             BaseAdapter(R.layout.notifikasi_unread_list, NotifikasiViewHolder::class.java)
@@ -78,30 +76,6 @@ class NotifikasiActivity : BaseActivity() {
     }
 
     private fun setupListeners() {
-//        notifikasiAdapter.setOnClickListener(object : NotifikasiAdapter.OnClickItemListener {
-//            override fun onClick(view: View, item: Any) {
-//                val dataClick = item
-//
-//                val intent =
-//                    Intent(this@NotifikasiActivity, DetailSuratPermintaanActivity::class.java)
-//                if (dataClick is UnreadItem) {
-//                    toastNotify("Unread")
-//                    disposable = readNotifikasiViewModel.readNotifikasi(
-//                        ReadNotifikasi(
-//                            idUser.toString(),
-//                            dataClick.id.toString()
-//                        )
-//                    )
-//                        .subscribe()
-//                    intent.putExtra("id_sp", dataClick.id_sp)
-//                } else if (dataClick is ReadItem) {
-//                    toastNotify("Read")
-//                    intent.putExtra("id_sp", dataClick.id_sp)
-//                }
-//                startActivity(intent)
-//                finish()
-//            }
-//        })
 
         notifikasiAdapter.setOnItemClickListener { item, _ ->
             val data = item as NotifItem
@@ -133,21 +107,6 @@ class NotifikasiActivity : BaseActivity() {
             constraintCountUnread.visibility = View.VISIBLE
             tvCountNotifUnread.text = "${dataNotif?.count.toString()} notifikasi"
         }
-
-//        dataNotif?.unread?.forEach {
-//            it?.let { it1 ->
-//                notifikasiAdapter.notifList.add(it1)
-//                notifikasiAdapter.viewType.add(ITEM_A)
-//
-//            }
-//        }
-//
-//        dataNotif?.read?.forEach {
-//            it?.let { it1 ->
-//                notifikasiAdapter.notifList.add(it1)
-//                notifikasiAdapter.viewType.add(ITEM_B)
-//            }
-//        }
 
         dataNotif?.notif?.forEach {
             if (it != null) {

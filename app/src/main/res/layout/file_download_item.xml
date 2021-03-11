@@ -9,9 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="Download"
+        android:text="@string/download_text"
         android:textAllCaps="false"
         android:drawableLeft="@drawable/ic_file_download"/>
 

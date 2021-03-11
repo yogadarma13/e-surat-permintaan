@@ -19,5 +19,9 @@ interface ItemSuratPermintaanDataSource {
 
     fun processItem(idSp: String, idItem: String, idUser: String): Observable<ProcessItemSPResponse>
 
-    fun unProcessItem(idSp: String, idItem: String, idUser: String): Observable<ProcessItemSPResponse>
+    fun unProcessItem(
+        idSp: String,
+        idItem: String,
+        idUser: String
+    ): Observable<ProcessItemSPResponse>
 }

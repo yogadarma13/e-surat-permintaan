@@ -14,7 +14,7 @@ class NotifikasiViewHolder(private val rootView: View) : BaseViewHolder(rootView
             listener.invoke(data, ROOTVIEW)
         }
 
-        rootView.tvKeteranganNotifUnread.text =  data.keterangan
+        rootView.tvKeteranganNotifUnread.text = data.keterangan
         rootView.tvKodeSpNotifUnread.text = data.kodeSp
         rootView.tvDateNotifUnread.text = data.tanggal
     }

@@ -8,28 +8,28 @@
     android:layout_marginVertical="10dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@android:color/white"
     android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="14dp"
-        android:paddingHorizontal="20sp">
+        android:paddingHorizontal="20sp"
+        android:paddingVertical="14dp">
 
         <TextView
             android:id="@+id/tvKode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="TEXT"
+            android:layout_marginEnd="8dp"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/cardStatusPermintaan"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TEXT" />
 
 
         <TextView
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Proyek A"
@@ -52,12 +51,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:text="SPB"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@+id/cardStatusPermintaan"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvProyek" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProyek"
+            tools:text="SPB" />
 
         <ImageView
             android:id="@+id/imgPabrik"
@@ -77,11 +76,11 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="Pabrik A"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/cardStatusPermintaan"
             app:layout_constraintStart_toEndOf="@+id/imgPabrik"
-            app:layout_constraintTop_toBottomOf="@+id/tvJenis" />
+            app:layout_constraintTop_toBottomOf="@+id/tvJenis"
+            tools:text="Pabrik A" />
 
         <ImageView
             android:id="@+id/imgTanggal"
@@ -96,7 +95,7 @@
             android:id="@+id/tvTanggalPengajuan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="21-02-2019"
             android:textSize="12sp"
@@ -106,8 +105,8 @@
         <ImageView
             android:id="@+id/imgDurasi"
             android:layout_width="18dp"
-            android:layout_marginLeft="16dp"
             android:layout_height="18dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/ic_time"
             app:layout_constraintStart_toEndOf="@id/tvTanggalPengajuan"
@@ -117,19 +116,18 @@
             android:id="@+id/tvDurasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="21-02-2019"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/imgDurasi"
-            app:layout_constraintTop_toBottomOf="@+id/imgPabrik" />
+            app:layout_constraintTop_toBottomOf="@+id/imgPabrik"
+            tools:text="21-02-2019" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardStatusPermintaan"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
             app:cardBackgroundColor="#E0E0E0"
             app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
@@ -140,11 +138,11 @@
                 android:id="@+id/tvStatusPermintaan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:padding="8dp"
-                android:text="TEXT" />
+                android:textColor="@android:color/white"
+                tools:text="TEXT" />
 
 
         </com.google.android.material.card.MaterialCardView>

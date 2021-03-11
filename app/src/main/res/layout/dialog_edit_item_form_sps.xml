@@ -9,8 +9,8 @@
         android:id="@+id/tilWaktuPelaksanaan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
+        app:boxBackgroundColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <EditText
@@ -24,12 +24,12 @@
         android:id="@+id/tvPersyaratan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Persyaratan : "
         android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold"
         android:visibility="gone"
-        android:layout_marginTop="15dp"
-        android:text="Persyaratan : "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tilWaktuPelaksanaan" />
 
@@ -37,9 +37,8 @@
         android:id="@+id/rvPersyaratan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:nestedScrollingEnabled="false"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/tvPersyaratan"

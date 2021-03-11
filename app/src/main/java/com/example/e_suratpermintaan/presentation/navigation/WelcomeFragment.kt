@@ -1,10 +1,9 @@
 package com.example.e_suratpermintaan.presentation.navigation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.utils.NavOptionsHelper
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
@@ -23,7 +22,8 @@ class WelcomeFragment : BaseFragment() {
         btnNext.setOnClickListener {
             val navOptions =
                 NavOptionsHelper.getInstance().addAppStarterAnim().build()
-            it.findNavController().navigate(R.id.action_welcomeScreen_to_loginFragment, null, navOptions)
+            it.findNavController()
+                .navigate(R.id.action_welcomeScreen_to_loginFragment, null, navOptions)
         }
     }
 

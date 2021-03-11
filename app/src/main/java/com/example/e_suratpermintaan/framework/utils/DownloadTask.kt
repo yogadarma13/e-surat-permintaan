@@ -14,9 +14,8 @@ import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class DownloadTask(context: Context, fileName: String) : AsyncTask<String, Int, String>() {
+class DownloadTask(private val context: Context, fileName: String) : AsyncTask<String, Int, String>() {
 
-    private val context = context
     private lateinit var mWakeLock: PowerManager.WakeLock
     private val mProgressDialog = ProgressDialog(context)
     private val fileName = fileName
@@ -95,7 +94,7 @@ class DownloadTask(context: Context, fileName: String) : AsyncTask<String, Int, 
     override fun onPostExecute(result: String?) {
         super.onPostExecute(result)
 
-        mWakeLock?.release()
+        mWakeLock.release()
 
         mProgressDialog.dismiss()
         if (result != null) Toast.makeText(context, "Download error: $result", Toast.LENGTH_LONG)

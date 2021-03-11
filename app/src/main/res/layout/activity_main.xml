@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginRight="14dp"
+                    android:layout_marginEnd="14dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -52,10 +52,10 @@
                             android:layout_gravity="right"
                             android:background="@drawable/circle_background_count_unread"
                             android:gravity="center"
-                            tools:text="1"
                             android:textColor="@android:color/white"
                             android:textStyle="bold"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            tools:text="1" />
 
                     </FrameLayout>
 
@@ -99,7 +99,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:layout_marginTop="16dp"
                                 android:text="@string/surat_permintaan"
                                 android:textColor="@android:color/black"
@@ -171,7 +170,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
                     android:text="@string/filter_data"
                     android:textSize="16sp" />
 

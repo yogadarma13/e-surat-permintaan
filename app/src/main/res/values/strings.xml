@@ -100,4 +100,14 @@
     <string name="label_jenis_barang">Jenis Barang</string>
     <string name="print_surat_permintaan">Cetak Surat Permintaan</string>
     <string name="print_by_process">Print By Process</string>
+    <string name="text_ttd">Tanda Tangan</string>
+    <string name="remove_ttd_button_text">Bersihkan papan tanda tangan</string>
+    <string name="submit_ttd_question">Apakah anda ingin mengajukan surat permintaan ini?</string>
+    <string name="batal_text">Batal</string>
+    <string name="create_ttd_text">Buat tanda tangan</string>
+    <string name="select_from_storage_text">Ambil dari penyimpanan</string>
+    <string name="keterangan_text">Keterangan</string>
+    <string name="clear_text">Bersihkan</string>
+    <string name="verif_ttd_text_question">Apakah anda ingin memverifikasi surat permintaan ini?</string>
+    <string name="download_text">Download</string>
 </resources>

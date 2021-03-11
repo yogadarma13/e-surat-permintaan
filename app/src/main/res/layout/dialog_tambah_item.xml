@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="@android:color/white"
+    android:fillViewport="true"
     android:paddingTop="10dp">
 
     <ScrollView
@@ -66,9 +66,9 @@
                         android:id="@+id/etKategori"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"
                         android:cursorVisible="false"
                         android:enabled="true"
+                        android:focusable="false"
                         android:hint="Kategori" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -235,10 +235,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textAllCaps="false"
         android:backgroundTint="@color/colorBlue"
         android:paddingVertical="12dp"
         android:text="Tambah Item"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

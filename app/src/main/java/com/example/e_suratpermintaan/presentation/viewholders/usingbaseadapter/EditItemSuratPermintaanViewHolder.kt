@@ -7,6 +7,7 @@ import android.transition.TransitionSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
@@ -45,6 +46,8 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
             rootView.btnEdit.setOnClickListener {
                 listener.invoke(data, BTN_EDIT)
             }
+        } else {
+            rootView.btnEdit.visibility = View.GONE
         }
 
         if (data.tombolHapusItem == 1) {
@@ -52,6 +55,8 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
             rootView.btnHapus.setOnClickListener {
                 listener.invoke(data, BTN_HAPUS)
             }
+        } else {
+            rootView.btnHapus.visibility = View.GONE
         }
 
         if (data.tombolPenugasan == 1) {
@@ -59,6 +64,8 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
             rootView.btnPenugasan.setOnClickListener {
                 listener.invoke(data, BTN_PENUGASAN)
             }
+        } else {
+            rootView.btnPenugasan.visibility = View.GONE
         }
 
         if (data.tombolProcess == 1) {
@@ -66,6 +73,8 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
             rootView.btnProcess.setOnClickListener {
                 listener.invoke(data, BTN_PROCESS)
             }
+        } else {
+            rootView.btnProcess.visibility = View.GONE
         }
 
         if (data.tombolUnProcess == 1) {
@@ -73,6 +82,8 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
             rootView.btnUnProcess.setOnClickListener {
                 listener.invoke(data, BTN_UNPROCESS)
             }
+        } else {
+            rootView.btnUnProcess.visibility = View.GONE
         }
 
         rootView.constraintLayout.setOnClickListener {
@@ -88,7 +99,12 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
                     )
                 }
                 rootView.expandableLayout.visibility = View.VISIBLE
-                rootView.expandableIcon.setImageDrawable(rootView.context.resources.getDrawable(R.drawable.ic_up))
+                rootView.expandableIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        rootView.context,
+                        R.drawable.ic_arrow_up
+                    )
+                )
             } else {
                 val animation: Animation =
                     SlideAnimation(rootView.expandableLayout, rootView.expandableLayout.height, 0)
@@ -111,7 +127,12 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
                 })
                 rootView.expandableLayout.animation = animation
                 rootView.expandableLayout.startAnimation(animation)
-                rootView.expandableIcon.setImageDrawable(rootView.context.resources.getDrawable(R.drawable.ic_down))
+                rootView.expandableIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        rootView.context,
+                        R.drawable.ic_arrow_down
+                    )
+                )
             }
 
         }

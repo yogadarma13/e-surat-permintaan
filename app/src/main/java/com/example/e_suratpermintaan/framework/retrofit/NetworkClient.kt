@@ -47,12 +47,12 @@ class NetworkClient {
 
         private fun httpLoggingInterceptor(): HttpLoggingInterceptor {
             val httpLoggingInterceptor =
-                HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { message ->
+                HttpLoggingInterceptor { message ->
 //                    Log.d(
 //                        "MYAPP-RETROFIT",
 //                        "log: http log: $message"
 //                    )
-                })
+                }
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             return httpLoggingInterceptor
         }

@@ -20,9 +20,9 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
+import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

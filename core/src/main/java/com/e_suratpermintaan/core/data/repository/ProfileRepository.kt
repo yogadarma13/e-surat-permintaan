@@ -24,6 +24,4 @@ class ProfileRepository(private val profileDataSource: ProfileDataSource) :
         ttd: MultipartBody.Part?
     ): Observable<EditProfileResponse> =
         profileDataSource.editProfile(id, email, passwordLast, passwordNew, name, desc, file, ttd)
-
-
 }

@@ -107,7 +107,6 @@ class WebViewActivity : BaseActivity() {
     private fun setupNavigationDrawer() {
         val menu: Menu = navigation_view.menu
         val menuItemMasterData: MenuItem = menu.findItem(R.id.menuMasterData)
-        Log.d("TESSS", roleId)
         menuItemMasterData.isVisible = roleId == "0"
         // Find our drawer view
         drawerToggle = setupDrawerToggle()

@@ -22,36 +22,36 @@ abstract class RewriteResponseInterceptor : Interceptor {
         }
 
         return if (cacheControl == null
-                || cacheControl.contains("no-store")
-                || cacheControl.contains("no-cache")
-                || cacheControl.contains("must-revalidate")
-                || cacheControl.contains("max-age=0")
-            ) {
+            || cacheControl.contains("no-store")
+            || cacheControl.contains("no-cache")
+            || cacheControl.contains("must-revalidate")
+            || cacheControl.contains("max-age=0")
+        ) {
 
-                val request = chain.request()
-                val builder = request.newBuilder()
+            val request = chain.request()
+            val builder = request.newBuilder()
 
-                /*
-                *  If there is Internet, get the cache that was stored 5 seconds ago.
-                *  If the cache is older than 5 seconds, then discard it,
-                *  and indicate an error in fetching the response.
-                *  The 'max-age' attribute is responsible for this behavior.
-                */
+            /*
+            *  If there is Internet, get the cache that was stored 5 seconds ago.
+            *  If the cache is older than 5 seconds, then discard it,
+            *  and indicate an error in fetching the response.
+            *  The 'max-age' attribute is responsible for this behavior.
+            */
 
-                val cacheControl =
-                    CacheControl.Builder().maxAge(5, TimeUnit.SECONDS).build()
+            val cacheControl =
+                CacheControl.Builder().maxAge(5, TimeUnit.SECONDS).build()
 
-                val authenticatedRequest = builder
-                    //.header("Cache-Control", cacheControl.toString())
-                    .header("Cache-Control", "public, max-age=" + 5)
-                    .removeHeader("Pragma")
-                    .removeHeader("Cache-Control")
-                    .build()
+            val authenticatedRequest = builder
+                //.header("Cache-Control", cacheControl.toString())
+                .header("Cache-Control", "public, max-age=" + 5)
+                .removeHeader("Pragma")
+                .removeHeader("Cache-Control")
+                .build()
 
-                val modifiedResponse = chain.proceed(authenticatedRequest)
-                modifiedResponse
-            } else {
-                originalResponse
-            }
+            val modifiedResponse = chain.proceed(authenticatedRequest)
+            modifiedResponse
+        } else {
+            originalResponse
+        }
     }
 }

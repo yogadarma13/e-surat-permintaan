@@ -18,26 +18,26 @@ class PersyaratanViewHolder(private val rootView: View) : BaseViewHolder(rootVie
 
         rootView.checkbox.isChecked = data.isChecked
 
-        if (data.isChecked){
+        if (data.isChecked) {
             rootView.checkbox.isChecked = true
         }
 
         rootView.setOnClickListener {
-            if (rootView.checkbox.isChecked){
+            if (rootView.checkbox.isChecked) {
                 rootView.checkbox.isChecked = false
                 data.isChecked = false
             } else {
                 rootView.checkbox.isChecked = true
                 data.isChecked = true
             }
-             // rootView.checkbox.text = "${data.nama} ${data.status}"
+            // rootView.checkbox.text = "${data.nama} ${data.status}"
 
             listener(data, ROOTVIEW)
         }
 
         rootView.checkbox.setOnClickListener {
             data.isChecked = rootView.checkbox.isChecked
-             // rootView.checkbox.text = "${data.nama} ${data.status}"
+            // rootView.checkbox.text = "${data.nama} ${data.status}"
         }
     }
 

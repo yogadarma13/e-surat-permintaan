@@ -40,6 +40,7 @@ class MasterRepository(private val masterDataSource: MasterDataSource) :
     override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
         masterDataSource.getStatusPenugasanOptionList()
 
-    override fun getKategoriList(): Observable<KategoriResponse> = masterDataSource.getKategoriList()
+    override fun getKategoriList(): Observable<KategoriResponse> =
+        masterDataSource.getKategoriList()
 
 }

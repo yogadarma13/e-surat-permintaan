@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
@@ -25,9 +26,9 @@ import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAdapter.ViewHolder>() {
 
     companion object {
-        val SPA = 0
-        val SPB = 1
-        val SPS = 2
+        const val SPA = 0
+        const val SPB = 1
+        const val SPS = 2
     }
 
     val itemList: ArrayList<ItemsDetailSP> = arrayListOf()
@@ -97,7 +98,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                         }
                         viewHolderSPA.expandedChildSPA.visibility = View.VISIBLE
                         viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                            ContextCompat.getDrawable(viewHolderSPA.imageExpandedParentSPA.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -107,7 +108,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                         viewHolderSPA.expandedChildSPA.animation = animation
                         viewHolderSPA.expandedChildSPA.startAnimation(animation)
                         viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                            ContextCompat.getDrawable(viewHolderSPA.imageExpandedParentSPA.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -160,7 +161,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                         }
                         viewHolderSPB.expandedChildSPB.visibility = View.VISIBLE
                         viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                            ContextCompat.getDrawable(viewHolderSPB.imageExpandedParentSPB.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -170,7 +171,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                         viewHolderSPB.expandedChildSPB.animation = animation
                         viewHolderSPB.expandedChildSPB.startAnimation(animation)
                         viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                            ContextCompat.getDrawable(viewHolderSPB.imageExpandedParentSPB.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -231,7 +232,6 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                     parent.addView(view)
                 }
 
-
                 var dataKeterangan: String? = ""
 
                 data.keterangan?.forEach {
@@ -250,7 +250,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                         }
                         viewHolderSPS.expandedChildSPS.visibility = View.VISIBLE
                         viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                            ContextCompat.getDrawable(viewHolderSPS.imageExpandedParentSPS.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -260,7 +260,7 @@ class ItemSuratPermintaanAdapter() : RecyclerView.Adapter<ItemSuratPermintaanAda
                         viewHolderSPS.expandedChildSPS.animation = animation
                         viewHolderSPS.expandedChildSPS.startAnimation(animation)
                         viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                            ContextCompat.getDrawable(viewHolderSPS.imageExpandedParentSPS.context,
                                 R.drawable.ic_arrow_down
                             )
                         )

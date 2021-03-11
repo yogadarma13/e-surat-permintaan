@@ -1,7 +1,7 @@
 package com.e_suratpermintaan.core.data.repository
 
 import com.e_suratpermintaan.core.data.datasource.SuratPermintaanDataSource
-import com.e_suratpermintaan.core.domain.entities.requests.*
+import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.MultipartBody
@@ -33,10 +33,20 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
     override fun edit(id: RequestBody, file: MultipartBody.Part, id_user: RequestBody) =
         dataSource.edit(id, file, id_user)
 
-    override fun verifikasi(id_user: RequestBody, id: RequestBody, status: RequestBody, catatan: RequestBody, file: MultipartBody.Part): Observable<VerifikasiSPResponse> =
+    override fun verifikasi(
+        id_user: RequestBody,
+        id: RequestBody,
+        status: RequestBody,
+        catatan: RequestBody,
+        file: MultipartBody.Part
+    ): Observable<VerifikasiSPResponse> =
         dataSource.verifikasi(id_user, id, status, catatan, file)
 
-    override fun ajukan(id_user: RequestBody, id: RequestBody, file: MultipartBody.Part): Observable<AjukanSPResponse> =
+    override fun ajukan(
+        id_user: RequestBody,
+        id: RequestBody,
+        file: MultipartBody.Part
+    ): Observable<AjukanSPResponse> =
         dataSource.ajukan(id_user, id, file)
 
     override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =

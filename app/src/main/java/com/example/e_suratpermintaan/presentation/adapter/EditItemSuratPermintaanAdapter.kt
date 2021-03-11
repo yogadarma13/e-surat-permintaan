@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
@@ -23,12 +24,13 @@ import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 
-class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermintaanAdapter.ViewHolder>() {
+class EditItemSuratPermintaanAdapter() :
+    RecyclerView.Adapter<EditItemSuratPermintaanAdapter.ViewHolder>() {
 
     companion object {
-        val SPA = 0
-        val SPB = 1
-        val SPS = 2
+        const val SPA = 0
+        const val SPB = 1
+        const val SPS = 2
         const val BTN_HAPUS = "btnHapus"
         const val BTN_EDIT = "btnEdit"
         const val BTN_PENUGASAN = "btnPenugasan"
@@ -61,7 +63,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
 
     override fun getItemCount(): Int = itemList.size
 
-    override fun onBindViewHolder(holder: EditItemSuratPermintaanAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: EditItemSuratPermintaanAdapter.ViewHolder,
+        position: Int
+    ) {
         val data = itemList.get(position)
 
         when (getItemViewType(position)) {
@@ -122,7 +127,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPA.statusPenugasanSPA.text = data.penugasan
                 viewHolderSPA.processByPenugasanSPA.text = data.processBy
 
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                        RoleConstants.GA
+                    )
+                ) {
                     viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
                     viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
@@ -147,7 +155,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                         }
                         viewHolderSPA.expandedChildSPA.visibility = View.VISIBLE
                         viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPA.imageExpandedParentSPA.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -157,7 +166,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                         viewHolderSPA.expandedChildSPA.animation = animation
                         viewHolderSPA.expandedChildSPA.startAnimation(animation)
                         viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPA.imageExpandedParentSPA.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -222,7 +232,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPB.statusPenugasanSPB.text = data.penugasan
                 viewHolderSPB.processByPenugasanSPB.text = data.processBy
 
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                        RoleConstants.GA
+                    )
+                ) {
                     viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
                     viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
@@ -247,7 +260,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                         }
                         viewHolderSPB.expandedChildSPB.visibility = View.VISIBLE
                         viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPB.imageExpandedParentSPB.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -257,7 +271,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                         viewHolderSPB.expandedChildSPB.animation = animation
                         viewHolderSPB.expandedChildSPB.startAnimation(animation)
                         viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPB.imageExpandedParentSPB.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -320,7 +335,10 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                 viewHolderSPS.statusPenugasanSPS.text = data.penugasan
                 viewHolderSPS.processByPenugasanSPS.text = data.processBy
 
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(RoleConstants.GA)){
+                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                        RoleConstants.GA
+                    )
+                ) {
                     viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
                     viewHolderSPS.penugasanSPS.visibility = View.VISIBLE
@@ -338,12 +356,12 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                     var isChecked = false
                     data.persyaratan?.forEach { persyaratanItem ->
                         val dataSyarat = persyaratanItem as PersyaratanItemDetailSP
-                        if (itemMaster.key == dataSyarat.persyaratan){
+                        if (itemMaster.key == dataSyarat.persyaratan) {
                             isChecked = true
                         }
                     }
 
-                    if (isChecked){
+                    if (isChecked) {
                         view.checkbox.isChecked = true
                     }
 
@@ -354,7 +372,6 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
 
                     parent.addView(view)
                 }
-
 
 
                 var dataKeterangan: String? = ""
@@ -375,7 +392,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                         }
                         viewHolderSPS.expandedChildSPS.visibility = View.VISIBLE
                         viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPS.imageExpandedParentSPS.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -385,7 +403,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
                         viewHolderSPS.expandedChildSPS.animation = animation
                         viewHolderSPS.expandedChildSPS.startAnimation(animation)
                         viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPS.imageExpandedParentSPS.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -432,7 +451,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val labelStatusPenugasanSPA: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPA)
         val penugasanSPA: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPA)
         val statusPenugasanSPA: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPA)
-        val processByPenugasanSPA: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPA)
+        val processByPenugasanSPA: TextView =
+            itemView.findViewById(R.id.tvProcessByPenugasanDetailSPA)
     }
 
     inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
@@ -458,7 +478,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val labelStatusPenugasanSPB: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPB)
         val penugasanSPB: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPB)
         val statusPenugasanSPB: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPB)
-        val processByPenugasanSPB: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPB)
+        val processByPenugasanSPB: TextView =
+            itemView.findViewById(R.id.tvProcessByPenugasanDetailSPB)
     }
 
     inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
@@ -484,7 +505,8 @@ class EditItemSuratPermintaanAdapter(): RecyclerView.Adapter<EditItemSuratPermin
         val labelStatusPenugasanSPS: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPS)
         val penugasanSPS: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPS)
         val statusPenugasanSPS: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPS)
-        val processByPenugasanSPS: TextView = itemView.findViewById(R.id.tvProcessByPenugasanDetailSPS)
+        val processByPenugasanSPS: TextView =
+            itemView.findViewById(R.id.tvProcessByPenugasanDetailSPS)
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

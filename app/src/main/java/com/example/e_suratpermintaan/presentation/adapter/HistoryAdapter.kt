@@ -1,12 +1,16 @@
 package com.example.e_suratpermintaan.presentation.adapter
 
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.DataHistory
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
@@ -44,20 +48,25 @@ class HistoryAdapter():
     }
 
     override fun getItemCount(): Int {
-        return dataHistorySP!!.size
+        return dataHistorySP.size
     }
 
     override fun onBindViewHolder(holder: TimeLineViewHolder, position: Int) {
-        val timeLineModel = dataHistorySP?.get(position)
+        val timeLineModel = dataHistorySP[position]
 
         holder.date.text = timeLineModel?.tanggal
         holder.title.text = timeLineModel?.keterangan
         holder.user.text = "${timeLineModel?.user} (${timeLineModel?.role})"
-        var color = timeLineModel?.warna
+        val color = timeLineModel?.warna
 
-        holder.timeline.marker.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            holder.timeline.marker.colorFilter =
+                BlendModeColorFilter(Color.parseColor(color), BlendMode.SRC_IN);
+        } else {
+            holder.timeline.marker.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
+        }
 
-        val ld: LayerDrawable = holder.itemView.context.resources.getDrawable(R.drawable.border_history_item) as LayerDrawable
+        val ld: LayerDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_history_item) as LayerDrawable
         val topBorder: GradientDrawable = ld.findDrawableByLayerId(R.id.left_border) as GradientDrawable
         topBorder.setColor(Color.parseColor(color))
 

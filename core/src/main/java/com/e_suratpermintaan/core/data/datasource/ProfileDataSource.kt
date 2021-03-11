@@ -10,13 +10,15 @@ interface ProfileDataSource {
 
     fun getProfile(id_user: String): Observable<ProfileResponse>
 
-    fun editProfile(id: RequestBody,
-                    email: RequestBody,
-                    passwordLast: RequestBody,
-                    passwordNew: RequestBody,
-                    name: RequestBody,
-                    desc: RequestBody,
-                    file: MultipartBody.Part?,
-                    ttd: MultipartBody.Part?): Observable<EditProfileResponse>
+    fun editProfile(
+        id: RequestBody,
+        email: RequestBody,
+        passwordLast: RequestBody,
+        passwordNew: RequestBody,
+        name: RequestBody,
+        desc: RequestBody,
+        file: MultipartBody.Part?,
+        ttd: MultipartBody.Part?
+    ): Observable<EditProfileResponse>
 
 }

@@ -14,14 +14,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItem
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
-import kotlinx.android.synthetic.main.detail_history_spa_item.view.*
 import kotlinx.android.synthetic.main.detail_history_spb_item.view.*
-import kotlinx.android.synthetic.main.detail_history_spb_item.view.labelKategori
 import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 
 class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolder>() {
@@ -31,9 +30,9 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
     val persyaratanList = mutableMapOf<String, String>()
 
     companion object {
-        val SPA = 0
-        val SPB = 1
-        val SPS = 2
+        const val SPA = 0
+        const val SPB = 1
+        const val SPS = 2
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -81,17 +80,24 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                         }
                         viewHolderSPA.expandedChildSPA.visibility = View.VISIBLE
                         viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPA.imageExpandedParentSPA.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
+//                        viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
+//                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+//                                R.drawable.ic_arrow_up
+//                            )
+//                        )
                     } else {
                         val animation = animation(viewHolderSPA.expandedChildSPA)
 
                         viewHolderSPA.expandedChildSPA.animation = animation
                         viewHolderSPA.expandedChildSPA.startAnimation(animation)
                         viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            viewHolderSPA.imageExpandedParentSPA.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPA.imageExpandedParentSPA.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -130,7 +136,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                         }
                         viewHolderSPB.expandedChildSPB.visibility = View.VISIBLE
                         viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPB.imageExpandedParentSPB.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -140,7 +147,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                         viewHolderSPB.expandedChildSPB.animation = animation
                         viewHolderSPB.expandedChildSPB.startAnimation(animation)
                         viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            viewHolderSPB.imageExpandedParentSPB.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPB.imageExpandedParentSPB.context,
                                 R.drawable.ic_arrow_down
                             )
                         )
@@ -207,7 +215,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                         }
                         viewHolderSPS.expandedChildSPS.visibility = View.VISIBLE
                         viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPS.imageExpandedParentSPS.context,
                                 R.drawable.ic_arrow_up
                             )
                         )
@@ -217,7 +226,8 @@ class DetailHistoryAdapter() : RecyclerView.Adapter<DetailHistoryAdapter.ViewHol
                         viewHolderSPS.expandedChildSPS.animation = animation
                         viewHolderSPS.expandedChildSPS.startAnimation(animation)
                         viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            viewHolderSPS.imageExpandedParentSPS.context.resources.getDrawable(
+                            ContextCompat.getDrawable(
+                                viewHolderSPS.imageExpandedParentSPS.context,
                                 R.drawable.ic_arrow_down
                             )
                         )

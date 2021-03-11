@@ -7,8 +7,8 @@ import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
-import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import io.reactivex.rxjava3.core.Observable
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -166,7 +166,7 @@ class StarterActivity : BaseActivity() {
                 Log.d("MYAPPSTARTER", "JENIS PERMINTAAN FILTER RESPONSE")
 
                 if (sharedMasterData.isAllMasterObservableResponseComplete.value == null)
-                sharedMasterData.isAllMasterObservableResponseComplete.value = true
+                    sharedMasterData.isAllMasterObservableResponseComplete.value = true
             }
         }
     }

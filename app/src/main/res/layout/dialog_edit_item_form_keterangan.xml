@@ -14,7 +14,7 @@
             android:id="@+id/etKeterangan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Keterangan" />
+            android:hint="@string/keterangan_text" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,7 @@ class ProfileDataSourceImpl(private val networkApi: NetworkApi) :
         desc: RequestBody,
         file: MultipartBody.Part?,
         ttd: MultipartBody.Part?
-    ): Observable<EditProfileResponse> = networkApi.edit_profile(id, email, passwordLast, passwordNew, name, desc, file, ttd)
+    ): Observable<EditProfileResponse> =
+        networkApi.editProfile(id, email, passwordLast, passwordNew, name, desc, file, ttd)
 
 }

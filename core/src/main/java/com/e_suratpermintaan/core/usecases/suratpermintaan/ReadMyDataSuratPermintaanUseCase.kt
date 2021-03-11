@@ -16,7 +16,13 @@ class ReadMyDataSuratPermintaanUseCase(
         jenis_permintaan: String,
         jenis_data: String
     ): Observable<MyDataResponse> =
-        suratPermintaanRepository.readMyData(id_user, proyek, status_permintaan, jenis_permintaan, jenis_data)
+        suratPermintaanRepository.readMyData(
+            id_user,
+            proyek,
+            status_permintaan,
+            jenis_permintaan,
+            jenis_data
+        )
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }

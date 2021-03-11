@@ -7,8 +7,8 @@
         android:id="@+id/tilKapasitas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
+        app:boxBackgroundColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <EditText
@@ -23,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
+        app:boxBackgroundColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@id/tilKapasitas"
         app:layout_constraintStart_toStartOf="@id/tilKapasitas"
         app:layout_constraintTop_toBottomOf="@id/tilKapasitas">
@@ -33,16 +33,16 @@
             android:id="@+id/etMerk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Merk" />
+            android:hint="@string/label_merk" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilWaktuPemakaian"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@android:color/white"
         android:layout_marginTop="5dp"
         android:visibility="gone"
+        app:boxBackgroundColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@id/tilMerk"
         app:layout_constraintStart_toStartOf="@id/tilMerk"
         app:layout_constraintTop_toBottomOf="@+id/tilMerk">

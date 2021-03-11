@@ -27,32 +27,10 @@ import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanV
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_edit_item.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item.view.container
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etJenisBarang
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etKategori
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etKodePekerjaan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etSatuan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etStatusPenugasan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.etVolume
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formKeterangan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPA
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPB
-import kotlinx.android.synthetic.main.dialog_edit_item.view.formSPS
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvJenisBarang
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvKategori
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvKodePekerjaan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvSatuan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.rvStatusPenugasan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.tilJenisBarang
-import kotlinx.android.synthetic.main.dialog_edit_item.view.tilKodePekerjaan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.tilSatuan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.tilStatusPenugasan
-import kotlinx.android.synthetic.main.dialog_edit_item.view.tilVolume
 import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spa.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_spb.view.*
 import kotlinx.android.synthetic.main.dialog_edit_item_form_sps.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -88,11 +66,6 @@ class EditItemDialog(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
         }
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            dialogRootView.etWaktuPemakaian.showSoftInputOnFocus = false
-//            dialogRootView.etWaktuPelaksanaan.showSoftInputOnFocus = false
-//        }
 
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
 

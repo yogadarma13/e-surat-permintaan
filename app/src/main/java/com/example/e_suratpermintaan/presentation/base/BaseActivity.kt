@@ -28,7 +28,6 @@ import com.example.e_suratpermintaan.presentation.activity.DetailSuratPermintaan
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.disposables.Disposable
-import org.greenrobot.eventbus.EventBus
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -230,14 +229,6 @@ abstract class BaseActivity : AppCompatActivity() {
             view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm?.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
-//    fun showKeyboard(view: View) {
-//        val imm: InputMethodManager? =
-//            view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-//        if (!(imm?.isAcceptingText!!)) {
-//            imm.showSoftInput(view, 0)
-//        }
-//    }
 
     private fun setupInternetObserver() {
         /* Live data object and setting an oberser on it */

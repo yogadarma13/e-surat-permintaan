@@ -56,12 +56,6 @@ class DetailHistoryActivity : BaseActivity() {
     }
 
     private fun init() {
-//        detailHistoryBaruAdapter = BaseAdapter(
-//            R.layout.detail_history_spb_item, DetailHistoryViewHolder::class.java
-//        )
-//        detailHistoryLamaAdapter = BaseAdapter(
-//            R.layout.detail_history_spb_item, DetailHistoryViewHolder::class.java
-//        )
         detailHistoryBaruAdapter = DetailHistoryAdapter()
         detailHistoryLamaAdapter = DetailHistoryAdapter()
 
@@ -113,11 +107,9 @@ class DetailHistoryActivity : BaseActivity() {
 
     private fun initRecyclerView() {
 
-//        recyclerViewBaru.itemAnimator = null
         recyclerViewBaru.layoutManager = LinearLayoutManager(this)
         recyclerViewBaru.adapter = detailHistoryBaruAdapter
 
-//        recyclerViewLama.itemAnimator = null
         recyclerViewLama.layoutManager = LinearLayoutManager(this)
         recyclerViewLama.adapter = detailHistoryLamaAdapter
 

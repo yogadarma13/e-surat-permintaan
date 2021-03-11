@@ -29,8 +29,9 @@
         </menu>
     </item>
 
-    <item android:title="Master Data"
+    <item
         android:id="@+id/menuMasterData"
+        android:title="Master Data"
         android:visible="false">
         <menu>
             <group android:checkableBehavior="single">

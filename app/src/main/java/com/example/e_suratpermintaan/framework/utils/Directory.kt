@@ -9,7 +9,9 @@ object Directory {
 
     fun checkDirectoryAndFileExists(context: Context, fileName: String): Boolean {
         val outputDirectory: File
-        val path: String = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/E-SuratPermintaan"
+        val path: String =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString() + "/E-SuratPermintaan"
 
         outputDirectory = if (isSDCardPresent()) {
             File(path)
@@ -23,7 +25,11 @@ object Directory {
         } else {
             val f = File("$path/$fileName")
             if (f.exists()) {
-                Toast.makeText(context, "File sudah ada\nLokasi file di Penyimpanan/Download/E-SuratPermintaan/$fileName", Toast.LENGTH_LONG)
+                Toast.makeText(
+                    context,
+                    "File sudah ada\nLokasi file di Penyimpanan/Download/E-SuratPermintaan/$fileName",
+                    Toast.LENGTH_LONG
+                )
                     .show()
                 false
             } else {

@@ -84,8 +84,6 @@ class EditSuratPermintaanActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         idSp = intent.extras?.getString(ID_SP_EDIT)
-//        persyaratanList =
-//            intent.getSerializableExtra(MASTER_PERSYARATAN) as MutableMap<String, String>
 
         editItemSuratPermintaanAdapter = EditItemSuratPermintaanAdapter()
 

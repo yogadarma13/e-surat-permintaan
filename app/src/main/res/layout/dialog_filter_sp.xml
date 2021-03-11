@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@android:color/white"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:padding="24dp">
     <!--
     Clearly not a Spinner at all. Google has decided there should no
@@ -30,8 +29,8 @@
             android:id="@+id/spinnerProyek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="Proyek" />
+            android:hint="Proyek"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -47,8 +46,8 @@
             android:id="@+id/spinnerJenis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="Jenis Permintaan" />
+            android:hint="Jenis Permintaan"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -65,8 +64,8 @@
             android:id="@+id/spinnerStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="Status Permintaan" />
+            android:hint="Status Permintaan"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -83,18 +82,18 @@
             android:id="@+id/spinnerJenisData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:hint="Jenis Data" />
+            android:hint="Jenis Data"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnFilterReset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="12dp"
         android:layout_marginTop="15dp"
-        android:text="Reset"
         android:backgroundTint="#A5A5A5"
+        android:paddingVertical="12dp"
+        android:text="Reset"
         app:layout_constraintEnd_toEndOf="@+id/tilJenisData"
         app:layout_constraintStart_toStartOf="@+id/tilJenisData"
         app:layout_constraintTop_toBottomOf="@+id/tilJenisData" />
@@ -103,8 +102,8 @@
         android:id="@+id/btnFilterSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="12dp"
         android:layout_marginTop="5dp"
+        android:paddingVertical="12dp"
         android:text="Filter"
         app:layout_constraintEnd_toEndOf="@+id/btnFilterReset"
         app:layout_constraintStart_toStartOf="@+id/btnFilterReset"

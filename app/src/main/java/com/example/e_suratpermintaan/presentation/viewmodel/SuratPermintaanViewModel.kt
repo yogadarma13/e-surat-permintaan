@@ -66,7 +66,11 @@ class SuratPermintaanViewModel(
     ): Observable<VerifikasiSPResponse> =
         verifikasiSuratPermintaanUseCase.invoke(id_user, id, status, catatan, file)
 
-    override fun ajukan(id_user: RequestBody, id: RequestBody, file: MultipartBody.Part): Observable<AjukanSPResponse> =
+    override fun ajukan(
+        id_user: RequestBody,
+        id: RequestBody,
+        file: MultipartBody.Part
+    ): Observable<AjukanSPResponse> =
         ajukanSuratPermintaanUseCase.invoke(id_user, id, file)
 
     override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =

@@ -7,8 +7,8 @@
         android:id="@+id/tilKapasitas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@android:color/white"
         android:visibility="gone"
+        app:boxBackgroundColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent">
         <!-- Google themselves instruct us to use the deprecated editable attribute -->
         <EditText
@@ -22,9 +22,9 @@
         android:id="@+id/tilMerk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:visibility="gone"
         app:boxBackgroundColor="@android:color/white"
-        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@id/tilKapasitas"
         app:layout_constraintStart_toStartOf="@id/tilKapasitas"
         app:layout_constraintTop_toBottomOf="@id/tilKapasitas">
@@ -40,8 +40,8 @@
         android:id="@+id/tilWaktuPemakaian"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginTop="5dp"
+        android:visibility="gone"
         app:boxBackgroundColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@id/tilMerk"
         app:layout_constraintStart_toStartOf="@id/tilMerk"
@@ -58,12 +58,11 @@
         android:id="@+id/pickWaktuPemakaian"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/pick_date_show_btn_margin_right"
+        android:layout_marginEnd="@dimen/pick_date_show_btn_margin_right"
         android:src="@drawable/ic_date_range_black_30dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tilWaktuPemakaian"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tilWaktuPemakaian"
-        android:layout_marginEnd="@dimen/pick_date_show_btn_margin_right" />
+        app:layout_constraintTop_toTopOf="@+id/tilWaktuPemakaian" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

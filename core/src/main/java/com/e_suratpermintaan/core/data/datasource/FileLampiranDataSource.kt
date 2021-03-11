@@ -9,9 +9,17 @@ import okhttp3.RequestBody
 
 interface FileLampiranDataSource {
 
-    fun addFile(id: RequestBody, keterangan: RequestBody, file: MultipartBody.Part): Observable<CreateFileLampiranResponse>
+    fun addFile(
+        id: RequestBody,
+        keterangan: RequestBody,
+        file: MultipartBody.Part
+    ): Observable<CreateFileLampiranResponse>
 
-    fun editFile(keterangan: RequestBody, file: MultipartBody.Part, id_file: RequestBody): Observable<EditFileLampiranResponse>
+    fun editFile(
+        keterangan: RequestBody,
+        file: MultipartBody.Part,
+        id_file: RequestBody
+    ): Observable<EditFileLampiranResponse>
 
     fun removeFile(id_file: String): Observable<DeleteFileLampiranResponse>
 }

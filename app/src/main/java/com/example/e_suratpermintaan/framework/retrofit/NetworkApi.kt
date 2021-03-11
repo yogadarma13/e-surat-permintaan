@@ -28,7 +28,7 @@ interface NetworkApi {
 
     @Multipart
     @POST("edit_profile")
-    fun edit_profile(
+    fun editProfile(
         @Part("id") id: RequestBody,
         @Part("email") email: RequestBody,
         @Part("password_last") passwordLast: RequestBody,
