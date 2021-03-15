@@ -1,15 +1,11 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -17,37 +13,24 @@ import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterJenis
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterOption
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterProyek
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityWebViewBinding
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_PROFILE_ACTIVITY
-import com.example.e_suratpermintaan.framework.retrofit.NetworkClient
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
-import com.example.e_suratpermintaan.presentation.base.BaseAdapter
-import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
-import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.MyDataViewHolder
-import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
-import kotlinx.android.synthetic.main.activity_web_view.*
-import kotlinx.android.synthetic.main.dialog_filter_sp.view.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WebViewActivity : BaseActivity() {
+class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
     private var url = ""
     private lateinit var drawerToggle: ActionBarDrawerToggle
@@ -55,13 +38,13 @@ class WebViewActivity : BaseActivity() {
     private lateinit var idUser: String
     private lateinit var roleId: String
 
-    private var selectedStatusFilterValue: String = ""
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
     private val statusOptionList: ArrayList<DataMasterOption> = arrayListOf()
 
-    override fun layoutId(): Int = R.layout.activity_web_view
+    override fun getViewBinding(): ActivityWebViewBinding =
+        ActivityWebViewBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,32 +63,32 @@ class WebViewActivity : BaseActivity() {
         setupNavigationDrawer()
 
         val client = CustomWebViewClient()
-        webView.settings.loadsImagesAutomatically = true
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
 
-        webView.settings.setSupportZoom(true)
-        webView.settings.builtInZoomControls = true
-        webView.settings.displayZoomControls = false
+        with(binding.webView) {
+            settings.loadsImagesAutomatically = true
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
 
-        webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        webView.webViewClient = client
-        webView.loadUrl(url)
+            settings.setSupportZoom(true)
+            settings.builtInZoomControls = true
+            settings.displayZoomControls = false
 
+            scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+            webViewClient = client
+            url?.let { loadUrl(it) }
+        }
     }
 
     private fun setupTollbar() {
-        if (toolbar_master_data != null && toolbar != null) {
-            toolbar_master_data.text = getString(R.string.toolbar_master_data)
-            setSupportActionBar(toolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)
-            }
+        binding.toolbarMasterData.text = getString(R.string.toolbar_master_data)
+        setSupportActionBar(binding.toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
         }
     }
 
     private fun setupNavigationDrawer() {
-        val menu: Menu = navigation_view.menu
+        val menu: Menu = binding.navigationView.menu
         val menuItemMasterData: MenuItem = menu.findItem(R.id.menuMasterData)
         menuItemMasterData.isVisible = roleId == "0"
         // Find our drawer view
@@ -116,9 +99,9 @@ class WebViewActivity : BaseActivity() {
         drawerToggle.syncState()
 
         // Tie DrawerLayout events to the ActionBarToggle
-        drawer_layout.addDrawerListener(drawerToggle)
+        binding.drawerLayout.addDrawerListener(drawerToggle)
 
-        navigation_view.setNavigationItemSelectedListener { menuItem ->
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detail_profile -> {
                     val intent = Intent(this, ProfileActivity::class.java)
@@ -142,7 +125,7 @@ class WebViewActivity : BaseActivity() {
             }
 
             //This is for closing the drawer after acting on it
-            drawer_layout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
@@ -150,12 +133,13 @@ class WebViewActivity : BaseActivity() {
     }
 
     private fun initNavHeaderProfile() {
-        val headerView = navigation_view.getHeaderView(0)
-        headerView.profileName.text = profilePreference.getProfile()?.name
-        headerView.role.text = profilePreference.getProfile()?.namaRole
-        headerView.email.text = profilePreference.getProfile()?.email
+        val headerView = binding.navigationView.getHeaderView(0)
+        headerView.findViewById<TextView>(R.id.profileName).text =
+            profilePreference.getProfile()?.name
+        headerView.findViewById<TextView>(R.id.role).text = profilePreference.getProfile()?.namaRole
+        headerView.findViewById<TextView>(R.id.email).text = profilePreference.getProfile()?.email
         Glide.with(this).load(profilePreference.getProfile()?.fotoProfile)
-            .into(headerView.circleImageView)
+            .into(headerView.findViewById(R.id.circleImageView))
     }
 
     private fun setupDrawerToggle(): ActionBarDrawerToggle {
@@ -163,8 +147,8 @@ class WebViewActivity : BaseActivity() {
         // and will not render the hamburger icon without it.
         return ActionBarDrawerToggle(
             this,
-            drawer_layout,
-            toolbar,
+            binding.drawerLayout,
+            binding.toolbar,
             R.string.drawer_open,
             R.string.drawer_close
         )
@@ -174,7 +158,7 @@ class WebViewActivity : BaseActivity() {
         if (event?.action == KeyEvent.ACTION_DOWN) {
             when (keyCode) {
                 KeyEvent.KEYCODE_BACK -> {
-                    if (webView.canGoBack()) {
+                    if (binding.webView.canGoBack()) {
                         if (!DetectConnection().checkConnection(this)) {
                             val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
                             alertDialogBuilder.setTitle("Koneksi terputus")
@@ -184,7 +168,7 @@ class WebViewActivity : BaseActivity() {
                             val alertDialog = alertDialogBuilder.create()
                             alertDialog.show()
                         } else {
-                            webView.goBack()
+                            binding.webView.goBack()
                         }
 
                     } else {
@@ -205,10 +189,10 @@ class WebViewActivity : BaseActivity() {
             request: WebResourceRequest?
         ): Boolean {
             if (!DetectConnection().checkConnection(view?.context!!)) {
-                Toast.makeText(view?.context!!, "Please turn on the internet", Toast.LENGTH_LONG)
+                Toast.makeText(view.context!!, "Please turn on the internet", Toast.LENGTH_LONG)
                     .show()
             } else {
-                var url = request?.url.toString()
+                val url = request?.url.toString()
                 view.loadUrl(url)
             }
             return true

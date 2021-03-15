@@ -9,22 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.DetailHistorySpaItemBinding
+import com.example.e_suratpermintaan.databinding.DetailHistorySpbItemBinding
+import com.example.e_suratpermintaan.databinding.DetailHistorySpsItemBinding
+import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
 import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
-import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
 
-class EditItemSuratPermintaanAdapter() :
+class EditItemSuratPermintaanAdapter :
     RecyclerView.Adapter<EditItemSuratPermintaanAdapter.ViewHolder>() {
 
     companion object {
@@ -55,9 +53,9 @@ class EditItemSuratPermintaanAdapter() :
     ): EditItemSuratPermintaanAdapter.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            SPA -> ViewHolderSPA(inflater.inflate(R.layout.detail_history_spa_item, parent, false))
-            SPB -> ViewHolderSPB(inflater.inflate(R.layout.detail_history_spb_item, parent, false))
-            else -> ViewHolderSPS(inflater.inflate(R.layout.detail_history_sps_item, parent, false))
+            SPA -> ViewHolderSPA(DetailHistorySpaItemBinding.inflate(inflater, parent, false))
+            SPB -> ViewHolderSPB(DetailHistorySpbItemBinding.inflate(inflater, parent, false))
+            else -> ViewHolderSPS(DetailHistorySpsItemBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -67,446 +65,403 @@ class EditItemSuratPermintaanAdapter() :
         holder: EditItemSuratPermintaanAdapter.ViewHolder,
         position: Int
     ) {
-        val data = itemList.get(position)
+        val data = itemList[position]
 
         when (getItemViewType(position)) {
             SPA -> {
                 val viewHolderSPA = holder as ViewHolderSPA
 
-                if (data.tombolEditItem == 1) {
-                    viewHolderSPA.btnEditSPA.visibility = View.VISIBLE
-                    viewHolderSPA.btnEditSPA.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_EDIT)
-                    }
-                } else {
-                    viewHolderSPA.btnEditSPA.visibility = View.GONE
-                }
-                if (data.tombolHapusItem == 1) {
-                    viewHolderSPA.btnHapusSPA.visibility = View.VISIBLE
-                    viewHolderSPA.btnHapusSPA.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_HAPUS)
-                    }
-                } else {
-                    viewHolderSPA.btnHapusSPA.visibility = View.GONE
-                }
-                if (data.tombolPenugasan == 1) {
-                    viewHolderSPA.btnPenugasanSPA.visibility = View.VISIBLE
-                    viewHolderSPA.btnPenugasanSPA.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_PENUGASAN)
-                    }
-                } else {
-                    viewHolderSPA.btnPenugasanSPA.visibility = View.GONE
-                }
-                if (data.tombolProcess == 1) {
-                    viewHolderSPA.btnProcessSPA.visibility = View.VISIBLE
-                    viewHolderSPA.btnProcessSPA.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_PROCESS)
-                    }
-                } else {
-                    viewHolderSPA.btnProcessSPA.visibility = View.GONE
-                }
-                if (data.tombolUnProcess == 1) {
-                    viewHolderSPA.btnUnProcessSPA.visibility = View.VISIBLE
-                    viewHolderSPA.btnUnProcessSPA.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_UNPROCESS)
-                    }
-                } else {
-                    viewHolderSPA.btnUnProcessSPA.visibility = View.GONE
-                }
-
-                viewHolderSPA.kodeDetailSPA.text = data.kodePekerjaan
-                viewHolderSPA.jenisBarangSPA.text = data.idBarang
-                viewHolderSPA.kategoriDetailSPA.text = data.kategori
-                viewHolderSPA.jenisDetailSPA.text = data.idBarang
-                viewHolderSPA.satuanDetailSPA.text = data.idSatuan
-                viewHolderSPA.kapasitasDetailSPA.text = data.kapasitas
-                viewHolderSPA.waktuDetailSPA.text = data.waktuPemakaian
-                viewHolderSPA.merkDetailSPA.text = data.merk
-                viewHolderSPA.qtyDetailSPA.text = data.qty
-                viewHolderSPA.penugasanSPA.text = data.kepada
-                viewHolderSPA.statusPenugasanSPA.text = data.penugasan
-                viewHolderSPA.processByPenugasanSPA.text = data.processBy
-
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                        RoleConstants.GA
-                    )
-                ) {
-                    viewHolderSPA.labelPenugasanSPA.visibility = View.VISIBLE
-                    viewHolderSPA.labelStatusPenugasanSPA.visibility = View.VISIBLE
-                    viewHolderSPA.penugasanSPA.visibility = View.VISIBLE
-                    viewHolderSPA.statusPenugasanSPA.visibility = View.VISIBLE
-                }
-
-                var dataKeterangan: String? = ""
-
-                data.keterangan?.forEach {
-                    dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
-                }
-                viewHolderSPA.keteranganDetailSPA.text = dataKeterangan
-
-                viewHolderSPA.expandedParentSPA.setOnClickListener {
-                    if (viewHolderSPA.expandedChildSPA.visibility == View.GONE) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            TransitionManager.beginDelayedTransition(
-                                viewHolderSPA.cardViewSPA,
-                                TransitionSet()
-                                    .addTransition(ChangeBounds())
-                            )
-                        }
-                        viewHolderSPA.expandedChildSPA.visibility = View.VISIBLE
-                        viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                viewHolderSPA.imageExpandedParentSPA.context,
-                                R.drawable.ic_arrow_up
-                            )
-                        )
-                    } else {
-                        val animation = animation(viewHolderSPA.expandedChildSPA)
-
-                        viewHolderSPA.expandedChildSPA.animation = animation
-                        viewHolderSPA.expandedChildSPA.startAnimation(animation)
-                        viewHolderSPA.imageExpandedParentSPA.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                viewHolderSPA.imageExpandedParentSPA.context,
-                                R.drawable.ic_arrow_down
-                            )
-                        )
-                    }
-
-                }
+                viewHolderSPA.bind(data)
             }
 
             SPB -> {
                 val viewHolderSPB = holder as ViewHolderSPB
 
-                if (data.tombolEditItem == 1) {
-                    viewHolderSPB.btnEditSPB.visibility = View.VISIBLE
-                    viewHolderSPB.btnEditSPB.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_EDIT)
-                    }
-                } else {
-                    viewHolderSPB.btnEditSPB.visibility = View.GONE
-                }
-                if (data.tombolHapusItem == 1) {
-                    viewHolderSPB.btnHapusSPB.visibility = View.VISIBLE
-                    viewHolderSPB.btnHapusSPB.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_HAPUS)
-                    }
-                } else {
-                    viewHolderSPB.btnHapusSPB.visibility = View.GONE
-                }
-                if (data.tombolPenugasan == 1) {
-                    viewHolderSPB.btnPenugasanSPB.visibility = View.VISIBLE
-                    viewHolderSPB.btnPenugasanSPB.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_PENUGASAN)
-                    }
-                } else {
-                    viewHolderSPB.btnPenugasanSPB.visibility = View.GONE
-                }
-                if (data.tombolProcess == 1) {
-                    viewHolderSPB.btnProcessSPB.visibility = View.VISIBLE
-                    viewHolderSPB.btnProcessSPB.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_PROCESS)
-                    }
-                } else {
-                    viewHolderSPB.btnProcessSPB.visibility = View.GONE
-                }
-                if (data.tombolUnProcess == 1) {
-                    viewHolderSPB.btnUnProcessSPB.visibility = View.VISIBLE
-                    viewHolderSPB.btnUnProcessSPB.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_UNPROCESS)
-                    }
-                } else {
-                    viewHolderSPB.btnUnProcessSPB.visibility = View.GONE
-                }
+                viewHolderSPB.bind(data)
 
-                viewHolderSPB.kodeDetailSPB.text = data.kodePekerjaan
-                viewHolderSPB.jenisBarangSPB.text = data.idBarang
-                viewHolderSPB.kategoriDetailSPB.text = data.kategori
-                viewHolderSPB.jenisDetailSPB.text = data.idBarang
-                viewHolderSPB.satuanDetailSPB.text = data.idSatuan
-                viewHolderSPB.fungsiDetailSPB.text = data.fungsi
-                viewHolderSPB.targetDetailSPB.text = data.target
-                viewHolderSPB.qtyDetailSPB.text = data.qty
-                viewHolderSPB.penugasanSPB.text = data.kepada
-                viewHolderSPB.statusPenugasanSPB.text = data.penugasan
-                viewHolderSPB.processByPenugasanSPB.text = data.processBy
-
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                        RoleConstants.GA
-                    )
-                ) {
-                    viewHolderSPB.labelPenugasanSPB.visibility = View.VISIBLE
-                    viewHolderSPB.labelStatusPenugasanSPB.visibility = View.VISIBLE
-                    viewHolderSPB.penugasanSPB.visibility = View.VISIBLE
-                    viewHolderSPB.statusPenugasanSPB.visibility = View.VISIBLE
-                }
-
-                var dataKeterangan: String? = ""
-
-                data.keterangan?.forEach {
-                    dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
-                }
-                viewHolderSPB.keteranganDetailSPB.text = dataKeterangan
-
-                viewHolderSPB.expandedParentSPB.setOnClickListener {
-                    if (viewHolderSPB.expandedChildSPB.visibility == View.GONE) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            TransitionManager.beginDelayedTransition(
-                                viewHolderSPB.cardViewSPB,
-                                TransitionSet()
-                                    .addTransition(ChangeBounds())
-                            )
-                        }
-                        viewHolderSPB.expandedChildSPB.visibility = View.VISIBLE
-                        viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                viewHolderSPB.imageExpandedParentSPB.context,
-                                R.drawable.ic_arrow_up
-                            )
-                        )
-                    } else {
-                        val animation = animation(viewHolderSPB.expandedChildSPB)
-
-                        viewHolderSPB.expandedChildSPB.animation = animation
-                        viewHolderSPB.expandedChildSPB.startAnimation(animation)
-                        viewHolderSPB.imageExpandedParentSPB.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                viewHolderSPB.imageExpandedParentSPB.context,
-                                R.drawable.ic_arrow_down
-                            )
-                        )
-                    }
-                }
             }
 
             SPS -> {
                 val viewHolderSPS = holder as ViewHolderSPS
 
-                if (data.tombolEditItem == 1) {
-                    viewHolderSPS.btnEditSPS.visibility = View.VISIBLE
-                    viewHolderSPS.btnEditSPS.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_EDIT)
-                    }
-                } else {
-                    viewHolderSPS.btnEditSPS.visibility = View.GONE
-                }
-                if (data.tombolHapusItem == 1) {
-                    viewHolderSPS.btnHapusSPS.visibility = View.VISIBLE
-                    viewHolderSPS.btnHapusSPS.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_HAPUS)
-                    }
-                } else {
-                    viewHolderSPS.btnHapusSPS.visibility = View.GONE
-                }
-                if (data.tombolPenugasan == 1) {
-                    viewHolderSPS.btnPenugasanSPS.visibility = View.VISIBLE
-                    viewHolderSPS.btnPenugasanSPS.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_PENUGASAN)
-                    }
-                } else {
-                    viewHolderSPS.btnPenugasanSPS.visibility = View.GONE
-                }
-                if (data.tombolProcess == 1) {
-                    viewHolderSPS.btnProcessSPS.visibility = View.VISIBLE
-                    viewHolderSPS.btnProcessSPS.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_PROCESS)
-                    }
-                } else {
-                    viewHolderSPS.btnProcessSPS.visibility = View.GONE
-                }
-                if (data.tombolUnProcess == 1) {
-                    viewHolderSPS.btnUnProcessSPS.visibility = View.VISIBLE
-                    viewHolderSPS.btnUnProcessSPS.setOnClickListener {
-                        onItemClickListener.invoke(data, BTN_UNPROCESS)
-                    }
-                } else {
-                    viewHolderSPS.btnUnProcessSPS.visibility = View.GONE
-                }
-
-                viewHolderSPS.kodeDetailSPS.text = data.kodePekerjaan
-                viewHolderSPS.jenisBarangSPS.text = data.idBarang
-                viewHolderSPS.kategoriDetailSPS.text = data.kategori
-                viewHolderSPS.jenisDetailSPS.text = data.idBarang
-                viewHolderSPS.satuanDetailSPS.text = data.idSatuan
-                viewHolderSPS.waktuDetailSPS.text = data.waktuPelaksanaan
-                viewHolderSPS.qtyDetailSPS.text = data.qty
-                viewHolderSPS.penugasanSPS.text = data.kepada
-                viewHolderSPS.statusPenugasanSPS.text = data.penugasan
-                viewHolderSPS.processByPenugasanSPS.text = data.processBy
-
-                if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                        RoleConstants.GA
-                    )
-                ) {
-                    viewHolderSPS.labelPenugasanSPS.visibility = View.VISIBLE
-                    viewHolderSPS.labelStatusPenugasanSPS.visibility = View.VISIBLE
-                    viewHolderSPS.penugasanSPS.visibility = View.VISIBLE
-                    viewHolderSPS.statusPenugasanSPS.visibility = View.VISIBLE
-                }
-
-
-                val parent = viewHolderSPS.persyaratanDetailSPS
-                parent.removeAllViews()
-                persyaratanList.forEach { itemMaster ->
-
-                    val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_simple_checkbox, parent, false)
-
-                    var isChecked = false
-                    data.persyaratan?.forEach { persyaratanItem ->
-                        val dataSyarat = persyaratanItem as PersyaratanItemDetailSP
-                        if (itemMaster.key == dataSyarat.persyaratan) {
-                            isChecked = true
-                        }
-                    }
-
-                    if (isChecked) {
-                        view.checkbox.isChecked = true
-                    }
-
-                    view.checkbox.text = itemMaster.value
-                    view.checkbox.setOnCheckedChangeListener { _, checked ->
-                        view.checkbox.isChecked = !checked
-                    }
-
-                    parent.addView(view)
-                }
-
-
-                var dataKeterangan: String? = ""
-
-                data.keterangan?.forEach {
-                    dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
-                }
-                viewHolderSPS.keteranganDetailSPS.text = dataKeterangan
-
-                viewHolderSPS.expandedParentSPS.setOnClickListener {
-                    if (viewHolderSPS.expandedChildSPS.visibility == View.GONE) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            TransitionManager.beginDelayedTransition(
-                                viewHolderSPS.cardViewSPS,
-                                TransitionSet()
-                                    .addTransition(ChangeBounds())
-                            )
-                        }
-                        viewHolderSPS.expandedChildSPS.visibility = View.VISIBLE
-                        viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                viewHolderSPS.imageExpandedParentSPS.context,
-                                R.drawable.ic_arrow_up
-                            )
-                        )
-                    } else {
-                        val animation = animation(viewHolderSPS.expandedChildSPS)
-
-                        viewHolderSPS.expandedChildSPS.animation = animation
-                        viewHolderSPS.expandedChildSPS.startAnimation(animation)
-                        viewHolderSPS.imageExpandedParentSPS.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                viewHolderSPS.imageExpandedParentSPS.context,
-                                R.drawable.ic_arrow_down
-                            )
-                        )
-                    }
-                }
+                viewHolderSPS.bind(data)
 
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (viewType[position].equals("SPA")) {
-            return SPA
-        } else if (viewType[position].equals("SPB")) {
-            return SPB
-        } else {
-            return SPS
+        return when {
+            viewType[position] == "SPA" -> {
+                SPA
+            }
+            viewType[position] == "SPB" -> {
+                SPB
+            }
+            else -> {
+                SPS
+            }
         }
     }
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class ViewHolderSPA(itemView: View) : ViewHolder(itemView) {
-        val kodeDetailSPA: TextView = itemView.findViewById(R.id.tvKodeDetailSPA)
-        val jenisBarangSPA: TextView = itemView.findViewById(R.id.tvJenisBarangSPA)
-        val kategoriDetailSPA: TextView = itemView.findViewById(R.id.tvKategoriSPA)
-        val jenisDetailSPA: TextView = itemView.findViewById(R.id.tvJenisDetailSPA)
-        val satuanDetailSPA: TextView = itemView.findViewById(R.id.tvSatuanDetailSPA)
-        val kapasitasDetailSPA: TextView = itemView.findViewById(R.id.tvKapasitasDetailSPA)
-        val merkDetailSPA: TextView = itemView.findViewById(R.id.tvMerkDetailSPA)
-        val waktuDetailSPA: TextView = itemView.findViewById(R.id.tvWaktuDetailSPA)
-        val qtyDetailSPA: TextView = itemView.findViewById(R.id.tvQtySPA)
-        val keteranganDetailSPA: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPA)
-        val expandedChildSPA: ConstraintLayout = itemView.findViewById(R.id.expandedChildSPA)
-        val expandedParentSPA: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPA)
-        val cardViewSPA: CardView = itemView.findViewById(R.id.cardViewSPA)
-        val imageExpandedParentSPA: ImageView = itemView.findViewById(R.id.imgExpandedParentSPA)
-        val btnEditSPA: Button = itemView.findViewById(R.id.btnEditSPA)
-        val btnHapusSPA: Button = itemView.findViewById(R.id.btnHapusSPA)
-        val btnPenugasanSPA: Button = itemView.findViewById(R.id.btnPenugasanSPA)
-        val btnProcessSPA: Button = itemView.findViewById(R.id.btnProcessSPA)
-        val btnUnProcessSPA: Button = itemView.findViewById(R.id.btnUnProcessSPA)
-        val labelPenugasanSPA: TextView = itemView.findViewById(R.id.labelPenugasanSPA)
-        val labelStatusPenugasanSPA: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPA)
-        val penugasanSPA: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPA)
-        val statusPenugasanSPA: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPA)
-        val processByPenugasanSPA: TextView =
-            itemView.findViewById(R.id.tvProcessByPenugasanDetailSPA)
+    inner class ViewHolderSPA(private val binding: DetailHistorySpaItemBinding) :
+        ViewHolder(binding.root) {
+        fun bind(data: ItemsDetailSP) {
+            if (data.tombolEditItem == 1) {
+                binding.btnEditSPA.visibility = View.VISIBLE
+                binding.btnEditSPA.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_EDIT)
+                }
+            } else {
+                binding.btnEditSPA.visibility = View.GONE
+            }
+            if (data.tombolHapusItem == 1) {
+                binding.btnHapusSPA.visibility = View.VISIBLE
+                binding.btnHapusSPA.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_HAPUS)
+                }
+            } else {
+                binding.btnHapusSPA.visibility = View.GONE
+            }
+            if (data.tombolPenugasan == 1) {
+                binding.btnPenugasanSPA.visibility = View.VISIBLE
+                binding.btnPenugasanSPA.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_PENUGASAN)
+                }
+            } else {
+                binding.btnPenugasanSPA.visibility = View.GONE
+            }
+            if (data.tombolProcess == 1) {
+                binding.btnProcessSPA.visibility = View.VISIBLE
+                binding.btnProcessSPA.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_PROCESS)
+                }
+            } else {
+                binding.btnProcessSPA.visibility = View.GONE
+            }
+            if (data.tombolUnProcess == 1) {
+                binding.btnUnProcessSPA.visibility = View.VISIBLE
+                binding.btnUnProcessSPA.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_UNPROCESS)
+                }
+            } else {
+                binding.btnUnProcessSPA.visibility = View.GONE
+            }
+
+            binding.tvKodeDetailSPA.text = data.kodePekerjaan
+            binding.tvJenisBarangSPA.text = data.idBarang
+            binding.tvKategoriSPA.text = data.kategori
+            binding.tvJenisDetailSPA.text = data.idBarang
+            binding.tvSatuanDetailSPA.text = data.idSatuan
+            binding.tvKapasitasDetailSPA.text = data.kapasitas
+            binding.tvWaktuDetailSPA.text = data.waktuPemakaian
+            binding.tvMerkDetailSPA.text = data.merk
+            binding.tvQtySPA.text = data.qty
+            binding.tvPenugasanDetailSPA.text = data.kepada
+            binding.tvStatusPenugasanDetailSPA.text = data.penugasan
+            binding.tvProcessByPenugasanDetailSPA.text = data.processBy
+
+            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                    RoleConstants.GA
+                )
+            ) {
+                binding.labelPenugasanSPA.visibility = View.VISIBLE
+                binding.labelStatusPenugasanSPA.visibility = View.VISIBLE
+                binding.tvPenugasanDetailSPA.visibility = View.VISIBLE
+                binding.tvStatusPenugasanDetailSPA.visibility = View.VISIBLE
+            } else {
+                binding.labelPenugasanSPA.visibility = View.GONE
+                binding.labelStatusPenugasanSPA.visibility = View.GONE
+                binding.tvPenugasanDetailSPA.visibility = View.GONE
+                binding.tvStatusPenugasanDetailSPA.visibility = View.GONE
+            }
+
+            var dataKeterangan: String? = ""
+
+            data.keterangan?.forEach {
+                dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
+            }
+            binding.tvKeteranganDetailSPA.text = dataKeterangan
+
+            binding.expandedParentSPA.setOnClickListener {
+                if (binding.expandedChildSPA.visibility == View.GONE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        TransitionManager.beginDelayedTransition(
+                            binding.cardViewSPA,
+                            TransitionSet()
+                                .addTransition(ChangeBounds())
+                        )
+                    }
+                    binding.expandedChildSPA.visibility = View.VISIBLE
+                    binding.imgExpandedParentSPA.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            binding.imgExpandedParentSPA.context,
+                            R.drawable.ic_arrow_up
+                        )
+                    )
+                } else {
+                    val animation = animation(binding.expandedChildSPA)
+
+                    binding.expandedChildSPA.animation = animation
+                    binding.expandedChildSPA.startAnimation(animation)
+                    binding.imgExpandedParentSPA.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            binding.imgExpandedParentSPA.context,
+                            R.drawable.ic_arrow_down
+                        )
+                    )
+                }
+
+            }
+        }
     }
 
-    inner class ViewHolderSPB(itemView: View) : ViewHolder(itemView) {
-        val kodeDetailSPB: TextView = itemView.findViewById(R.id.tvKodeDetailSPB)
-        val jenisBarangSPB: TextView = itemView.findViewById(R.id.tvJenisBarangSPB)
-        val kategoriDetailSPB: TextView = itemView.findViewById(R.id.tvKategoriSPB)
-        val jenisDetailSPB: TextView = itemView.findViewById(R.id.tvJenisDetailSPB)
-        val satuanDetailSPB: TextView = itemView.findViewById(R.id.tvSatuanDetailSPB)
-        val fungsiDetailSPB: TextView = itemView.findViewById(R.id.tvFungsiDetailSPB)
-        val targetDetailSPB: TextView = itemView.findViewById(R.id.tvTargetDetailSPB)
-        val qtyDetailSPB: TextView = itemView.findViewById(R.id.tvQtySPB)
-        val keteranganDetailSPB: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPB)
-        val expandedChildSPB: ConstraintLayout = itemView.findViewById(R.id.expandedChildSPB)
-        val expandedParentSPB: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPB)
-        val cardViewSPB: CardView = itemView.findViewById(R.id.cardViewSPB)
-        val imageExpandedParentSPB: ImageView = itemView.findViewById(R.id.imgExpandedParentSPB)
-        val btnEditSPB: Button = itemView.findViewById(R.id.btnEditSPB)
-        val btnHapusSPB: Button = itemView.findViewById(R.id.btnHapusSPB)
-        val btnPenugasanSPB: Button = itemView.findViewById(R.id.btnPenugasanSPB)
-        val btnProcessSPB: Button = itemView.findViewById(R.id.btnProcessSPB)
-        val btnUnProcessSPB: Button = itemView.findViewById(R.id.btnUnProcessSPB)
-        val labelPenugasanSPB: TextView = itemView.findViewById(R.id.labelPenugasanSPB)
-        val labelStatusPenugasanSPB: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPB)
-        val penugasanSPB: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPB)
-        val statusPenugasanSPB: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPB)
-        val processByPenugasanSPB: TextView =
-            itemView.findViewById(R.id.tvProcessByPenugasanDetailSPB)
+    inner class ViewHolderSPB(private val binding: DetailHistorySpbItemBinding) :
+        ViewHolder(binding.root) {
+        fun bind(data: ItemsDetailSP) {
+            if (data.tombolEditItem == 1) {
+                binding.btnEditSPB.visibility = View.VISIBLE
+                binding.btnEditSPB.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_EDIT)
+                }
+            } else {
+                binding.btnEditSPB.visibility = View.GONE
+            }
+            if (data.tombolHapusItem == 1) {
+                binding.btnHapusSPB.visibility = View.VISIBLE
+                binding.btnHapusSPB.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_HAPUS)
+                }
+            } else {
+                binding.btnHapusSPB.visibility = View.GONE
+            }
+            if (data.tombolPenugasan == 1) {
+                binding.btnPenugasanSPB.visibility = View.VISIBLE
+                binding.btnPenugasanSPB.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_PENUGASAN)
+                }
+            } else {
+                binding.btnPenugasanSPB.visibility = View.GONE
+            }
+            if (data.tombolProcess == 1) {
+                binding.btnProcessSPB.visibility = View.VISIBLE
+                binding.btnProcessSPB.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_PROCESS)
+                }
+            } else {
+                binding.btnProcessSPB.visibility = View.GONE
+            }
+            if (data.tombolUnProcess == 1) {
+                binding.btnUnProcessSPB.visibility = View.VISIBLE
+                binding.btnUnProcessSPB.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_UNPROCESS)
+                }
+            } else {
+                binding.btnUnProcessSPB.visibility = View.GONE
+            }
+
+            binding.tvKodeDetailSPB.text = data.kodePekerjaan
+            binding.tvJenisBarangSPB.text = data.idBarang
+            binding.tvKategoriSPB.text = data.kategori
+            binding.tvJenisDetailSPB.text = data.idBarang
+            binding.tvSatuanDetailSPB.text = data.idSatuan
+            binding.tvFungsiDetailSPB.text = data.fungsi
+            binding.tvTargetDetailSPB.text = data.target
+            binding.tvQtySPB.text = data.qty
+            binding.tvPenugasanDetailSPB.text = data.kepada
+            binding.tvStatusPenugasanDetailSPB.text = data.penugasan
+            binding.tvProcessByPenugasanDetailSPB.text = data.processBy
+
+            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                    RoleConstants.GA
+                )
+            ) {
+                binding.labelPenugasanSPB.visibility = View.VISIBLE
+                binding.labelStatusPenugasanSPB.visibility = View.VISIBLE
+                binding.tvPenugasanDetailSPB.visibility = View.VISIBLE
+                binding.tvStatusPenugasanDetailSPB.visibility = View.VISIBLE
+            } else {
+                binding.labelPenugasanSPB.visibility = View.GONE
+                binding.labelStatusPenugasanSPB.visibility = View.GONE
+                binding.tvPenugasanDetailSPB.visibility = View.GONE
+                binding.tvStatusPenugasanDetailSPB.visibility = View.GONE
+            }
+
+            var dataKeterangan: String? = ""
+
+            data.keterangan?.forEach {
+                dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
+            }
+            binding.tvKeteranganDetailSPB.text = dataKeterangan
+
+            binding.expandedParentSPB.setOnClickListener {
+                if (binding.expandedChildSPB.visibility == View.GONE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        TransitionManager.beginDelayedTransition(
+                            binding.cardViewSPB,
+                            TransitionSet()
+                                .addTransition(ChangeBounds())
+                        )
+                    }
+                    binding.expandedChildSPB.visibility = View.VISIBLE
+                    binding.imgExpandedParentSPB.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            binding.imgExpandedParentSPB.context,
+                            R.drawable.ic_arrow_up
+                        )
+                    )
+                } else {
+                    val animation = animation(binding.expandedChildSPB)
+
+                    binding.expandedChildSPB.animation = animation
+                    binding.expandedChildSPB.startAnimation(animation)
+                    binding.imgExpandedParentSPB.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            binding.imgExpandedParentSPB.context,
+                            R.drawable.ic_arrow_down
+                        )
+                    )
+                }
+            }
+        }
     }
 
-    inner class ViewHolderSPS(itemView: View) : ViewHolder(itemView) {
-        val kodeDetailSPS: TextView = itemView.findViewById(R.id.tvKodeDetailSPS)
-        val jenisBarangSPS: TextView = itemView.findViewById(R.id.tvJenisBarangSPS)
-        val kategoriDetailSPS: TextView = itemView.findViewById(R.id.tvKategoriSPS)
-        val jenisDetailSPS: TextView = itemView.findViewById(R.id.tvJenisDetailSPS)
-        val satuanDetailSPS: TextView = itemView.findViewById(R.id.tvSatuanDetailSPS)
-        val persyaratanDetailSPS: LinearLayout = itemView.findViewById(R.id.tvPersyaratanDetailSPS)
-        val waktuDetailSPS: TextView = itemView.findViewById(R.id.tvWaktuDetailSPS)
-        val qtyDetailSPS: TextView = itemView.findViewById(R.id.tvQtySPS)
-        val keteranganDetailSPS: TextView = itemView.findViewById(R.id.tvKeteranganDetailSPS)
-        val expandedChildSPS: ConstraintLayout = itemView.findViewById(R.id.expandedChildSPS)
-        val expandedParentSPS: ConstraintLayout = itemView.findViewById(R.id.expandedParentSPS)
-        val cardViewSPS: CardView = itemView.findViewById(R.id.cardViewSPS)
-        val imageExpandedParentSPS: ImageView = itemView.findViewById(R.id.imgExpandedParentSPS)
-        val btnEditSPS: Button = itemView.findViewById(R.id.btnEditSPS)
-        val btnHapusSPS: Button = itemView.findViewById(R.id.btnHapusSPS)
-        val btnPenugasanSPS: Button = itemView.findViewById(R.id.btnPenugasanSPS)
-        val btnProcessSPS: Button = itemView.findViewById(R.id.btnProcessSPS)
-        val btnUnProcessSPS: Button = itemView.findViewById(R.id.btnUnProcessSPS)
-        val labelPenugasanSPS: TextView = itemView.findViewById(R.id.labelPenugasanSPS)
-        val labelStatusPenugasanSPS: TextView = itemView.findViewById(R.id.labelStatusPenugasanSPS)
-        val penugasanSPS: TextView = itemView.findViewById(R.id.tvPenugasanDetailSPS)
-        val statusPenugasanSPS: TextView = itemView.findViewById(R.id.tvStatusPenugasanDetailSPS)
-        val processByPenugasanSPS: TextView =
-            itemView.findViewById(R.id.tvProcessByPenugasanDetailSPS)
+    inner class ViewHolderSPS(private val binding: DetailHistorySpsItemBinding) :
+        ViewHolder(binding.root) {
+        fun bind(data: ItemsDetailSP) {
+            if (data.tombolEditItem == 1) {
+                binding.btnEditSPS.visibility = View.VISIBLE
+                binding.btnEditSPS.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_EDIT)
+                }
+            } else {
+                binding.btnEditSPS.visibility = View.GONE
+            }
+            if (data.tombolHapusItem == 1) {
+                binding.btnHapusSPS.visibility = View.VISIBLE
+                binding.btnHapusSPS.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_HAPUS)
+                }
+            } else {
+                binding.btnHapusSPS.visibility = View.GONE
+            }
+            if (data.tombolPenugasan == 1) {
+                binding.btnPenugasanSPS.visibility = View.VISIBLE
+                binding.btnPenugasanSPS.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_PENUGASAN)
+                }
+            } else {
+                binding.btnPenugasanSPS.visibility = View.GONE
+            }
+            if (data.tombolProcess == 1) {
+                binding.btnProcessSPS.visibility = View.VISIBLE
+                binding.btnProcessSPS.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_PROCESS)
+                }
+            } else {
+                binding.btnProcessSPS.visibility = View.GONE
+            }
+            if (data.tombolUnProcess == 1) {
+                binding.btnUnProcessSPS.visibility = View.VISIBLE
+                binding.btnUnProcessSPS.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_UNPROCESS)
+                }
+            } else {
+                binding.btnUnProcessSPS.visibility = View.GONE
+            }
+
+            binding.tvKodeDetailSPS.text = data.kodePekerjaan
+            binding.tvJenisBarangSPS.text = data.idBarang
+            binding.tvKategoriSPS.text = data.kategori
+            binding.tvJenisDetailSPS.text = data.idBarang
+            binding.tvSatuanDetailSPS.text = data.idSatuan
+            binding.tvWaktuDetailSPS.text = data.waktuPelaksanaan
+            binding.tvQtySPS.text = data.qty
+            binding.tvPenugasanDetailSPS.text = data.kepada
+            binding.tvStatusPenugasanDetailSPS.text = data.penugasan
+            binding.tvProcessByPenugasanDetailSPS.text = data.processBy
+
+            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
+                    RoleConstants.GA
+                )
+            ) {
+                binding.labelPenugasanSPS.visibility = View.VISIBLE
+                binding.labelStatusPenugasanSPS.visibility = View.VISIBLE
+                binding.tvPenugasanDetailSPS.visibility = View.VISIBLE
+                binding.tvStatusPenugasanDetailSPS.visibility = View.VISIBLE
+            }
+
+
+            val parent = binding.tvPersyaratanDetailSPS
+            parent.removeAllViews()
+            persyaratanList.forEach { itemMaster ->
+
+                val view = ItemSimpleCheckboxBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+
+                var isChecked = false
+                data.persyaratan?.forEach { persyaratanItem ->
+                    val dataSyarat = persyaratanItem as PersyaratanItemDetailSP
+                    if (itemMaster.key == dataSyarat.persyaratan) {
+                        isChecked = true
+                    }
+                }
+
+                if (isChecked) {
+                    view.checkbox.isChecked = true
+                }
+
+                view.checkbox.text = itemMaster.value
+                view.checkbox.setOnCheckedChangeListener { _, checked ->
+                    view.checkbox.isChecked = !checked
+                }
+
+                parent.addView(view.root)
+            }
+
+
+            var dataKeterangan: String? = ""
+
+            data.keterangan?.forEach {
+                dataKeterangan += "${it?.tanggal}  ${it?.namaUser} - ${it?.roleUser} : ${it?.keterangan}\n"
+            }
+            binding.tvKeteranganDetailSPS.text = dataKeterangan
+
+            binding.expandedParentSPS.setOnClickListener {
+                if (binding.expandedChildSPS.visibility == View.GONE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        TransitionManager.beginDelayedTransition(
+                            binding.cardViewSPS,
+                            TransitionSet()
+                                .addTransition(ChangeBounds())
+                        )
+                    }
+                    binding.expandedChildSPS.visibility = View.VISIBLE
+                    binding.imgExpandedParentSPS.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            binding.imgExpandedParentSPS.context,
+                            R.drawable.ic_arrow_up
+                        )
+                    )
+                } else {
+                    val animation = animation(binding.expandedChildSPS)
+
+                    binding.expandedChildSPS.animation = animation
+                    binding.expandedChildSPS.startAnimation(animation)
+                    binding.imgExpandedParentSPS.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            binding.imgExpandedParentSPS.context,
+                            R.drawable.ic_arrow_down
+                        )
+                    )
+                }
+            }
+        }
     }
 
     private fun animation(expanded: ConstraintLayout): Animation {

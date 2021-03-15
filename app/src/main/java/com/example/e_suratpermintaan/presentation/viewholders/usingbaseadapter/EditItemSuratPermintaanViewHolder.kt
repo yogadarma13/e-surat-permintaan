@@ -10,12 +10,12 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ItemSuratPermintaanItemRowBinding
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_surat_permintaan_item_row.view.*
 
-class EditItemSuratPermintaanViewHolder(private val rootView: View) :
-    BaseViewHolder(rootView) {
+class EditItemSuratPermintaanViewHolder(private val binding: ItemSuratPermintaanItemRowBinding) :
+    BaseViewHolder(binding.root) {
 
     companion object {
         const val BTN_HAPUS = "btnHapus"
@@ -32,82 +32,82 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
     override fun bind(item: Any?, position: Int, listener: (Any?, String?) -> Unit) {
         val data = item as ItemsDetailSP
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener.invoke(data, ROOTVIEW)
         }
 
-        rootView.tvKode.text = data.kodePekerjaan
-        rootView.tvJenisBarang.text = data.idBarang
-        rootView.tvVolume.text = data.qty
-        rootView.tvSatuan.text = data.idSatuan
+        binding.tvKode.text = data.kodePekerjaan
+        binding.tvJenisBarang.text = data.idBarang
+        binding.tvVolume.text = data.qty
+        binding.tvSatuan.text = data.idSatuan
 
         if (data.tombolEditItem == 1) {
-            rootView.btnEdit.visibility = View.VISIBLE
-            rootView.btnEdit.setOnClickListener {
+            binding.btnEdit.visibility = View.VISIBLE
+            binding.btnEdit.setOnClickListener {
                 listener.invoke(data, BTN_EDIT)
             }
         } else {
-            rootView.btnEdit.visibility = View.GONE
+            binding.btnEdit.visibility = View.GONE
         }
 
         if (data.tombolHapusItem == 1) {
-            rootView.btnHapus.visibility = View.VISIBLE
-            rootView.btnHapus.setOnClickListener {
+            binding.btnHapus.visibility = View.VISIBLE
+            binding.btnHapus.setOnClickListener {
                 listener.invoke(data, BTN_HAPUS)
             }
         } else {
-            rootView.btnHapus.visibility = View.GONE
+            binding.btnHapus.visibility = View.GONE
         }
 
         if (data.tombolPenugasan == 1) {
-            rootView.btnPenugasan.visibility = View.VISIBLE
-            rootView.btnPenugasan.setOnClickListener {
+            binding.btnPenugasan.visibility = View.VISIBLE
+            binding.btnPenugasan.setOnClickListener {
                 listener.invoke(data, BTN_PENUGASAN)
             }
         } else {
-            rootView.btnPenugasan.visibility = View.GONE
+            binding.btnPenugasan.visibility = View.GONE
         }
 
         if (data.tombolProcess == 1) {
-            rootView.btnProcess.visibility = View.VISIBLE
-            rootView.btnProcess.setOnClickListener {
+            binding.btnProcess.visibility = View.VISIBLE
+            binding.btnProcess.setOnClickListener {
                 listener.invoke(data, BTN_PROCESS)
             }
         } else {
-            rootView.btnProcess.visibility = View.GONE
+            binding.btnProcess.visibility = View.GONE
         }
 
         if (data.tombolUnProcess == 1) {
-            rootView.btnUnProcess.visibility = View.VISIBLE
-            rootView.btnUnProcess.setOnClickListener {
+            binding.btnUnProcess.visibility = View.VISIBLE
+            binding.btnUnProcess.setOnClickListener {
                 listener.invoke(data, BTN_UNPROCESS)
             }
         } else {
-            rootView.btnUnProcess.visibility = View.GONE
+            binding.btnUnProcess.visibility = View.GONE
         }
 
-        rootView.constraintLayout.setOnClickListener {
+        binding.constraintLayout.setOnClickListener {
 
-            if (rootView.expandableLayout.visibility == View.GONE) {
+            if (binding.expandableLayout.visibility == View.GONE) {
                 // Kenapa pakai ini, karna kalau mau pake custom SlideAnimation,
                 // kita gak tau dia viewnya mau dikasi height berapa
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     TransitionManager.beginDelayedTransition(
-                        rootView.cardView,
+                        binding.cardView,
                         TransitionSet()
                             .addTransition(ChangeBounds())
                     )
                 }
-                rootView.expandableLayout.visibility = View.VISIBLE
-                rootView.expandableIcon.setImageDrawable(
+                binding.expandableLayout.visibility = View.VISIBLE
+                binding.expandableIcon.setImageDrawable(
                     ContextCompat.getDrawable(
-                        rootView.context,
+                        binding.root.context,
                         R.drawable.ic_arrow_up
                     )
                 )
             } else {
                 val animation: Animation =
-                    SlideAnimation(rootView.expandableLayout, rootView.expandableLayout.height, 0)
+                    SlideAnimation(binding.expandableLayout, binding.expandableLayout.height, 0)
 
                 animation.interpolator = DecelerateInterpolator()
                 animation.duration = 150
@@ -118,18 +118,18 @@ class EditItemSuratPermintaanViewHolder(private val rootView: View) :
 
                     override fun onAnimationEnd(animation: Animation?) {
                         animation?.setAnimationListener(null)
-                        rootView.expandableLayout.visibility = View.GONE
+                        binding.expandableLayout.visibility = View.GONE
                     }
 
                     override fun onAnimationStart(animation: Animation?) {
 
                     }
                 })
-                rootView.expandableLayout.animation = animation
-                rootView.expandableLayout.startAnimation(animation)
-                rootView.expandableIcon.setImageDrawable(
+                binding.expandableLayout.animation = animation
+                binding.expandableLayout.startAnimation(animation)
+                binding.expandableIcon.setImageDrawable(
                     ContextCompat.getDrawable(
-                        rootView.context,
+                        binding.root.context,
                         R.drawable.ic_arrow_down
                     )
                 )

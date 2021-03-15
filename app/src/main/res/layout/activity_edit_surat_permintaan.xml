@@ -143,7 +143,6 @@
                             android:nestedScrollingEnabled="false"
                             app:layout_constraintTop_toBottomOf="@+id/tvTextLampiran" />
 
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>

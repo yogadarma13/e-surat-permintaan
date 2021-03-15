@@ -2,22 +2,22 @@ package com.example.e_suratpermintaan.presentation.dialog
 
 import android.app.Dialog
 import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import com.e_suratpermintaan.core.domain.entities.requests.PenugasanItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterOption
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.DialogPenugasanItemBinding
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_penugasan_item.view.*
 
 class PenugasanItemDialog(
     private val activity: EditSuratPermintaanActivity,
@@ -30,15 +30,18 @@ class PenugasanItemDialog(
     private val penugasanOptionList: ArrayList<DataMasterOption> = arrayListOf()
     private var penugasanOptionAdapter: ArrayAdapter<DataMasterOption>
 
-    private var dialogRootView: View = View.inflate(activity, R.layout.dialog_penugasan_item, null)
+    private var dialogRootView: DialogPenugasanItemBinding =
+        DialogPenugasanItemBinding.inflate(LayoutInflater.from(activity), null, false)
+//        View.inflate(activity, R.layout.dialog_penugasan_item, null)
 
     init {
         // https://stackoverflow.com/questions/45731372/disabling-android-o-auto-fill-service-for-an-application/45733114
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+            dialogRootView.root.importantForAutofill =
+                View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
         }
 
-        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView.root)
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
@@ -61,7 +64,7 @@ class PenugasanItemDialog(
     }
 
     private fun populateAdapters() {
-        sharedMasterData.getPenugasanList().observe(activity, Observer {
+        sharedMasterData.getPenugasanList().observe(activity, {
             it?.forEach { item ->
                 penugasanOptionList.add(item as DataMasterOption)
             }
@@ -72,7 +75,7 @@ class PenugasanItemDialog(
     private fun setupAlertDialog(dataProfile: DataProfile) {
         dialogRootView.btnDitugaskanKepada.setOnClickListener {
             // Untuk menghilangkan focus yang ada di input field
-            dialogRootView.clearFocus()
+            dialogRootView.root.clearFocus()
 
             val selectedPenugasan = dialogRootView.spinnerKepada.text.toString()
 
@@ -92,7 +95,7 @@ class PenugasanItemDialog(
 
         }
 
-        alertDialogEdit.setView(dialogRootView)
+        alertDialogEdit.setView(dialogRootView.root)
     }
 
     private fun preventKeyboardFromPushingViews(dialog: Dialog?) {

@@ -7,13 +7,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.View
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityProfileBinding
+import com.example.e_suratpermintaan.databinding.DialogChooseSignatureProfileBinding
+import com.example.e_suratpermintaan.databinding.DialogSignaturePadProfileBinding
+import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.FilePath
 import com.example.e_suratpermintaan.framework.utils.Signature
@@ -21,21 +23,15 @@ import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.dialog_choose_signature_profile.view.*
-import kotlinx.android.synthetic.main.dialog_signature_pad_profile.view.*
-import kotlinx.android.synthetic.main.item_simple_checkbox.view.*
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
-/**
- * A simple [Fragment] subclass.
- */
-class ProfileActivity : BaseActivity() {
+class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
     companion object {
         const val FILE_REQUEST_CODE = 123
@@ -49,7 +45,8 @@ class ProfileActivity : BaseActivity() {
     private var filePath: String? = null
     private var fileTtd: File? = null
 
-    override fun layoutId(): Int = R.layout.activity_profile
+    override fun getViewBinding(): ActivityProfileBinding =
+        ActivityProfileBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,14 +65,12 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun setupTollbar() {
-        if (toolbar_profile != null && toolbar != null) {
-            toolbar_profile.text = getString(R.string.toolbar_profile)
-            setSupportActionBar(toolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-                supportActionBar!!.setDisplayShowHomeEnabled(true)
-            }
+        binding.toolbarProfile.text = getString(R.string.toolbar_profile)
+        setSupportActionBar(binding.toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
     }
 
@@ -94,47 +89,45 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun setupListeners() {
-        btnSimpanProfile.setOnClickListener {
+        binding.btnSimpanProfile.setOnClickListener {
             progressDialog.setTitle("Memperbaharui Profile")
             progressDialog.setMessage("Mohon Tunggu...")
             progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
 
-            val nama = etNamaProfile.text.toString()
-            val email = etEmailProfile.text.toString()
-            val deskripsi = etDeskripsiProfile.text.toString()
-            val passLama = etPassLamaProfile.text.toString()
-            val passBaru = etPassBaruProfile.text.toString()
-            val confirmPassBaru = etConfirmPassBaruProfile.text.toString()
+            val nama = binding.etNamaProfile.text.toString()
+            val email = binding.etEmailProfile.text.toString()
+            val deskripsi = binding.etDeskripsiProfile.text.toString()
+            val passLama = binding.etPassLamaProfile.text.toString()
+            val passBaru = binding.etPassBaruProfile.text.toString()
+            val confirmPassBaru = binding.etConfirmPassBaruProfile.text.toString()
 
             if (!passBaru.equals(confirmPassBaru)) {
                 toastNotify("Password baru tidak sama")
             } else {
-                val idUser = RequestBody.create(MediaType.parse("text/plain"), id.toString())
-                val namaUser = RequestBody.create(MediaType.parse("text/plain"), nama)
-                val emailUser = RequestBody.create(MediaType.parse("text/plain"), email)
-                val deskripsiUser = RequestBody.create(MediaType.parse("text/plain"), deskripsi)
-                val passLamaUser = RequestBody.create(MediaType.parse("text/plain"), passLama)
-                val passBaruUser = RequestBody.create(MediaType.parse("text/plain"), passBaru)
-                var partFile: MultipartBody.Part?
-                var partTtd: MultipartBody.Part?
+                val idUser = id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val namaUser = nama.toRequestBody("text/plain".toMediaTypeOrNull())
+                val emailUser = email.toRequestBody("text/plain".toMediaTypeOrNull())
+                val deskripsiUser = deskripsi.toRequestBody("text/plain".toMediaTypeOrNull())
+                val passLamaUser = passLama.toRequestBody("text/plain".toMediaTypeOrNull())
+                val passBaruUser = passBaru.toRequestBody("text/plain".toMediaTypeOrNull())
 
-                if (!filePath.isNullOrEmpty()) {
-                    val file = File(filePath)
+                val partFile: MultipartBody.Part = if (!filePath.isNullOrEmpty()) {
+                    val file = File(filePath!!)
                     val fileReqBody =
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                    partFile = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                    MultipartBody.Part.createFormData("file", file.name, fileReqBody)
                 } else {
-                    val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
-                    partFile = MultipartBody.Part.createFormData("file", "", fileReqBody)
+                    val fileReqBody = "".toRequestBody(MultipartBody.FORM)
+                    MultipartBody.Part.createFormData("file", "", fileReqBody)
                 }
 
-                partTtd = if (fileTtd != null) {
+                val partTtd: MultipartBody.Part = if (fileTtd != null) {
                     val ttdReqBody =
-                        RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                        fileTtd!!.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                     MultipartBody.Part.createFormData("ttd", fileTtd!!.name, ttdReqBody)
                 } else {
-                    val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                    val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                     MultipartBody.Part.createFormData("ttd", "", fileReqBody)
                 }
 
@@ -153,13 +146,13 @@ class ProfileActivity : BaseActivity() {
             }
         }
 
-        imgFotoProfile.setOnClickListener {
+        binding.imgFotoProfile.setOnClickListener {
             val selectFile = Intent(Intent.ACTION_PICK)
             selectFile.setType("image/*")
             startActivityForResult(selectFile, FILE_REQUEST_CODE)
         }
 
-        btnUploadTtd.setOnClickListener {
+        binding.btnUploadTtd.setOnClickListener {
             showDialogMethodOption()
         }
 
@@ -175,25 +168,28 @@ class ProfileActivity : BaseActivity() {
                     dataProfile = it
                 }
 
-                Glide.with(this).load(dataProfile?.fotoProfile).into(imgFotoProfile)
-                etNamaProfile.setText(dataProfile?.name)
-                etEmailProfile.setText(dataProfile?.email)
-                tvRoleProfile.text = dataProfile?.namaRole
-                etDeskripsiProfile.setText(dataProfile?.desc)
-                tvUsernameProfile.text = dataProfile?.username
+                Glide.with(this).load(dataProfile?.fotoProfile).into(binding.imgFotoProfile)
+                binding.etNamaProfile.setText(dataProfile?.name)
+                binding.etEmailProfile.setText(dataProfile?.email)
+                binding.tvRoleProfile.text = dataProfile?.namaRole
+                binding.etDeskripsiProfile.setText(dataProfile?.desc)
+                binding.tvUsernameProfile.text = dataProfile?.username
 
                 toastNotify(dataProfile?.fotoProfile.toString())
 
-                linearLayoutJenisProfile.removeAllViews()
+                binding.linearLayoutJenisProfile.removeAllViews()
                 dataProfile?.jenis?.forEach {
-                    val view = LayoutInflater.from(this)
-                        .inflate(R.layout.item_simple_checkbox, linearLayoutJenisProfile, false)
-                    view.checkbox.isChecked = true
-                    view.checkbox.text = it?.jenis
-                    view.checkbox.setOnCheckedChangeListener { _, checked ->
-                        view.checkbox.isChecked = !checked
+                    val itemSimpleCheckboxBinding = ItemSimpleCheckboxBinding.inflate(
+                        LayoutInflater.from(this),
+                        binding.linearLayoutJenisProfile,
+                        false
+                    )
+                    itemSimpleCheckboxBinding.checkbox.isChecked = true
+                    itemSimpleCheckboxBinding.checkbox.text = it?.jenis
+                    itemSimpleCheckboxBinding.checkbox.setOnCheckedChangeListener { _, checked ->
+                        itemSimpleCheckboxBinding.checkbox.isChecked = !checked
                     }
-                    linearLayoutJenisProfile.addView(view)
+                    binding.linearLayoutJenisProfile.addView(itemSimpleCheckboxBinding.root)
                 }
             }
 
@@ -232,8 +228,7 @@ class ProfileActivity : BaseActivity() {
 
         if (requestCode == PHOTO_SIGNATURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val fileUri = data?.data
-            var ttdPath: String? = null
-            ttdPath = FilePath.getPath(this, fileUri as Uri)
+            val ttdPath: String? = FilePath.getPath(this, fileUri as Uri)
 
             if (!ttdPath.isNullOrEmpty()) {
                 toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
@@ -252,23 +247,23 @@ class ProfileActivity : BaseActivity() {
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_choose_signature_profile, null)
+        val dialogChooseSignatureProfileBinding =
+            DialogChooseSignatureProfileBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.tvCreateSignatureProfile.setOnClickListener {
+        dialogChooseSignatureProfileBinding.tvCreateSignatureProfile.setOnClickListener {
             showDialogSignaturePad()
             alertDialog.hide()
         }
 
-        dialogRootView.tvGetSignatureProfile.setOnClickListener {
+        dialogChooseSignatureProfileBinding.tvGetSignatureProfile.setOnClickListener {
             val selectTtd = Intent(Intent.ACTION_PICK)
-            selectTtd.setType("image/*")
+            selectTtd.type = "image/*"
             startActivityForResult(selectTtd, PHOTO_SIGNATURE_REQUEST_CODE)
 
             alertDialog.hide()
         }
 
-        alertDialog.setView(dialogRootView)
+        alertDialog.setView(dialogChooseSignatureProfileBinding.root)
         alertDialog.show()
     }
 
@@ -279,27 +274,29 @@ class ProfileActivity : BaseActivity() {
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_signature_pad_profile, null)
+        val dialogSignaturePadProfileBinding = DialogSignaturePadProfileBinding.inflate(
+            LayoutInflater.from(this)
+        )
 
-        dialogRootView.signaturePadProfile.setOnSignedListener(object :
+        dialogSignaturePadProfileBinding.signaturePadProfile.setOnSignedListener(object :
             SignaturePad.OnSignedListener {
             override fun onStartSigning() {
             }
 
             override fun onClear() {
-                dialogRootView.btnSaveTtdProfile.isEnabled = false
-                dialogRootView.btnClearTtdProfile.isEnabled = false
+                dialogSignaturePadProfileBinding.btnSaveTtdProfile.isEnabled = false
+                dialogSignaturePadProfileBinding.btnClearTtdProfile.isEnabled = false
             }
 
             override fun onSigned() {
-                dialogRootView.btnSaveTtdProfile.isEnabled = true
-                dialogRootView.btnClearTtdProfile.isEnabled = true
+                dialogSignaturePadProfileBinding.btnSaveTtdProfile.isEnabled = true
+                dialogSignaturePadProfileBinding.btnClearTtdProfile.isEnabled = true
             }
         })
 
-        dialogRootView.btnSaveTtdProfile.setOnClickListener {
-            val ttdBitmap = dialogRootView.signaturePadProfile.transparentSignatureBitmap
+        dialogSignaturePadProfileBinding.btnSaveTtdProfile.setOnClickListener {
+            val ttdBitmap =
+                dialogSignaturePadProfileBinding.signaturePadProfile.transparentSignatureBitmap
             fileTtd = Signature().saveSignature(this, ttdBitmap)
             if (fileTtd != null) {
                 toastNotify("Tanda tangan telah dibuat\nSilahkan menyimpan perubahan")
@@ -307,11 +304,11 @@ class ProfileActivity : BaseActivity() {
             alertDialog.hide()
         }
 
-        dialogRootView.btnClearTtdProfile.setOnClickListener {
-            dialogRootView.signaturePadProfile.clear()
+        dialogSignaturePadProfileBinding.btnClearTtdProfile.setOnClickListener {
+            dialogSignaturePadProfileBinding.signaturePadProfile.clear()
         }
 
-        alertDialog.setView(dialogRootView)
+        alertDialog.setView(dialogSignaturePadProfileBinding.root)
         alertDialog.show()
     }
 }

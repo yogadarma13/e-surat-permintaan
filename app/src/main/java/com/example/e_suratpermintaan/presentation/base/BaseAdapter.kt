@@ -3,10 +3,13 @@ package com.example.e_suratpermintaan.presentation.base
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.example.e_suratpermintaan.presentation.viewholders.ViewHolderFactory
 
+typealias InflateBaseAdapter<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
+
 // https://stackoverflow.com/questions/51087357/converting-a-generic-recyclerview-adapter-to-kotlin
-class BaseAdapter<T : BaseViewHolder>(private val layoutRes: Int, private val clazz: Class<T>) :
+class BaseAdapter<T : BaseViewHolder, B: ViewBinding>(private val inflate: InflateBaseAdapter<B>, private val clazz: Class<T>) :
     RecyclerView.Adapter<BaseViewHolder>() {
 
     val itemList: ArrayList<Any> = arrayListOf()
@@ -17,8 +20,9 @@ class BaseAdapter<T : BaseViewHolder>(private val layoutRes: Int, private val cl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(layoutRes, parent, false)
+        val view = inflate.invoke(LayoutInflater.from(parent.context), parent, false)
+//            LayoutInflater.from(parent.context)
+//            .inflate(layoutRes, parent, false)
 
         return ViewHolderFactory.create(view, clazz)
     }

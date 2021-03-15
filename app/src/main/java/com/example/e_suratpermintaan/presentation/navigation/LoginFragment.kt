@@ -15,6 +15,7 @@ import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.FragmentLoginBinding
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
@@ -23,15 +24,10 @@ import com.example.e_suratpermintaan.presentation.base.BaseFragment
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * A simple [Fragment] subclass.
- */
-
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private val authViewModel: AuthViewModel by viewModel()
@@ -40,23 +36,24 @@ class LoginFragment : BaseFragment() {
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
-    override fun layoutId(): Int = R.layout.fragment_login
+//    override fun layoutId(): Int = R.layout.fragment_login
 
     override fun onEnterAnimationEnd() {
         super.onEnterAnimationEnd()
 
-        passwordSeek.setOnCheckedChangeListener { _, isChecked ->
+        binding.passwordSeek.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.etPassword.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
             } else {
-                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
             }
         }
 
-        etPassword.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+        binding.etPassword.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             // Ketika tombol enter di keyboard ditekan
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                etPassword.clearFocus()
+                binding.etPassword.clearFocus()
                 closeKeyboard(activity as Activity)
                 doLogin()
                 return@OnKeyListener true
@@ -64,20 +61,20 @@ class LoginFragment : BaseFragment() {
             false
         })
 
-        btnSignin.setOnClickListener {
+        binding.btnSignin.setOnClickListener {
             doLogin()
         }
     }
 
     private fun doLogin() {
-        progressBarOverlay.visibility = VISIBLE
+        binding.progressBarOverlay.root.visibility = VISIBLE
         Handler().postDelayed({
             fcmPreference.getUserTokenId()?.let { userTokenId ->
                 disposable = authViewModel
                     .doLogin(
                         Login(
-                            etEmail.text.toString(),
-                            etPassword.text.toString(),
+                            binding.etEmail.text.toString(),
+                            binding.etPassword.text.toString(),
                             userTokenId
                         )
                     )
@@ -116,7 +113,7 @@ class LoginFragment : BaseFragment() {
 
                                     if (isIt) {
                                         toastNotify(response.message)
-                                        progressBarOverlay.visibility = GONE
+                                        binding.progressBarOverlay.root.visibility = GONE
 
                                         Handler().postDelayed({
                                             val intent =
@@ -136,7 +133,7 @@ class LoginFragment : BaseFragment() {
 
                     },
                     { error ->
-                        progressBarOverlay.visibility = GONE
+                        binding.progressBarOverlay.root.visibility = GONE
                         toastNotify(error.message.toString())
                     }
                 )
@@ -146,7 +143,7 @@ class LoginFragment : BaseFragment() {
     override fun handleError(error: Throwable) {
         super.handleError(error)
 
-        progressBarOverlay.visibility = GONE
+        binding.progressBarOverlay.root.visibility = GONE
     }
 
 }

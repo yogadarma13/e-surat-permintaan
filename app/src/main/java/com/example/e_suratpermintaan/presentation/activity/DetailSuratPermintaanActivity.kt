@@ -5,12 +5,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
@@ -23,6 +19,7 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_DELETED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_VERIFIKASI
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.*
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
@@ -39,18 +36,13 @@ import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
-import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_detail_surat_permintaan.*
-import kotlinx.android.synthetic.main.dialog_ajukan_surat.view.*
-import kotlinx.android.synthetic.main.dialog_catatan.view.*
-import kotlinx.android.synthetic.main.dialog_print.view.*
-import kotlinx.android.synthetic.main.dialog_verifikasi_surat.view.*
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -58,11 +50,10 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
-class DetailSuratPermintaanActivity : BaseActivity() {
+class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaanBinding>() {
 
     private val sharedMasterData: SharedMasterData by inject()
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
-    private val masterViewModel: MasterViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
     private var dataProfile: DataProfile? = null
@@ -72,12 +63,13 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     private lateinit var idUser: String
     private lateinit var idRole: String
     private lateinit var itemSuratPermintaanAdapter: ItemSuratPermintaanAdapter
-    private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder>
+    private lateinit var fileSuratPermintaanAdapter: BaseAdapter<FileSuratPermintaanViewHolder, ItemFileLampiranRowBinding>
     private lateinit var itemPrint: MenuItem
     private var jenisSP: String? = null
     private var alertDialog: AlertDialog? = null
 
-    override fun layoutId(): Int = R.layout.activity_detail_surat_permintaan
+    override fun getViewBinding(): ActivityDetailSuratPermintaanBinding =
+        ActivityDetailSuratPermintaanBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,22 +119,22 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView = View.inflate(this, R.layout.dialog_print, null)
+        val dialogPrintBinding = DialogPrintBinding.inflate(layoutInflater)
 
-        dialogRootView.tvPrintSP.setOnClickListener {
+        dialogPrintBinding.tvPrintSP.setOnClickListener {
             val url = "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}"
             val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(i)
         }
 
-        dialogRootView.tvPrintByProses.setOnClickListener {
+        dialogPrintBinding.tvPrintByProses.setOnClickListener {
             val url =
                 "https://jagat.jagatbuilding.co.id/master/surat_permintaan/print/${idSp}?id_user=${idUser}"
             val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(i)
         }
 
-        alertDialog?.setView(dialogRootView)
+        alertDialog?.setView(dialogPrintBinding.root)
         alertDialog?.show()
     }
 
@@ -151,7 +143,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
         setupItemSuratPermintaanRecyclerView()
         setupActionListeners()
 
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             if (!isConnectedToInternet) {
                 toastNotify("Please turn on the internet")
                 stopRefresh()
@@ -166,19 +158,18 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun setupTollbar() {
-        if (toolbar_detail_sp != null && toolbar != null) {
-            toolbar_detail_sp.text = getString(R.string.toolbar_detail)
-            setSupportActionBar(toolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-                supportActionBar!!.setDisplayShowHomeEnabled(true)
-            }
+        binding.toolbarDetailSp.text = getString(R.string.toolbar_detail)
+        setSupportActionBar(binding.toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+
         }
     }
 
     private fun initApiRequest() {
-        sharedMasterData.getPersyaratanList().observe(this@DetailSuratPermintaanActivity, Observer {
+        sharedMasterData.getPersyaratanList().observe(this@DetailSuratPermintaanActivity, {
             it?.forEach { item ->
                 // harus di uncheck untuk menghilangkan data "checked" untuk
                 // data yang baru saja ditambahkan sebelum ini
@@ -201,21 +192,25 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
     private fun setupItemSuratPermintaanRecyclerView() {
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = itemSuratPermintaanAdapter
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(this@DetailSuratPermintaanActivity)
+            adapter = itemSuratPermintaanAdapter
+        }
 
         fileSuratPermintaanAdapter = BaseAdapter(
-            R.layout.item_file_lampiran_row,
+            ItemFileLampiranRowBinding::inflate,
             FileSuratPermintaanViewHolder::class.java
         )
 
-        recyclerViewFile.layoutManager = LinearLayoutManager(this)
-        recyclerViewFile.adapter = fileSuratPermintaanAdapter
+        with(binding.recyclerViewFile) {
+            layoutManager = LinearLayoutManager(this@DetailSuratPermintaanActivity)
+            adapter = fileSuratPermintaanAdapter
+        }
     }
 
     private fun setupActionListeners() {
 
-        btnHistory.setOnClickListener {
+        binding.btnHistory.setOnClickListener {
             val intent = Intent(
                 this@DetailSuratPermintaanActivity,
                 HistorySuratPermintaanActivity::class.java
@@ -243,19 +238,17 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             }
         }
 
-        btnAjukan.setOnClickListener {
-
+        binding.btnAjukan.setOnClickListener {
             showDialogPengajuan()
-
         }
 
-        btnCancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             alertDialog =
                 AlertDialog.Builder(this)
                     .setTitle("Konfirmasi Pembatalan")
                     .setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
                     .setPositiveButton("Batalkan") { _, _ ->
-                        progressBarOverlay.visibility = View.VISIBLE
+                        binding.progressBarOverlay.root.visibility = View.VISIBLE
                         window.setFlags(
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -269,27 +262,27 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             alertDialog?.show()
         }
 
-        btnAccept.setOnClickListener {
+        binding.btnAccept.setOnClickListener {
             showVerificationDialog()
         }
 
-        btnDecline.setOnClickListener {
+        binding.btnDecline.setOnClickListener {
             showDeclineDialog()
         }
 
-        btnEdit.setOnClickListener {
+        binding.btnEdit.setOnClickListener {
             val intent = Intent(this, EditSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EDIT, idSp)
             startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
         }
 
-        btnDelete.setOnClickListener {
+        binding.btnDelete.setOnClickListener {
             alertDialog =
                 AlertDialog.Builder(this)
                     .setTitle("Konfirmasi Penghapusan")
                     .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
                     .setPositiveButton("Ya, Hapus") { _, _ ->
-                        progressBarOverlay.visibility = View.VISIBLE
+                        binding.progressBarOverlay.root.visibility = View.VISIBLE
                         window.setFlags(
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -306,7 +299,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
     private fun startRefresh() {
         if (!isConnectedToInternet) return
-        swipeRefreshLayout.isRefreshing = true
+        binding.swipeRefreshLayout.isRefreshing = true
     }
 
     override fun onStart() {
@@ -332,14 +325,14 @@ class DetailSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler().postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
     }
 
     override fun handleError(error: Throwable) {
         super.handleError(error)
 
         stopRefresh()
-        progressBarOverlay.visibility = View.GONE
+        binding.progressBarOverlay.root.visibility = View.GONE
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
@@ -358,76 +351,76 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
                     val detailDate = dataDetailSP?.tanggalPengajuan?.split(" ")
 
-                    tv_kode_detail.text = kodeSp
-                    tv_kode_sp.text = kodeSp
-                    tv_name_proyek_detail.text = dataDetailSP?.namaProyek
-                    tv_location_detail.text = dataDetailSP?.namaLokasi
-                    tv_date_detail.text = detailDate?.get(0)
-                    tv_time_detail.text = detailDate?.get(1)
-                    tv_status_detail.text = dataDetailSP?.statusPermintaan
-                    tv_jenis_detail.text = dataDetailSP?.jenis
+                    binding.tvKodeDetail.text = kodeSp
+                    binding.tvKodeSp.text = kodeSp
+                    binding.tvNameProyekDetail.text = dataDetailSP?.namaProyek
+                    binding.tvLocationDetail.text = dataDetailSP?.namaLokasi
+                    binding.tvDateDetail.text = detailDate?.get(0)
+                    binding.tvTimeDetail.text = detailDate?.get(1)
+                    binding.tvStatusDetail.text = dataDetailSP?.statusPermintaan
+                    binding.tvJenisDetail.text = dataDetailSP?.jenis
                     jenisSP = dataDetailSP?.jenis
 
                     val itemList: List<ItemsDetailSP?>? = dataDetailSP?.items
                     if (!itemList.isNullOrEmpty()) {
                         itemSuratPermintaanAdapter.persyaratanList.putAll(persyaratanList)
                         itemSuratPermintaanAdapter.idRole = idRole
-                        constraint_text_item.visibility = View.VISIBLE
+                        binding.constraintTextItem.visibility = View.VISIBLE
                         itemList.forEach {
                             itemSuratPermintaanAdapter.itemList.add(it as ItemsDetailSP)
                             itemSuratPermintaanAdapter.viewType.add(dataDetailSP.jenis.toString())
                         }
                     } else {
-                        constraint_text_item.visibility = View.GONE
+                        binding.constraintTextItem.visibility = View.GONE
                     }
                     itemSuratPermintaanAdapter.notifyDataSetChanged()
 
                     val fileList = dataDetailSP?.fileLampiran
                     if (!fileList.isNullOrEmpty()) {
-                        constraint_text_file.visibility = View.VISIBLE
+                        binding.constraintTextFile.visibility = View.VISIBLE
                         fileList.forEach {
                             fileSuratPermintaanAdapter.itemList.add(it as FileLampiranDetailSP)
                         }
                     } else {
-                        constraint_text_file.visibility = View.GONE
+                        binding.constraintTextFile.visibility = View.GONE
                     }
 
                     fileSuratPermintaanAdapter.notifyDataSetChanged()
 
                     if (dataDetailSP?.tombolAjukan == 1) {
-                        btnAjukan.visibility = View.VISIBLE
+                        binding.btnAjukan.visibility = View.VISIBLE
                     } else {
-                        btnAjukan.visibility = View.GONE
+                        binding.btnAjukan.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolBatalkan == 1) {
-                        btnCancel.visibility = View.VISIBLE
+                        binding.btnCancel.visibility = View.VISIBLE
                     } else {
-                        btnCancel.visibility = View.GONE
+                        binding.btnCancel.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolTerima == 1) {
-                        btnAccept.visibility = View.VISIBLE
+                        binding.btnAccept.visibility = View.VISIBLE
                     } else {
-                        btnAccept.visibility = View.GONE
+                        binding.btnAccept.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolTolak == 1) {
-                        btnDecline.visibility = View.VISIBLE
+                        binding.btnDecline.visibility = View.VISIBLE
                     } else {
-                        btnDecline.visibility = View.GONE
+                        binding.btnDecline.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolEdit == 1) {
-                        btnEdit.visibility = View.VISIBLE
+                        binding.btnEdit.visibility = View.VISIBLE
                     } else {
-                        btnEdit.visibility = View.GONE
+                        binding.btnEdit.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolHapus == 1) {
-                        btnDelete.visibility = View.VISIBLE
+                        binding.btnDelete.visibility = View.VISIBLE
                     } else {
-                        btnDelete.visibility = View.GONE
+                        binding.btnDelete.visibility = View.GONE
                     }
 
                     itemPrint.isVisible = dataDetailSP?.tombolCetak == 1
@@ -437,7 +430,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             }
 
             is AjukanSPResponse -> {
-                progressBarOverlay.visibility = View.GONE
+                binding.progressBarOverlay.root.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_AJUKAN))
@@ -445,35 +438,34 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             }
 
             is BatalkanSPResponse -> {
-                progressBarOverlay.visibility = View.GONE
+                binding.progressBarOverlay.root.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_BATAL))
                 initApiRequest()
-                Handler().postDelayed(Runnable {
+                Handler().postDelayed({
                     finish()
                 }, 1000)
             }
 
             is VerifikasiSPResponse -> {
-                progressBarOverlay.visibility = View.GONE
+                binding.progressBarOverlay.root.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_VERIFIKASI))
                 initApiRequest()
-                Handler().postDelayed(Runnable {
+                Handler().postDelayed({
                     finish()
                 }, 1000)
             }
 
             is DeleteSPResponse -> {
-                progressBarOverlay.visibility = View.GONE
+                binding.progressBarOverlay.root.visibility = View.GONE
                 window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_DELETED))
                 finish()
             }
-
         }
     }
 
@@ -485,24 +477,23 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_catatan, null)
+        val dialogCatatanBinding = DialogCatatanBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.btnCatatan.setOnClickListener {
-            progressBarOverlay.visibility = View.VISIBLE
+        dialogCatatanBinding.btnCatatan.setOnClickListener {
+            binding.progressBarOverlay.root.visibility = View.VISIBLE
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
 
-            val catatan = dialogRootView.etCatatanTolak.text.toString()
+            val catatan = dialogCatatanBinding.etCatatanTolak.text.toString()
 
-            val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
-            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
-            val status = RequestBody.create(MediaType.parse("text/plain"), "1")
-            val ctt = RequestBody.create(MediaType.parse("text/plain"), catatan)
+            val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
+            val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val status = "1".toRequestBody("text/plain".toMediaTypeOrNull())
+            val ctt = catatan.toRequestBody("text/plain".toMediaTypeOrNull())
 
-            val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+            val fileReqBody = "".toRequestBody(MultipartBody.FORM)
             val filePart = MultipartBody.Part.createFormData("file", "", fileReqBody)
 
             disposable = suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
@@ -511,7 +502,7 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             alertDialog?.hide()
         }
 
-        alertDialog?.setView(dialogRootView)
+        alertDialog?.setView(dialogCatatanBinding.root)
         alertDialog?.show()
     }
 
@@ -523,30 +514,30 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_ajukan_surat, null)
+        val dialogAjukanSuratBinding =
+            DialogAjukanSuratBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.signaturePadAjukan.setOnSignedListener(object :
+        dialogAjukanSuratBinding.signaturePadAjukan.setOnSignedListener(object :
             SignaturePad.OnSignedListener {
             override fun onStartSigning() {
             }
 
             override fun onClear() {
-                dialogRootView.btnClearTtdAjukan.isEnabled = false
+                dialogAjukanSuratBinding.btnClearTtdAjukan.isEnabled = false
             }
 
             override fun onSigned() {
-                dialogRootView.btnClearTtdAjukan.isEnabled = true
+                dialogAjukanSuratBinding.btnClearTtdAjukan.isEnabled = true
             }
 
         })
 
-        dialogRootView.btnClearTtdAjukan.setOnClickListener {
-            dialogRootView.signaturePadAjukan.clear()
+        dialogAjukanSuratBinding.btnClearTtdAjukan.setOnClickListener {
+            dialogAjukanSuratBinding.signaturePadAjukan.clear()
         }
 
-        dialogRootView.btnFixAjukan.setOnClickListener {
-            progressBarOverlay.visibility = View.VISIBLE
+        dialogAjukanSuratBinding.btnFixAjukan.setOnClickListener {
+            binding.progressBarOverlay.root.visibility = View.VISIBLE
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -555,20 +546,20 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             val partTtd: MultipartBody.Part?
             val ttdBitmap: Bitmap?
 
-            if (!dialogRootView.signaturePadAjukan.isEmpty) {
-                ttdBitmap = dialogRootView.signaturePadAjukan.transparentSignatureBitmap
+            if (!dialogAjukanSuratBinding.signaturePadAjukan.isEmpty) {
+                ttdBitmap = dialogAjukanSuratBinding.signaturePadAjukan.transparentSignatureBitmap
                 fileTtd = Signature().saveSignature(this, ttdBitmap)
             }
 
-            val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
-            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
+            val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
+            val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
             partTtd = if (fileTtd != null) {
                 val fileReqBody =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                    fileTtd.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("file", fileTtd.name, fileReqBody)
             } else {
-                val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                 MultipartBody.Part.createFormData("file", "", fileReqBody)
             }
 
@@ -578,11 +569,11 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             alertDialog?.hide()
         }
 
-        dialogRootView.btnCancelAjukan.setOnClickListener {
+        dialogAjukanSuratBinding.btnCancelAjukan.setOnClickListener {
             alertDialog?.hide()
         }
 
-        alertDialog?.setView(dialogRootView)
+        alertDialog?.setView(dialogAjukanSuratBinding.root)
         alertDialog?.show()
     }
 
@@ -594,54 +585,54 @@ class DetailSuratPermintaanActivity : BaseActivity() {
 
         alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_verifikasi_surat, null)
+        val dialogVerifikasiSuratBinding =
+            DialogVerifikasiSuratBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.signaturePadVerif.setOnSignedListener(object :
+        dialogVerifikasiSuratBinding.signaturePadVerif.setOnSignedListener(object :
             SignaturePad.OnSignedListener {
             override fun onStartSigning() {
             }
 
             override fun onClear() {
-                dialogRootView.btnClearTtdVerif.isEnabled = false
+                dialogVerifikasiSuratBinding.btnClearTtdVerif.isEnabled = false
             }
 
             override fun onSigned() {
-                dialogRootView.btnClearTtdVerif.isEnabled = true
+                dialogVerifikasiSuratBinding.btnClearTtdVerif.isEnabled = true
             }
 
         })
 
-        dialogRootView.btnClearTtdVerif.setOnClickListener {
-            dialogRootView.signaturePadVerif.clear()
+        dialogVerifikasiSuratBinding.btnClearTtdVerif.setOnClickListener {
+            dialogVerifikasiSuratBinding.signaturePadVerif.clear()
         }
 
-        dialogRootView.btnFixVerif.setOnClickListener {
-            progressBarOverlay.visibility = View.VISIBLE
+        dialogVerifikasiSuratBinding.btnFixVerif.setOnClickListener {
+            binding.progressBarOverlay.root.visibility = View.VISIBLE
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
             var fileTtd: File? = null
-            val partTtd: MultipartBody.Part?
             val ttdBitmap: Bitmap?
 
-            if (!dialogRootView.signaturePadVerif.isEmpty) {
-                ttdBitmap = dialogRootView.signaturePadVerif.transparentSignatureBitmap
+            if (!dialogVerifikasiSuratBinding.signaturePadVerif.isEmpty) {
+                ttdBitmap =
+                    dialogVerifikasiSuratBinding.signaturePadVerif.transparentSignatureBitmap
                 fileTtd = Signature().saveSignature(this, ttdBitmap)
             }
 
-            val userId = RequestBody.create(MediaType.parse("text/plain"), idUser)
-            val spId = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
-            val status = RequestBody.create(MediaType.parse("text/plain"), "0")
-            val catatan = RequestBody.create(MediaType.parse("text/plain"), "")
+            val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
+            val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            val status = "0".toRequestBody("text/plain".toMediaTypeOrNull())
+            val catatan = "".toRequestBody("text/plain".toMediaTypeOrNull())
 
-            partTtd = if (fileTtd != null) {
+            val partTtd: MultipartBody.Part = if (fileTtd != null) {
                 val fileReqBody =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), fileTtd)
+                    fileTtd.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("file", fileTtd.name, fileReqBody)
             } else {
-                val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                 MultipartBody.Part.createFormData("file", "", fileReqBody)
             }
 
@@ -652,11 +643,11 @@ class DetailSuratPermintaanActivity : BaseActivity() {
             alertDialog?.hide()
         }
 
-        dialogRootView.btnCancelVerif.setOnClickListener {
+        dialogVerifikasiSuratBinding.btnCancelVerif.setOnClickListener {
             alertDialog?.hide()
         }
 
-        alertDialog?.setView(dialogRootView)
+        alertDialog?.setView(dialogVerifikasiSuratBinding.root)
         alertDialog?.show()
     }
 

@@ -5,21 +5,18 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.FragmentWelcomeBinding
 import com.example.e_suratpermintaan.framework.utils.NavOptionsHelper
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_welcome.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class WelcomeFragment : BaseFragment() {
+class WelcomeFragment : BaseFragment<FragmentWelcomeBinding>(FragmentWelcomeBinding::inflate) {
 
-    override fun layoutId(): Int = R.layout.fragment_welcome
+//    override fun layoutId(): Int = R.layout.fragment_welcome
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnNext.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             val navOptions =
                 NavOptionsHelper.getInstance().addAppStarterAnim().build()
             it.findNavController()

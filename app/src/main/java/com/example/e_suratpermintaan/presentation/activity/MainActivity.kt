@@ -8,11 +8,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -25,6 +27,10 @@ import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityMainBinding
+import com.example.e_suratpermintaan.databinding.DialogAjukanSpBinding
+import com.example.e_suratpermintaan.databinding.DialogFilterSpBinding
+import com.example.e_suratpermintaan.databinding.ItemSuratPermintaanRowBinding
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_DETAIL_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_PROFILE_ACTIVITY
@@ -42,21 +48,15 @@ import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.*
-import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerJenis
-import kotlinx.android.synthetic.main.dialog_ajukan_sp.view.spinnerProyek
-import kotlinx.android.synthetic.main.dialog_filter_sp.view.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetChangedListener {
 
-    private lateinit var filterDialogRootView: View
+    private lateinit var dialogFilterSpBinding: DialogFilterSpBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private var profile: DataProfile? = null
     private lateinit var idUser: String
@@ -92,9 +92,9 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     private lateinit var statusOptionAdapter: ArrayAdapter<DataMasterOption>
 
     private var spListState: Parcelable? = null
-    private lateinit var spAdapter: BaseAdapter<MyDataViewHolder>
+    private lateinit var spAdapter: BaseAdapter<MyDataViewHolder, ItemSuratPermintaanRowBinding>
 
-    override fun layoutId(): Int = R.layout.activity_main
+    override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // The action bar home/up action should open or close the drawer.
@@ -120,7 +120,8 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_BATAL ||
             suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_AJUKAN ||
             suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_VERIFIKASI ||
-            suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_TOLAK) {
+            suratPermintaanDataChange.changeType == SuratPermintaanDataChange.SP_TOLAK
+        ) {
             initApiRequest()
             EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
         }
@@ -143,6 +144,8 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setupToolbar()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                 && checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -160,10 +163,6 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             }
         }
 
-        setSupportActionBar(toolbar)
-        // This will display an Up icon (<-), we will replace it with hamburger later
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         profile = profilePreference.getProfile()
         idUser = profile?.id.toString()
@@ -182,6 +181,13 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         setupFilterSPDialog()
 
         initApiRequest()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        // This will display an Up icon (<-), we will replace it with hamburger later
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun populateMaster() {
@@ -223,7 +229,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun setupNavigationDrawer() {
-        val menu: Menu = navigation_view.menu
+        val menu: Menu = binding.navigationView.menu
         val menuItemMasterData: MenuItem = menu.findItem(R.id.menuMasterData)
         menuItemMasterData.isVisible = roleId == "0"
         // Find our drawer view
@@ -234,9 +240,9 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         drawerToggle.syncState()
 
         // Tie DrawerLayout events to the ActionBarToggle
-        drawer_layout.addDrawerListener(drawerToggle)
+        binding.drawerLayout.addDrawerListener(drawerToggle)
 
-        navigation_view.setNavigationItemSelectedListener { menuItem ->
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.detail_profile -> {
                     val intent = Intent(this@MainActivity, ProfileActivity::class.java)
@@ -250,14 +256,14 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                     selectedStatusFilterValue = statusOptionList[0].value.toString()
                     val selectedStatusFilterOption = statusOptionList[0].option.toString()
 
-                    filterDialogRootView.spinnerStatus.setText(selectedStatusFilterOption, false)
-                    filterDialogRootView.tilStatus.visibility = View.VISIBLE
-                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
+                    dialogFilterSpBinding.spinnerStatus.setText(selectedStatusFilterOption, false)
+                    dialogFilterSpBinding.tilStatus.visibility = View.VISIBLE
+                    resetFilter(dialogFilterSpBinding.tilStatus.visibility == View.VISIBLE)
                     initApiRequest()
                 }
                 R.id.menungguVerifikasi -> {
-                    filterDialogRootView.tilStatus.visibility = View.GONE
-                    resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
+                    dialogFilterSpBinding.tilStatus.visibility = View.GONE
+                    resetFilter(dialogFilterSpBinding.tilStatus.visibility == View.VISIBLE)
                     initApiRequest()
                 }
                 R.id.masterData -> {
@@ -267,7 +273,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             }
 
             //This is for closing the drawer after acting on it
-            drawer_layout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
@@ -283,12 +289,13 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun initNavHeaderProfile() {
-        val headerView = navigation_view.getHeaderView(0)
-        headerView.profileName.text = profilePreference.getProfile()?.name
-        headerView.role.text = profilePreference.getProfile()?.namaRole
-        headerView.email.text = profilePreference.getProfile()?.email
+        val headerView = binding.navigationView.getHeaderView(0)
+        headerView.findViewById<TextView>(R.id.profileName).text =
+            profilePreference.getProfile()?.name
+        headerView.findViewById<TextView>(R.id.role).text = profilePreference.getProfile()?.namaRole
+        headerView.findViewById<TextView>(R.id.email).text = profilePreference.getProfile()?.email
         Glide.with(this).load(profilePreference.getProfile()?.fotoProfile)
-            .into(headerView.circleImageView)
+            .into(headerView.findViewById(R.id.circleImageView))
     }
 
     private fun setupDrawerToggle(): ActionBarDrawerToggle {
@@ -296,8 +303,8 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
         // and will not render the hamburger icon without it.
         return ActionBarDrawerToggle(
             this,
-            drawer_layout,
-            toolbar,
+            binding.drawerLayout,
+            binding.toolbar,
             R.string.drawer_open,
             R.string.drawer_close
         )
@@ -335,7 +342,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
     }
 
     private fun initApiRequest() {
-        tv_show_length_entry.text = getString(
+        binding.tvShowLengthEntry.text = getString(
             R.string.main_header_list_count_msg,
             "0"
         )
@@ -350,7 +357,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
         val roleId = profilePreference.getProfile()?.roleId
         if (!roleId.equals("1")) {
-            btnAjukan.visibility = View.GONE
+            binding.btnAjukan.visibility = View.GONE
         }
 
         if (profile?.id != null) {
@@ -393,40 +400,43 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             ArrayAdapter(this, R.layout.material_spinner_item, statusOptionList)
 
         spAdapter = BaseAdapter(
-            R.layout.item_surat_permintaan_row, MyDataViewHolder::class.java
+            ItemSuratPermintaanRowBinding::inflate, MyDataViewHolder::class.java
         )
     }
 
     private fun setupRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = spAdapter
-        recyclerView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = spAdapter
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
 
-            if ((recyclerView.layoutManager as LinearLayoutManager)
-                    .findLastCompletelyVisibleItemPosition() == spAdapter.itemList.size - 1
-            ) {
-                turnOffToolbarScrolling()
-            } else {
-                turnOnToolbarScrolling()
+                if ((this.layoutManager as LinearLayoutManager)
+                        .findLastCompletelyVisibleItemPosition() == spAdapter.itemList.size - 1
+                ) {
+                    turnOffToolbarScrolling()
+                } else {
+                    turnOnToolbarScrolling()
+                }
+
             }
-
         }
 
+
         if (spListState != null)
-            recyclerView.layoutManager?.onRestoreInstanceState(spListState)
+            binding.recyclerView.layoutManager?.onRestoreInstanceState(spListState)
     }
 
     private fun setupListeners() {
 
-        btnAjukan.setOnClickListener {
+        binding.btnAjukan.setOnClickListener {
             alertDialogTambahSP.show()
         }
 
-        btnFilter.setOnClickListener {
+        binding.btnFilter.setOnClickListener {
             alertDialogFilterSP.show()
         }
 
-        frameNotifikasi.setOnClickListener {
+        binding.frameNotifikasi.setOnClickListener {
             startActivity(Intent(this@MainActivity, NotifikasiActivity::class.java))
         }
 
@@ -437,7 +447,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             startActivityForResult(intent, LAUNCH_DETAIL_ACTIVITY)
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             if (!isConnectedToInternet) {
                 toastNotify("Please turn on the internet")
                 stopRefresh()
@@ -448,26 +458,26 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             initDetailProfileRequest()
         }
 
-        tv_show_length_entry.viewTreeObserver.addOnGlobalLayoutListener(object :
+        binding.tvShowLengthEntry.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                tv_show_length_entry.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.tvShowLengthEntry.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                val params = recyclerView.layoutParams
-                params.height = deepCoordinatorLayout.height
-                recyclerView.layoutParams = params
-                recyclerView.requestLayout()
+                val params = binding.recyclerView.layoutParams
+                params.height = binding.deepCoordinatorLayout.height
+                binding.recyclerView.layoutParams = params
+                binding.recyclerView.requestLayout()
             }
         })
     }
 
     private fun startRefresh() {
         if (!isConnectedToInternet) return
-        swipeRefreshLayout.isRefreshing = true
+        binding.swipeRefreshLayout.isRefreshing = true
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler().postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
     }
 
     private fun handleResponse(response: Any) {
@@ -484,7 +494,7 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
                 spAdapter.notifyDataSetChanged()
 
-                tv_show_length_entry.text = getString(
+                binding.tvShowLengthEntry.text = getString(
                     R.string.main_header_list_count_msg,
                     spAdapter.itemList.size.toString()
                 )
@@ -514,10 +524,10 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
                 val notif = response.data?.get(0)
 
                 if (notif?.count == 0) {
-                    tvCountUnreadNotif.visibility = View.GONE
+                    binding.tvCountUnreadNotif.visibility = View.GONE
                 } else {
-                    tvCountUnreadNotif.visibility = View.VISIBLE
-                    tvCountUnreadNotif.text = notif?.count.toString()
+                    binding.tvCountUnreadNotif.visibility = View.VISIBLE
+                    binding.tvCountUnreadNotif.text = notif?.count.toString()
                 }
             }
             is CreateSPResponse -> {
@@ -544,15 +554,14 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
         alertDialogTambahSP = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_ajukan_sp, null)
+        val dialogAjukanSpBinding = DialogAjukanSpBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.spinnerProyek.setAdapter(proyekAdapter)
-        dialogRootView.spinnerJenis.setAdapter(jenisAdapter)
-        dialogRootView.btnAjukan.setOnClickListener {
+        dialogAjukanSpBinding.spinnerProyek.setAdapter(proyekAdapter)
+        dialogAjukanSpBinding.spinnerJenis.setAdapter(jenisAdapter)
+        dialogAjukanSpBinding.btnAjukan.setOnClickListener {
 
-            val selectedProyek = dialogRootView.spinnerProyek.text.toString()
-            val selectedJenis = dialogRootView.spinnerJenis.text.toString()
+            val selectedProyek = dialogAjukanSpBinding.spinnerProyek.text.toString()
+            val selectedJenis = dialogAjukanSpBinding.spinnerJenis.text.toString()
 
             var toastString = ""
 
@@ -589,15 +598,15 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
                     alertDialogTambahSP.hide()
 
-                    dialogRootView.spinnerProyek.text.clear()
-                    dialogRootView.spinnerJenis.text.clear()
+                    dialogAjukanSpBinding.spinnerProyek.text.clear()
+                    dialogAjukanSpBinding.spinnerJenis.text.clear()
 
                 }.create()
 
             confirmAlert.show()
         }
 
-        alertDialogTambahSP.setView(dialogRootView)
+        alertDialogTambahSP.setView(dialogAjukanSpBinding.root)
     }
 
     private fun setupFilterSPDialog() {
@@ -608,18 +617,17 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
         alertDialogFilterSP = alertDialogBuilder.create()
 
-        filterDialogRootView =
-            View.inflate(this, R.layout.dialog_filter_sp, null)
+        dialogFilterSpBinding = DialogFilterSpBinding.inflate(LayoutInflater.from(this))
 
-        filterDialogRootView.spinnerProyek.setAdapter(proyekOptionAdapter)
-        filterDialogRootView.spinnerJenis.setAdapter(jenisPermintaanOptionAdapter)
-        filterDialogRootView.spinnerStatus.setAdapter(statusOptionAdapter)
+        dialogFilterSpBinding.spinnerProyek.setAdapter(proyekOptionAdapter)
+        dialogFilterSpBinding.spinnerJenis.setAdapter(jenisPermintaanOptionAdapter)
+        dialogFilterSpBinding.spinnerStatus.setAdapter(statusOptionAdapter)
 
-        filterDialogRootView.spinnerStatus.viewTreeObserver.addOnGlobalLayoutListener(object :
+        dialogFilterSpBinding.spinnerStatus.viewTreeObserver.addOnGlobalLayoutListener(object :
             OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 // Ensure you call it only once :
-                filterDialogRootView.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(
+                dialogFilterSpBinding.spinnerStatus.viewTreeObserver.removeOnGlobalLayoutListener(
                     this
                 )
                 //} else {
@@ -628,26 +636,27 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
 
                 // Here you can get the size :)
                 val spinnerCoord = intArrayOf(0, 0)
-                filterDialogRootView.spinnerStatus.getLocationOnScreen(spinnerCoord)
-                val spinnerBottom = spinnerCoord[1] + filterDialogRootView.spinnerStatus.height
+                dialogFilterSpBinding.spinnerStatus.getLocationOnScreen(spinnerCoord)
+                val spinnerBottom = spinnerCoord[1] + dialogFilterSpBinding.spinnerStatus.height
 
                 val dialogRootViewCoord = intArrayOf(0, 0)
-                filterDialogRootView.getLocationOnScreen(dialogRootViewCoord)
-                val dialogRootViewBottom = dialogRootViewCoord[1] + filterDialogRootView.height
+                dialogFilterSpBinding.root.getLocationOnScreen(dialogRootViewCoord)
+                val dialogRootViewBottom =
+                    dialogRootViewCoord[1] + dialogFilterSpBinding.root.height
 
-                filterDialogRootView.spinnerStatus.dropDownHeight =
+                dialogFilterSpBinding.spinnerStatus.dropDownHeight =
                     dialogRootViewBottom - spinnerBottom
             }
         })
 
-        filterDialogRootView.btnFilterReset.setOnClickListener {
-            resetFilter(filterDialogRootView.tilStatus.visibility == View.VISIBLE)
+        dialogFilterSpBinding.btnFilterReset.setOnClickListener {
+            resetFilter(dialogFilterSpBinding.tilStatus.visibility == View.VISIBLE)
         }
 
-        filterDialogRootView.btnFilterSubmit.setOnClickListener {
-            val selectedProyek = filterDialogRootView.spinnerProyek.text.toString()
-            val selectedJenis = filterDialogRootView.spinnerJenis.text.toString()
-            val selectedStatus = filterDialogRootView.spinnerStatus.text.toString()
+        dialogFilterSpBinding.btnFilterSubmit.setOnClickListener {
+            val selectedProyek = dialogFilterSpBinding.spinnerProyek.text.toString()
+            val selectedJenis = dialogFilterSpBinding.spinnerJenis.text.toString()
+            val selectedStatus = dialogFilterSpBinding.spinnerStatus.text.toString()
 
             selectedIdProyekFilterValue =
                 proyekOptionList.find { it.option == selectedProyek }?.value ?: ""
@@ -661,12 +670,12 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             alertDialogFilterSP.hide()
         }
 
-        alertDialogFilterSP.setView(filterDialogRootView)
+        alertDialogFilterSP.setView(dialogFilterSpBinding.root)
     }
 
     private fun resetFilter(isStatusPermintaanVisible: Boolean) {
-        filterDialogRootView.spinnerProyek.text.clear()
-        filterDialogRootView.spinnerJenis.text.clear()
+        dialogFilterSpBinding.spinnerProyek.text.clear()
+        dialogFilterSpBinding.spinnerJenis.text.clear()
 
         selectedIdProyekFilterValue = ""
         selectedJenisPermintaanFilterValue = ""
@@ -675,53 +684,53 @@ class MainActivity : BaseActivity(), AppBarLayout.OnOffsetChangedListener {
             // ini maksudnya untuk kalau user memilih menu item menunggu verifikasi
             // nah status permintaannya kan ilang, jadi set statusFilterValue ke ""
             // karna untuk menunggu verifikasi statusPermintaanya default ""
-            filterDialogRootView.spinnerStatus.text.clear()
+            dialogFilterSpBinding.spinnerStatus.text.clear()
             selectedStatusFilterValue = ""
         } else {
             selectedStatusFilterValue = statusOptionList[0].value.toString()
             val selectedStatusFilterOption = statusOptionList[0].option.toString()
-            filterDialogRootView.spinnerStatus.setText(selectedStatusFilterOption, false)
+            dialogFilterSpBinding.spinnerStatus.setText(selectedStatusFilterOption, false)
         }
     }
 
     // https://stackoverflow.com/questions/30779667/android-collapsingtoolbarlayout-and-swiperefreshlayout-get-stuck/33776549
     // great solution : https://stackoverflow.com/a/30785823
     override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-        swipeRefreshLayout.isEnabled = (verticalOffset == 0)
+        binding.swipeRefreshLayout.isEnabled = (verticalOffset == 0)
     }
 
     override fun onResume() {
         super.onResume()
-        listCountStatusBar.addOnOffsetChangedListener(this)
+        binding.listCountStatusBar.addOnOffsetChangedListener(this)
     }
 
     override fun onPause() {
         super.onPause()
-        listCountStatusBar.removeOnOffsetChangedListener(this)
+        binding.listCountStatusBar.removeOnOffsetChangedListener(this)
     }
 
     private fun turnOffToolbarScrolling() {
         //turn off scrolling
         val toolbarLayoutParams =
-            listCountStatusContainer.layoutParams as AppBarLayout.LayoutParams
+            binding.listCountStatusContainer.layoutParams as AppBarLayout.LayoutParams
         toolbarLayoutParams.scrollFlags = 0
-        listCountStatusContainer.layoutParams = toolbarLayoutParams
+        binding.listCountStatusContainer.layoutParams = toolbarLayoutParams
         val appBarLayoutParams =
-            listCountStatusBar.layoutParams as CoordinatorLayout.LayoutParams
+            binding.listCountStatusBar.layoutParams as CoordinatorLayout.LayoutParams
         appBarLayoutParams.behavior = null
-        listCountStatusBar.layoutParams = appBarLayoutParams
+        binding.listCountStatusBar.layoutParams = appBarLayoutParams
     }
 
     private fun turnOnToolbarScrolling() {
         //turn on scrolling
         val toolbarLayoutParams =
-            listCountStatusContainer.layoutParams as AppBarLayout.LayoutParams
+            binding.listCountStatusContainer.layoutParams as AppBarLayout.LayoutParams
         toolbarLayoutParams.scrollFlags =
             AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
-        listCountStatusContainer.layoutParams = toolbarLayoutParams
+        binding.listCountStatusContainer.layoutParams = toolbarLayoutParams
         val appBarLayoutParams =
-            listCountStatusBar.layoutParams as CoordinatorLayout.LayoutParams
+            binding.listCountStatusBar.layoutParams as CoordinatorLayout.LayoutParams
         appBarLayoutParams.behavior = AppBarLayout.Behavior()
-        listCountStatusBar.layoutParams = appBarLayoutParams
+        binding.listCountStatusBar.layoutParams = appBarLayoutParams
     }
 }

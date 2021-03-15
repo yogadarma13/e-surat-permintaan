@@ -5,10 +5,15 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.example.e_suratpermintaan.presentation.viewholders.ViewHolderFactory
+import java.util.*
+import kotlin.collections.ArrayList
 
-class BaseFilterableAdapter<T : BaseViewHolder>(
-    private val layoutRes: Int,
+typealias InflateFilterableAdapter<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
+
+class BaseFilterableAdapter<T : BaseViewHolder, B : ViewBinding>(
+    private val inflate: InflateFilterableAdapter<B>,
     private val clazz: Class<T>
 ) :
     RecyclerView.Adapter<BaseViewHolder>(), Filterable {
@@ -23,8 +28,9 @@ class BaseFilterableAdapter<T : BaseViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(layoutRes, parent, false)
+        val view = inflate.invoke(LayoutInflater.from(parent.context), parent, false)
+//            LayoutInflater.from(parent.context)
+//            .inflate(layoutRes, parent, false)
 
         return ViewHolderFactory.create(view, clazz)
     }
@@ -46,7 +52,7 @@ class BaseFilterableAdapter<T : BaseViewHolder>(
                 } else {
                     val filteredList: ArrayList<Any> = arrayListOf()
                     for (row in oldItemList) {
-                        if (row.toString().toLowerCase().contains(charString.toLowerCase())
+                        if (row.toString().toLowerCase(Locale.ROOT).contains(charString.toLowerCase(Locale.ROOT))
                         ) {
                             filteredList.add(row)
                         }

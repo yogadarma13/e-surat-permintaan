@@ -2,11 +2,11 @@ package com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter
 
 import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.FileLampiranDetailSP
+import com.example.e_suratpermintaan.databinding.ItemFileLampiranRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_file_lampiran_row.view.*
 
-class FileSuratPermintaanViewHolder(private val rootView: View) :
-    BaseViewHolder(rootView) {
+class FileSuratPermintaanViewHolder(private val binding: ItemFileLampiranRowBinding) :
+    BaseViewHolder(binding.root) {
 
     companion object {
         const val BTN_FILE = "btnFile"
@@ -15,15 +15,15 @@ class FileSuratPermintaanViewHolder(private val rootView: View) :
     override fun bind(item: Any?, position: Int, listener: (Any?, String?) -> Unit) {
         val data = item as FileLampiranDetailSP
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener.invoke(data, ROOTVIEW)
         }
 
-        rootView.btnFile.setOnClickListener {
+        binding.btnFile.setOnClickListener {
             listener.invoke(data, BTN_FILE)
         }
 
-        rootView.tvKeteranganFile.text = data.keterangan
-        rootView.expandableIcon.visibility = View.GONE
+        binding.tvKeteranganFile.text = data.keterangan
+        binding.expandableIcon.visibility = View.GONE
     }
 }

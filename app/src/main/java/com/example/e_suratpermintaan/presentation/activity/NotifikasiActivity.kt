@@ -9,26 +9,27 @@ import com.e_suratpermintaan.core.domain.entities.responses.DataNotifikasi
 import com.e_suratpermintaan.core.domain.entities.responses.NotifItem
 import com.e_suratpermintaan.core.domain.entities.responses.NotifikasiResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityNotifikasiBinding
+import com.example.e_suratpermintaan.databinding.NotifikasiUnreadListBinding
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.NotifikasiViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.NotifikasiViewModel
-import kotlinx.android.synthetic.main.activity_notifikasi.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NotifikasiActivity : BaseActivity() {
+class NotifikasiActivity : BaseActivity<ActivityNotifikasiBinding>() {
 
     private val notifikasiViewModel: NotifikasiViewModel by viewModel()
-    private val readNotifikasiViewModel: NotifikasiViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
 
-    private lateinit var notifikasiAdapter: BaseAdapter<NotifikasiViewHolder>
+    private lateinit var notifikasiAdapter: BaseAdapter<NotifikasiViewHolder, NotifikasiUnreadListBinding>
     private var idUser: String? = null
 
-    override fun layoutId(): Int = R.layout.activity_notifikasi
+    override fun getViewBinding(): ActivityNotifikasiBinding =
+        ActivityNotifikasiBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class NotifikasiActivity : BaseActivity() {
     private fun init() {
         setupTollbar()
         notifikasiAdapter =
-            BaseAdapter(R.layout.notifikasi_unread_list, NotifikasiViewHolder::class.java)
+            BaseAdapter(NotifikasiUnreadListBinding::inflate, NotifikasiViewHolder::class.java)
         getNotifikasi(idUser)
         setupListeners()
         initRecyclerView()
@@ -50,19 +51,18 @@ class NotifikasiActivity : BaseActivity() {
     }
 
     private fun setupTollbar() {
-        if (toolbar_notifikasi != null && toolbar != null) {
-            toolbar_notifikasi.text = getString(R.string.toolbar_notifikasi)
-            setSupportActionBar(toolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-                supportActionBar!!.setDisplayShowHomeEnabled(true)
-            }
+        binding.toolbarNotifikasi.text = getString(R.string.toolbar_notifikasi)
+        setSupportActionBar(binding.toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }
@@ -71,22 +71,22 @@ class NotifikasiActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = notifikasiAdapter
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(this@NotifikasiActivity)
+            adapter = notifikasiAdapter
+        }
     }
 
     private fun setupListeners() {
 
         notifikasiAdapter.setOnItemClickListener { item, _ ->
-            val data = item as NotifItem
+            val notifItem = item as NotifItem
 
             val intent = Intent(this, DetailSuratPermintaanActivity::class.java)
-            intent.putExtra(ID_SP_EXTRA_KEY, item.idSp)
+            intent.putExtra(ID_SP_EXTRA_KEY, notifItem.idSp)
             startActivity(intent)
             finish()
         }
-
-
     }
 
     private fun getNotifikasi(idUser: String?) {
@@ -102,10 +102,10 @@ class NotifikasiActivity : BaseActivity() {
         }
 
         if (dataNotif?.count == 0) {
-            constraintCountUnread.visibility = View.GONE
+            binding.constraintCountUnread.visibility = View.GONE
         } else {
-            constraintCountUnread.visibility = View.VISIBLE
-            tvCountNotifUnread.text = "${dataNotif?.count.toString()} notifikasi"
+            binding.constraintCountUnread.visibility = View.VISIBLE
+            binding.tvCountNotifUnread.text = "${dataNotif?.count.toString()} notifikasi"
         }
 
         dataNotif?.notif?.forEach {
@@ -115,6 +115,5 @@ class NotifikasiActivity : BaseActivity() {
         }
 
         notifikasiAdapter.notifyDataSetChanged()
-
     }
 }

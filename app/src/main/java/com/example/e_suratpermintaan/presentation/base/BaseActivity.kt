@@ -17,8 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import com.e_suratpermintaan.core.domain.entities.connection.ConnectionModel
+import androidx.viewbinding.ViewBinding
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.utils.connection.ConnectionLiveData
@@ -34,9 +33,10 @@ import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import retrofit2.HttpException
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<B : ViewBinding> : AppCompatActivity() {
 
     private val sharedMasterData: SharedMasterData by inject()
+    lateinit var binding: B
 
     var isConnectedToInternet: Boolean = true
     private lateinit var connectionLiveData: ConnectionLiveData
@@ -54,17 +54,17 @@ abstract class BaseActivity : AppCompatActivity() {
             if (bodyValue.toString().isNotEmpty() && idSP.toString().isNotEmpty()) {
                 sharedMasterData.setOnNotifikasiReceived(idSP.toString())
 
-                snackNotify(getWindowContentRootView(), bodyValue!!, "Lihat", View.OnClickListener {
+                snackNotify(getWindowContentRootView(), bodyValue!!, "Lihat") {
                     val activityIntent =
                         Intent(applicationContext, DetailSuratPermintaanActivity::class.java)
                     activityIntent.putExtra(ID_SP_EXTRA_KEY, idSP)
                     startActivity(activityIntent)
-                })
+                }
             }
         }
     }
 
-    abstract fun layoutId(): Int
+    abstract fun getViewBinding(): B
 
     private fun isJSONValid(string: String): Boolean {
         try {
@@ -100,7 +100,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutId())
+        binding = getViewBinding()
+        setContentView(binding.root)
 
         val filter = IntentFilter(getString(R.string.firebase_onmessagereceived_intentfilter))
         registerReceiver(fcmOnMessageReceivedReceiver, filter)
@@ -197,14 +198,14 @@ abstract class BaseActivity : AppCompatActivity() {
                 if (child != null) {
                     if (child is EditText) {
                         setOnFocusChangeListener(
-                            child,
-                            View.OnFocusChangeListener { _, hasFocus ->
-                                // Ketika tidak fokus pada edittext maka tutup keyboard/softinput
-                                // ketika me-tap view diluar edittext maka akan menutup keyboard/softinput
-                                if (!hasFocus) {
-                                    closeKeyboard(child)
-                                }
-                            })
+                            child
+                        ) { _, hasFocus ->
+                            // Ketika tidak fokus pada edittext maka tutup keyboard/softinput
+                            // ketika me-tap view diluar edittext maka akan menutup keyboard/softinput
+                            if (!hasFocus) {
+                                closeKeyboard(child)
+                            }
+                        }
                     }
                 }
             }
@@ -234,7 +235,7 @@ abstract class BaseActivity : AppCompatActivity() {
         /* Live data object and setting an oberser on it */
         connectionLiveData = ConnectionLiveData(applicationContext)
         connectionLiveData.observe(this,
-            Observer<ConnectionModel?> { connection -> /* every time connection state changes, we'll be notified and can perform action accordingly */
+            { connection -> /* every time connection state changes, we'll be notified and can perform action accordingly */
                 if (connection?.isConnected!!) {
                     isConnectedToInternet = true
 
@@ -250,5 +251,4 @@ abstract class BaseActivity : AppCompatActivity() {
                 }
             })
     }
-
 }

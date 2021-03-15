@@ -1,12 +1,12 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter
 
 import android.graphics.Color
-import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
+import com.example.e_suratpermintaan.databinding.ItemSuratPermintaanRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_surat_permintaan_row.view.*
 
-class MyDataViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
+class MyDataViewHolder(private val binding: ItemSuratPermintaanRowBinding) :
+    BaseViewHolder(binding.root) {
 
     override fun bind(
         item: Any?,
@@ -15,18 +15,18 @@ class MyDataViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
     ) {
         val data = item as DataMyData
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener(data, null)
         }
 
-        rootView.tvKode.text = data.kode
-        rootView.tvTanggalPengajuan.text = data.tanggalPengajuan
-        rootView.tvStatusPermintaan.text = data.statusPermintaan
-        rootView.tvJenis.text = data.jenis
-        rootView.tvProyek.text = data.namaProyek
-        rootView.tvPabrik.text = data.namaLokasi
-        rootView.tvDurasi.text = data.durasi
-        rootView.cardStatusPermintaan.setCardBackgroundColor(Color.parseColor(data.warna))
+        binding.tvKode.text = data.kode
+        binding.tvTanggalPengajuan.text = data.tanggalPengajuan
+        binding.tvStatusPermintaan.text = data.statusPermintaan
+        binding.tvJenis.text = data.jenis
+        binding.tvProyek.text = data.namaProyek
+        binding.tvPabrik.text = data.namaLokasi
+        binding.tvDurasi.text = data.durasi
+        binding.cardStatusPermintaan.setCardBackgroundColor(Color.parseColor(data.warna))
     }
 
 }

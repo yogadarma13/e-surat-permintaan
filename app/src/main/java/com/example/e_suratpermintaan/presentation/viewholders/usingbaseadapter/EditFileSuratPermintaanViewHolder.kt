@@ -10,12 +10,12 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import com.e_suratpermintaan.core.domain.entities.responses.FileLampiranDetailSP
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ItemFileLampiranRowBinding
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_file_lampiran_row.view.*
 
-class EditFileSuratPermintaanViewHolder(private val rootView: View) :
-    BaseViewHolder(rootView) {
+class EditFileSuratPermintaanViewHolder(private val binding: ItemFileLampiranRowBinding) :
+    BaseViewHolder(binding.root) {
 
     companion object {
         const val BTN_FILE = "btnFile"
@@ -26,58 +26,58 @@ class EditFileSuratPermintaanViewHolder(private val rootView: View) :
     override fun bind(item: Any?, position: Int, listener: (Any?, String?) -> Unit) {
         val data = item as FileLampiranDetailSP
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener.invoke(data, ROOTVIEW)
         }
 
-        rootView.tvKeteranganFile.text = data.keterangan
+        binding.tvKeteranganFile.text = data.keterangan
 
         if (data.tombolEditFile == 1) {
-            rootView.btnEditFile.visibility = View.VISIBLE
-            rootView.btnEditFile.setOnClickListener {
+            binding.btnEditFile.visibility = View.VISIBLE
+            binding.btnEditFile.setOnClickListener {
                 listener.invoke(data, BTN_EDIT)
             }
         } else {
-            rootView.btnEditFile.visibility = View.GONE
+            binding.btnEditFile.visibility = View.GONE
         }
 
         if (data.tombolHapusFile == 1) {
-            rootView.btnHapusFile.visibility = View.VISIBLE
-            rootView.btnHapusFile.setOnClickListener {
+            binding.btnHapusFile.visibility = View.VISIBLE
+            binding.btnHapusFile.setOnClickListener {
                 listener.invoke(data, BTN_HAPUS)
             }
         } else {
-            rootView.btnHapusFile.visibility = View.GONE
+            binding.btnHapusFile.visibility = View.GONE
         }
 
-        rootView.btnFile.setOnClickListener {
+        binding.btnFile.setOnClickListener {
             listener.invoke(data, BTN_FILE)
         }
 
-        rootView.constraintLayoutFile.setOnClickListener {
+        binding.constraintLayoutFile.setOnClickListener {
 
-            if (rootView.expandableLayoutFile.visibility == View.GONE) {
+            if (binding.expandableLayoutFile.visibility == View.GONE) {
                 // Kenapa pakai ini, karna kalau mau pake custom SlideAnimation,
                 // kita gak tau dia viewnya mau dikasi height berapa
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     TransitionManager.beginDelayedTransition(
-                        rootView.cardView,
+                        binding.cardView,
                         TransitionSet()
                             .addTransition(ChangeBounds())
                     )
                 }
-                rootView.expandableLayoutFile.visibility = View.VISIBLE
-                rootView.expandableIcon.setImageDrawable(
+                binding.expandableLayoutFile.visibility = View.VISIBLE
+                binding.expandableIcon.setImageDrawable(
                     ContextCompat.getDrawable(
-                        rootView.context,
+                        binding.root.context,
                         R.drawable.ic_arrow_up
                     )
                 )
             } else {
                 val animation: Animation =
                     SlideAnimation(
-                        rootView.expandableLayoutFile,
-                        rootView.expandableLayoutFile.height,
+                        binding.expandableLayoutFile,
+                        binding.expandableLayoutFile.height,
                         0
                     )
 
@@ -90,18 +90,18 @@ class EditFileSuratPermintaanViewHolder(private val rootView: View) :
 
                     override fun onAnimationEnd(animation: Animation?) {
                         animation?.setAnimationListener(null)
-                        rootView.expandableLayoutFile.visibility = View.GONE
+                        binding.expandableLayoutFile.visibility = View.GONE
                     }
 
                     override fun onAnimationStart(animation: Animation?) {
 
                     }
                 })
-                rootView.expandableLayoutFile.animation = animation
-                rootView.expandableLayoutFile.startAnimation(animation)
-                rootView.expandableIcon.setImageDrawable(
+                binding.expandableLayoutFile.animation = animation
+                binding.expandableLayoutFile.startAnimation(animation)
+                binding.expandableIcon.setImageDrawable(
                     ContextCompat.getDrawable(
-                        rootView.context,
+                        binding.root.context,
                         R.drawable.ic_arrow_down
                     )
                 )

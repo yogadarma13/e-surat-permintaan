@@ -1,60 +1,61 @@
 package com.example.e_suratpermintaan.presentation.viewholders
 
-import android.view.View
+import androidx.viewbinding.ViewBinding
+import com.example.e_suratpermintaan.databinding.*
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.*
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.*
 
 class ViewHolderFactory {
     companion object {
-        fun <T : BaseViewHolder> create(view: View, clazz: Class<T>): BaseViewHolder {
+        fun <T : BaseViewHolder> create(view: ViewBinding, clazz: Class<T>): BaseViewHolder {
             return when (clazz) {
                 CCViewHolder::class.java -> CCViewHolder(
-                    view
+                    view as ItemSimpleRowBinding
                 )
                 UomViewHolder::class.java -> UomViewHolder(
-                    view
+                    view as ItemSimpleRowBinding
                 )
                 KategoriViewHolder::class.java -> KategoriViewHolder(
-                    view
+                    view as ItemSimpleRowBinding
                 )
                 JenisBarangViewHolder::class.java -> JenisBarangViewHolder(
-                    view
+                    view as ItemSimpleRowBinding
                 )
                 MyDataViewHolder::class.java -> MyDataViewHolder(
-                    view
+                    view as ItemSuratPermintaanRowBinding
                 )
                 DataAllViewHolder::class.java -> DataAllViewHolder(
-                    view
+                    view.root
                 )
                 ItemSuratPermintaanViewHolder::class.java -> ItemSuratPermintaanViewHolder(
-                    view
+                    view as ItemSuratPermintaanItemRowBinding
                 )
                 FileDownloadViewHolder::class.java -> FileDownloadViewHolder(
-                    view
+                    view as FileDownloadItemBinding
                 )
                 PersyaratanViewHolder::class.java -> PersyaratanViewHolder(
-                    view
+                    view as ItemSimpleCheckboxBinding
                 )
                 PenugasanViewHolder::class.java -> PenugasanViewHolder(
-                    view
+                    view as ItemSimpleRowBinding
                 )
                 StatusPenugasanViewHolder::class.java -> StatusPenugasanViewHolder(
-                    view
+                    view as ItemSimpleRowBinding
                 )
                 EditItemSuratPermintaanViewHolder::class.java -> EditItemSuratPermintaanViewHolder(
-                    view
+                    view as ItemSuratPermintaanItemRowBinding
                 )
                 EditFileSuratPermintaanViewHolder::class.java -> EditFileSuratPermintaanViewHolder(
-                    view
+                    view as ItemFileLampiranRowBinding
                 )
                 FileSuratPermintaanViewHolder::class.java -> FileSuratPermintaanViewHolder(
-                    view
+                    view as ItemFileLampiranRowBinding
                 )
                 NotifikasiViewHolder::class.java -> NotifikasiViewHolder(
-                    view
+                    view as NotifikasiUnreadListBinding
                 )
-                else -> EmptyViewHolder(view)
+                else -> EmptyViewHolder(view.root)
             }
         }
     }

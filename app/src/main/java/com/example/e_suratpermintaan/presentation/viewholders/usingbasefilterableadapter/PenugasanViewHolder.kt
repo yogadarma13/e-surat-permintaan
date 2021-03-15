@@ -1,12 +1,11 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter
 
-import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterOption
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
+import com.example.e_suratpermintaan.databinding.ItemSimpleRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_simple_row.view.*
 
-class PenugasanViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
+class PenugasanViewHolder(private val binding: ItemSimpleRowBinding) :
+    BaseViewHolder(binding.root) {
 
     override fun bind(
         item: Any?,
@@ -15,11 +14,11 @@ class PenugasanViewHolder(private val rootView: View) : BaseViewHolder(rootView)
     ) {
         val data = item as DataMasterOption
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener(data, ROOTVIEW)
         }
 
-        rootView.textView.text = data.option
+        binding.textView.text = data.option
     }
 
 }

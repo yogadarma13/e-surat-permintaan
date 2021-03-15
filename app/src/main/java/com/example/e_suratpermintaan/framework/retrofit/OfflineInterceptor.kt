@@ -47,7 +47,7 @@ abstract class OfflineInterceptor : Interceptor {
 
             val authenticatedRequest = builder.build()
             val response = chain.proceed(authenticatedRequest)
-            if (response.cacheResponse() == null) {
+            if (response.cacheResponse == null) {
                 onCacheUnavailable()
             }
             return response

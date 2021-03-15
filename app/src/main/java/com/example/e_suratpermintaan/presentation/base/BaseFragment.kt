@@ -1,9 +1,7 @@
 package com.example.e_suratpermintaan.presentation.base
 
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,17 +13,20 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.e_suratpermintaan.R
+import androidx.viewbinding.ViewBinding
 import io.reactivex.rxjava3.disposables.Disposable
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
 
-abstract class BaseFragment : Fragment() {
+typealias InflateFragment<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
+abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragment<B>) : Fragment() {
+
+    private var _binding: B? = null
+    val binding get() = _binding!!
     private var isConfigChanges = false
     private var disposableList: ArrayList<Disposable?> = ArrayList()
 
@@ -34,11 +35,11 @@ abstract class BaseFragment : Fragment() {
             disposableList.add(value)
         }
 
-    abstract fun layoutId(): Int
+//    abstract fun getViewBinding(): B
 
     private var rootView: View? = null
 
-    private fun isJSONValid(string: String): Boolean{
+    private fun isJSONValid(string: String): Boolean {
         try {
             JSONObject(string)
         } catch (ex: JSONException) {
@@ -55,9 +56,10 @@ abstract class BaseFragment : Fragment() {
 
     open fun handleError(error: Throwable) {
         toastNotify("SUPER CALLED")
-        val responseBodyString = (error as HttpException).response()?.errorBody()?.string().toString()
+        val responseBodyString =
+            (error as HttpException).response()?.errorBody()?.string().toString()
 
-        if (isJSONValid(responseBodyString)){
+        if (isJSONValid(responseBodyString)) {
             // Kalau format stringbody nya valid JSON, maka tampilkan atribut messagenya
             val jsonObject = JSONObject(responseBodyString)
             toastNotify(jsonObject.getString("message"))
@@ -72,18 +74,17 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return getPersistentView(inflater, container, savedInstanceState, layoutId())
+        return getPersistentView(inflater, container)
     }
 
     private fun getPersistentView(
-        inflater: LayoutInflater?,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-        layout: Int
+        inflater: LayoutInflater,
+        container: ViewGroup?
     ): View? {
         if (rootView == null) {
             // Inflate the layout for this fragment
-            rootView = inflater?.inflate(layout, container, false)
+            _binding = inflate.invoke(inflater, container, false)
+            rootView = binding.root
             Log.d("MYAPP", "CREATE NEW ROOTVIEW")
         } else {
             // Do not inflate the layout again.
@@ -151,6 +152,8 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("MYAPP", "ON DESTROY VIEW")
+
+        _binding = null
 
         saveState()
     }

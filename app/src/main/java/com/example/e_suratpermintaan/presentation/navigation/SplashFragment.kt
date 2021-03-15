@@ -7,9 +7,9 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.FragmentSplashBinding
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.NavOptionsHelper
@@ -26,7 +26,7 @@ import java.io.IOException
  * A simple [Fragment] subclass.
  */
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding::inflate) {
 
     private lateinit var handler: Handler
 
@@ -34,7 +34,7 @@ class SplashFragment : BaseFragment() {
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
-    override fun layoutId(): Int = R.layout.fragment_splash
+//    override fun layoutId(): Int = R.layout.fragment_splash
 
     private val runnable = Runnable {
         if (fcmPreference.getUserTokenId() == null) {
@@ -84,7 +84,7 @@ class SplashFragment : BaseFragment() {
 
             sharedMasterData.isAllMasterObservableResponseComplete.observe(
                 starterActivity,
-                Observer { isIt ->
+                { isIt ->
 
                     if (isIt) {
                         requireActivity().startActivity(

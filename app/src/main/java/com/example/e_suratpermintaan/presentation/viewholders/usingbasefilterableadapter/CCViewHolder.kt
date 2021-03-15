@@ -1,11 +1,10 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter
 
-import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterCC
+import com.example.e_suratpermintaan.databinding.ItemSimpleRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_simple_row.view.*
 
-class CCViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
+class CCViewHolder(private val binding: ItemSimpleRowBinding) : BaseViewHolder(binding.root) {
 
     override fun bind(
         item: Any?,
@@ -14,12 +13,12 @@ class CCViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
     ) {
         val data = item as DataMasterCC
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener(data, ROOTVIEW)
         }
 
         val textString = "${data.kodeCostcontrol} - ${data.deskripsi}"
-        rootView.textView.text = textString
+        binding.textView.text = textString
     }
 
 }

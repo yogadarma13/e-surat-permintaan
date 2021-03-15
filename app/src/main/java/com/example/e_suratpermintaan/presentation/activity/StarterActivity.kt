@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.navigation.ActivityNavigator
 import com.e_suratpermintaan.core.domain.entities.responses.*
-import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityStarterBinding
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.core.Observable
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StarterActivity : BaseActivity() {
+class StarterActivity : BaseActivity<ActivityStarterBinding>() {
 
     private var profileId: String? = null
     private lateinit var idUser: String
@@ -22,7 +22,8 @@ class StarterActivity : BaseActivity() {
     private val sharedMasterData: SharedMasterData by inject()
     private val profilePreference: ProfilePreference by inject()
 
-    override fun layoutId(): Int = R.layout.activity_starter
+    override fun getViewBinding(): ActivityStarterBinding =
+        ActivityStarterBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

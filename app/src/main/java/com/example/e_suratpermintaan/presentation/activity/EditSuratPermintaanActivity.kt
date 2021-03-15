@@ -5,10 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange
@@ -17,6 +17,10 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_DELETED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_EDITED
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityEditSuratPermintaanBinding
+import com.example.e_suratpermintaan.databinding.DialogKonfirmasiSimpanBinding
+import com.example.e_suratpermintaan.databinding.DialogTambahFileBinding
+import com.example.e_suratpermintaan.databinding.ItemFileLampiranRowBinding
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.Directory
 import com.example.e_suratpermintaan.framework.utils.DownloadTask
@@ -36,23 +40,19 @@ import com.example.e_suratpermintaan.presentation.viewmodel.FileLampiranViewMode
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_edit_surat_permintaan.*
-import kotlinx.android.synthetic.main.dialog_konfirmasi_simpan.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_file.view.*
-import kotlinx.android.synthetic.main.dialog_tambah_file.view.etKeteranganFile
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
-class EditSuratPermintaanActivity : BaseActivity() {
+class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBinding>() {
 
     companion object {
         const val ID_SP_EDIT = "id_sp"
-        // const val MASTER_PERSYARATAN = "master_persyaratan"
         const val PICKFILE_REQUEST_CODE = 999
     }
 
@@ -69,16 +69,16 @@ class EditSuratPermintaanActivity : BaseActivity() {
     private var dataDetailSP: DataDetailSP? = null
     private var dataProfile: DataProfile? = null
     private var idSp: String? = null
-    // private var idFile: String? = null
     private var persyaratanList = mutableMapOf<String, String>()
     private var idUser: String? = null
     private var idRole: String? = null
     private var filePath: String? = null
 
     private lateinit var editItemSuratPermintaanAdapter: EditItemSuratPermintaanAdapter
-    private lateinit var editFileSuratPermintaanAdapter: BaseAdapter<EditFileSuratPermintaanViewHolder>
+    private lateinit var editFileSuratPermintaanAdapter: BaseAdapter<EditFileSuratPermintaanViewHolder, ItemFileLampiranRowBinding>
 
-    override fun layoutId(): Int = R.layout.activity_edit_surat_permintaan
+    override fun getViewBinding(): ActivityEditSuratPermintaanBinding =
+        ActivityEditSuratPermintaanBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,15 +118,14 @@ class EditSuratPermintaanActivity : BaseActivity() {
     }
 
     private fun setupTollbar() {
-        if (toolbar_edit_detail != null && toolbar != null) {
-            toolbar_edit_detail.text = getString(R.string.toolbar_edit)
-            setSupportActionBar(toolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-                supportActionBar!!.setDisplayShowHomeEnabled(true)
-            }
+        binding.toolbarEditDetail.text = getString(R.string.toolbar_edit)
+        setSupportActionBar(binding.toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -140,7 +139,7 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     private fun initApiRequest() {
         if (idUser != null) {
-            sharedMasterData.getPersyaratanList().observe(this, Observer {
+            sharedMasterData.getPersyaratanList().observe(this, {
                 it?.forEach { item ->
 
                     persyaratanList[item?.id.toString()] = item?.nama.toString()
@@ -161,25 +160,29 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
     private fun setupItemSuratPermintaanRecyclerView() {
 
-        recyclerViewEditItem.layoutManager = LinearLayoutManager(this)
-        recyclerViewEditItem.adapter = editItemSuratPermintaanAdapter
+        with(binding.recyclerViewEditItem) {
+            layoutManager = LinearLayoutManager(this@EditSuratPermintaanActivity)
+            adapter = editItemSuratPermintaanAdapter
+        }
 
         editFileSuratPermintaanAdapter = BaseAdapter(
-            R.layout.item_file_lampiran_row,
+            ItemFileLampiranRowBinding::inflate,
             EditFileSuratPermintaanViewHolder::class.java
         )
 
-        recyclerViewEditLampiran.layoutManager = LinearLayoutManager(this)
-        recyclerViewEditLampiran.adapter = editFileSuratPermintaanAdapter
+        with(binding.recyclerViewEditLampiran) {
+            layoutManager = LinearLayoutManager(this@EditSuratPermintaanActivity)
+            adapter = editFileSuratPermintaanAdapter
+        }
     }
 
     private fun setupActionListeners() {
 
-        tvAddItem.setOnClickListener {
+        binding.tvAddItem.setOnClickListener {
             alertDialogTambah.show()
         }
 
-        tvAddLampiran.setOnClickListener {
+        binding.tvAddLampiran.setOnClickListener {
             showDialogTambahFile()
         }
 
@@ -212,10 +215,18 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     alertDialogPenugasan.show(data)
                 }
                 EditItemSuratPermintaanViewHolder.BTN_PROCESS -> {
-                    processItemSuratPermintaan(idSp.toString(), data.id.toString(), idUser.toString())
+                    processItemSuratPermintaan(
+                        idSp.toString(),
+                        data.id.toString(),
+                        idUser.toString()
+                    )
                 }
                 EditItemSuratPermintaanViewHolder.BTN_UNPROCESS -> {
-                    unProcessItemSuratPermintaan(idSp.toString(), data.id.toString(), idUser.toString())
+                    unProcessItemSuratPermintaan(
+                        idSp.toString(),
+                        data.id.toString(),
+                        idUser.toString()
+                    )
                 }
             }
         }
@@ -256,11 +267,11 @@ class EditSuratPermintaanActivity : BaseActivity() {
             }
         }
 
-        btnSimpanEdit.setOnClickListener {
+        binding.btnSimpanEdit.setOnClickListener {
             showDialogKonfirmasiSimpan()
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             if (!isConnectedToInternet) {
                 toastNotify("Please turn on the internet")
                 stopRefresh()
@@ -273,20 +284,22 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
 
     private fun processItemSuratPermintaan(idSp: String, idItem: String, idUser: String) {
-        itemSuratPermintaanViewModel.processItem(idSp, idItem, idUser).subscribe(this::handleResponse, this::handleError)
+        itemSuratPermintaanViewModel.processItem(idSp, idItem, idUser)
+            .subscribe(this::handleResponse, this::handleError)
     }
 
     private fun unProcessItemSuratPermintaan(idSp: String, idItem: String, idUser: String) {
-        itemSuratPermintaanViewModel.unProcessItem(idSp, idItem, idUser).subscribe(this::handleResponse, this::handleError)
+        itemSuratPermintaanViewModel.unProcessItem(idSp, idItem, idUser)
+            .subscribe(this::handleResponse, this::handleError)
     }
 
     private fun startRefresh() {
         if (!isConnectedToInternet) return
-        swipeRefreshLayout.isRefreshing = true
+        binding.swipeRefreshLayout.isRefreshing = true
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler().postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
     }
 
     override fun handleError(error: Throwable) {
@@ -359,21 +372,21 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     dataDetailSP = detailSPResponse?.get(0)
 
                     if (dataDetailSP?.tombolTambahItem == 1) {
-                        tvAddItem.visibility = View.VISIBLE
+                        binding.tvAddItem.visibility = View.VISIBLE
                     } else {
-                        tvAddItem.visibility = View.GONE
+                        binding.tvAddItem.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolTambahFile == 1) {
-                        tvAddLampiran.visibility = View.VISIBLE
+                        binding.tvAddLampiran.visibility = View.VISIBLE
                     } else {
-                        tvAddLampiran.visibility = View.GONE
+                        binding.tvAddLampiran.visibility = View.GONE
                     }
 
                     if (dataDetailSP?.tombolSimpan == 1) {
-                        btnSimpanEdit.visibility = View.VISIBLE
+                        binding.btnSimpanEdit.visibility = View.VISIBLE
                     } else {
-                        btnSimpanEdit.visibility = View.GONE
+                        binding.btnSimpanEdit.visibility = View.GONE
                     }
 
                     alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
@@ -417,20 +430,20 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_konfirmasi_simpan, null)
+        val dialogKonfirmasiSimpanBinding =
+            DialogKonfirmasiSimpanBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.btnSimpan.setOnClickListener {
+        dialogKonfirmasiSimpanBinding.btnSimpan.setOnClickListener {
             disposable = suratPermintaanViewModel.saveEdit(idSp.toString(), idUser.toString())
                 .subscribe(this::handleResponse, this::handleError)
             alertDialog.hide()
         }
 
-        dialogRootView.btnTutup.setOnClickListener {
+        dialogKonfirmasiSimpanBinding.btnTutup.setOnClickListener {
             alertDialog.hide()
         }
 
-        alertDialog.setView(dialogRootView)
+        alertDialog.setView(dialogKonfirmasiSimpanBinding.root)
         alertDialog.show()
     }
 
@@ -441,15 +454,14 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_tambah_file, null)
+        val dialogTambahFileBinding = DialogTambahFileBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.btnPilihFile.setOnClickListener {
+        dialogTambahFileBinding.btnPilihFile.setOnClickListener {
             val selectFile = Intent(Intent.ACTION_GET_CONTENT)
             selectFile.type = "application/pdf"
             startActivityForResult(selectFile, PICKFILE_REQUEST_CODE)
         }
-        dialogRootView.btnTambahFile.setOnClickListener {
+        dialogTambahFileBinding.btnTambahFile.setOnClickListener {
             if (filePath.equals("none") || filePath.isNullOrEmpty()) {
                 toastNotify("File tidak ditemukan")
                 return@setOnClickListener
@@ -458,16 +470,14 @@ class EditSuratPermintaanActivity : BaseActivity() {
                     val file = File(filePath.toString())
 
                     val fileReqBody =
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                     val partLampiran =
                         MultipartBody.Part.createFormData("file", file.name, fileReqBody)
 
-                    val idSurat = RequestBody.create(MediaType.parse("text/plain"), idSp.toString())
-                    val keteranganFile = RequestBody.create(
-                        MediaType.parse("text/plain"),
-                        dialogRootView.etKeteranganFile.text.toString()
-                    )
+                    val idSurat = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                    val keteranganFile = dialogTambahFileBinding.etKeteranganFile.text.toString()
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
                     disposable =
                         fileLampiranViewModel.addFile(idSurat, keteranganFile, partLampiran)
                             .subscribe(this::handleResponse, this::handleError)
@@ -477,11 +487,11 @@ class EditSuratPermintaanActivity : BaseActivity() {
             }
             alertDialog.hide()
         }
-        dialogRootView.btnBatalTambahFile.setOnClickListener {
+        dialogTambahFileBinding.btnBatalTambahFile.setOnClickListener {
             alertDialog.hide()
         }
 
-        alertDialog.setView(dialogRootView)
+        alertDialog.setView(dialogTambahFileBinding.root)
         alertDialog.show()
     }
 
@@ -492,23 +502,20 @@ class EditSuratPermintaanActivity : BaseActivity() {
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogRootView =
-            View.inflate(this, R.layout.dialog_tambah_file, null)
+        val dialogTambahFileBinding = DialogTambahFileBinding.inflate(LayoutInflater.from(this))
 
-        dialogRootView.etKeteranganFile.setText(keterangan)
-        dialogRootView.btnTambahFile.text = getString(R.string.btn_edit_file)
+        dialogTambahFileBinding.etKeteranganFile.setText(keterangan)
+        dialogTambahFileBinding.btnTambahFile.text = getString(R.string.btn_edit_file)
 
-        dialogRootView.btnPilihFile.setOnClickListener {
+        dialogTambahFileBinding.btnPilihFile.setOnClickListener {
             val selectFile = Intent(Intent.ACTION_GET_CONTENT)
             selectFile.type = "application/pdf"
             startActivityForResult(selectFile, PICKFILE_REQUEST_CODE)
         }
-        dialogRootView.btnTambahFile.setOnClickListener {
-            val idFile = RequestBody.create(MediaType.parse("text/plain"), id_file)
-            val keteranganFile = RequestBody.create(
-                MediaType.parse("text/plain"),
-                dialogRootView.etKeteranganFile.text.toString()
-            )
+        dialogTambahFileBinding.btnTambahFile.setOnClickListener {
+            val idFile = id_file.toRequestBody("text/plain".toMediaTypeOrNull())
+            val keteranganFile = dialogTambahFileBinding.etKeteranganFile.text.toString()
+                .toRequestBody("text/plain".toMediaTypeOrNull())
             val partLampiran: MultipartBody.Part
 
             if (filePath.equals("none")) {
@@ -516,12 +523,12 @@ class EditSuratPermintaanActivity : BaseActivity() {
                 filePath = null
             } else {
                 partLampiran = if (filePath.isNullOrEmpty()) {
-                    val fileReqBody = RequestBody.create(MultipartBody.FORM, "")
+                    val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                     MultipartBody.Part.createFormData("file", "", fileReqBody)
                 } else {
                     val file = File(filePath.toString())
                     val fileReqBody =
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                     MultipartBody.Part.createFormData("file", file.name, fileReqBody)
                 }
 
@@ -532,11 +539,11 @@ class EditSuratPermintaanActivity : BaseActivity() {
             alertDialog.hide()
 
         }
-        dialogRootView.btnBatalTambahFile.setOnClickListener {
+        dialogTambahFileBinding.btnBatalTambahFile.setOnClickListener {
             alertDialog.hide()
         }
 
-        alertDialog.setView(dialogRootView)
+        alertDialog.setView(dialogTambahFileBinding.root)
         alertDialog.show()
     }
 

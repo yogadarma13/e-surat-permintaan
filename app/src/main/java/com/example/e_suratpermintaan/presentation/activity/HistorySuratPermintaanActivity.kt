@@ -3,22 +3,20 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.HistorySPResponse
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.ActivityHistorySuratPermintaanBinding
 import com.example.e_suratpermintaan.presentation.activity.DetailHistoryActivity.Companion.DETAIL_HISTORY_SP
 import com.example.e_suratpermintaan.presentation.activity.DetailHistoryActivity.Companion.JENIS_SP_DETAIL_HISTORY
 import com.example.e_suratpermintaan.presentation.adapter.HistoryAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_history_surat_permintaan.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HistorySuratPermintaanActivity : BaseActivity() {
+class HistorySuratPermintaanActivity : BaseActivity<ActivityHistorySuratPermintaanBinding>() {
 
     companion object {
         const val ID_SP_HISTORY = "id_sp_history"
@@ -31,7 +29,8 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     private var idSp: String? = null
     private var jenisSp: String? = null
 
-    override fun layoutId(): Int = R.layout.activity_history_surat_permintaan
+    override fun getViewBinding(): ActivityHistorySuratPermintaanBinding =
+        ActivityHistorySuratPermintaanBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +50,13 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     }
 
     private fun setupTollbar() {
-        if (toolbar_history != null && toolbar != null) {
-            toolbar_history.text = getString(R.string.toolbar_history)
-            setSupportActionBar(toolbar)
-            if (supportActionBar != null) {
-                supportActionBar!!.setDisplayShowTitleEnabled(false)
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-                supportActionBar!!.setDisplayShowHomeEnabled(true)
-            }
+        binding.toolbarHistory.text = getString(R.string.toolbar_history)
+        setSupportActionBar(binding.toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+
         }
     }
 
@@ -72,23 +70,26 @@ class HistorySuratPermintaanActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        recyclerView.adapter = historyAdapter
+        with(binding.recyclerView) {
+            layoutManager = LinearLayoutManager(
+                this@HistorySuratPermintaanActivity,
+                RecyclerView.VERTICAL,
+                false
+            )
+            adapter = historyAdapter
+        }
     }
 
     private fun setupListener() {
-        historyAdapter.setOnClickListener(object :
-            HistoryAdapter.OnClickItemListener {
-            override fun onClick(view: View, item: List<DetailHistory?>?) {
-                val gson = Gson()
-                val json = gson.toJson(item)
-                val intent =
-                    Intent(this@HistorySuratPermintaanActivity, DetailHistoryActivity::class.java)
-                intent.putExtra(DETAIL_HISTORY_SP, json)
-                intent.putExtra(JENIS_SP_DETAIL_HISTORY, jenisSp)
-                startActivity(intent)
-            }
-        })
+        historyAdapter.onItemClick = { list ->
+            val gson = Gson()
+            val json = gson.toJson(list)
+            val intent =
+                Intent(this@HistorySuratPermintaanActivity, DetailHistoryActivity::class.java)
+            intent.putExtra(DETAIL_HISTORY_SP, json)
+            intent.putExtra(JENIS_SP_DETAIL_HISTORY, jenisSp)
+            startActivity(intent)
+        }
     }
 
     private fun getHistory() {

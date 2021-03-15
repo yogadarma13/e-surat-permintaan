@@ -1,11 +1,10 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter
 
-import android.view.View
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterUOM
+import com.example.e_suratpermintaan.databinding.ItemSimpleRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
-import kotlinx.android.synthetic.main.item_simple_row.view.*
 
-class UomViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
+class UomViewHolder(private val binding: ItemSimpleRowBinding) : BaseViewHolder(binding.root) {
 
     override fun bind(
         item: Any?,
@@ -14,11 +13,11 @@ class UomViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
     ) {
         val data = item as DataMasterUOM
 
-        rootView.setOnClickListener {
+        binding.root.setOnClickListener {
             listener(data, ROOTVIEW)
         }
 
-        rootView.textView.text = data.nama
+        binding.textView.text = data.nama
     }
 
 }

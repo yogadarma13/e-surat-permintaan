@@ -4,15 +4,18 @@ import android.app.Dialog
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.UpdateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.example.e_suratpermintaan.R
+import com.example.e_suratpermintaan.databinding.DialogEditItemBinding
+import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
+import com.example.e_suratpermintaan.databinding.ItemSimpleRowBinding
 import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPA
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPB
@@ -26,11 +29,6 @@ import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterabl
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_edit_item.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item_form_keterangan.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item_form_spa.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item_form_spb.view.*
-import kotlinx.android.synthetic.main.dialog_edit_item_form_sps.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,15 +45,17 @@ class EditItemDialog(
     private var alertDialogEdit: AlertDialog
     private var datePicker: MaterialDatePicker<Long>
 
-    private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder>
-    private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder>
-    private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder>
-    private lateinit var kategoriAdapter: BaseFilterableAdapter<KategoriViewHolder>
+    private lateinit var ccAdapter: BaseFilterableAdapter<CCViewHolder, ItemSimpleRowBinding>
+    private lateinit var jenisBarangAdapter: BaseFilterableAdapter<JenisBarangViewHolder, ItemSimpleRowBinding>
+    private lateinit var uomAdapter: BaseFilterableAdapter<UomViewHolder, ItemSimpleRowBinding>
+    private lateinit var kategoriAdapter: BaseFilterableAdapter<KategoriViewHolder, ItemSimpleRowBinding>
 
-    private lateinit var statusPenugasanAdapter: BaseAdapter<StatusPenugasanViewHolder>
-    private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder>
+    private lateinit var statusPenugasanAdapter: BaseAdapter<StatusPenugasanViewHolder, ItemSimpleRowBinding>
+    private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder, ItemSimpleCheckboxBinding>
 
-    private var dialogRootView: View = View.inflate(activity, R.layout.dialog_edit_item, null)
+    private var dialogRootView: DialogEditItemBinding =
+        DialogEditItemBinding.inflate(LayoutInflater.from(activity), null, false)
+//        View.inflate(activity, R.layout.dialog_edit_item, null)
 
     private lateinit var userRoleId: String
 
@@ -64,10 +64,11 @@ class EditItemDialog(
     init {
         // https://stackoverflow.com/questions/445731372/disabling-android-o-auto-fill-service-for-an-application/45733114
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            dialogRootView.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+            dialogRootView.root.importantForAutofill =
+                View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
         }
 
-        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView)
+        activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView.root)
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
@@ -92,21 +93,21 @@ class EditItemDialog(
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.etWaktuPemakaian.setText(dateString)
+        dialogRootView.formSPA.etWaktuPemakaian.setText(dateString)
     }
 
     private val waktuPelaksanaanDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.etWaktuPelaksanaan.setText(dateString)
+        dialogRootView.formSPS.etWaktuPelaksanaan.setText(dateString)
     }
 
     private val targetDateSubmitListener: ((Long) -> Unit) = { selectedDate ->
         val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val date = Date(selectedDate)
         val dateString = simpleFormat.format(date)
-        dialogRootView.etTarget.setText(dateString)
+        dialogRootView.formSPB.etTarget.setText(dateString)
     }
 
     fun initDialogViewEdit(dataProfile: DataProfile, dataDetailSP: DataDetailSP) {
@@ -116,49 +117,49 @@ class EditItemDialog(
     }
 
     private fun setupDatePickerListener() {
-        dialogRootView.etWaktuPemakaian.setOnFocusChangeListener { _, hasFocus ->
+        dialogRootView.formSPA.etWaktuPemakaian.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                activity.closeKeyboard(dialogRootView.etWaktuPemakaian)
+                activity.closeKeyboard(dialogRootView.formSPA.etWaktuPemakaian)
                 datePicker.addOnPositiveButtonClickListener(waktuPemakaianDateSubmitListener)
                 datePicker.show(activity.supportFragmentManager, datePicker.toString())
             }
         }
 
-        dialogRootView.pickWaktuPemakaian.setOnClickListener {
+        dialogRootView.formSPA.pickWaktuPemakaian.setOnClickListener {
             datePicker.addOnPositiveButtonClickListener(waktuPemakaianDateSubmitListener)
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
 
 
-        dialogRootView.etWaktuPelaksanaan.setOnFocusChangeListener { _, hasFocus ->
+        dialogRootView.formSPS.etWaktuPelaksanaan.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                activity.closeKeyboard(dialogRootView.etWaktuPelaksanaan)
+                activity.closeKeyboard(dialogRootView.formSPS.etWaktuPelaksanaan)
                 datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
                 datePicker.show(activity.supportFragmentManager, datePicker.toString())
             }
         }
 
-        dialogRootView.pickWaktuPelaksanaan.setOnClickListener {
+        dialogRootView.formSPS.pickWaktuPelaksanaan.setOnClickListener {
             datePicker.addOnPositiveButtonClickListener(waktuPelaksanaanDateSubmitListener)
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
 
-        dialogRootView.etTarget.setOnFocusChangeListener { _, hasFocus ->
+        dialogRootView.formSPB.etTarget.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                activity.closeKeyboard(dialogRootView.etTarget)
+                activity.closeKeyboard(dialogRootView.formSPB.etTarget)
                 datePicker.addOnPositiveButtonClickListener(targetDateSubmitListener)
                 datePicker.show(activity.supportFragmentManager, datePicker.toString())
             }
         }
 
-        dialogRootView.pickTarget.setOnClickListener {
+        dialogRootView.formSPB.pickTarget.setOnClickListener {
             datePicker.addOnPositiveButtonClickListener(targetDateSubmitListener)
             datePicker.show(activity.supportFragmentManager, datePicker.toString())
         }
     }
 
     private fun populateAdapters() {
-        sharedMasterData.getCostCodeList().observe(activity, Observer {
+        sharedMasterData.getCostCodeList().observe(activity, {
             it?.forEach { item ->
                 ccAdapter.itemList.add(item as DataMasterCC)
                 jenisBarangAdapter.itemList.add(item)
@@ -170,7 +171,7 @@ class EditItemDialog(
             jenisBarangAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getKategoriList().observe(activity, Observer {
+        sharedMasterData.getKategoriList().observe(activity, {
             it?.forEach { item ->
                 kategoriAdapter.itemList.add(item as DataKategori)
             }
@@ -178,7 +179,7 @@ class EditItemDialog(
             kategoriAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getUomList().observe(activity, Observer {
+        sharedMasterData.getUomList().observe(activity, {
             it?.forEach { item ->
                 uomAdapter.itemList.add(item as DataMasterUOM)
             }
@@ -186,14 +187,14 @@ class EditItemDialog(
             uomAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getStatusPenugasanList().observe(activity, Observer {
+        sharedMasterData.getStatusPenugasanList().observe(activity, {
             it?.forEach { item ->
                 statusPenugasanAdapter.itemList.add(item as DataMasterOption)
             }
             statusPenugasanAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getPersyaratanList().observe(activity, Observer {
+        sharedMasterData.getPersyaratanList().observe(activity, {
             it?.forEach { item ->
                 // harus di uncheck untuk menghilangkan data "checked" untuk
                 // data yang baru saja ditambahkan sebelum ini
@@ -213,13 +214,13 @@ class EditItemDialog(
 
         when (jenisPermintaan) {
             JENIS_PERMINTAAN_SPA -> {
-                dialogRootView.formSPA.visibility = View.VISIBLE
+                dialogRootView.formSPA.root.visibility = View.VISIBLE
             }
             JENIS_PERMINTAAN_SPB -> {
-                dialogRootView.formSPB.visibility = View.VISIBLE
+                dialogRootView.formSPB.root.visibility = View.VISIBLE
             }
             JENIS_PERMINTAAN_SPS -> {
-                dialogRootView.formSPS.visibility = View.VISIBLE
+                dialogRootView.formSPS.root.visibility = View.VISIBLE
             }
         }
 
@@ -240,39 +241,39 @@ class EditItemDialog(
         }
 
         if (dataDetailSP.inputKapasitas == VISIBLE) {
-            dialogRootView.tilKapasitas.visibility = View.VISIBLE
+            dialogRootView.formSPA.tilKapasitas.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputMerk == VISIBLE) {
-            dialogRootView.tilMerk.visibility = View.VISIBLE
+            dialogRootView.formSPA.tilMerk.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputWaktuPemakaian == VISIBLE) {
-            dialogRootView.tilWaktuPemakaian.visibility = View.VISIBLE
-            dialogRootView.pickWaktuPemakaian.visibility = View.VISIBLE
+            dialogRootView.formSPA.tilWaktuPemakaian.visibility = View.VISIBLE
+            dialogRootView.formSPA.pickWaktuPemakaian.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputFungsi == VISIBLE) {
-            dialogRootView.tilFungsi.visibility = View.VISIBLE
+            dialogRootView.formSPB.tilFungsi.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputTarget == VISIBLE) {
-            dialogRootView.tilTarget.visibility = View.VISIBLE
-            dialogRootView.pickTarget.visibility = View.VISIBLE
+            dialogRootView.formSPB.tilTarget.visibility = View.VISIBLE
+            dialogRootView.formSPB.pickTarget.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputWaktuPelaksanaan == VISIBLE) {
-            dialogRootView.tilWaktuPelaksanaan.visibility = View.VISIBLE
-            dialogRootView.pickWaktuPelaksanaan.visibility = View.VISIBLE
+            dialogRootView.formSPS.tilWaktuPelaksanaan.visibility = View.VISIBLE
+            dialogRootView.formSPS.pickWaktuPelaksanaan.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputPersyaratan == VISIBLE) {
-            dialogRootView.tvPersyaratan.visibility = View.VISIBLE
-            dialogRootView.rvPersyaratan.visibility = View.VISIBLE
+            dialogRootView.formSPS.tvPersyaratan.visibility = View.VISIBLE
+            dialogRootView.formSPS.rvPersyaratan.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputKeterangan == VISIBLE) {
-            dialogRootView.formKeterangan.visibility = View.VISIBLE
+            dialogRootView.formKeterangan.root.visibility = View.VISIBLE
         }
 
         if (dataDetailSP.inputPenugasan == VISIBLE) {
@@ -283,7 +284,7 @@ class EditItemDialog(
             onSubmited(kodeSp, dataProfile)
         }
 
-        alertDialogEdit.setView(dialogRootView)
+        alertDialogEdit.setView(dialogRootView.root)
     }
 
     private fun onSubmited(
@@ -292,14 +293,14 @@ class EditItemDialog(
     ) {
         // Untuk menghilangkan focus yang ada di input field
         // dialogRootView.clearFocus()
-        dialogRootView.performClick()
+        dialogRootView.root.performClick()
 
         val kodePekerjaan = dialogRootView.etKodePekerjaan.text.toString()
         val kategori = dialogRootView.etKategori.text.toString()
         val jenisBarang = dialogRootView.etJenisBarang.text.toString()
         val volume = dialogRootView.etVolume.text.toString()
         val satuan = dialogRootView.etSatuan.text.toString()
-        val waktuPemakaian = dialogRootView.etWaktuPemakaian.text.toString()
+        val waktuPemakaian = dialogRootView.formSPA.etWaktuPemakaian.text.toString()
 
         val kapasitas = dialogRootView.formSPA.etKapasitas.text.toString()
         val merk = dialogRootView.formSPA.etMerk.text.toString()
@@ -369,7 +370,7 @@ class EditItemDialog(
 
     private fun setupRecyclerViews() {
         // ------------------------------ INIT CC START ---------------------------------------------
-        ccAdapter = BaseFilterableAdapter(R.layout.item_simple_row, CCViewHolder::class.java)
+        ccAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etKodePekerjaan.setText((item as DataMasterCC).kodeCostcontrol)
 
@@ -392,7 +393,7 @@ class EditItemDialog(
 
         // ------------------------------ INIT KATEGORI START ------------------------------------------
         kategoriAdapter =
-            BaseFilterableAdapter(R.layout.item_simple_row, KategoriViewHolder::class.java)
+            BaseFilterableAdapter(ItemSimpleRowBinding::inflate, KategoriViewHolder::class.java)
         kategoriAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etKategori.setText((item as DataKategori).kategori)
             dialogRootView.rvKategori.visibility = View.GONE
@@ -406,7 +407,7 @@ class EditItemDialog(
 
         // ------------------------------ INIT JENIS START ----------------------------------------
         jenisBarangAdapter =
-            BaseFilterableAdapter(R.layout.item_simple_row, JenisBarangViewHolder::class.java)
+            BaseFilterableAdapter(ItemSimpleRowBinding::inflate, JenisBarangViewHolder::class.java)
         jenisBarangAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etJenisBarang.setText((item as DataMasterCC).deskripsi)
             dialogRootView.rvJenisBarang.visibility = View.GONE
@@ -419,7 +420,7 @@ class EditItemDialog(
 
 
         // ------------------------------ INIT UOM START ------------------------------------------
-        uomAdapter = BaseFilterableAdapter(R.layout.item_simple_row, UomViewHolder::class.java)
+        uomAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, UomViewHolder::class.java)
         uomAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etSatuan.setText((item as DataMasterUOM).nama)
             dialogRootView.rvSatuan.visibility = View.GONE
@@ -433,7 +434,7 @@ class EditItemDialog(
 
         // -------------------------- INIT STATUS PENUGASAN START ---------------------------------
         statusPenugasanAdapter =
-            BaseAdapter(R.layout.item_simple_row, StatusPenugasanViewHolder::class.java)
+            BaseAdapter(ItemSimpleRowBinding::inflate, StatusPenugasanViewHolder::class.java)
         statusPenugasanAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etStatusPenugasan.setText((item as DataMasterOption).option)
             dialogRootView.rvStatusPenugasan.visibility = View.GONE
@@ -447,7 +448,7 @@ class EditItemDialog(
 
         // ----------------------------- INIT PERSYARATAN START -----------------------------------
         persyaratanAdapter =
-            BaseAdapter(R.layout.item_simple_checkbox, PersyaratanViewHolder::class.java)
+            BaseAdapter(ItemSimpleCheckboxBinding::inflate, PersyaratanViewHolder::class.java)
         dialogRootView.formSPS.rvPersyaratan.layoutManager = LinearLayoutManager(activity)
         dialogRootView.formSPS.rvPersyaratan.adapter = persyaratanAdapter
         // ----------------------------- INIT PERSYARATAN END -----------------------------------
@@ -533,7 +534,7 @@ class EditItemDialog(
             }
         }
 
-        dialogRootView.etKategori.setOnClickListener { _ ->
+        dialogRootView.etKategori.setOnClickListener {
             dialogRootView.rvKategori.visibility = View.VISIBLE
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
         }
@@ -571,7 +572,7 @@ class EditItemDialog(
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {
-        dialogRootView.clearFocus()
+        dialogRootView.root.clearFocus()
 
         selectedItemId = itemsDetailSP.id.toString()
 
@@ -592,7 +593,7 @@ class EditItemDialog(
         dialogRootView.formSPS.etWaktuPelaksanaan.setText(itemsDetailSP.waktuPelaksanaan)
 
         dialogRootView.etStatusPenugasan.setText(itemsDetailSP.penugasan)
-        dialogRootView.etKeterangan.setText("")
+        dialogRootView.formKeterangan.etKeterangan.setText("")
 
         alertDialogEdit.show()
         hideAllRecyclerViews()
