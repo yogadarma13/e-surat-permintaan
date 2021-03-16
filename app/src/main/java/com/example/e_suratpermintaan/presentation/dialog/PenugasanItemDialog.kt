@@ -9,7 +9,7 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import com.e_suratpermintaan.core.domain.entities.requests.PenugasanItemSP
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterOption
+import com.e_suratpermintaan.core.domain.entities.responses.DataMaster
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.example.e_suratpermintaan.R
@@ -27,8 +27,8 @@ class PenugasanItemDialog(
 
     private var alertDialogEdit: AlertDialog
     private lateinit var itemDetailSP: ItemsDetailSP
-    private val penugasanOptionList: ArrayList<DataMasterOption> = arrayListOf()
-    private var penugasanOptionAdapter: ArrayAdapter<DataMasterOption>
+    private val penugasanOptionList: ArrayList<DataMaster> = arrayListOf()
+    private var penugasanOptionAdapter: ArrayAdapter<DataMaster>
 
     private var dialogRootView: DialogPenugasanItemBinding =
         DialogPenugasanItemBinding.inflate(LayoutInflater.from(activity), null, false)
@@ -66,7 +66,7 @@ class PenugasanItemDialog(
     private fun populateAdapters() {
         sharedMasterData.getPenugasanList().observe(activity, {
             it?.forEach { item ->
-                penugasanOptionList.add(item as DataMasterOption)
+                penugasanOptionList.add(item as DataMaster)
             }
             penugasanOptionAdapter.notifyDataSetChanged()
         })

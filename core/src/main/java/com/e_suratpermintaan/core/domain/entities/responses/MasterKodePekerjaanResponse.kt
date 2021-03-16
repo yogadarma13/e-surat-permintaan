@@ -2,10 +2,10 @@ package com.e_suratpermintaan.core.domain.entities.responses
 
 import com.google.gson.annotations.SerializedName
 
-//data class MasterJenisResponse(
+//data class MasterKodePekerjaanResponse(
 //
 //	@field:SerializedName("data")
-//	val data: List<DataMasterJenis?>? = null,
+//	val data: List<DataKodePekerjaan?>? = null,
 //
 //	@field:SerializedName("message")
 //	val message: String? = null,
@@ -14,16 +14,14 @@ import com.google.gson.annotations.SerializedName
 //	val status: Boolean? = null
 //)
 //
-//data class DataMasterJenis(
+//data class DataKodePekerjaan(
 //
-//	@field:SerializedName("option")
-//	val option: String? = null,
+//	@field:SerializedName("id")
+//	val id: String? = null,
 //
 //	@field:SerializedName("value")
 //	val value: String? = null,
 //
-//	@field:SerializedName("id")
-//	val id: String? = null
-//) {
-//	override fun toString(): String = option.toString()
-//}
+//	@field:SerializedName("option")
+//	val option: String? = null
+//)

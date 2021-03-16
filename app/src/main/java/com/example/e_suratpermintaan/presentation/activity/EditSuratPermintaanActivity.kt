@@ -142,7 +142,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
             sharedMasterData.getPersyaratanList().observe(this, {
                 it?.forEach { item ->
 
-                    persyaratanList[item?.id.toString()] = item?.nama.toString()
+                    persyaratanList[item?.id.toString()] = item?.option.toString()
                 }
                 disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser.toString())
                     .subscribe(this::handleResponse, this::handleError)

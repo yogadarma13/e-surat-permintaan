@@ -77,19 +77,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
     private lateinit var alertDialogTambahSP: AlertDialog
     private lateinit var alertDialogFilterSP: AlertDialog
 
-    private val proyekList: ArrayList<DataMasterProyek> = arrayListOf()
-    private val jenisList: ArrayList<DataMasterJenis> = arrayListOf()
+    private val proyekList: ArrayList<DataMaster> = arrayListOf()
+    private val jenisList: ArrayList<DataMaster> = arrayListOf()
 
-    private val proyekOptionList: ArrayList<DataMasterOption> = arrayListOf()
-    private val jenisPermintaanOptionList: ArrayList<DataMasterOption> = arrayListOf()
-    private val statusOptionList: ArrayList<DataMasterOption> = arrayListOf()
+    private val proyekOptionList: ArrayList<DataMaster> = arrayListOf()
+    private val jenisPermintaanOptionList: ArrayList<DataMaster> = arrayListOf()
+    private val statusOptionList: ArrayList<DataMaster> = arrayListOf()
 
-    private lateinit var jenisAdapter: ArrayAdapter<DataMasterJenis>
-    private lateinit var proyekAdapter: ArrayAdapter<DataMasterProyek>
+    private lateinit var jenisAdapter: ArrayAdapter<DataMaster>
+    private lateinit var proyekAdapter: ArrayAdapter<DataMaster>
 
-    private lateinit var proyekOptionAdapter: ArrayAdapter<DataMasterOption>
-    private lateinit var jenisPermintaanOptionAdapter: ArrayAdapter<DataMasterOption>
-    private lateinit var statusOptionAdapter: ArrayAdapter<DataMasterOption>
+    private lateinit var proyekOptionAdapter: ArrayAdapter<DataMaster>
+    private lateinit var jenisPermintaanOptionAdapter: ArrayAdapter<DataMaster>
+    private lateinit var statusOptionAdapter: ArrayAdapter<DataMaster>
 
     private var spListState: Parcelable? = null
     private lateinit var spAdapter: BaseAdapter<MyDataViewHolder, ItemSuratPermintaanRowBinding>
@@ -198,7 +198,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         sharedMasterData.getStatusFilterOptionList().observe(this, Observer {
             statusOptionList.clear()
             it?.forEach { item ->
-                statusOptionList.add(item as DataMasterOption)
+                statusOptionList.add(item as DataMaster)
             }
             statusOptionAdapter.notifyDataSetChanged()
         })
@@ -214,7 +214,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             }
 
             it?.forEach { item ->
-                proyekOptionList.add(item as DataMasterOption)
+                proyekOptionList.add(item as DataMaster)
             }
             proyekOptionAdapter.notifyDataSetChanged()
         })
@@ -222,7 +222,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         sharedMasterData.getJenisPermintaanFilterOptionList()?.observe(this, Observer {
             jenisPermintaanOptionList.clear()
             it?.forEach { item ->
-                jenisPermintaanOptionList.add(item as DataMasterOption)
+                jenisPermintaanOptionList.add(item as DataMaster)
             }
             jenisPermintaanOptionAdapter.notifyDataSetChanged()
         })
@@ -585,7 +585,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             }
 
             val idProyek = proyekList.find { it.option == selectedProyek }?.value.toString()
-            val namaJenis = jenisList.find { it.nama == selectedJenis }?.nama.toString()
+            val namaJenis = jenisList.find { it.option == selectedJenis }?.option.toString()
 
             val confirmAlert = MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
                 .setTitle(getString(R.string.confirmation_dialog_title))

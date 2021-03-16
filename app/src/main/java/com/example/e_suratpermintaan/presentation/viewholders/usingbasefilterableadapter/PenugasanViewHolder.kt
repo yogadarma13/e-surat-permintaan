@@ -1,6 +1,6 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter
 
-import com.e_suratpermintaan.core.domain.entities.responses.DataMasterOption
+import com.e_suratpermintaan.core.domain.entities.responses.DataMaster
 import com.example.e_suratpermintaan.databinding.ItemSimpleRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 
@@ -12,7 +12,7 @@ class PenugasanViewHolder(private val binding: ItemSimpleRowBinding) :
         position: Int,
         listener: (Any?, String?) -> Unit
     ) {
-        val data = item as DataMasterOption
+        val data = item as DataMaster
 
         binding.root.setOnClickListener {
             listener(data, ROOTVIEW)

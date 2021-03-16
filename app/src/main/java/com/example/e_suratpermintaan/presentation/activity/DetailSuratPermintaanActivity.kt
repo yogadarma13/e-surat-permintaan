@@ -176,7 +176,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 // Karna sharedViewModel berubah datanya karna diset "checked"
                 item?.isChecked = false
 
-                persyaratanList[item?.id.toString()] = item?.nama.toString()
+                persyaratanList[item?.id.toString()] = item?.option.toString()
             }
 
             disposable = suratPermintaanViewModel.readDetail(idSp.toString(), idUser)

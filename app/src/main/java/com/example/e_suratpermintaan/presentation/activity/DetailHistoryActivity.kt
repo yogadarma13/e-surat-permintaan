@@ -99,7 +99,7 @@ class DetailHistoryActivity : BaseActivity<ActivityDetailHistoryBinding>() {
         val dataPersyaratan = response.data
 
         dataPersyaratan?.forEach {
-            persyaratanList[it?.id.toString()] = it?.nama.toString()
+            persyaratanList[it?.id.toString()] = it?.option.toString()
         }
 
         setDataDetailHistory()

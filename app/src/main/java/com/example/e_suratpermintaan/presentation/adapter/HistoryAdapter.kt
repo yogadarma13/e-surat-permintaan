@@ -3,7 +3,6 @@ package com.example.e_suratpermintaan.presentation.adapter
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
@@ -11,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.DataHistory
 import com.e_suratpermintaan.core.domain.entities.responses.DetailHistory
@@ -100,10 +101,10 @@ class HistoryAdapter :
                 binding.timeline.marker.colorFilter =
                     BlendModeColorFilter(Color.parseColor(history?.warna), BlendMode.SRC_IN)
             } else {
-                binding.timeline.marker.setColorFilter(
-                    Color.parseColor(history?.warna),
-                    PorterDuff.Mode.SRC_IN
-                )
+                binding.timeline.marker.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        Color.parseColor(history?.warna), BlendModeCompat.SRC_IN
+                    )
             }
 
             val ld: LayerDrawable = ContextCompat.getDrawable(

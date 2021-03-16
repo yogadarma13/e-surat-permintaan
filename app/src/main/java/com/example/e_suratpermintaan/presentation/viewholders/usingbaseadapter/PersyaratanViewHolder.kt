@@ -14,7 +14,7 @@ class PersyaratanViewHolder(private val binding: ItemSimpleCheckboxBinding) :
     ) {
         val data = item as DataMasterPersyaratan
 
-        binding.checkbox.text = data.nama
+        binding.checkbox.text = data.option
 
         binding.checkbox.isChecked = data.isChecked
 

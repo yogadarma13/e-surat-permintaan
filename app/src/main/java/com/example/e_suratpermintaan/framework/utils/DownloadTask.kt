@@ -43,7 +43,7 @@ class DownloadTask(private val context: Context, fileName: String) : AsyncTask<S
             )
             val data = ByteArray(4096)
             var total: Long = 0
-            var count: Int = 0
+            var count: Int
             while (input.read(data).also { count = it } != -1) {
                 if (isCancelled) {
                     input.close()

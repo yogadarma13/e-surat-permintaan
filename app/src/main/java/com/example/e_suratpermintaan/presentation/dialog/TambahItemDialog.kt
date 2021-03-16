@@ -9,7 +9,6 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.requests.CreateItemSP
 import com.e_suratpermintaan.core.domain.entities.responses.*
@@ -53,12 +52,14 @@ class TambahItemDialog(
     private lateinit var statusPenugasanAdapter: BaseAdapter<StatusPenugasanViewHolder, ItemSimpleRowBinding>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder, ItemSimpleCheckboxBinding>
 
-    private var dialogRootView: DialogTambahItemBinding = DialogTambahItemBinding.inflate(LayoutInflater.from(activity), null, false)
+    private var dialogRootView: DialogTambahItemBinding =
+        DialogTambahItemBinding.inflate(LayoutInflater.from(activity), null, false)
 
     init {
         // https://stackoverflow.com/questions/45731372/disabling-android-o-auto-fill-service-for-an-application/45733114
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            dialogRootView.root.importantForAutofill = View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
+            dialogRootView.root.importantForAutofill =
+                View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
         }
 
         activity.findAndSetEditTextFocusChangeListenerRecursively(dialogRootView.root)
@@ -150,9 +151,9 @@ class TambahItemDialog(
     }
 
     private fun populateAdapterList() {
-        sharedMasterData.getCostCodeList().observe(activity, Observer {
+        sharedMasterData.getCostCodeList().observe(activity, {
             it?.forEach { item ->
-                ccAdapter.itemList.add(item as DataMasterCC)
+                ccAdapter.itemList.add(item as DataMaster)
                 jenisBarangAdapter.itemList.add(item)
             }
             ccAdapter.oldItemList = ccAdapter.itemList
@@ -162,7 +163,7 @@ class TambahItemDialog(
             jenisBarangAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getKategoriList().observe(activity, Observer {
+        sharedMasterData.getKategoriList().observe(activity, {
             it?.forEach { item ->
                 kategoriAdapter.itemList.add(item as DataKategori)
             }
@@ -170,22 +171,22 @@ class TambahItemDialog(
             kategoriAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getUomList().observe(activity, Observer {
+        sharedMasterData.getUomList().observe(activity, {
             it?.forEach { item ->
-                uomAdapter.itemList.add(item as DataMasterUOM)
+                uomAdapter.itemList.add(item as DataMaster)
             }
             uomAdapter.oldItemList = uomAdapter.itemList
             uomAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getStatusPenugasanList().observe(activity, Observer {
+        sharedMasterData.getStatusPenugasanList().observe(activity, {
             it?.forEach { item ->
-                statusPenugasanAdapter.itemList.add(item as DataMasterOption)
+                statusPenugasanAdapter.itemList.add(item as DataMaster)
             }
             statusPenugasanAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getPersyaratanList().observe(activity, Observer {
+        sharedMasterData.getPersyaratanList().observe(activity, {
             it?.forEach { item ->
                 // harus di uncheck untuk menghilangkan data "checked" untuk
                 // data yang baru saja ditambahkan sebelum ini
@@ -291,7 +292,7 @@ class TambahItemDialog(
 
             val statusPenugasanOption = dialogRootView.etStatusPenugasan.text.toString()
             val statusPenugasanValue = (statusPenugasanAdapter.itemList.find
-            { (it as DataMasterOption).option == statusPenugasanOption } as DataMasterOption?)?.value.toString()
+            { (it as DataMaster).option == statusPenugasanOption } as DataMaster?)?.value.toString()
 
             val persyaratanList: ArrayList<String> = arrayListOf()
             persyaratanAdapter.itemList.forEach {
@@ -354,9 +355,9 @@ class TambahItemDialog(
         // ------------------------------ INIT CC START ---------------------------------------------
         ccAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etKodePekerjaan.setText((item as DataMasterCC).kodeCostcontrol)
-            dialogRootView.etJenisBarang.setText(item.deskripsi)
-            dialogRootView.etSatuan.setText(item.uom)
+            dialogRootView.etKodePekerjaan.setText((item as DataMaster).option)
+            dialogRootView.etJenisBarang.setText(item.option)
+            dialogRootView.etSatuan.setText(item.option)
 
             // Perlu ini karna pas setText recyclerview suggestion nya si kodePekerjaan, jenisBarang,
             // & satuan muncul. Jadi harusnya di hide.
@@ -388,7 +389,7 @@ class TambahItemDialog(
         jenisBarangAdapter =
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, JenisBarangViewHolder::class.java)
         jenisBarangAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etJenisBarang.setText((item as DataMasterCC).deskripsi)
+            dialogRootView.etJenisBarang.setText((item as DataMaster).option)
             dialogRootView.rvJenisBarang.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etJenisBarang)
             dialogRootView.container.performClick()
@@ -401,7 +402,7 @@ class TambahItemDialog(
         // ------------------------------ INIT UOM START ------------------------------------------
         uomAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, UomViewHolder::class.java)
         uomAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etSatuan.setText((item as DataMasterUOM).nama)
+            dialogRootView.etSatuan.setText((item as DataMaster).option)
             dialogRootView.rvSatuan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
@@ -415,7 +416,7 @@ class TambahItemDialog(
         statusPenugasanAdapter =
             BaseAdapter(ItemSimpleRowBinding::inflate, StatusPenugasanViewHolder::class.java)
         statusPenugasanAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etStatusPenugasan.setText((item as DataMasterOption).option)
+            dialogRootView.etStatusPenugasan.setText((item as DataMaster).option)
             dialogRootView.rvStatusPenugasan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etStatusPenugasan)
             dialogRootView.container.performClick()
@@ -513,7 +514,7 @@ class TambahItemDialog(
             }
         }
 
-        dialogRootView.etKategori.setOnClickListener { _ ->
+        dialogRootView.etKategori.setOnClickListener {
             dialogRootView.rvKategori.visibility = View.VISIBLE
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
         }

@@ -2,7 +2,7 @@ package com.e_suratpermintaan.core.domain.entities.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class MasterJenisPermintaanFilterOptionResponse(
+data class MasterCCResponse(
 
     @field:SerializedName("data")
     val data: List<DataMaster?>? = null,
@@ -14,7 +14,7 @@ data class MasterJenisPermintaanFilterOptionResponse(
     val status: Boolean? = null
 )
 
-data class MasterProyekFilterOptionResponse(
+data class MasterJenisResponse(
 
     @field:SerializedName("data")
     val data: List<DataMaster?>? = null,
@@ -26,7 +26,7 @@ data class MasterProyekFilterOptionResponse(
     val status: Boolean? = null
 )
 
-data class MasterJenisDataFilterOptionResponse(
+data class MasterKodePekerjaanResponse(
 
     @field:SerializedName("data")
     val data: List<DataMaster?>? = null,
@@ -38,47 +38,50 @@ data class MasterJenisDataFilterOptionResponse(
     val status: Boolean? = null
 )
 
-data class MasterStatusFilterOptionResponse(
-
-    @field:SerializedName("data")
-    val data: List<DataMaster?>? = null,
-
-    @field:SerializedName("message")
-    val message: String? = null,
-
-    @field:SerializedName("status")
-    val status: Boolean? = null
-)
-
-data class MasterPenugasanOptionResponse(
-    @field:SerializedName("data")
-    val data: List<DataMaster?>? = null,
-
-    @field:SerializedName("message")
-    val message: String? = null,
-
-    @field:SerializedName("status")
-    val status: Boolean? = null
-)
-
-data class MasterStatusPenugasanOptionResponse(
-    @field:SerializedName("data")
-    val data: List<DataMaster?>? = null,
-
-    @field:SerializedName("message")
-    val message: String? = null,
-
-    @field:SerializedName("status")
-    val status: Boolean? = null
-)
+//data class MasterPersyaratanResponse(
 //
-//data class DataMasterOption(
+//    @field:SerializedName("data")
+//    val data: List<DataMaster?>? = null,
 //
-//    @field:SerializedName("option")
-//    val option: String? = null,
+//    @field:SerializedName("message")
+//    val message: String? = null,
 //
-//    @field:SerializedName("value")
-//    val value: String? = null
-//){
-//	override fun toString(): String = option.toString()
-//}
+//    @field:SerializedName("status")
+//    val status: Boolean? = null
+//)
+
+data class MasterProyekResponse(
+
+    @field:SerializedName("data")
+    val data: List<DataMaster?>? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("status")
+    val status: Boolean? = null
+)
+
+data class MasterStatusResponse(
+
+    @field:SerializedName("data")
+    val data: List<DataMaster?>? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("status")
+    val status: Boolean? = null
+)
+
+data class MasterUOMResponse(
+
+    @field:SerializedName("data")
+    val data: List<DataMaster?>? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("status")
+    val status: Boolean? = null
+)

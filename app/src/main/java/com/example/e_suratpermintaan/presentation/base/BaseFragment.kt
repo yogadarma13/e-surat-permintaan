@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import io.reactivex.rxjava3.disposables.Disposable
@@ -249,7 +250,12 @@ abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragmen
     // Kode dijalankan setelah animasi selesai / berhenti
     open fun onEnterAnimationEnd() {
         requireView().clearFocus()
-        requireView().setBackgroundColor(resources.getColor(android.R.color.background_light))
+        requireView().setBackgroundColor(
+            ContextCompat.getColor(
+                binding.root.context,
+                android.R.color.background_light
+            )
+        )
         // findAndSetEditTextFocusChangeListenerRecursively(requireView())
     }
 
@@ -265,7 +271,7 @@ abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragmen
 
         anim = handleOnEnterAnimationEnd(anim, nextAnim, enter)
 
-        handleOnExitForegroundDimAnimation(enter, nextAnim)
+//        handleOnExitForegroundDimAnimation(enter, nextAnim)
 
         return anim
     }
@@ -306,8 +312,8 @@ abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragmen
         return tempAnim
     }
 
-    private fun handleOnExitForegroundDimAnimation(enter: Boolean, nextAnim: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//    private fun handleOnExitForegroundDimAnimation(enter: Boolean, nextAnim: Int) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (!enter) {
 //                if (nextAnim == R.anim.slide_out_to_left) {
 //                    val color: Int = R.color.dim
@@ -331,6 +337,6 @@ abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragmen
 //                    }
 //                }
 //            }
-        }
-    }
+//        }
+//    }
 }
