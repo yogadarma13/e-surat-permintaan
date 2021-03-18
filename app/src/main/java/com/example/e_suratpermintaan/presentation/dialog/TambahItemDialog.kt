@@ -183,13 +183,13 @@ class TambahItemDialog(
             kategoriAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getItemCodeList().observe(activity, {
-            it?.forEach { item ->
-                jenisBarangAdapter.itemList.add((item as DataMaster))
-            }
-            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
-            jenisBarangAdapter.notifyDataSetChanged()
-        })
+//        sharedMasterData.getItemCodeList().observe(activity, {
+//            it?.forEach { item ->
+//                jenisBarangAdapter.itemList.add((item as DataMaster))
+//            }
+//            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+//            jenisBarangAdapter.notifyDataSetChanged()
+//        })
 
         sharedMasterData.getUomList().observe(activity, {
             allSatuan = it
@@ -339,7 +339,6 @@ class TambahItemDialog(
             if (satuanValue.isNullOrEmpty()) dialogRootView.etSatuan.error =
                 "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
 
-
             if (kodePekerjaanValue.isNullOrEmpty() || kategoriValue.isNullOrEmpty() || satuanValue.isNullOrEmpty()) {
                 activity.toastNotify("Lengkapi data terlebih dahulu")
             } else {
@@ -396,8 +395,7 @@ class TambahItemDialog(
         // ------------------------------ INIT CC START ---------------------------------------------
         ccAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->
-            val data = item as DataMaster
-            dialogRootView.etKodePekerjaan.setText(data.option)
+            dialogRootView.etKodePekerjaan.setText((item as DataMaster).option)
             hideAllRecyclerViews()
 
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
@@ -412,8 +410,7 @@ class TambahItemDialog(
         kategoriAdapter =
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, KategoriViewHolder::class.java)
         kategoriAdapter.setOnItemClickListener { item, _ ->
-            val data = item as DataMaster
-            dialogRootView.etKategori.setText(data.option)
+            dialogRootView.etKategori.setText((item as DataMaster).option)
             dialogRootView.rvKategori.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
@@ -428,8 +425,7 @@ class TambahItemDialog(
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, JenisBarangViewHolder::class.java)
         jenisBarangAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etVolume.requestFocus()
-            val data = item as DataMaster
-            dialogRootView.etJenisBarang.setText(data.option)
+            dialogRootView.etJenisBarang.setText((item as DataMaster).option)
             dialogRootView.rvJenisBarang.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etJenisBarang)
             dialogRootView.container.performClick()
@@ -442,8 +438,7 @@ class TambahItemDialog(
         // ------------------------------ INIT UOM START ------------------------------------------
         uomAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, UomViewHolder::class.java)
         uomAdapter.setOnItemClickListener { item, _ ->
-            val data = item as DataMaster
-            dialogRootView.etSatuan.setText(data.option)
+            dialogRootView.etSatuan.setText((item as DataMaster).option)
             dialogRootView.rvSatuan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
@@ -457,8 +452,7 @@ class TambahItemDialog(
         statusPenugasanAdapter =
             BaseAdapter(ItemSimpleRowBinding::inflate, StatusPenugasanViewHolder::class.java)
         statusPenugasanAdapter.setOnItemClickListener { item, _ ->
-            val data = item as DataMaster
-            dialogRootView.etStatusPenugasan.setText(data.option)
+            dialogRootView.etStatusPenugasan.setText((item as DataMaster).option)
             dialogRootView.rvStatusPenugasan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etStatusPenugasan)
             dialogRootView.container.performClick()

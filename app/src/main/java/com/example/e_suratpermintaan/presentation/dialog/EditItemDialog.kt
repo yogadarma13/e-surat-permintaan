@@ -1,5 +1,6 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Build
 import android.text.Editable
@@ -16,7 +17,6 @@ import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.databinding.DialogEditItemBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleRowBinding
-import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPA
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPB
 import com.example.e_suratpermintaan.external.constants.SuratPermintaanConstants.Companion.JENIS_PERMINTAAN_SPS
@@ -30,8 +30,11 @@ import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanV
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jakewharton.rxbinding3.widget.textChangeEvents
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class EditItemDialog(
     private val activity: EditSuratPermintaanActivity,
@@ -57,11 +60,14 @@ class EditItemDialog(
 
     private var dialogRootView: DialogEditItemBinding =
         DialogEditItemBinding.inflate(LayoutInflater.from(activity), null, false)
-//        View.inflate(activity, R.layout.dialog_edit_item, null)
 
     private lateinit var userRoleId: String
 
     private lateinit var selectedItemId: String
+
+    private var allKodePekerjaan: List<DataMaster?>? = null
+    private var allKategori: List<DataMaster?>? = null
+    private var allSatuan: List<DataMaster?>? = null
 
     init {
         // https://stackoverflow.com/questions/445731372/disabling-android-o-auto-fill-service-for-an-application/45733114
@@ -162,18 +168,20 @@ class EditItemDialog(
 
     private fun populateAdapters() {
         sharedMasterData.getCostCodeList().observe(activity, {
+            allKodePekerjaan = it
             it?.forEach { item ->
                 ccAdapter.itemList.add(item as DataMaster)
-                jenisBarangAdapter.itemList.add(item)
+//                jenisBarangAdapter.itemList.add(item)
             }
             ccAdapter.oldItemList = ccAdapter.itemList
             ccAdapter.notifyDataSetChanged()
 
-            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
-            jenisBarangAdapter.notifyDataSetChanged()
+//            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+//            jenisBarangAdapter.notifyDataSetChanged()
         })
 
         sharedMasterData.getKodePekerjaanList().observe(activity, {
+            allKategori = it
             it?.forEach { item ->
                 kategoriAdapter.itemList.add(item as DataMaster)
             }
@@ -182,6 +190,7 @@ class EditItemDialog(
         })
 
         sharedMasterData.getUomList().observe(activity, {
+            allSatuan = it
             it?.forEach { item ->
                 uomAdapter.itemList.add(item as DataMaster)
             }
@@ -324,37 +333,55 @@ class EditItemDialog(
 
         val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
 
-        val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-            .setTitle("Edit Item")
-            .setMessage("Apakah Anda yakin ingin mengupdate item?")
-            .setPositiveButton("Ya") { _, _ ->
-                val updateItemSP = UpdateItemSP(
-                    kodeSp,
-                    kodePekerjaan,
-                    jenisBarang,
-                    satuan,
-                    volume,
-                    fungsi,
-                    target,
-                    keterangan,
-                    kapasitas,
-                    merk,
-                    waktuPemakaian,
-                    waktuPelaksanaan,
-                    persyaratanList,
-                    statusPenugasanValue,
-                    dataProfile.id!!,
-                    selectedItemId,
-                    kategori
-                )
-                activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
-                    .subscribe(this::handleResponse, this::handleError)
+        val kodePekerjaanValue =
+            allKodePekerjaan?.find { it?.option == kodePekerjaan.trim() }?.value
+        val kategoriValue = allKategori?.find { it?.option == kategori.trim() }?.value
+        val satuanValue = allSatuan?.find { it?.option == satuan.trim() }?.value
 
-                alertDialogEdit.hide()
+        if (kodePekerjaanValue.isNullOrEmpty()) dialogRootView.etKodePekerjaan.error =
+            "Pilih sesuai pilihan" else dialogRootView.etKodePekerjaan.error = null
 
-            }.create()
+        if (kategoriValue.isNullOrEmpty()) dialogRootView.etKategori.error =
+            "Pilih sesuai pilihan" else dialogRootView.etKategori.error = null
 
-        confirmationDialog.show()
+        if (satuanValue.isNullOrEmpty()) dialogRootView.etSatuan.error =
+            "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
+
+        if (kodePekerjaanValue.isNullOrEmpty() || kategoriValue.isNullOrEmpty() || satuanValue.isNullOrEmpty()) {
+            activity.toastNotify("Lengkapi data terlebih dahulu")
+        } else {
+            val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+                .setTitle("Perbarui Item")
+                .setMessage("Apakah Anda yakin ingin memperbarui item?")
+                .setPositiveButton("Ya") { _, _ ->
+                    val updateItemSP = UpdateItemSP(
+                        kodeSp,
+                        kodePekerjaanValue,
+                        jenisBarang,
+                        satuanValue,
+                        volume,
+                        fungsi,
+                        target,
+                        keterangan,
+                        kapasitas,
+                        merk,
+                        waktuPemakaian,
+                        waktuPelaksanaan,
+                        persyaratanList,
+                        statusPenugasanValue,
+                        dataProfile.id!!,
+                        selectedItemId,
+                        kategoriValue
+                    )
+                    activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
+                        .subscribe(this::handleResponse, this::handleError)
+
+                    alertDialogEdit.hide()
+
+                }.create()
+
+            confirmationDialog.show()
+        }
     }
 
     private fun preventKeyboardFromPushingViews(dialog: Dialog?) {
@@ -376,10 +403,10 @@ class EditItemDialog(
         ccAdapter.setOnItemClickListener { item, _ ->
             dialogRootView.etKodePekerjaan.setText((item as DataMaster).option)
 
-            if (userRoleId != RoleConstants.CC) {
-                dialogRootView.etJenisBarang.setText(item.option)
-                dialogRootView.etSatuan.setText(item.option)
-            }
+//            if (userRoleId != RoleConstants.CC) {
+//                dialogRootView.etJenisBarang.setText(item.option)
+//                dialogRootView.etSatuan.setText(item.option)
+//            }
 
             // Perlu ini karna pas setText recyclerview suggestion nya si kodePekerjaan, jenisBarang,
             // & satuan muncul. Jadi harusnya di hide.
@@ -411,6 +438,7 @@ class EditItemDialog(
         jenisBarangAdapter =
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, JenisBarangViewHolder::class.java)
         jenisBarangAdapter.setOnItemClickListener { item, _ ->
+            dialogRootView.etVolume.requestFocus()
             dialogRootView.etJenisBarang.setText((item as DataMaster).option)
             dialogRootView.rvJenisBarang.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etJenisBarang)
@@ -456,6 +484,7 @@ class EditItemDialog(
         // ----------------------------- INIT PERSYARATAN END -----------------------------------
     }
 
+    @SuppressLint("CheckResult")
     private fun setupTextChangeListener() {
         dialogRootView.etKodePekerjaan.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -466,6 +495,7 @@ class EditItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKodePekerjaan.isFocused) {
+                    dialogRootView.etKodePekerjaan.error = null
                     ccAdapter.filter.filter(s)
                     dialogRootView.rvKodePekerjaan.visibility = View.VISIBLE
                 }
@@ -481,24 +511,36 @@ class EditItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKategori.isFocused) {
-                    kategoriAdapter.filter.filter("")
+                    dialogRootView.etKategori.error = null
+                    kategoriAdapter.filter.filter(s)
                     dialogRootView.rvKategori.visibility = View.VISIBLE
                 }
             }
         })
 
-        dialogRootView.etJenisBarang.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+//        dialogRootView.etJenisBarang.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                jenisBarangAdapter.filter.filter(s)
+//                dialogRootView.rvJenisBarang.visibility = View.VISIBLE
+//            }
+//        })
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        dialogRootView.etJenisBarang.textChangeEvents().skipInitialValue()
+            .debounce(2, TimeUnit.SECONDS).observeOn(
+                AndroidSchedulers.mainThread()
+            ).subscribe {
+                activity.disposable = masterViewModel.getItemCodeLlist("all", it.text.toString())
+                    .subscribe(
+                        this@EditItemDialog::handleResponse,
+                        this@EditItemDialog::handleError
+                    )
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                jenisBarangAdapter.filter.filter(s)
-                dialogRootView.rvJenisBarang.visibility = View.VISIBLE
-            }
-        })
 
         dialogRootView.etSatuan.addTextChangedListener(object : TextWatcher {
 
@@ -510,8 +552,11 @@ class EditItemDialog(
             }
 
             override fun afterTextChanged(s: Editable?) {
-                uomAdapter.filter.filter(s)
-                dialogRootView.rvSatuan.visibility = View.VISIBLE
+                if (dialogRootView.etSatuan.isFocused) {
+                    dialogRootView.etSatuan.error = null
+                    uomAdapter.filter.filter(s)
+                    dialogRootView.rvSatuan.visibility = View.VISIBLE
+                }
             }
         })
 
@@ -536,10 +581,10 @@ class EditItemDialog(
             }
         }
 
-        dialogRootView.etKategori.setOnClickListener {
-            dialogRootView.rvKategori.visibility = View.VISIBLE
-            activity.closeKeyboard(dialogRootView.etKodePekerjaan)
-        }
+//        dialogRootView.etKategori.setOnClickListener {
+//            dialogRootView.rvKategori.visibility = View.VISIBLE
+//            activity.closeKeyboard(dialogRootView.etKodePekerjaan)
+//        }
 
         dialogRootView.etJenisBarang.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -568,17 +613,15 @@ class EditItemDialog(
             }
         }
 
-        dialogRootView.etStatusPenugasan.setOnClickListener {
-            dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
-        }
+//        dialogRootView.etStatusPenugasan.setOnClickListener {
+//            dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
+//        }
     }
 
     fun show(itemsDetailSP: ItemsDetailSP) {
         dialogRootView.root.clearFocus()
 
         selectedItemId = itemsDetailSP.id.toString()
-
-        activity.toastNotify(itemsDetailSP.kategori)
 
         dialogRootView.etKodePekerjaan.setText(itemsDetailSP.kodePekerjaan)
         dialogRootView.etKategori.setText(itemsDetailSP.kategori)
@@ -615,10 +658,24 @@ class EditItemDialog(
     }
 
     private fun handleResponse(response: Any) {
-        activity.handleResponse(response)
+        when (response) {
+            is MasterItemCodeResponse -> {
+                jenisBarangAdapter.itemList.clear()
+                response.data?.forEach { item ->
+                    jenisBarangAdapter.itemList.add((item as DataMaster))
+                }
+                jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+                jenisBarangAdapter.notifyDataSetChanged()
+            }
+
+            is EditItemSPResponse -> {
+                activity.handleResponse(response)
+            }
+        }
     }
 
     private fun handleError(error: Throwable) {
+        dialogRootView.rvJenisBarang.visibility = View.GONE
         activity.handleError(error)
     }
 

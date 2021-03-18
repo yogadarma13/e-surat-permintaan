@@ -50,8 +50,6 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
 
         val observablePersyaratan = masterViewModel.getPersyaratanList("all")
 
-        val observableItemCode = masterViewModel.getItemCodeLlist("all", "")
-
         val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
 
         val observableStatusFilter = masterViewModel.getStatusFilterOptionList(idUser)
@@ -68,7 +66,6 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
             observablePersyaratan.onErrorResumeNext { Observable.empty() })
 
         val concat2 = Observable.concat(
-            observableItemCode.onErrorResumeNext { Observable.empty() },
             observablePenugasan.onErrorResumeNext { Observable.empty() },
             observableStatusPenugasan.onErrorResumeNext { Observable.empty() }
         )
@@ -135,10 +132,6 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
             is MasterPersyaratanResponse -> {
                 sharedMasterData.setPersyaratanList(response.data)
                 Log.d("MYAPPSTARTER", "PERSYARATAN RESPONSE")
-            }
-
-            is MasterItemCodeResponse -> {
-                sharedMasterData.setItemCodeList(response.data)
             }
 
             // PENUGASAN

@@ -32,6 +32,10 @@
          <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="toolbarStyle">@style/MyToolbar</item>
 
+        <item name="font">@font/poppins_regular</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+
     </style>
 
     <!-- Ini untuk styling warna hamburger icon, di drawer -->
@@ -62,16 +66,14 @@
     <!-- https://medium.com/@lcdsmao/material-design-custom-alert-dialog-5a9cab3ade11-->
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/BodyTextStyle</item>
-    </style>
-    <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-    <style name="BodyTextStyle" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
-        <item name="android:textSize">20sp</item>
+        <item name="materialAlertDialogBodyTextStyle">@font/poppins_regular</item>
     </style>
 
+    <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
 
     <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
         <item name="android:popupBackground">@color/shadow_background_color</item>

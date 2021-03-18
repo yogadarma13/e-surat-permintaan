@@ -14,7 +14,6 @@ class SharedMasterData {
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()
     private val penugasanList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
     private val statusPenugasanList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
-    private val itemCodeList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
 
     private var statusOptionList: MutableLiveData<List<DataMaster?>?> =
         MutableLiveData()
@@ -61,12 +60,6 @@ class SharedMasterData {
 
     fun setStatusPenugasanList(list: List<DataMaster?>?) {
         statusPenugasanList.value = list
-    }
-
-    fun getItemCodeList(): MutableLiveData<List<DataMaster?>?> = itemCodeList
-
-    fun setItemCodeList(list: List<DataMaster?>?) {
-        itemCodeList.value = list
     }
 
     fun getStatusFilterOptionList(): MutableLiveData<List<DataMaster?>?> =
