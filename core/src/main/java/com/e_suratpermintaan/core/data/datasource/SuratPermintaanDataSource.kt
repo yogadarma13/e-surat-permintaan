@@ -13,10 +13,10 @@ interface SuratPermintaanDataSource {
 
     fun readMyData(
         id_user: String,
-        proyek: String,
-        status_permintaan: String,
-        jenis_permintaan: String,
-        jenis_data: String
+//        proyek: String,
+//        status_permintaan: String,
+//        jenis_permintaan: String,
+//        jenis_data: String
     ): Observable<MyDataResponse>
 
     fun remove(id_sp: String): Observable<DeleteSPResponse>

@@ -12,7 +12,8 @@ buildscript {
     ext.multidex_version = "1.0.3"
     ext.retrofit_version = "2.9.0"
     ext.rx_android_version = "3.0.0"
-    ext.rx_java_version = "3.0.2"
+    ext.rx_java_version = "3.0.3"
+    ext.rx_binding = "3.1.0"
     ext.rx_retrofit_adapter_version = "3.0.0"
     ext.life_cycle_version = "2.3.0"
 

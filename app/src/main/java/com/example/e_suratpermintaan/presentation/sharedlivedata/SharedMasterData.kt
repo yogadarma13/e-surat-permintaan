@@ -1,7 +1,6 @@
 package com.example.e_suratpermintaan.presentation.sharedlivedata
 
 import androidx.lifecycle.MutableLiveData
-import com.e_suratpermintaan.core.domain.entities.responses.DataKategori
 import com.e_suratpermintaan.core.domain.entities.responses.DataMaster
 import com.e_suratpermintaan.core.domain.entities.responses.DataMasterPersyaratan
 
@@ -11,10 +10,11 @@ class SharedMasterData {
 
     private val costCodeList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
     private val uomList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
-    private val kategoriList: MutableLiveData<List<DataKategori?>?> = MutableLiveData()
+    private val kodePekerjaanList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
     private val persyaratanList: MutableLiveData<List<DataMasterPersyaratan?>?> = MutableLiveData()
     private val penugasanList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
     private val statusPenugasanList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
+    private val itemCodeList: MutableLiveData<List<DataMaster?>?> = MutableLiveData()
 
     private var statusOptionList: MutableLiveData<List<DataMaster?>?> =
         MutableLiveData()
@@ -39,10 +39,10 @@ class SharedMasterData {
         uomList.value = list
     }
 
-    fun getKategoriList(): MutableLiveData<List<DataKategori?>?> = kategoriList
+    fun getKodePekerjaanList(): MutableLiveData<List<DataMaster?>?> = kodePekerjaanList
 
-    fun setKategoriList(list: List<DataKategori?>?) {
-        kategoriList.value = list
+    fun setKodePekerjaanList(list: List<DataMaster?>?) {
+        kodePekerjaanList.value = list
     }
 
     fun getPersyaratanList(): MutableLiveData<List<DataMasterPersyaratan?>?> = persyaratanList
@@ -61,6 +61,12 @@ class SharedMasterData {
 
     fun setStatusPenugasanList(list: List<DataMaster?>?) {
         statusPenugasanList.value = list
+    }
+
+    fun getItemCodeList(): MutableLiveData<List<DataMaster?>?> = itemCodeList
+
+    fun setItemCodeList(list: List<DataMaster?>?) {
+        itemCodeList.value = list
     }
 
     fun getStatusFilterOptionList(): MutableLiveData<List<DataMaster?>?> =

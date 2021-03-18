@@ -38,17 +38,17 @@ data class MasterKodePekerjaanResponse(
     val status: Boolean? = null
 )
 
-//data class MasterPersyaratanResponse(
-//
-//    @field:SerializedName("data")
-//    val data: List<DataMaster?>? = null,
-//
-//    @field:SerializedName("message")
-//    val message: String? = null,
-//
-//    @field:SerializedName("status")
-//    val status: Boolean? = null
-//)
+data class MasterItemCodeResponse(
+
+    @field:SerializedName("data")
+    val data: List<DataMaster?>? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null,
+
+    @field:SerializedName("status")
+    val status: Boolean? = null
+)
 
 data class MasterProyekResponse(
 

@@ -1,5 +1,6 @@
 package com.example.e_suratpermintaan.presentation.dialog
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Build
 import android.text.Editable
@@ -26,15 +27,20 @@ import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterDat
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.*
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jakewharton.rxbinding3.widget.textChangeEvents
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class TambahItemDialog(
     private val activity: EditSuratPermintaanActivity,
     private val sharedMasterData: SharedMasterData,
-    private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
+    private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel,
+    private val masterViewModel: MasterViewModel
 ) {
 
     companion object {
@@ -51,6 +57,10 @@ class TambahItemDialog(
 
     private lateinit var statusPenugasanAdapter: BaseAdapter<StatusPenugasanViewHolder, ItemSimpleRowBinding>
     private lateinit var persyaratanAdapter: BaseAdapter<PersyaratanViewHolder, ItemSimpleCheckboxBinding>
+
+    private var allKodePekerjaan: List<DataMaster?>? = null
+    private var allKategori: List<DataMaster?>? = null
+    private var allSatuan: List<DataMaster?>? = null
 
     private var dialogRootView: DialogTambahItemBinding =
         DialogTambahItemBinding.inflate(LayoutInflater.from(activity), null, false)
@@ -152,26 +162,37 @@ class TambahItemDialog(
 
     private fun populateAdapterList() {
         sharedMasterData.getCostCodeList().observe(activity, {
+            allKodePekerjaan = it
             it?.forEach { item ->
                 ccAdapter.itemList.add(item as DataMaster)
-                jenisBarangAdapter.itemList.add(item)
+//                jenisBarangAdapter.itemList.add(item)
             }
             ccAdapter.oldItemList = ccAdapter.itemList
             ccAdapter.notifyDataSetChanged()
 
-            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
-            jenisBarangAdapter.notifyDataSetChanged()
+//            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+//            jenisBarangAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getKategoriList().observe(activity, {
+        sharedMasterData.getKodePekerjaanList().observe(activity, {
+            allKategori = it
             it?.forEach { item ->
-                kategoriAdapter.itemList.add(item as DataKategori)
+                kategoriAdapter.itemList.add(item as DataMaster)
             }
             kategoriAdapter.oldItemList = kategoriAdapter.itemList
             kategoriAdapter.notifyDataSetChanged()
         })
 
+        sharedMasterData.getItemCodeList().observe(activity, {
+            it?.forEach { item ->
+                jenisBarangAdapter.itemList.add((item as DataMaster))
+            }
+            jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+            jenisBarangAdapter.notifyDataSetChanged()
+        })
+
         sharedMasterData.getUomList().observe(activity, {
+            allSatuan = it
             it?.forEach { item ->
                 uomAdapter.itemList.add(item as DataMaster)
             }
@@ -304,35 +325,55 @@ class TambahItemDialog(
 
             val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
 
-            val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setMessage("Apakah Anda yakin ingin menambah item?")
-                .setPositiveButton("Ya") { _, _ ->
-                    val createItemSP = CreateItemSP(
-                        kodeSp,
-                        kodePekerjaan,
-                        jenisBarang,
-                        satuan,
-                        volume,
-                        fungsi,
-                        target,
-                        keterangan,
-                        kapasitas,
-                        merk,
-                        waktuPemakaian,
-                        waktuPelaksanaan,
-                        persyaratanList,
-                        statusPenugasanValue,
-                        dataProfile.id!!,
-                        kategori
-                    )
-                    activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
-                        .subscribe(this::handleResponse, this::handleError)
+            val kodePekerjaanValue =
+                allKodePekerjaan?.find { it?.option == kodePekerjaan.trim() }?.value
+            val kategoriValue = allKategori?.find { it?.option == kategori.trim() }?.value
+            val satuanValue = allSatuan?.find { it?.option == satuan.trim() }?.value
 
-                    alertDialogTambah.hide()
+            if (kodePekerjaanValue.isNullOrEmpty()) dialogRootView.etKodePekerjaan.error =
+                "Pilih sesuai pilihan" else dialogRootView.etKodePekerjaan.error = null
 
-                }.create()
+            if (kategoriValue.isNullOrEmpty()) dialogRootView.etKategori.error =
+                "Pilih sesuai pilihan" else dialogRootView.etKategori.error = null
 
-            confirmationDialog.show()
+            if (satuanValue.isNullOrEmpty()) dialogRootView.etSatuan.error =
+                "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
+
+
+            if (kodePekerjaanValue.isNullOrEmpty() || kategoriValue.isNullOrEmpty() || satuanValue.isNullOrEmpty()) {
+                activity.toastNotify("Lengkapi data terlebih dahulu")
+            } else {
+                val confirmationDialog =
+                    MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+                        .setMessage("Apakah Anda yakin ingin menambah item?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            val createItemSP = CreateItemSP(
+                                kodeSp,
+                                kodePekerjaanValue,
+                                jenisBarang,
+                                satuanValue,
+                                volume,
+                                fungsi,
+                                target,
+                                keterangan,
+                                kapasitas,
+                                merk,
+                                waktuPemakaian,
+                                waktuPelaksanaan,
+                                persyaratanList,
+                                statusPenugasanValue,
+                                dataProfile.id!!,
+                                kategoriValue
+                            )
+                            activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
+                                .subscribe(this::handleResponse, this::handleError)
+
+                            alertDialogTambah.hide()
+
+                        }.create()
+
+                confirmationDialog.show()
+            }
         }
 
         alertDialogTambah.setView(dialogRootView.root)
@@ -355,12 +396,8 @@ class TambahItemDialog(
         // ------------------------------ INIT CC START ---------------------------------------------
         ccAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, CCViewHolder::class.java)
         ccAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etKodePekerjaan.setText((item as DataMaster).option)
-            dialogRootView.etJenisBarang.setText(item.option)
-            dialogRootView.etSatuan.setText(item.option)
-
-            // Perlu ini karna pas setText recyclerview suggestion nya si kodePekerjaan, jenisBarang,
-            // & satuan muncul. Jadi harusnya di hide.
+            val data = item as DataMaster
+            dialogRootView.etKodePekerjaan.setText(data.option)
             hideAllRecyclerViews()
 
             activity.closeKeyboard(dialogRootView.etKodePekerjaan)
@@ -375,7 +412,8 @@ class TambahItemDialog(
         kategoriAdapter =
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, KategoriViewHolder::class.java)
         kategoriAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etKategori.setText((item as DataKategori).kategori)
+            val data = item as DataMaster
+            dialogRootView.etKategori.setText(data.option)
             dialogRootView.rvKategori.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
@@ -389,7 +427,9 @@ class TambahItemDialog(
         jenisBarangAdapter =
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, JenisBarangViewHolder::class.java)
         jenisBarangAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etJenisBarang.setText((item as DataMaster).option)
+            dialogRootView.etVolume.requestFocus()
+            val data = item as DataMaster
+            dialogRootView.etJenisBarang.setText(data.option)
             dialogRootView.rvJenisBarang.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etJenisBarang)
             dialogRootView.container.performClick()
@@ -402,7 +442,8 @@ class TambahItemDialog(
         // ------------------------------ INIT UOM START ------------------------------------------
         uomAdapter = BaseFilterableAdapter(ItemSimpleRowBinding::inflate, UomViewHolder::class.java)
         uomAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etSatuan.setText((item as DataMaster).option)
+            val data = item as DataMaster
+            dialogRootView.etSatuan.setText(data.option)
             dialogRootView.rvSatuan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
@@ -416,7 +457,8 @@ class TambahItemDialog(
         statusPenugasanAdapter =
             BaseAdapter(ItemSimpleRowBinding::inflate, StatusPenugasanViewHolder::class.java)
         statusPenugasanAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etStatusPenugasan.setText((item as DataMaster).option)
+            val data = item as DataMaster
+            dialogRootView.etStatusPenugasan.setText(data.option)
             dialogRootView.rvStatusPenugasan.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etStatusPenugasan)
             dialogRootView.container.performClick()
@@ -434,6 +476,7 @@ class TambahItemDialog(
         // ----------------------------- INIT PERSYARATAN END -----------------------------------
     }
 
+    @SuppressLint("CheckResult")
     private fun setupTextChangeListener() {
         dialogRootView.etKodePekerjaan.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -444,6 +487,7 @@ class TambahItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKodePekerjaan.isFocused) {
+                    dialogRootView.etKodePekerjaan.error = null
                     ccAdapter.filter.filter(s)
                     dialogRootView.rvKodePekerjaan.visibility = View.VISIBLE
                 }
@@ -459,24 +503,42 @@ class TambahItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKategori.isFocused) {
-                    kategoriAdapter.filter.filter("")
+                    dialogRootView.etKategori.error = null
+                    kategoriAdapter.filter.filter(s)
                     dialogRootView.rvKategori.visibility = View.VISIBLE
                 }
             }
         })
 
-        dialogRootView.etJenisBarang.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+//        dialogRootView.etJenisBarang.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+////                activity.disposable = masterViewModel.getItemCodeLlist("all", s.toString())
+////                    .debounce(5, TimeUnit.SECONDS).subscribe(
+////                        this@TambahItemDialog::handleResponse,
+////                        this@TambahItemDialog::handleError
+////                    )
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                if (dialogRootView.etJenisBarang.isFocused) {
+////                    jenisBarangAdapter.filter.filter(s)
+//                    dialogRootView.rvJenisBarang.visibility = View.VISIBLE
+//                }
+//        })
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        dialogRootView.etJenisBarang.textChangeEvents().skipInitialValue()
+            .debounce(2, TimeUnit.SECONDS).observeOn(
+                AndroidSchedulers.mainThread()
+            ).subscribe {
+                activity.disposable = masterViewModel.getItemCodeLlist("all", it.text.toString())
+                    .subscribe(
+                        this@TambahItemDialog::handleResponse,
+                        this@TambahItemDialog::handleError
+                    )
             }
-
-            override fun afterTextChanged(s: Editable?) {
-                jenisBarangAdapter.filter.filter(s)
-                dialogRootView.rvJenisBarang.visibility = View.VISIBLE
-            }
-        })
 
         dialogRootView.etSatuan.addTextChangedListener(object : TextWatcher {
 
@@ -488,8 +550,11 @@ class TambahItemDialog(
             }
 
             override fun afterTextChanged(s: Editable?) {
-                uomAdapter.filter.filter(s)
-                dialogRootView.rvSatuan.visibility = View.VISIBLE
+                if (dialogRootView.etSatuan.isFocused) {
+                    dialogRootView.etSatuan.error = null
+                    uomAdapter.filter.filter(s)
+                    dialogRootView.rvSatuan.visibility = View.VISIBLE
+                }
             }
         })
 
@@ -514,10 +579,10 @@ class TambahItemDialog(
             }
         }
 
-        dialogRootView.etKategori.setOnClickListener {
-            dialogRootView.rvKategori.visibility = View.VISIBLE
-            activity.closeKeyboard(dialogRootView.etKodePekerjaan)
-        }
+//        dialogRootView.etKategori.setOnClickListener {
+//            dialogRootView.rvKategori.visibility = View.VISIBLE
+//            activity.closeKeyboard(dialogRootView.etKodePekerjaan)
+//        }
 
         dialogRootView.etJenisBarang.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -546,11 +611,11 @@ class TambahItemDialog(
             }
         }
 
-        dialogRootView.etStatusPenugasan.setOnClickListener {
-            if (dialogRootView.rvStatusPenugasan.visibility == View.GONE) {
-                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
-            }
-        }
+//        dialogRootView.etStatusPenugasan.setOnClickListener {
+//            if (dialogRootView.rvStatusPenugasan.visibility == View.GONE) {
+//                dialogRootView.rvStatusPenugasan.visibility = View.VISIBLE
+//            }
+//        }
     }
 
     fun show() {
@@ -559,10 +624,24 @@ class TambahItemDialog(
     }
 
     private fun handleResponse(response: Any) {
-        activity.handleResponse(response)
+        when (response) {
+            is MasterItemCodeResponse -> {
+                jenisBarangAdapter.itemList.clear()
+                response.data?.forEach { item ->
+                    jenisBarangAdapter.itemList.add((item as DataMaster))
+                }
+                jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+                jenisBarangAdapter.notifyDataSetChanged()
+            }
+
+            is CreateItemSPResponse -> {
+                activity.handleResponse(response)
+            }
+        }
     }
 
     private fun handleError(error: Throwable) {
+        dialogRootView.rvJenisBarang.visibility = View.GONE
         activity.handleError(error)
     }
 

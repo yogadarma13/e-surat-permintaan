@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:paddingBottom="75dp"
-        app:layout_constraintBottom_toTopOf="parent"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UselessParent">
 

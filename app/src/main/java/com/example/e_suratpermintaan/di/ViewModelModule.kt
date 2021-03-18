@@ -65,7 +65,8 @@ val viewModelModule = module {
             get() as GetJenisPermintaanFilterOptionUseCase,
             get() as GetPenugasanOptionUseCase,
             get() as GetStatusPenugasanOptionUseCase,
-            get() as GetKategoriListUseCase
+            get() as GetKodePekerjaanListUseCase,
+            get() as GetItemCodeListUseCase
         )
     }
     viewModel {

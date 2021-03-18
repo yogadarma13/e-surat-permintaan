@@ -19,16 +19,16 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
 
     override fun readMyData(
         id_user: String,
-        proyek: String,
-        status_permintaan: String,
-        jenis_permintaan: String,
-        jenis_data: String
+//        proyek: String,
+//        status_permintaan: String,
+//        jenis_permintaan: String,
+//        jenis_data: String
     ): Observable<MyDataResponse> =
         networkApi.getMyData(
             id_user,
-            proyek,
-            status_permintaan,
-            jenis_permintaan
+//            proyek,
+//            status_permintaan,
+//            jenis_permintaan
             //,jenis_data
         )
 

@@ -47,17 +47,17 @@ interface NetworkApi {
 
     @GET("MyData")
     fun getMyData(
-        @Query("id_user") id_user: String,
-        @Query("proyek") proyek: String,
-        @Query("status_permintaan") status_permintaan: String,
-        @Query("jenis_permintaan") jenis_permintaan: String
+        @Query("id_user") idUser: String,
+//        @Query("proyek") proyek: String,
+//        @Query("status_permintaan") status_permintaan: String,
+//        @Query("jenis_permintaan") jenis_permintaan: String
         // @Query("jenis_data") jenis_data: String
     ): Observable<MyDataResponse>
 
     @GET("detail")
     fun getDetailSP(
         @Query("id_sp") id_sp: String,
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<DetailSPResponse>
 
     @POST("create_sp")
@@ -70,7 +70,7 @@ interface NetworkApi {
     fun editSP(
         @Part("id") id: RequestBody,
         @Part file: MultipartBody.Part,
-        @Part("id_user") id_user: RequestBody
+        @Part("id_user") idUser: RequestBody
     ): Observable<EditSPResponse>
 
     @FormUrlEncoded
@@ -82,7 +82,7 @@ interface NetworkApi {
     @Multipart
     @POST("ajukan_sp")
     fun ajukanSP(
-        @Part("id_user") id_user: RequestBody,
+        @Part("id_user") idUser: RequestBody,
         @Part("id") id: RequestBody,
         @Part file: MultipartBody.Part
     ): Observable<AjukanSPResponse>
@@ -90,36 +90,53 @@ interface NetworkApi {
     @Multipart
     @POST("verifikasi_sp")
     fun verifikasiSP(
-        @Part("id_user") id_user: RequestBody,
+        @Part("id_user") idUser: RequestBody,
         @Part("id") id: RequestBody,
         @Part("status") status: RequestBody,
-        @Part("catatan") catatan: RequestBody,
+        @Part("catatan") note: RequestBody,
         @Part file: MultipartBody.Part
     ): Observable<VerifikasiSPResponse>
 
     @FormUrlEncoded
     @POST("batalkan_sp")
     fun batalkanSP(
-        @Field("id_user") id_user: String,
+        @Field("id_user") idUser: String,
         @Field("id") id: String
     ): Observable<BatalkanSPResponse>
 
     @GET("history_sp")
     fun getHistorySP(
-        @Query("id_sp") id_dp: String
+        @Query("id_sp") idSp: String
     ): Observable<HistorySPResponse>
 
     @FormUrlEncoded
     @POST("edit_sp")
     fun simpanEditSP(
         @Field("id") id: String,
-        @Field("id_user") id_user: String
+        @Field("id_user") idUser: String
     ): Observable<SimpanEditSPResponse>
+
+    @FormUrlEncoded
+    @POST("tolak_item")
+    fun rejectItem(
+        @Field("id_user") idUser: String,
+        @Field("id_sp") idSp: String,
+        @Field("id_item") idItem: String,
+        @Field("catatan") note: String
+    )
+
+    @FormUrlEncoded
+    @POST("rollback_item")
+    fun rollbackItem(
+        @Field("id_user") idUser: String,
+        @Field("id_sp") idSp: String,
+        @Field("id_item") idItem: String
+    )
 
     // =================================== MASTER ===============================================
     @GET("status_permintaan")
     fun getMasterStatusFilterOptionList(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<MasterStatusFilterOptionResponse>
 
     @GET("jenis_data")
@@ -127,12 +144,12 @@ interface NetworkApi {
 
     @GET("jenis_permintaan")
     fun getMasterJenisFilterOptionList(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<MasterJenisPermintaanFilterOptionResponse>
 
     @GET("proyek")
     fun getMasterProyekFilterOptionList(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<MasterProyekFilterOptionResponse>
 
     @GET("penugasan")
@@ -143,18 +160,24 @@ interface NetworkApi {
 
     @GET("dataproyek")
     fun getMasterProyek(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<MasterProyekResponse>
 
     @GET("datajenis")
     fun getMasterJenis(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<MasterJenisResponse>
 
     @GET("datacostcode")
     fun getMasterCostCode(
         @Query("id") id: String
     ): Observable<MasterCCResponse>
+
+    @GET("datajenisbarang")
+    fun getMasterItemCode(
+        @Query("id") id: String,
+        @Query("keyword") keyword: String
+    ): Observable<MasterItemCodeResponse>
 
     @GET("datapersyaratan")
     fun getMasterPersyaratan(
@@ -166,8 +189,10 @@ interface NetworkApi {
         @Query("id") id: String
     ): Observable<MasterUOMResponse>
 
-    @GET("datakategori")
-    fun getKategori(): Observable<KategoriResponse>
+    @GET("datakodepekerjaan")
+    fun getMasterKodePekerjaan(
+        @Query("id") id: String
+    ): Observable<MasterKodePekerjaanResponse>
 
     // ================================= SURAT PERMINTAAN (ITEM) ================================
     @POST("create_item_sp")
@@ -224,19 +249,19 @@ interface NetworkApi {
     fun updateFileLampiran(
         @Part("keterangan") keterangan: RequestBody,
         @Part file: MultipartBody.Part,
-        @Part("id_file") id_file: RequestBody
+        @Part("id_file") idFile: RequestBody
     ): Observable<EditFileLampiranResponse>
 
     @FormUrlEncoded
     @POST("delete_file")
     fun deleteFileLampiran(
-        @Field("id_file") id_file: String
+        @Field("id_file") idFile: String
     ): Observable<DeleteFileLampiranResponse>
 
     // ================================= NOTIFIKASI =============================================
     @GET("notifikasi")
     fun getNotifikasi(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String
     ): Observable<NotifikasiResponse>
 
     @POST("read_notifikasi")

@@ -27,5 +27,7 @@ interface MasterDataSource {
 
     fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse>
 
-    fun getKategoriList(): Observable<KategoriResponse>
+    fun getKodePekerjaanList(id: String): Observable<MasterKodePekerjaanResponse>
+
+    fun getItemCodeLlist(id: String, keyword: String): Observable<MasterItemCodeResponse>
 }

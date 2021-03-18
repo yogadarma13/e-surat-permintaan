@@ -180,7 +180,13 @@ val useCaseModule = module {
         )
     }
     single {
-        GetKategoriListUseCase(
+        GetKodePekerjaanListUseCase(
+            get() as MasterRepository,
+            get() as SchedulerProvider
+        )
+    }
+    single {
+        GetItemCodeListUseCase(
             get() as MasterRepository,
             get() as SchedulerProvider
         )

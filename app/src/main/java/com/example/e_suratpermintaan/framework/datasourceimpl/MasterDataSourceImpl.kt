@@ -40,5 +40,9 @@ class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSourc
     override fun getStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse> =
         networkApi.getMasterStatusPenugasanOptionList()
 
-    override fun getKategoriList(): Observable<KategoriResponse> = networkApi.getKategori()
+    override fun getKodePekerjaanList(id: String): Observable<MasterKodePekerjaanResponse> =
+        networkApi.getMasterKodePekerjaan(id)
+
+    override fun getItemCodeLlist(id: String, keyword: String): Observable<MasterItemCodeResponse> =
+        networkApi.getMasterItemCode(id, keyword)
 }

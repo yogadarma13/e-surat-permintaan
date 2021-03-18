@@ -83,7 +83,7 @@ abstract class BaseActivity<B : ViewBinding> : AppCompatActivity() {
 
     open fun handleError(error: Throwable) {
 
-        toastNotify("error")
+//        toastNotify("error")
 
         val responseBodyString =
             (error as HttpException).response()?.errorBody()?.string().toString()

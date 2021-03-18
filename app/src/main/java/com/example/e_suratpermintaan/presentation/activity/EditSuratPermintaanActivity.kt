@@ -38,6 +38,7 @@ import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.E
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.EditItemSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.FileLampiranViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -62,6 +63,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
+    private val masterViewModel: MasterViewModel by viewModel()
     private val fileLampiranViewModel: FileLampiranViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
     private val sharedMasterData: SharedMasterData by inject()
@@ -104,9 +106,9 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
     private fun init() {
         alertDialogTambah =
-            TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
+            TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
 
-        alertDialogEdit = EditItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
+        alertDialogEdit = EditItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
 
         alertDialogPenugasan =
             PenugasanItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
@@ -231,6 +233,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
             }
         }
 
+
         editFileSuratPermintaanAdapter.setOnItemClickListener { item, actionString ->
             val data = item as FileLampiranDetailSP
 
@@ -322,7 +325,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                 initApiRequest()
 
                 alertDialogTambah =
-                    TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
+                    TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
                 alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
 
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))

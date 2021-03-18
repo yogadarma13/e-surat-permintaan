@@ -364,10 +364,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
 
             disposable = suratPermintaanViewModel.readMyData(
                 idUser,
-                selectedIdProyekFilterValue,
-                selectedStatusFilterValue,
-                selectedJenisPermintaanFilterValue,
-                ""
+//                selectedIdProyekFilterValue,
+//                selectedStatusFilterValue,
+//                selectedJenisPermintaanFilterValue,
+//                ""
             )
                 .subscribe(this::handleResponse, this::handleError)
 

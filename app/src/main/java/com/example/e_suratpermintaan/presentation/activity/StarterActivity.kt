@@ -42,13 +42,15 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
 
         val observableUom = masterViewModel.getUomList("all")
 
-        val observableKategori = masterViewModel.getKategoriList()
+        val observableKodePekerjaan = masterViewModel.getKodePekerjaanList("all")
 
         val observablePenugasan = masterViewModel.getPenugasanOptionList()
 
         val observableStatusPenugasan = masterViewModel.getStatusPenugasanOptionList()
 
         val observablePersyaratan = masterViewModel.getPersyaratanList("all")
+
+        val observableItemCode = masterViewModel.getItemCodeLlist("all", "")
 
         val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
 
@@ -62,10 +64,11 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
         val concat1 = Observable.concat(
             observableCC.onErrorResumeNext { Observable.empty() },
             observableUom.onErrorResumeNext { Observable.empty() },
-            observableKategori.onErrorResumeNext { Observable.empty() },
+            observableKodePekerjaan.onErrorResumeNext { Observable.empty() },
             observablePersyaratan.onErrorResumeNext { Observable.empty() })
 
         val concat2 = Observable.concat(
+            observableItemCode.onErrorResumeNext { Observable.empty() },
             observablePenugasan.onErrorResumeNext { Observable.empty() },
             observableStatusPenugasan.onErrorResumeNext { Observable.empty() }
         )
@@ -124,14 +127,18 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
                 Log.d("MYAPPSTARTER", "UOM RESPONSE")
             }
 
-            is KategoriResponse -> {
-                sharedMasterData.setKategoriList(response.data)
+            is MasterKodePekerjaanResponse -> {
+                sharedMasterData.setKodePekerjaanList(response.data)
                 Log.d("MYAPPSTARTER", "KATEGORI RESPONSE")
             }
 
             is MasterPersyaratanResponse -> {
                 sharedMasterData.setPersyaratanList(response.data)
                 Log.d("MYAPPSTARTER", "PERSYARATAN RESPONSE")
+            }
+
+            is MasterItemCodeResponse -> {
+                sharedMasterData.setItemCodeList(response.data)
             }
 
             // PENUGASAN

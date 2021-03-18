@@ -31,17 +31,17 @@ class SuratPermintaanViewModel(
 
     override fun readMyData(
         id_user: String,
-        proyek: String,
-        status_permintaan: String,
-        jenis_permintaan: String,
-        jenis_data: String
+//        proyek: String,
+//        status_permintaan: String,
+//        jenis_permintaan: String,
+//        jenis_data: String
     ): Observable<MyDataResponse> =
         readMyDataSuratPermintaanUseCase.invoke(
             id_user,
-            proyek,
-            status_permintaan,
-            jenis_permintaan,
-            jenis_data
+//            proyek,
+//            status_permintaan,
+//            jenis_permintaan,
+//            jenis_data
         )
 
     override fun remove(id_sp: String): Observable<DeleteSPResponse> =

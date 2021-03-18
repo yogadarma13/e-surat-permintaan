@@ -110,4 +110,5 @@
     <string name="clear_text">Bersihkan</string>
     <string name="verif_ttd_text_question">Apakah anda ingin memverifikasi surat permintaan ini?</string>
     <string name="download_text">Download</string>
+    <string name="add_item_text">Tambah Item</string>
 </resources>

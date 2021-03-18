@@ -86,6 +86,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:$rx_android_version"
     implementation "io.reactivex.rxjava3:rxjava:$rx_java_version"
     implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$rx_retrofit_adapter_version"
+    implementation "com.jakewharton.rxbinding3:rxbinding:$rx_binding"
 
     // Koin for Android
     implementation "org.koin:koin-android:$koin_version"

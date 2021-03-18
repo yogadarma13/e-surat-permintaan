@@ -27,6 +27,7 @@ import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterDat
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.PersyaratanViewHolder
 import com.example.e_suratpermintaan.presentation.viewholders.usingbasefilterableadapter.*
 import com.example.e_suratpermintaan.presentation.viewmodel.ItemSuratPermintaanViewModel
+import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
@@ -35,7 +36,8 @@ import java.util.*
 class EditItemDialog(
     private val activity: EditSuratPermintaanActivity,
     private val sharedMasterData: SharedMasterData,
-    private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel
+    private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel,
+    private val masterViewModel: MasterViewModel
 ) {
 
     companion object {
@@ -171,9 +173,9 @@ class EditItemDialog(
             jenisBarangAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getKategoriList().observe(activity, {
+        sharedMasterData.getKodePekerjaanList().observe(activity, {
             it?.forEach { item ->
-                kategoriAdapter.itemList.add(item as DataKategori)
+                kategoriAdapter.itemList.add(item as DataMaster)
             }
             kategoriAdapter.oldItemList = kategoriAdapter.itemList
             kategoriAdapter.notifyDataSetChanged()
@@ -395,7 +397,7 @@ class EditItemDialog(
         kategoriAdapter =
             BaseFilterableAdapter(ItemSimpleRowBinding::inflate, KategoriViewHolder::class.java)
         kategoriAdapter.setOnItemClickListener { item, _ ->
-            dialogRootView.etKategori.setText((item as DataKategori).kategori)
+            dialogRootView.etKategori.setText((item as DataMaster).option)
             dialogRootView.rvKategori.visibility = View.GONE
             activity.closeKeyboard(dialogRootView.etSatuan)
             dialogRootView.container.performClick()
