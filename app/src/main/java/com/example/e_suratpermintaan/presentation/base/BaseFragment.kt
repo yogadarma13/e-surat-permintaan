@@ -56,7 +56,6 @@ abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragmen
     }
 
     open fun handleError(error: Throwable) {
-        toastNotify("SUPER CALLED")
         val responseBodyString =
             (error as HttpException).response()?.errorBody()?.string().toString()
 

@@ -34,6 +34,8 @@ class EditItemSuratPermintaanAdapter :
         const val BTN_PENUGASAN = "btnPenugasan"
         const val BTN_PROCESS = "btnProcess"
         const val BTN_UNPROCESS = "btnUnProcess"
+        const val BTN_REJECT = "btnReject"
+        const val BTN_ROLLBACK = "btnRollback"
     }
 
     val itemList: ArrayList<ItemsDetailSP> = arrayListOf()
@@ -149,7 +151,25 @@ class EditItemSuratPermintaanAdapter :
             } else {
                 binding.btnUnProcessSPA.visibility = View.GONE
             }
+            if (data.tombolTolakItem == 1) {
+                binding.btnRejectItem.visibility = View.VISIBLE
+                binding.btnRejectItem.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_REJECT)
+                }
+            } else {
+                binding.btnRejectItem.visibility = View.GONE
+            }
 
+            if (data.tombolRollbackItem == 1) {
+                binding.btnRollback.visibility = View.VISIBLE
+                binding.btnRollback.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_ROLLBACK)
+                }
+            } else {
+                binding.btnRollback.visibility = View.GONE
+            }
+
+            binding.tvStatusItem.text = data.statusPd
             binding.tvKodeDetailSPA.text = data.kodePekerjaan
             binding.tvJenisBarangSPA.text = data.idBarang
             binding.tvKategoriSPA.text = data.kategori
@@ -261,7 +281,25 @@ class EditItemSuratPermintaanAdapter :
             } else {
                 binding.btnUnProcessSPB.visibility = View.GONE
             }
+            if (data.tombolTolakItem == 1) {
+                binding.btnRejectItem.visibility = View.VISIBLE
+                binding.btnRejectItem.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_REJECT)
+                }
+            } else {
+                binding.btnRejectItem.visibility = View.GONE
+            }
 
+            if (data.tombolRollbackItem == 1) {
+                binding.btnRollback.visibility = View.VISIBLE
+                binding.btnRollback.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_ROLLBACK)
+                }
+            } else {
+                binding.btnRollback.visibility = View.GONE
+            }
+
+            binding.tvStatusItem.text = data.statusPd
             binding.tvKodeDetailSPB.text = data.kodePekerjaan
             binding.tvJenisBarangSPB.text = data.idBarang
             binding.tvKategoriSPB.text = data.kategori
@@ -372,6 +410,25 @@ class EditItemSuratPermintaanAdapter :
                 binding.btnUnProcessSPS.visibility = View.GONE
             }
 
+            if (data.tombolTolakItem == 1) {
+                binding.btnRejectItem.visibility = View.VISIBLE
+                binding.btnRejectItem.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_REJECT)
+                }
+            } else {
+                binding.btnRejectItem.visibility = View.GONE
+            }
+
+            if (data.tombolRollbackItem == 1) {
+                binding.btnRollback.visibility = View.VISIBLE
+                binding.btnRollback.setOnClickListener {
+                    onItemClickListener.invoke(data, BTN_ROLLBACK)
+                }
+            } else {
+                binding.btnRollback.visibility = View.GONE
+            }
+
+            binding.tvStatusItem.text = data.statusPd
             binding.tvKodeDetailSPS.text = data.kodePekerjaan
             binding.tvJenisBarangSPS.text = data.idBarang
             binding.tvKategoriSPS.text = data.kategori

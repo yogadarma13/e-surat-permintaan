@@ -16,7 +16,9 @@ class ItemSuratPermintaanViewModel(
     private val readDetailItemSuratPermintaanUseCase: ReadDetailItemSuratPermintaanUseCase,
     private val penugasanItemUseCase: SetPenugasanItemUseCase,
     private val processItemSuratPermintaanUseCase: ProcessItemSuratPermintaanUseCase,
-    private val unProcessItemSuratPermintaanUseCase: UnProcessItemSuratPermintaanUseCase
+    private val unProcessItemSuratPermintaanUseCase: UnProcessItemSuratPermintaanUseCase,
+    private val rejectItemSuratPermintaanUseCase: RejectItemSuratPermintaanUseCase,
+    private val rollbackItemSuratPermintaanUseCase: RollbackItemSuratPermintaanUseCase
 ) : ViewModel(), ItemSuratPermintaanDataSource {
 
     override fun addItem(createItemSP: CreateItemSP): Observable<CreateItemSPResponse> =
@@ -48,5 +50,20 @@ class ItemSuratPermintaanViewModel(
         idUser: String
     ): Observable<ProcessItemSPResponse> =
         unProcessItemSuratPermintaanUseCase.invoke(idSp, idItem, idUser)
+
+    override fun rejectItem(
+        idUser: String,
+        idSp: String,
+        idItem: String,
+        note: String
+    ): Observable<RejectItemSPResponse> =
+        rejectItemSuratPermintaanUseCase.invoke(idUser, idSp, idItem, note)
+
+    override fun rollbackItem(
+        idUser: String,
+        idSp: String,
+        idItem: String
+    ): Observable<RollbackItemSPResponse> =
+        rollbackItemSuratPermintaanUseCase.invoke(idUser, idSp, idItem)
 
 }

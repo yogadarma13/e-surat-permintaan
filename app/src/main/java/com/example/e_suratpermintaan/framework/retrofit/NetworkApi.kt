@@ -116,23 +116,6 @@ interface NetworkApi {
         @Field("id_user") idUser: String
     ): Observable<SimpanEditSPResponse>
 
-    @FormUrlEncoded
-    @POST("tolak_item")
-    fun rejectItem(
-        @Field("id_user") idUser: String,
-        @Field("id_sp") idSp: String,
-        @Field("id_item") idItem: String,
-        @Field("catatan") note: String
-    )
-
-    @FormUrlEncoded
-    @POST("rollback_item")
-    fun rollbackItem(
-        @Field("id_user") idUser: String,
-        @Field("id_sp") idSp: String,
-        @Field("id_item") idItem: String
-    )
-
     // =================================== MASTER ===============================================
     @GET("status_permintaan")
     fun getMasterStatusFilterOptionList(
@@ -234,6 +217,23 @@ interface NetworkApi {
         @Query("id_item") idItem: String,
         @Query("id_user") idUser: String
     ): Observable<ProcessItemSPResponse>
+
+    @FormUrlEncoded
+    @POST("tolak_item")
+    fun rejectItem(
+        @Field("id_user") idUser: String,
+        @Field("id_sp") idSp: String,
+        @Field("id_item") idItem: String,
+        @Field("catatan") note: String
+    ): Observable<RejectItemSPResponse>
+
+    @FormUrlEncoded
+    @POST("rollback_item")
+    fun rollbackItem(
+        @Field("id_user") idUser: String,
+        @Field("id_sp") idSp: String,
+        @Field("id_item") idItem: String
+    ): Observable<RollbackItemSPResponse>
 
     // ================================= FILE LAMPIRAN ==========================================
     @Multipart

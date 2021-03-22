@@ -336,10 +336,10 @@ class TambahItemDialog(
             if (kategoriValue.isNullOrEmpty()) dialogRootView.etKategori.error =
                 "Pilih sesuai pilihan" else dialogRootView.etKategori.error = null
 
-            if (satuanValue.isNullOrEmpty()) dialogRootView.etSatuan.error =
+            if (satuanValue == null) dialogRootView.etSatuan.error =
                 "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
 
-            if (kodePekerjaanValue.isNullOrEmpty() || kategoriValue.isNullOrEmpty() || satuanValue.isNullOrEmpty()) {
+            if (dialogRootView.etKodePekerjaan.error != null || dialogRootView.etKategori.error != null || dialogRootView.etSatuan.error != null) {
                 activity.toastNotify("Lengkapi data terlebih dahulu")
             } else {
                 val confirmationDialog =
@@ -348,9 +348,9 @@ class TambahItemDialog(
                         .setPositiveButton("Ya") { _, _ ->
                             val createItemSP = CreateItemSP(
                                 kodeSp,
-                                kodePekerjaanValue,
+                                kodePekerjaanValue!!,
                                 jenisBarang,
-                                satuanValue,
+                                satuanValue!!,
                                 volume,
                                 fungsi,
                                 target,
@@ -362,7 +362,7 @@ class TambahItemDialog(
                                 persyaratanList,
                                 statusPenugasanValue,
                                 dataProfile.id!!,
-                                kategoriValue
+                                kategoriValue!!
                             )
                             activity.disposable = itemSuratPermintaanViewModel.addItem(createItemSP)
                                 .subscribe(this::handleResponse, this::handleError)

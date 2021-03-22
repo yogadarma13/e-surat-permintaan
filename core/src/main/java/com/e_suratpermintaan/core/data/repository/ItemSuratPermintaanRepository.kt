@@ -35,4 +35,17 @@ class ItemSuratPermintaanRepository(private val itemDataSource: ItemSuratPermint
         idItem: String,
         idUser: String
     ): Observable<ProcessItemSPResponse> = itemDataSource.unProcessItem(idSp, idItem, idUser)
+
+    override fun rejectItem(
+        idUser: String,
+        idSp: String,
+        idItem: String,
+        note: String
+    ): Observable<RejectItemSPResponse> = itemDataSource.rejectItem(idUser, idSp, idItem, note)
+
+    override fun rollbackItem(
+        idUser: String,
+        idSp: String,
+        idItem: String
+    ): Observable<RollbackItemSPResponse> = itemDataSource.rollbackItem(idUser, idSp, idItem)
 }

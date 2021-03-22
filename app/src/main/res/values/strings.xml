@@ -111,4 +111,7 @@
     <string name="verif_ttd_text_question">Apakah anda ingin memverifikasi surat permintaan ini?</string>
     <string name="download_text">Download</string>
     <string name="add_item_text">Tambah Item</string>
+    <string name="rollback_btn_text">Rollback</string>
+    <string name="note_title">Berikan Catatan</string>
+    <string name="note_empty_message">Tuliskan catatan terlebih dahulu</string>
 </resources>

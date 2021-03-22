@@ -94,6 +94,7 @@ class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapt
         ViewHolder(binding.root) {
 
         fun bind(data: ItemsDetailSP) {
+            binding.tvStatusItem.text = data.statusPd
             binding.tvKodeDetailSPA.text = data.kodePekerjaan
             binding.tvJenisBarangSPA.text = data.idBarang
             binding.tvKategoriSPA.text = data.kategori
@@ -166,6 +167,7 @@ class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapt
     inner class ViewHolderSPB(private val binding: DetailHistorySpbItemBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ItemsDetailSP) {
+            binding.tvStatusItem.text = data.statusPd
             binding.tvKodeDetailSPB.text = data.kodePekerjaan
             binding.tvJenisBarangSPB.text = data.idBarang
             binding.tvKategoriSPB.text = data.kategori
@@ -237,6 +239,7 @@ class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapt
         ViewHolder(binding.root) {
 
         fun bind(data: ItemsDetailSP) {
+            binding.tvStatusItem.text = data.statusPd
             binding.tvKodeDetailSPS.text = data.kodePekerjaan
             binding.tvJenisBarangSPS.text = data.idBarang
             binding.tvKategoriSPS.text = data.kategori

@@ -36,4 +36,17 @@ class ItemSuratPermintaanSourceImpl(private val networkApi: NetworkApi) :
         idItem: String,
         idUser: String
     ): Observable<ProcessItemSPResponse> = networkApi.unProcessItemSP(idSp, idItem, idUser)
+
+    override fun rejectItem(
+        idUser: String,
+        idSp: String,
+        idItem: String,
+        note: String
+    ): Observable<RejectItemSPResponse> = networkApi.rejectItem(idUser, idSp, idItem, note)
+
+    override fun rollbackItem(
+        idUser: String,
+        idSp: String,
+        idItem: String
+    ): Observable<RollbackItemSPResponse> = networkApi.rollbackItem(idUser, idSp, idItem)
 }

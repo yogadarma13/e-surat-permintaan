@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,12 +26,21 @@
 
             <TextView
                 android:id="@+id/tvJenisBarang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvStatusItem"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvStatusItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/detail_sp_normal_text_color"
-                android:textSize="@dimen/detail_sp_normal_text_size"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/expandableIcon"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -38,8 +48,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_down"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvJenisBarang"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/detail_sp_normal_text_color"-->
+<!--                android:textSize="@dimen/detail_sp_normal_text_size"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/expandableIcon"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_arrow_down"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -54,220 +83,367 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
+            <TextView
+                android:id="@+id/tvKodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kode Pekerjaan"
+                android:textColor="@color/detail_sp_normal_text_color"
+                android:textSize="@dimen/detail_sp_normal_text_size"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvVolumeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Volume"
+                android:textColor="@color/detail_sp_normal_text_color"
+                android:textSize="@dimen/detail_sp_normal_text_size"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKode" />
+
+            <TextView
+                android:id="@+id/tvSatuanLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Satuan"
+                android:textColor="@color/detail_sp_normal_text_color"
+                android:textSize="@dimen/detail_sp_normal_text_size"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvVolume" />
+
+
+            <TextView
+                android:id="@+id/tvKode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:textColor="@color/detail_sp_normal_text_color"
+                android:textSize="@dimen/detail_sp_normal_text_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvKodeLabel" />
+
+            <TextView
+                android:id="@+id/tvVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:textColor="@color/detail_sp_normal_text_color"
+                android:textSize="@dimen/detail_sp_normal_text_size"
+                app:layout_constraintLeft_toLeftOf="@id/tvKode"
+                app:layout_constraintTop_toTopOf="@id/tvVolumeLabel" />
+
+            <TextView
+                android:id="@+id/tvSatuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:textColor="@color/detail_sp_normal_text_color"
+                android:textSize="@dimen/detail_sp_normal_text_size"
+                app:layout_constraintHorizontal_bias="0.60"
+                app:layout_constraintLeft_toLeftOf="@id/tvKode"
+                app:layout_constraintTop_toTopOf="@id/tvSatuanLabel" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container1"
+                android:id="@+id/containerButton1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/tvSatuan"
+                tools:layout_editor_absoluteX="16dp">
 
-                <TextView
-                    android:id="@+id/tvKodeLabel"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnHapus"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Kode Pekerjaan"
-                    android:textColor="@color/detail_sp_normal_text_color"
-                    android:textSize="@dimen/detail_sp_normal_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@android:color/holo_red_light"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/delete_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnEdit"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="0dp" />
+
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorBlue"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/edit_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnPenugasan"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnHapus"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tvVolumeLabel"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnPenugasan"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Volume"
-                    android:textColor="@color/detail_sp_normal_text_color"
-                    android:textSize="@dimen/detail_sp_normal_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvKode" />
-
-                <TextView
-                    android:id="@+id/tvSatuanLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Satuan"
-                    android:textColor="@color/detail_sp_normal_text_color"
-                    android:textSize="@dimen/detail_sp_normal_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvVolume" />
-
-
-                <TextView
-                    android:id="@+id/tvKode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Text"
-                    android:textColor="@color/detail_sp_normal_text_color"
-                    android:textSize="@dimen/detail_sp_normal_text_size"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvKodeLabel" />
-
-                <TextView
-                    android:id="@+id/tvVolume"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Text"
-                    android:textColor="@color/detail_sp_normal_text_color"
-                    android:textSize="@dimen/detail_sp_normal_text_size"
-                    app:layout_constraintLeft_toLeftOf="@id/tvKode"
-                    app:layout_constraintTop_toTopOf="@id/tvVolumeLabel" />
-
-                <TextView
-                    android:id="@+id/tvSatuan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Text"
-                    android:textColor="@color/detail_sp_normal_text_color"
-                    android:textSize="@dimen/detail_sp_normal_text_size"
-                    app:layout_constraintHorizontal_bias="0.60"
-                    app:layout_constraintLeft_toLeftOf="@id/tvKode"
-                    app:layout_constraintTop_toTopOf="@id/tvSatuanLabel" />
-
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/colorGreen"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/penugasan_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnEdit"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <LinearLayout
-                android:id="@+id/linear1"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container1">
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/containerButton1"
+                tools:layout_editor_absoluteX="16dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnProcess"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/green_history"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/process_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnUnProcess"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="4dp" />
 
-                    <Button
-                        android:id="@+id/btnEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorWarning"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="12dp"
-                        android:text="Edit"
-                        android:textAllCaps="false"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnUnProcess"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/un_process_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnProcess"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="4dp" />
 
-                    <Button
-                        android:id="@+id/btnHapus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/holo_red_light"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="12dp"
-                        android:text="Hapus"
-                        android:textAllCaps="false"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3">
-
-                    <Button
-                        android:id="@+id/btnPenugasan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/holo_red_light"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="12dp"
-                        android:text="Penugasan"
-                        android:textAllCaps="false"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerButton3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear1">
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/containerButton2"
+                tools:layout_editor_absoluteX="16dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnRejectItem"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/decline_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnRollback"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="4dp" />
 
-                    <Button
-                        android:id="@+id/btnProcess"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorWarning"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="12dp"
-                        android:text="Process"
-                        android:textAllCaps="false"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/btnRollback"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3">
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="@color/colorBlue"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/rollback_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnRejectItem"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="4dp" />
 
-                    <Button
-                        android:id="@+id/btnUnProcess"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/holo_red_light"
-                        android:paddingHorizontal="32dp"
-                        android:paddingVertical="12dp"
-                        android:text="Un-Process"
-                        android:textAllCaps="false"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/linear1"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="20dp"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                android:weightSum="9"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/container1">-->
+
+            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="3">-->
+
+            <!--&lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+            <!--                    <Button-->
+            <!--                        android:id="@+id/btnEdit"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:backgroundTint="@color/colorWarning"-->
+            <!--                        android:paddingHorizontal="32dp"-->
+            <!--                        android:paddingVertical="12dp"-->
+            <!--                        android:text="Edit"-->
+            <!--                        android:textAllCaps="false"-->
+            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                        app:layout_constraintStart_toStartOf="parent"-->
+            <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="3">-->
+
+            <!--&lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+            <!--                    <Button-->
+            <!--                        android:id="@+id/btnHapus"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:backgroundTint="@android:color/holo_red_light"-->
+            <!--                        android:paddingHorizontal="32dp"-->
+            <!--                        android:paddingVertical="12dp"-->
+            <!--                        android:text="Hapus"-->
+            <!--                        android:textAllCaps="false"-->
+            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                        app:layout_constraintStart_toStartOf="parent"-->
+            <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="3">-->
+
+            <!--&lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+            <!--                    <Button-->
+            <!--                        android:id="@+id/btnPenugasan"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:backgroundTint="@android:color/holo_red_light"-->
+            <!--                        android:paddingHorizontal="32dp"-->
+            <!--                        android:paddingVertical="12dp"-->
+            <!--                        android:text="Penugasan"-->
+            <!--                        android:textAllCaps="false"-->
+            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                        app:layout_constraintStart_toStartOf="parent"-->
+            <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--            </LinearLayout>-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="20dp"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                android:weightSum="9"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/linear1">-->
+
+            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="3">-->
+
+            <!--&lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+            <!--                    <Button-->
+            <!--                        android:id="@+id/btnProcess"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:backgroundTint="@color/colorWarning"-->
+            <!--                        android:paddingHorizontal="32dp"-->
+            <!--                        android:paddingVertical="12dp"-->
+            <!--                        android:text="Process"-->
+            <!--                        android:textAllCaps="false"-->
+            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                        app:layout_constraintStart_toStartOf="parent"-->
+            <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="3">-->
+
+            <!--                    &lt;!&ndash;                        android:visibility="gone"&ndash;&gt;-->
+            <!--                    <Button-->
+            <!--                        android:id="@+id/btnUnProcess"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:backgroundTint="@android:color/holo_red_light"-->
+            <!--                        android:paddingHorizontal="32dp"-->
+            <!--                        android:paddingVertical="12dp"-->
+            <!--                        android:text="Un-Process"-->
+            <!--                        android:textAllCaps="false"-->
+            <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                        app:layout_constraintStart_toStartOf="parent"-->
+            <!--                        app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-            </LinearLayout>
+            <!--            </LinearLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

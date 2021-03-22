@@ -17,10 +17,7 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_DELETED
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.ITEM_EDITED
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.databinding.ActivityEditSuratPermintaanBinding
-import com.example.e_suratpermintaan.databinding.DialogKonfirmasiSimpanBinding
-import com.example.e_suratpermintaan.databinding.DialogTambahFileBinding
-import com.example.e_suratpermintaan.databinding.ItemFileLampiranRowBinding
+import com.example.e_suratpermintaan.databinding.*
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.Directory
 import com.example.e_suratpermintaan.framework.utils.DownloadTask
@@ -108,7 +105,8 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
         alertDialogTambah =
             TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
 
-        alertDialogEdit = EditItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
+        alertDialogEdit =
+            EditItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
 
         alertDialogPenugasan =
             PenugasanItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel)
@@ -230,6 +228,20 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                         idUser.toString()
                     )
                 }
+                EditItemSuratPermintaanViewHolder.BTN_REJECT -> {
+                    rejectItemSuratPermintaan(
+                        idUser.toString(),
+                        idSp.toString(),
+                        data.id.toString()
+                    )
+                }
+                EditItemSuratPermintaanViewHolder.BTN_ROLLBACK -> {
+                    rollbackItemSuratPermintaan(
+                        idUser.toString(),
+                        idSp.toString(),
+                        data.id.toString()
+                    )
+                }
             }
         }
 
@@ -285,7 +297,6 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
         }
     }
 
-
     private fun processItemSuratPermintaan(idSp: String, idItem: String, idUser: String) {
         itemSuratPermintaanViewModel.processItem(idSp, idItem, idUser)
             .subscribe(this::handleResponse, this::handleError)
@@ -293,6 +304,38 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
     private fun unProcessItemSuratPermintaan(idSp: String, idItem: String, idUser: String) {
         itemSuratPermintaanViewModel.unProcessItem(idSp, idItem, idUser)
+            .subscribe(this::handleResponse, this::handleError)
+    }
+
+    private fun rejectItemSuratPermintaan(userId: String, spId: String, itemId: String) {
+        val alertDialogBuilder =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
+                .setTitle(resources.getString(R.string.note_title))
+
+        val alertDialog = alertDialogBuilder.create()
+
+        val dialogCatatanBinding = DialogCatatanBinding.inflate(LayoutInflater.from(this))
+
+        dialogCatatanBinding.btnCatatan.setOnClickListener {
+            val note = dialogCatatanBinding.etCatatanTolak.text.toString()
+
+            if (note.isNotEmpty()) {
+
+                disposable = itemSuratPermintaanViewModel.rejectItem(userId, spId, itemId, note)
+                    .subscribe(this::handleResponse, this::handleError)
+
+                alertDialog.dismiss()
+            } else {
+                toastNotify(resources.getString(R.string.note_empty_message))
+            }
+        }
+
+        alertDialog.setView(dialogCatatanBinding.root)
+        alertDialog.show()
+    }
+
+    private fun rollbackItemSuratPermintaan(userId: String, spId: String, itemId: String) {
+        itemSuratPermintaanViewModel.rollbackItem(userId, spId, itemId)
             .subscribe(this::handleResponse, this::handleError)
     }
 
@@ -325,7 +368,12 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                 initApiRequest()
 
                 alertDialogTambah =
-                    TambahItemDialog(this, sharedMasterData, itemSuratPermintaanViewModel, masterViewModel)
+                    TambahItemDialog(
+                        this,
+                        sharedMasterData,
+                        itemSuratPermintaanViewModel,
+                        masterViewModel
+                    )
                 alertDialogTambah.initDialogViewTambah(dataProfile!!, dataDetailSP!!)
 
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
@@ -343,6 +391,16 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_DELETED))
             }
             is ProcessItemSPResponse -> {
+                initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
+            }
+
+            is RejectItemSPResponse -> {
+                initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
+            }
+
+            is RollbackItemSPResponse -> {
                 initApiRequest()
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }

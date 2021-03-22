@@ -473,33 +473,37 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
 
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Berikan Catatan")
+                .setTitle(resources.getString(R.string.note_title))
 
         alertDialog = alertDialogBuilder.create()
 
         val dialogCatatanBinding = DialogCatatanBinding.inflate(LayoutInflater.from(this))
 
         dialogCatatanBinding.btnCatatan.setOnClickListener {
-            binding.progressBarOverlay.root.visibility = View.VISIBLE
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            )
-
             val catatan = dialogCatatanBinding.etCatatanTolak.text.toString()
 
-            val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
-            val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-            val status = "1".toRequestBody("text/plain".toMediaTypeOrNull())
-            val ctt = catatan.toRequestBody("text/plain".toMediaTypeOrNull())
+            if (catatan.isNotEmpty()) {
+                binding.progressBarOverlay.root.visibility = View.VISIBLE
+                window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
 
-            val fileReqBody = "".toRequestBody(MultipartBody.FORM)
-            val filePart = MultipartBody.Part.createFormData("file", "", fileReqBody)
+                val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
+                val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val status = "1".toRequestBody("text/plain".toMediaTypeOrNull())
+                val ctt = catatan.toRequestBody("text/plain".toMediaTypeOrNull())
 
-            disposable = suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
-                .subscribe(this::handleResponse, this::handleError)
+                val fileReqBody = "".toRequestBody(MultipartBody.FORM)
+                val filePart = MultipartBody.Part.createFormData("file", "", fileReqBody)
 
-            alertDialog?.hide()
+                disposable = suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
+                    .subscribe(this::handleResponse, this::handleError)
+
+                alertDialog?.dismiss()
+            } else {
+                toastNotify(resources.getString(R.string.note_empty_message))
+            }
         }
 
         alertDialog?.setView(dialogCatatanBinding.root)

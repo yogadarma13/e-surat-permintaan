@@ -24,4 +24,17 @@ interface ItemSuratPermintaanDataSource {
         idItem: String,
         idUser: String
     ): Observable<ProcessItemSPResponse>
+
+    fun rejectItem(
+        idUser: String,
+        idSp: String,
+        idItem: String,
+        note: String
+    ): Observable<RejectItemSPResponse>
+
+    fun rollbackItem(
+        idUser: String,
+        idSp: String,
+        idItem: String
+    ): Observable<RollbackItemSPResponse>
 }

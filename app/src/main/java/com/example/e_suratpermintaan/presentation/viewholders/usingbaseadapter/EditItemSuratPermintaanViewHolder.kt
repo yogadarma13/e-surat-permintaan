@@ -23,6 +23,8 @@ class EditItemSuratPermintaanViewHolder(private val binding: ItemSuratPermintaan
         const val BTN_PENUGASAN = "btnPenugasan"
         const val BTN_PROCESS = "btnProcess"
         const val BTN_UNPROCESS = "btnUnProcess"
+        const val BTN_REJECT = "btnReject"
+        const val BTN_ROLLBACK = "btnRollback"
     }
 
     init {

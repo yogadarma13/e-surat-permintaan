@@ -22,24 +22,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tvJenisDetailSPA"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvStatusItem"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Jenis Barang" />
+
+            <TextView
+                android:id="@+id/tvStatusItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/imgExpandedParentSPA"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Tolak" />
 
             <ImageView
                 android:id="@+id/imgExpandedParentSPA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -337,21 +349,24 @@
                 app:layout_constraintTop_toBottomOf="@id/tvStatusPenugasanDetailSPA"
                 tools:text="Hello" />
 
-            <LinearLayout
-                android:id="@+id/linearButtonDetailSPA"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerButton1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA">
+                app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA"
+                tools:layout_editor_absoluteX="16dp">
 
                 <Button
                     android:id="@+id/btnHapusSPA"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@android:color/holo_red_light"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/delete_btn_text"
                     android:textAllCaps="false"
                     android:visibility="gone"
@@ -359,13 +374,16 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="0dp" />
 
                 <Button
                     android:id="@+id/btnEditSPA"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/colorBlue"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/edit_btn_text"
                     android:textAllCaps="false"
                     android:visibility="gone"
@@ -373,14 +391,16 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/btnHapusSPA"
-                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btnPenugasanSPA"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:backgroundTint="@color/colorGreen"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/penugasan_btn_text"
                     android:textAllCaps="false"
                     android:visibility="gone"
@@ -388,43 +408,104 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/btnEditSPA"
-                    app:layout_constraintTop_toBottomOf="@+id/tvProcessByPenugasanDetailSPA" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="0dp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/linearButtonDetailSPA">
+                app:layout_constraintTop_toBottomOf="@id/containerButton1"
+                tools:layout_editor_absoluteX="16dp">
 
                 <Button
                     android:id="@+id/btnProcessSPA"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="4dp"
                     android:backgroundTint="@color/green_history"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/process_btn_text"
                     android:textAllCaps="false"
                     android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnUnProcessSPA"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="@id/btnHapusSPA"
-                    app:layout_constraintTop_toBottomOf="@+id/btnPenugasanSPA" />
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="4dp" />
 
                 <Button
                     android:id="@+id/btnUnProcessSPA"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:backgroundTint="@android:color/holo_red_dark"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/un_process_btn_text"
                     android:textAllCaps="false"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@id/btnPenugasanSPA"
-                    app:layout_constraintTop_toBottomOf="@+id/btnPenugasanSPA" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnProcessSPA"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="4dp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/containerButton2"
+                tools:layout_editor_absoluteX="16dp">
+
+                <Button
+                    android:id="@+id/btnRejectItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/decline_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/btnRollback"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="4dp" />
+
+                <Button
+                    android:id="@+id/btnRollback"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="@color/colorBlue"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/rollback_btn_text"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@+id/btnRejectItem"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="4dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

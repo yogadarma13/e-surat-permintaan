@@ -77,7 +77,9 @@ val viewModelModule = module {
             get() as ReadDetailItemSuratPermintaanUseCase,
             get() as SetPenugasanItemUseCase,
             get() as ProcessItemSuratPermintaanUseCase,
-            get() as UnProcessItemSuratPermintaanUseCase
+            get() as UnProcessItemSuratPermintaanUseCase,
+            get() as RejectItemSuratPermintaanUseCase,
+            get() as RollbackItemSuratPermintaanUseCase
         )
     }
     viewModel {

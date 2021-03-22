@@ -344,10 +344,10 @@ class EditItemDialog(
         if (kategoriValue.isNullOrEmpty()) dialogRootView.etKategori.error =
             "Pilih sesuai pilihan" else dialogRootView.etKategori.error = null
 
-        if (satuanValue.isNullOrEmpty()) dialogRootView.etSatuan.error =
+        if (satuanValue == null) dialogRootView.etSatuan.error =
             "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
 
-        if (kodePekerjaanValue.isNullOrEmpty() || kategoriValue.isNullOrEmpty() || satuanValue.isNullOrEmpty()) {
+        if (dialogRootView.etKodePekerjaan.error != null || dialogRootView.etKategori.error != null || dialogRootView.etSatuan.error != null) {
             activity.toastNotify("Lengkapi data terlebih dahulu")
         } else {
             val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
@@ -356,9 +356,9 @@ class EditItemDialog(
                 .setPositiveButton("Ya") { _, _ ->
                     val updateItemSP = UpdateItemSP(
                         kodeSp,
-                        kodePekerjaanValue,
+                        kodePekerjaanValue!!,
                         jenisBarang,
-                        satuanValue,
+                        satuanValue!!,
                         volume,
                         fungsi,
                         target,
@@ -371,7 +371,7 @@ class EditItemDialog(
                         statusPenugasanValue,
                         dataProfile.id!!,
                         selectedItemId,
-                        kategoriValue
+                        kategoriValue!!
                     )
                     activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
                         .subscribe(this::handleResponse, this::handleError)
