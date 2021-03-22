@@ -9,16 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailHistory
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItem
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.databinding.DetailHistorySpaItemBinding
-import com.example.e_suratpermintaan.databinding.DetailHistorySpbItemBinding
-import com.example.e_suratpermintaan.databinding.DetailHistorySpsItemBinding
+import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpaBinding
+import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpbBinding
+import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpsBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 
@@ -37,9 +36,9 @@ class DetailHistoryAdapter : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolde
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            SPA -> ViewHolderSPA(DetailHistorySpaItemBinding.inflate(inflater, parent, false))
-            SPB -> ViewHolderSPB(DetailHistorySpbItemBinding.inflate(inflater, parent, false))
-            else -> ViewHolderSPS(DetailHistorySpsItemBinding.inflate(inflater, parent, false))
+            SPA -> ViewHolderSPA(ItemDetailHistorySpaBinding.inflate(inflater, parent, false))
+            SPB -> ViewHolderSPB(ItemDetailHistorySpbBinding.inflate(inflater, parent, false))
+            else -> ViewHolderSPS(ItemDetailHistorySpsBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -84,7 +83,7 @@ class DetailHistoryAdapter : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolde
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class ViewHolderSPA(private val binding: DetailHistorySpaItemBinding) :
+    inner class ViewHolderSPA(private val binding: ItemDetailHistorySpaBinding) :
         ViewHolder(binding.root) {
 
         fun bind(data: ItemsDetailHistory) {
@@ -143,7 +142,7 @@ class DetailHistoryAdapter : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolde
         }
     }
 
-    inner class ViewHolderSPB(private val binding: DetailHistorySpbItemBinding) :
+    inner class ViewHolderSPB(private val binding: ItemDetailHistorySpbBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ItemsDetailHistory) {
             binding.tvJenisDetailSPB.text = data.idBarang
@@ -194,7 +193,7 @@ class DetailHistoryAdapter : RecyclerView.Adapter<DetailHistoryAdapter.ViewHolde
         }
     }
 
-    inner class ViewHolderSPS(private val binding: DetailHistorySpsItemBinding) :
+    inner class ViewHolderSPS(private val binding: ItemDetailHistorySpsBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ItemsDetailHistory) {
             binding.tvJenisDetailSPS.text = data.idBarang

@@ -81,16 +81,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/labelJenisBarang"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/label_jenis_barang"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPA" />
-
-            <TextView
                 android:id="@+id/labelKategori"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,7 +88,17 @@
                 android:text="@string/label_kategori"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvJenisBarangSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPA" />
+
+            <TextView
+                android:id="@+id/labelJenisBarang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/label_jenis_barang"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPA" />
 
             <TextView
                 android:id="@+id/labelQty"
@@ -108,7 +108,7 @@
                 android:text="@string/label_vol"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPA" />
+                app:layout_constraintTop_toBottomOf="@id/tvJenisBarangSPA" />
 
             <TextView
                 android:id="@+id/labelSatuan"
@@ -212,18 +212,6 @@
                 tools:text="Kode Pekerjaan" />
 
             <TextView
-                android:id="@+id/tvJenisBarangSPA"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toRightOf="@id/barrier3"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPA"
-                tools:text="Jenis Barang" />
-
-            <TextView
                 android:id="@+id/tvKategoriSPA"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -232,8 +220,20 @@
                 android:gravity="center_vertical"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvJenisBarangSPA"
+                app:layout_constraintTop_toBottomOf="@id/tvKodeDetailSPA"
                 tools:text="Kategori" />
+
+            <TextView
+                android:id="@+id/tvJenisBarangSPA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toRightOf="@id/barrier3"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPA"
+                tools:text="Jenis barang" />
 
             <TextView
                 android:id="@+id/tvQtySPA"
@@ -244,7 +244,7 @@
                 android:gravity="center_vertical"
                 app:layout_constraintLeft_toRightOf="@id/barrier3"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvKategoriSPA"
+                app:layout_constraintTop_toBottomOf="@id/tvJenisBarangSPA"
                 tools:text="Qty" />
 
             <TextView
@@ -438,7 +438,7 @@
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginEnd="4dp" />
+                    app:layout_goneMarginEnd="0dp" />
 
                 <Button
                     android:id="@+id/btnUnProcessSPA"
@@ -456,7 +456,7 @@
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/btnProcessSPA"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginStart="4dp" />
+                    app:layout_goneMarginStart="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -485,7 +485,7 @@
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginEnd="4dp" />
+                    app:layout_goneMarginEnd="0dp" />
 
                 <Button
                     android:id="@+id/btnRollback"
@@ -503,7 +503,7 @@
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/btnRejectItem"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginStart="4dp" />
+                    app:layout_goneMarginStart="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

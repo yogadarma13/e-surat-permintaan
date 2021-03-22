@@ -675,7 +675,10 @@ class EditItemDialog(
     }
 
     private fun handleError(error: Throwable) {
-        dialogRootView.rvJenisBarang.visibility = View.GONE
+        jenisBarangAdapter.itemList.clear()
+        jenisBarangAdapter.oldItemList = jenisBarangAdapter.itemList
+        jenisBarangAdapter.notifyDataSetChanged()
+
         activity.handleError(error)
     }
 

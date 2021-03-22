@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.e_suratpermintaan.core.domain.entities.responses.ItemsDetailSP
 import com.e_suratpermintaan.core.domain.entities.responses.PersyaratanItemDetailSP
 import com.example.e_suratpermintaan.R
-import com.example.e_suratpermintaan.databinding.DetailHistorySpaItemBinding
-import com.example.e_suratpermintaan.databinding.DetailHistorySpbItemBinding
-import com.example.e_suratpermintaan.databinding.DetailHistorySpsItemBinding
+import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpaBinding
+import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpbBinding
+import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpsBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
 import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
@@ -55,9 +55,9 @@ class EditItemSuratPermintaanAdapter :
     ): EditItemSuratPermintaanAdapter.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            SPA -> ViewHolderSPA(DetailHistorySpaItemBinding.inflate(inflater, parent, false))
-            SPB -> ViewHolderSPB(DetailHistorySpbItemBinding.inflate(inflater, parent, false))
-            else -> ViewHolderSPS(DetailHistorySpsItemBinding.inflate(inflater, parent, false))
+            SPA -> ViewHolderSPA(ItemDetailHistorySpaBinding.inflate(inflater, parent, false))
+            SPB -> ViewHolderSPB(ItemDetailHistorySpbBinding.inflate(inflater, parent, false))
+            else -> ViewHolderSPS(ItemDetailHistorySpsBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -108,7 +108,7 @@ class EditItemSuratPermintaanAdapter :
 
     open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class ViewHolderSPA(private val binding: DetailHistorySpaItemBinding) :
+    inner class ViewHolderSPA(private val binding: ItemDetailHistorySpaBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ItemsDetailSP) {
             if (data.tombolEditItem == 1) {
@@ -238,7 +238,7 @@ class EditItemSuratPermintaanAdapter :
         }
     }
 
-    inner class ViewHolderSPB(private val binding: DetailHistorySpbItemBinding) :
+    inner class ViewHolderSPB(private val binding: ItemDetailHistorySpbBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ItemsDetailSP) {
             if (data.tombolEditItem == 1) {
@@ -366,7 +366,7 @@ class EditItemSuratPermintaanAdapter :
         }
     }
 
-    inner class ViewHolderSPS(private val binding: DetailHistorySpsItemBinding) :
+    inner class ViewHolderSPS(private val binding: ItemDetailHistorySpsBinding) :
         ViewHolder(binding.root) {
         fun bind(data: ItemsDetailSP) {
             if (data.tombolEditItem == 1) {
