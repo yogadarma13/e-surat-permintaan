@@ -5,6 +5,8 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.MenuItem
 import com.bumptech.glide.Glide
@@ -55,12 +57,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         progressDialog = ProgressDialog(this)
 
         init()
-
     }
 
     private fun init() {
         setupTollbar()
         setupListeners()
+        showSwipeRefreshLayout()
         initApiRequest()
     }
 
@@ -102,7 +104,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
             val passBaru = binding.etPassBaruProfile.text.toString()
             val confirmPassBaru = binding.etConfirmPassBaruProfile.text.toString()
 
-            if (!passBaru.equals(confirmPassBaru)) {
+            if (passBaru != confirmPassBaru) {
                 toastNotify("Password baru tidak sama")
             } else {
                 val idUser = id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
@@ -156,8 +158,35 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
             showDialogMethodOption()
         }
 
+        binding.passwordSeek.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.etPassLamaProfile.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+                binding.etPassBaruProfile.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+                binding.etConfirmPassBaruProfile.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            } else {
+                binding.etPassLamaProfile.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                binding.etPassBaruProfile.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                binding.etConfirmPassBaruProfile.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+            }
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener(this::initApiRequest)
+
     }
 
+    private fun showSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.isRefreshing = true
+    }
+
+    private fun dismissSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.isRefreshing = false
+    }
 
     private fun handleResponse(response: Any) {
         when (response) {
@@ -175,8 +204,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
                 binding.etDeskripsiProfile.setText(dataProfile?.desc)
                 binding.tvUsernameProfile.text = dataProfile?.username
 
-                toastNotify(dataProfile?.fotoProfile.toString())
-
                 binding.linearLayoutJenisProfile.removeAllViews()
                 dataProfile?.jenis?.forEach {
                     val itemSimpleCheckboxBinding = ItemSimpleCheckboxBinding.inflate(
@@ -191,6 +218,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
                     }
                     binding.linearLayoutJenisProfile.addView(itemSimpleCheckboxBinding.root)
                 }
+
+                dismissSwipeRefreshLayout()
             }
 
             is EditProfileResponse -> {
@@ -222,8 +251,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
             if (!filePath.isNullOrEmpty()) {
                 toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
             }
-
-            toastNotify(filePath)
         }
 
         if (requestCode == PHOTO_SIGNATURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -232,7 +259,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
             if (!ttdPath.isNullOrEmpty()) {
                 toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
-                toastNotify(ttdPath)
                 fileTtd = File(ttdPath)
             } else {
                 toastNotify("File Tdak ditemukan")
