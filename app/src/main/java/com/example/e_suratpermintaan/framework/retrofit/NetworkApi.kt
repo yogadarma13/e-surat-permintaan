@@ -40,18 +40,18 @@ interface NetworkApi {
     ): Observable<EditProfileResponse>
 
     // ================================= SURAT PERMINTAAN =======================================
-    @GET("DataAll")
+    @GET("dataall")
     fun getDataAll(
         @Query("id_user") id_user: String
     ): Observable<DataAllResponse>
 
-    @GET("MyData")
+    @GET("mydata")
     fun getMyData(
         @Query("id_user") idUser: String,
-//        @Query("proyek") proyek: String,
+        @Query("id_proyek") idProyek: String,
+        @Query("id_jenis") idJenis: String
 //        @Query("status_permintaan") status_permintaan: String,
 //        @Query("jenis_permintaan") jenis_permintaan: String
-        // @Query("jenis_data") jenis_data: String
     ): Observable<MyDataResponse>
 
     @GET("detail")

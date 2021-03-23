@@ -363,11 +363,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         if (profile?.id != null) {
 
             disposable = suratPermintaanViewModel.readMyData(
-                idUser,
-//                selectedIdProyekFilterValue,
-//                selectedStatusFilterValue,
-//                selectedJenisPermintaanFilterValue,
-//                ""
+                idUser, "all", "all"
             )
                 .subscribe(this::handleResponse, this::handleError)
 

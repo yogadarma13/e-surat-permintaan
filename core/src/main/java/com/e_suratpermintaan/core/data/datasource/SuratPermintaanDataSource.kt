@@ -9,28 +9,26 @@ import okhttp3.RequestBody
 interface SuratPermintaanDataSource {
     fun add(createSP: CreateSP): Observable<CreateSPResponse>
 
-    fun readAllData(id_user: String): Observable<DataAllResponse>
+    fun readAllData(idUser: String): Observable<DataAllResponse>
 
     fun readMyData(
-        id_user: String,
-//        proyek: String,
-//        status_permintaan: String,
-//        jenis_permintaan: String,
-//        jenis_data: String
+        idUser: String,
+        idProyek: String,
+        idJenis: String
     ): Observable<MyDataResponse>
 
-    fun remove(id_sp: String): Observable<DeleteSPResponse>
+    fun remove(idSp: String): Observable<DeleteSPResponse>
 
-    fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse>
+    fun readDetail(idSp: String, idUser: String): Observable<DetailSPResponse>
 
     fun edit(
         id: RequestBody,
         file: MultipartBody.Part,
-        id_user: RequestBody
+        idUser: RequestBody
     ): Observable<EditSPResponse>
 
     fun verifikasi(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         status: RequestBody,
         catatan: RequestBody,
@@ -38,14 +36,14 @@ interface SuratPermintaanDataSource {
     ): Observable<VerifikasiSPResponse>
 
     fun ajukan(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         file: MultipartBody.Part
     ): Observable<AjukanSPResponse>
 
-    fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse>
+    fun cancel(idUser: String, id: String): Observable<BatalkanSPResponse>
 
-    fun readHistory(id_sp: String): Observable<HistorySPResponse>
+    fun readHistory(idSp: String): Observable<HistorySPResponse>
 
-    fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse>
+    fun saveEdit(id: String, idUser: String): Observable<SimpanEditSPResponse>
 }

@@ -12,50 +12,48 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
 
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> = dataSource.add(createSP)
 
-    override fun readAllData(id_user: String): Observable<DataAllResponse> =
-        dataSource.readAllData(id_user)
+    override fun readAllData(idUser: String): Observable<DataAllResponse> =
+        dataSource.readAllData(idUser)
 
     override fun readMyData(
-        id_user: String,
-//        proyek: String,
-//        status_permintaan: String,
-//        jenis_permintaan: String,
-//        jenis_data: String
+        idUser: String,
+        idProyek: String,
+        idJenis: String
     ): Observable<MyDataResponse> =
-        dataSource.readMyData(id_user)
+        dataSource.readMyData(idUser, idProyek, idJenis)
 
-    override fun remove(id_sp: String): Observable<DeleteSPResponse> =
-        dataSource.remove(id_sp)
+    override fun remove(idSp: String): Observable<DeleteSPResponse> =
+        dataSource.remove(idSp)
 
-    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
-        dataSource.readDetail(id_sp, id_user)
+    override fun readDetail(idSp: String, idUser: String): Observable<DetailSPResponse> =
+        dataSource.readDetail(idSp, idUser)
 
-    override fun edit(id: RequestBody, file: MultipartBody.Part, id_user: RequestBody) =
-        dataSource.edit(id, file, id_user)
+    override fun edit(id: RequestBody, file: MultipartBody.Part, idUser: RequestBody) =
+        dataSource.edit(id, file, idUser)
 
     override fun verifikasi(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         status: RequestBody,
         catatan: RequestBody,
         file: MultipartBody.Part
     ): Observable<VerifikasiSPResponse> =
-        dataSource.verifikasi(id_user, id, status, catatan, file)
+        dataSource.verifikasi(idUser, id, status, catatan, file)
 
     override fun ajukan(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         file: MultipartBody.Part
     ): Observable<AjukanSPResponse> =
-        dataSource.ajukan(id_user, id, file)
+        dataSource.ajukan(idUser, id, file)
 
-    override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
-        dataSource.cancel(id_user, id)
+    override fun cancel(idUser: String, id: String): Observable<BatalkanSPResponse> =
+        dataSource.cancel(idUser, id)
 
-    override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
-        dataSource.readHistory(id_sp)
+    override fun readHistory(idSp: String): Observable<HistorySPResponse> =
+        dataSource.readHistory(idSp)
 
-    override fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse> =
-        dataSource.saveEdit(id, id_user)
+    override fun saveEdit(id: String, idUser: String): Observable<SimpanEditSPResponse> =
+        dataSource.saveEdit(id, idUser)
 
 }

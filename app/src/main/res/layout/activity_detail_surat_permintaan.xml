@@ -369,7 +369,8 @@
             app:layout_constraintEnd_toStartOf="@+id/btnDecline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="0dp" />
 
         <Button
             android:id="@+id/btnDecline"
@@ -384,7 +385,8 @@
             app:layout_constraintEnd_toStartOf="@+id/btnEdit"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnCancel"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="0dp" />
 
         <Button
             android:id="@+id/btnEdit"
@@ -415,7 +417,8 @@
             app:layout_constraintEnd_toStartOf="@+id/btnAccept"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnEdit"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="0dp" />
 
         <Button
             android:id="@+id/btnAccept"
@@ -430,7 +433,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnAjukan"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="0dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

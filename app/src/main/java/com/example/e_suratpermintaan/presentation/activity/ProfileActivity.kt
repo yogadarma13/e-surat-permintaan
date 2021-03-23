@@ -236,7 +236,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
     override fun handleError(error: Throwable) {
         super.handleError(error)
-
+        dismissSwipeRefreshLayout()
         progressDialog.dismiss()
 
     }

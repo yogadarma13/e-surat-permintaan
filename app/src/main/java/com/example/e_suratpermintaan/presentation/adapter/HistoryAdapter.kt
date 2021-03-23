@@ -27,16 +27,6 @@ class HistoryAdapter :
 
     var onItemClick: ((List<DetailHistory?>?) -> Unit)? = null
 
-//    private lateinit var onClickItemListener: OnClickItemListener
-//
-//    interface OnClickItemListener {
-//        fun onClick(view: View, item: List<DetailHistory?>?)
-//    }
-
-//    fun setOnClickListener(onClickItemListener: OnClickItemListener) {
-//        this.onClickItemListener = onClickItemListener
-//    }
-
     override fun getItemViewType(position: Int): Int {
         return TimelineView.getTimeLineViewType(position, itemCount)
     }
@@ -57,41 +47,10 @@ class HistoryAdapter :
 
         holder.bind(history)
 
-//        holder.date.text = timeLineModel?.tanggal
-//        holder.title.text = timeLineModel?.keterangan
-//        holder.user.text = "${timeLineModel?.user} (${timeLineModel?.role})"
-//        val color = timeLineModel?.warna
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            holder.timeline.marker.colorFilter =
-//                BlendModeColorFilter(Color.parseColor(color), BlendMode.SRC_IN);
-//        } else {
-//            holder.timeline.marker.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_IN)
-//        }
-//
-//        val ld: LayerDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_history_item) as LayerDrawable
-//        val topBorder: GradientDrawable = ld.findDrawableByLayerId(R.id.left_border) as GradientDrawable
-//        topBorder.setColor(Color.parseColor(color))
-//
-//        holder.container.background = ld
-//
-//        if (timeLineModel?.tombolDetail == 1) {
-//            holder.detail.visibility = View.VISIBLE
-//        }
-//
-//        holder.detail.setOnClickListener {
-//            onClickItemListener.onClick(holder.itemView, timeLineModel?.detail)
-//        }
     }
 
     inner class TimeLineViewHolder(private val binding: ItemHistoryBinding, viewType: Int) :
         RecyclerView.ViewHolder(binding.root) {
-//        val title = itemView.tvTitleHistory
-//        val user = itemView.tvUserHistory
-//        val date = itemView.tvDateHistory
-//        val timeline = itemView.timeline
-//        val container = itemView.containerHistory
-//        val detail = itemView.tvDetailHistory
 
         fun bind(history: DataHistory?) {
             binding.tvTitleHistory.text = history?.keterangan
@@ -123,7 +82,7 @@ class HistoryAdapter :
                 binding.tvDetailHistory.visibility = View.GONE
             }
 
-            binding.root.setOnClickListener {
+            binding.tvDetailHistory.setOnClickListener {
                 onItemClick?.invoke(history?.detail)
             }
         }

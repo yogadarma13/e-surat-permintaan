@@ -14,60 +14,52 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> =
         networkApi.createSP(createSP)
 
-    override fun readAllData(id_user: String): Observable<DataAllResponse> =
-        networkApi.getDataAll(id_user)
+    override fun readAllData(idUser: String): Observable<DataAllResponse> =
+        networkApi.getDataAll(idUser)
 
     override fun readMyData(
-        id_user: String,
-//        proyek: String,
-//        status_permintaan: String,
-//        jenis_permintaan: String,
-//        jenis_data: String
+        idUser: String,
+        idProyek: String,
+        idJenis: String
     ): Observable<MyDataResponse> =
-        networkApi.getMyData(
-            id_user,
-//            proyek,
-//            status_permintaan,
-//            jenis_permintaan
-            //,jenis_data
-        )
+        networkApi.getMyData(idUser, idProyek, idJenis)
 
-    override fun remove(id_sp: String): Observable<DeleteSPResponse> =
-        networkApi.deleteSP(id_sp)
+    override fun remove(idSp: String): Observable<DeleteSPResponse> =
+        networkApi.deleteSP(idSp)
 
-    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
-        networkApi.getDetailSP(id_sp, id_user)
+    override fun readDetail(idSp: String, idUser: String): Observable<DetailSPResponse> =
+        networkApi.getDetailSP(idSp, idUser)
 
     override fun edit(
         id: RequestBody,
         file: MultipartBody.Part,
-        id_user: RequestBody
+        idUser: RequestBody
     ): Observable<EditSPResponse> =
-        networkApi.editSP(id, file, id_user)
+        networkApi.editSP(id, file, idUser)
 
     override fun verifikasi(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         status: RequestBody,
         catatan: RequestBody,
         file: MultipartBody.Part
     ): Observable<VerifikasiSPResponse> =
-        networkApi.verifikasiSP(id_user, id, status, catatan, file)
+        networkApi.verifikasiSP(idUser, id, status, catatan, file)
 
     override fun ajukan(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         file: MultipartBody.Part
     ): Observable<AjukanSPResponse> =
-        networkApi.ajukanSP(id_user, id, file)
+        networkApi.ajukanSP(idUser, id, file)
 
-    override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
-        networkApi.batalkanSP(id_user, id)
+    override fun cancel(idUser: String, id: String): Observable<BatalkanSPResponse> =
+        networkApi.batalkanSP(idUser, id)
 
-    override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
-        networkApi.getHistorySP(id_sp)
+    override fun readHistory(idSp: String): Observable<HistorySPResponse> =
+        networkApi.getHistorySP(idSp)
 
-    override fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse> =
-        networkApi.simpanEditSP(id, id_user)
+    override fun saveEdit(id: String, idUser: String): Observable<SimpanEditSPResponse> =
+        networkApi.simpanEditSP(id, idUser)
 
 }

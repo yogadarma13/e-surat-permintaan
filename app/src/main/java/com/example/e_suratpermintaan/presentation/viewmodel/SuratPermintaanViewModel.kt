@@ -26,60 +26,52 @@ class SuratPermintaanViewModel(
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> =
         addSuratPermintaanUseCase.invoke(createSP)
 
-    override fun readAllData(id_user: String): Observable<DataAllResponse> =
-        readAllDataSuratPermintaanUseCase.invoke(id_user)
+    override fun readAllData(idUser: String): Observable<DataAllResponse> =
+        readAllDataSuratPermintaanUseCase.invoke(idUser)
 
     override fun readMyData(
-        id_user: String,
-//        proyek: String,
-//        status_permintaan: String,
-//        jenis_permintaan: String,
-//        jenis_data: String
+        idUser: String,
+        idProyek: String,
+        idJenis: String
     ): Observable<MyDataResponse> =
-        readMyDataSuratPermintaanUseCase.invoke(
-            id_user,
-//            proyek,
-//            status_permintaan,
-//            jenis_permintaan,
-//            jenis_data
-        )
+        readMyDataSuratPermintaanUseCase.invoke(idUser, idProyek, idJenis)
 
-    override fun remove(id_sp: String): Observable<DeleteSPResponse> =
-        removeSuratPermintaanUseCase.invoke(id_sp)
+    override fun remove(idSp: String): Observable<DeleteSPResponse> =
+        removeSuratPermintaanUseCase.invoke(idSp)
 
-    override fun readDetail(id_sp: String, id_user: String): Observable<DetailSPResponse> =
-        readDetailSuratPermintaanUseCase.invoke(id_sp, id_user)
+    override fun readDetail(idSp: String, idUser: String): Observable<DetailSPResponse> =
+        readDetailSuratPermintaanUseCase.invoke(idSp, idUser)
 
     override fun edit(
         id: RequestBody,
         file: MultipartBody.Part,
-        id_user: RequestBody
+        idUser: RequestBody
     ): Observable<EditSPResponse> =
-        editSuratPermintaanUseCase.invoke(id, file, id_user)
+        editSuratPermintaanUseCase.invoke(id, file, idUser)
 
     override fun verifikasi(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         status: RequestBody,
         catatan: RequestBody,
         file: MultipartBody.Part
     ): Observable<VerifikasiSPResponse> =
-        verifikasiSuratPermintaanUseCase.invoke(id_user, id, status, catatan, file)
+        verifikasiSuratPermintaanUseCase.invoke(idUser, id, status, catatan, file)
 
     override fun ajukan(
-        id_user: RequestBody,
+        idUser: RequestBody,
         id: RequestBody,
         file: MultipartBody.Part
     ): Observable<AjukanSPResponse> =
-        ajukanSuratPermintaanUseCase.invoke(id_user, id, file)
+        ajukanSuratPermintaanUseCase.invoke(idUser, id, file)
 
-    override fun cancel(id_user: String, id: String): Observable<BatalkanSPResponse> =
-        cancelSuratPermintaanUseCase.invoke(id_user, id)
+    override fun cancel(idUser: String, id: String): Observable<BatalkanSPResponse> =
+        cancelSuratPermintaanUseCase.invoke(idUser, id)
 
-    override fun readHistory(id_sp: String): Observable<HistorySPResponse> =
-        readHistorySuratPermintaanUseCase.invoke(id_sp)
+    override fun readHistory(idSp: String): Observable<HistorySPResponse> =
+        readHistorySuratPermintaanUseCase.invoke(idSp)
 
-    override fun saveEdit(id: String, id_user: String): Observable<SimpanEditSPResponse> =
-        saveEditSuratPermintaanUseCase.invoke(id, id_user)
+    override fun saveEdit(id: String, idUser: String): Observable<SimpanEditSPResponse> =
+        saveEditSuratPermintaanUseCase.invoke(id, idUser)
 
 }

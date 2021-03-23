@@ -45,8 +45,9 @@ class HistorySuratPermintaanActivity : BaseActivity<ActivityHistorySuratPerminta
         setupTollbar()
         historyAdapter = HistoryAdapter()
         initRecyclerView()
-        getHistory()
         setupListener()
+        showSwipeRefreshLayout()
+        getHistory()
     }
 
     private fun setupTollbar() {
@@ -58,15 +59,6 @@ class HistorySuratPermintaanActivity : BaseActivity<ActivityHistorySuratPerminta
             supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView() {
@@ -90,6 +82,8 @@ class HistorySuratPermintaanActivity : BaseActivity<ActivityHistorySuratPerminta
             intent.putExtra(JENIS_SP_DETAIL_HISTORY, jenisSp)
             startActivity(intent)
         }
+
+        binding.swipeRefreshLayout.setOnRefreshListener(this::getHistory)
     }
 
     private fun getHistory() {
@@ -97,9 +91,34 @@ class HistorySuratPermintaanActivity : BaseActivity<ActivityHistorySuratPerminta
             .subscribe(this::historyResponse, this::handleError)
     }
 
-    private fun historyResponse(response: HistorySPResponse) {
+    private fun showSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.isRefreshing = true
+    }
 
+    private fun dismissSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.isRefreshing = false
+    }
+
+    private fun historyResponse(response: HistorySPResponse) {
+        historyAdapter.dataHistorySP.clear()
         response.data?.let { historyAdapter.dataHistorySP.addAll(it) }
         historyAdapter.notifyDataSetChanged()
+        dismissSwipeRefreshLayout()
+    }
+
+    override fun handleError(error: Throwable) {
+        super.handleError(error)
+
+        dismissSwipeRefreshLayout()
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

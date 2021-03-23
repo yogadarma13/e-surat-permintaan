@@ -44,7 +44,8 @@ class NotifikasiActivity : BaseActivity<ActivityNotifikasiBinding>() {
         setupTollbar()
         notifikasiAdapter =
             BaseAdapter(NotifikasiUnreadListBinding::inflate, NotifikasiViewHolder::class.java)
-        getNotifikasi(idUser)
+        showSwipeRefreshLayout()
+        getNotifikasi()
         setupListeners()
         initRecyclerView()
 
@@ -59,15 +60,6 @@ class NotifikasiActivity : BaseActivity<ActivityNotifikasiBinding>() {
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
 
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initRecyclerView() {
@@ -87,14 +79,25 @@ class NotifikasiActivity : BaseActivity<ActivityNotifikasiBinding>() {
             startActivity(intent)
             finish()
         }
+
+        binding.swipeRefreshLayout.setOnRefreshListener(this::getNotifikasi)
     }
 
-    private fun getNotifikasi(idUser: String?) {
+    private fun showSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.isRefreshing = true
+    }
+
+    private fun dismissSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.isRefreshing = false
+    }
+
+    private fun getNotifikasi() {
         disposable = notifikasiViewModel.getNotifikasiList(idUser.toString())
             .subscribe(this::notifikasiResponse, this::handleError)
     }
 
     private fun notifikasiResponse(response: NotifikasiResponse) {
+        notifikasiAdapter.itemList.clear()
         var dataNotif: DataNotifikasi? = DataNotifikasi()
 
         response.data?.forEach {
@@ -102,9 +105,13 @@ class NotifikasiActivity : BaseActivity<ActivityNotifikasiBinding>() {
         }
 
         if (dataNotif?.count == 0) {
-            binding.constraintCountUnread.visibility = View.GONE
+            binding.tvTextCountNotifUnread.visibility = View.GONE
+            binding.tvCountNotifUnread.visibility = View.GONE
+            binding.lineSeparatorNotif.visibility = View.GONE
         } else {
-            binding.constraintCountUnread.visibility = View.VISIBLE
+            binding.tvTextCountNotifUnread.visibility = View.VISIBLE
+            binding.tvCountNotifUnread.visibility = View.VISIBLE
+            binding.lineSeparatorNotif.visibility = View.VISIBLE
             binding.tvCountNotifUnread.text = "${dataNotif?.count.toString()} notifikasi"
         }
 
@@ -115,5 +122,22 @@ class NotifikasiActivity : BaseActivity<ActivityNotifikasiBinding>() {
         }
 
         notifikasiAdapter.notifyDataSetChanged()
+
+        dismissSwipeRefreshLayout()
+    }
+
+    override fun handleError(error: Throwable) {
+        super.handleError(error)
+
+        dismissSwipeRefreshLayout()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

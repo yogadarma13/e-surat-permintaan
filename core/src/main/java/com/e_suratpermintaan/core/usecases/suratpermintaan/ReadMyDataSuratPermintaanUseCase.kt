@@ -10,19 +10,11 @@ class ReadMyDataSuratPermintaanUseCase(
     private val schedulerProvider: SchedulerProvider
 ) {
     fun invoke(
-        id_user: String,
-//        proyek: String,
-//        status_permintaan: String,
-//        jenis_permintaan: String,
-//        jenis_data: String
+        idUser: String,
+        idProyek: String,
+        idJenis: String
     ): Observable<MyDataResponse> =
-        suratPermintaanRepository.readMyData(
-            id_user,
-//            proyek,
-//            status_permintaan,
-//            jenis_permintaan,
-//            jenis_data
-        )
+        suratPermintaanRepository.readMyData(idUser, idProyek, idJenis)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }
