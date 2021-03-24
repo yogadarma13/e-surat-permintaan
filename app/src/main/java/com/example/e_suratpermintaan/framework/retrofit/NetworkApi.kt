@@ -42,7 +42,10 @@ interface NetworkApi {
     // ================================= SURAT PERMINTAAN =======================================
     @GET("dataall")
     fun getDataAll(
-        @Query("id_user") id_user: String
+        @Query("id_user") idUser: String,
+        @Query("id_proyek") idProyek: String,
+        @Query("id_jenis") idJenis: String,
+        @Query("id_status") idStatus: String
     ): Observable<DataAllResponse>
 
     @GET("mydata")
@@ -50,13 +53,11 @@ interface NetworkApi {
         @Query("id_user") idUser: String,
         @Query("id_proyek") idProyek: String,
         @Query("id_jenis") idJenis: String
-//        @Query("status_permintaan") status_permintaan: String,
-//        @Query("jenis_permintaan") jenis_permintaan: String
     ): Observable<MyDataResponse>
 
     @GET("detail")
     fun getDetailSP(
-        @Query("id_sp") id_sp: String,
+        @Query("id_sp") idSp: String,
         @Query("id_user") idUser: String
     ): Observable<DetailSPResponse>
 
@@ -117,20 +118,20 @@ interface NetworkApi {
     ): Observable<SimpanEditSPResponse>
 
     // =================================== MASTER ===============================================
-    @GET("status_permintaan")
+    @GET("datastatus")
     fun getMasterStatusFilterOptionList(
         @Query("id_user") idUser: String
     ): Observable<MasterStatusFilterOptionResponse>
 
-    @GET("jenis_data")
-    fun getMasterJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse>
+//    @GET("jenis_data")
+//    fun getMasterJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse>
 
-    @GET("jenis_permintaan")
+    @GET("datajenis")
     fun getMasterJenisFilterOptionList(
         @Query("id_user") idUser: String
     ): Observable<MasterJenisPermintaanFilterOptionResponse>
 
-    @GET("proyek")
+    @GET("dataproyek")
     fun getMasterProyekFilterOptionList(
         @Query("id_user") idUser: String
     ): Observable<MasterProyekFilterOptionResponse>
@@ -141,13 +142,13 @@ interface NetworkApi {
     @GET("status_penugasan")
     fun getMasterStatusPenugasanOptionList(): Observable<MasterStatusPenugasanOptionResponse>
 
-    @GET("dataproyek")
-    fun getMasterProyek(
-        @Query("id_user") idUser: String
-    ): Observable<MasterProyekResponse>
+//    @GET("dataproyek")
+//    fun getMasterProyek(
+//        @Query("id_user") idUser: String
+//    ): Observable<MasterProyekResponse>
 
-    @GET("datajenis")
-    fun getMasterJenis(
+    @GET("datajenissp")
+    fun getMasterJenisSP(
         @Query("id_user") idUser: String
     ): Observable<MasterJenisResponse>
 

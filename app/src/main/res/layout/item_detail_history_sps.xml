@@ -342,7 +342,7 @@
                     android:id="@+id/btnHapusSPS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="4dp"
                     android:backgroundTint="@android:color/holo_red_light"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -350,16 +350,14 @@
                     android:textAllCaps="false"
                     android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@+id/btnEditSPS"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginEnd="0dp" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/btnEditSPS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
                     android:backgroundTint="@color/colorBlue"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -367,16 +365,16 @@
                     android:textAllCaps="false"
                     android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@+id/btnPenugasanSPS"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/btnHapusSPS"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginEnd="0dp"
+                    app:layout_goneMarginStart="0dp" />
 
                 <Button
                     android:id="@+id/btnPenugasanSPS"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:backgroundTint="@color/colorGreen"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -384,11 +382,8 @@
                     android:textAllCaps="false"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toEndOf="@+id/btnEditSPS"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_goneMarginStart="0dp" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

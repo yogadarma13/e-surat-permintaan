@@ -361,6 +361,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingVertical="12dp"
             android:text="@string/cancel_btn_text"
             android:textAllCaps="false"
@@ -368,15 +370,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnDecline"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginEnd="0dp" />
+            app:layout_goneMarginEnd="2dp" />
 
         <Button
             android:id="@+id/btnDecline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingVertical="12dp"
             android:text="@string/decline_btn_text"
             android:textAllCaps="false"
@@ -386,13 +391,15 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnCancel"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginEnd="0dp" />
+            app:layout_goneMarginEnd="2dp" />
 
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorBlue"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingVertical="12dp"
             android:text="@string/edit_btn_text"
             android:textAllCaps="false"
@@ -401,7 +408,9 @@
             app:layout_constraintEnd_toStartOf="@+id/btnAjukan"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnDecline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="2dp"
+            app:layout_goneMarginStart="2dp" />
 
         <Button
             android:id="@+id/btnAjukan"
@@ -409,6 +418,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:backgroundTint="@color/colorGreen"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingVertical="12dp"
             android:text="@string/ajukan_btn_text"
             android:textAllCaps="false"
@@ -418,7 +429,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnEdit"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginStart="0dp" />
+            app:layout_goneMarginStart="2dp" />
 
         <Button
             android:id="@+id/btnAccept"
@@ -426,6 +437,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:backgroundTint="@color/colorGreen"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:paddingVertical="12dp"
             android:text="@string/accept_btn_text"
             android:textAllCaps="false"
@@ -434,7 +447,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/btnAjukan"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginStart="0dp" />
+            app:layout_goneMarginStart="2dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,8 +9,13 @@ class ReadAllDataSuratPermintaanUseCase(
     private val suratPermintaanRepository: SuratPermintaanRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(id_user: String): Observable<DataAllResponse> =
-        suratPermintaanRepository.readAllData(id_user)
+    fun invoke(
+        idUser: String,
+        idProyek: String,
+        idJenis: String,
+        idStatus: String
+    ): Observable<DataAllResponse> =
+        suratPermintaanRepository.readAllData(idUser, idProyek, idJenis, idStatus)
             .subscribeOn(schedulerProvider.io)
             .observeOn(schedulerProvider.mainThread)
 }

@@ -54,13 +54,13 @@ val viewModelModule = module {
     }
     viewModel {
         MasterViewModel(
-            get() as GetProyekListUseCase,
+//            get() as GetProyekListUseCase,
             get() as GetJenisListUseCase,
             get() as GetCostCodeListUseCase,
             get() as GetPersyaratanListUseCase,
             get() as GetUomListUseCase,
             get() as GetStatusFilterOptionUseCase,
-            get() as GetJenisDataFilterOptionUseCase,
+//            get() as GetJenisDataFilterOptionUseCase,
             get() as GetProyekFilterOptionUseCase,
             get() as GetJenisPermintaanFilterOptionUseCase,
             get() as GetPenugasanOptionUseCase,

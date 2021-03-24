@@ -1,7 +1,7 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter
 
 import android.view.View
-import com.e_suratpermintaan.core.domain.entities.responses.DataAll
+import com.e_suratpermintaan.core.domain.entities.responses.DataSuratPermintaan
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 
 class DataAllViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
@@ -11,7 +11,7 @@ class DataAllViewHolder(private val rootView: View) : BaseViewHolder(rootView) {
         position: Int,
         listener: (Any?, String?) -> Unit
     ) {
-        val data = item as DataAll
+        val data = item as DataSuratPermintaan
 
         rootView.setOnClickListener {
             listener.invoke(data, ROOTVIEW)

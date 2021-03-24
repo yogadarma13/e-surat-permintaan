@@ -1,7 +1,7 @@
 package com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter
 
 import android.graphics.Color
-import com.e_suratpermintaan.core.domain.entities.responses.DataMyData
+import com.e_suratpermintaan.core.domain.entities.responses.DataSuratPermintaan
 import com.example.e_suratpermintaan.databinding.ItemSuratPermintaanRowBinding
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 
@@ -13,7 +13,7 @@ class MyDataViewHolder(private val binding: ItemSuratPermintaanRowBinding) :
         position: Int,
         listener: (Any?, String?) -> Unit
     ) {
-        val data = item as DataMyData
+        val data = item as DataSuratPermintaan
 
         binding.root.setOnClickListener {
             listener(data, null)

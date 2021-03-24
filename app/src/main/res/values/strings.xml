@@ -114,4 +114,6 @@
     <string name="rollback_btn_text">Rollback</string>
     <string name="note_title">Berikan Catatan</string>
     <string name="note_empty_message">Tuliskan catatan terlebih dahulu</string>
+    <string name="reset_text">Reset</string>
+    <string name="filter_text">Filter</string>
 </resources>

@@ -3,10 +3,7 @@ package com.example.e_suratpermintaan.presentation.activity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Parcelable
+import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.requests.CreateSP
@@ -62,9 +58,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
     private lateinit var idUser: String
     private lateinit var roleId: String
 
-    private var selectedStatusFilterValue: String = ""
-    private var selectedJenisPermintaanFilterValue: String = ""
-    private var selectedIdProyekFilterValue: String = ""
+    private var selectedStatusFilterValue: String = "all"
+    private var selectedJenisPermintaanFilterValue: String = "all"
+    private var selectedIdProyekFilterValue: String = "all"
+    private var isMyData: Boolean = true
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
@@ -191,11 +188,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
     }
 
     private fun populateMaster() {
-        sharedMasterData.getOnNotifikasiReceived().observe(this, Observer {
+        sharedMasterData.getOnNotifikasiReceived().observe(this, {
             initNotifikasiApiRequest()
         })
 
-        sharedMasterData.getStatusFilterOptionList().observe(this, Observer {
+        sharedMasterData.getStatusFilterOptionList().observe(this, {
             statusOptionList.clear()
             it?.forEach { item ->
                 statusOptionList.add(item as DataMaster)
@@ -203,7 +200,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             statusOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getProyekFilterOptionList()?.observe(this, Observer {
+        sharedMasterData.getProyekFilterOptionList()?.observe(this, {
             if (proyekOptionList.size > 0) {
                 Log.d(
                     "OBSERVER",
@@ -215,11 +212,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
 
             it?.forEach { item ->
                 proyekOptionList.add(item as DataMaster)
+                proyekList.add(item)
             }
             proyekOptionAdapter.notifyDataSetChanged()
         })
 
-        sharedMasterData.getJenisPermintaanFilterOptionList()?.observe(this, Observer {
+        sharedMasterData.getJenisPermintaanFilterOptionList()?.observe(this, {
             jenisPermintaanOptionList.clear()
             it?.forEach { item ->
                 jenisPermintaanOptionList.add(item as DataMaster)
@@ -252,6 +250,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
                     logout()
                 }
                 R.id.semua -> {
+                    isMyData = false
                     // indeks 0 untuk nilai valuenya "semua"
                     selectedStatusFilterValue = statusOptionList[0].value.toString()
                     val selectedStatusFilterOption = statusOptionList[0].option.toString()
@@ -262,6 +261,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
                     initApiRequest()
                 }
                 R.id.menungguVerifikasi -> {
+                    isMyData = true
                     dialogFilterSpBinding.tilStatus.visibility = View.GONE
                     resetFilter(dialogFilterSpBinding.tilStatus.visibility == View.VISIBLE)
                     initApiRequest()
@@ -347,7 +347,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             "0"
         )
 
-        proyekList.clear()
+//        proyekList.clear()
         jenisList.clear()
         spAdapter.itemList.clear()
 
@@ -362,16 +362,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
 
         if (profile?.id != null) {
 
-            disposable = suratPermintaanViewModel.readMyData(
-                idUser, "all", "all"
-            )
-                .subscribe(this::handleResponse, this::handleError)
+            disposable = if (isMyData) {
+                suratPermintaanViewModel.readMyData(
+                    idUser, selectedIdProyekFilterValue, selectedJenisPermintaanFilterValue
+                )
+                    .subscribe(this::handleResponse, this::handleError)
+            } else {
+                suratPermintaanViewModel.readAllData(
+                    idUser,
+                    selectedIdProyekFilterValue,
+                    selectedJenisPermintaanFilterValue,
+                    selectedStatusFilterValue
+                ).subscribe(this::handleResponse, this::handleError)
+            }
 
             disposable = notifikasiViewModel.getNotifikasiList(idUser)
                 .subscribe(this::handleResponse, this::handleError)
 
-            disposable = masterViewModel.getProyekList(idUser)
-                .subscribe(this::handleResponse, this::handleError)
+//            disposable = masterViewModel.getProyekList(idUser)
+//                .subscribe(this::handleResponse, this::handleError)
 
             disposable = masterViewModel.getJenisList(idUser)
                 .subscribe(this::handleResponse, this::handleError)
@@ -437,7 +446,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         }
 
         spAdapter.setOnItemClickListener { item, _ ->
-            val data = item as DataMyData
+            val data = item as DataSuratPermintaan
             val intent = Intent(this@MainActivity, DetailSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EXTRA_KEY, data.id.toString())
             startActivityForResult(intent, LAUNCH_DETAIL_ACTIVITY)
@@ -473,7 +482,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.swipeRefreshLayout.isRefreshing = false
+        }, 850)
     }
 
     private fun handleResponse(response: Any) {
@@ -481,11 +492,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
 
         when (response) {
             is MyDataResponse -> {
+                spAdapter.itemList.clear()
 
-                val suratPermintaanList: List<DataMyData?>? = response.data
+                val suratPermintaanList: List<DataSuratPermintaan?>? = response.data
 
                 suratPermintaanList?.forEach {
-                    spAdapter.itemList.add(it as DataMyData)
+                    spAdapter.itemList.add(it as DataSuratPermintaan)
                 }
 
                 spAdapter.notifyDataSetChanged()
@@ -496,16 +508,34 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
                 )
 
             }
-            is MasterProyekResponse -> {
 
-                response.data?.forEach {
-                    if (it != null) {
-                        proyekList.add(it)
-                    }
+            is DataAllResponse -> {
+                spAdapter.itemList.clear()
+
+                val suratPermintaanList: List<DataSuratPermintaan?>? = response.data
+
+                suratPermintaanList?.forEach {
+                    spAdapter.itemList.add(it as DataSuratPermintaan)
                 }
-                proyekAdapter.notifyDataSetChanged()
+
+                spAdapter.notifyDataSetChanged()
+
+                binding.tvShowLengthEntry.text = getString(
+                    R.string.main_header_list_count_msg,
+                    spAdapter.itemList.size.toString()
+                )
 
             }
+//            is MasterProyekResponse -> {
+//
+//                response.data?.forEach {
+//                    if (it != null) {
+//                        proyekList.add(it)
+//                    }
+//                }
+//                proyekAdapter.notifyDataSetChanged()
+//
+//            }
             is MasterJenisResponse -> {
 
                 response.data?.forEach {
@@ -655,15 +685,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             val selectedStatus = dialogFilterSpBinding.spinnerStatus.text.toString()
 
             selectedIdProyekFilterValue =
-                proyekOptionList.find { it.option == selectedProyek }?.value ?: ""
+                proyekOptionList.find { it.option == selectedProyek }?.value ?: "all"
             selectedJenisPermintaanFilterValue =
-                jenisPermintaanOptionList.find { it.option == selectedJenis }?.value ?: ""
+                jenisPermintaanOptionList.find { it.option == selectedJenis }?.value ?: "all"
             selectedStatusFilterValue =
-                statusOptionList.find { it.option == selectedStatus }?.value ?: ""
+                statusOptionList.find { it.option == selectedStatus }?.value ?: "all"
 
             initApiRequest()
 
-            alertDialogFilterSP.hide()
+            alertDialogFilterSP.dismiss()
         }
 
         alertDialogFilterSP.setView(dialogFilterSpBinding.root)
@@ -673,15 +703,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         dialogFilterSpBinding.spinnerProyek.text.clear()
         dialogFilterSpBinding.spinnerJenis.text.clear()
 
-        selectedIdProyekFilterValue = ""
-        selectedJenisPermintaanFilterValue = ""
+        selectedIdProyekFilterValue = "all"
+        selectedJenisPermintaanFilterValue = "all"
 
         if (!isStatusPermintaanVisible) {
             // ini maksudnya untuk kalau user memilih menu item menunggu verifikasi
             // nah status permintaannya kan ilang, jadi set statusFilterValue ke ""
             // karna untuk menunggu verifikasi statusPermintaanya default ""
             dialogFilterSpBinding.spinnerStatus.text.clear()
-            selectedStatusFilterValue = ""
+            selectedStatusFilterValue = "all"
         } else {
             selectedStatusFilterValue = statusOptionList[0].value.toString()
             val selectedStatusFilterOption = statusOptionList[0].option.toString()

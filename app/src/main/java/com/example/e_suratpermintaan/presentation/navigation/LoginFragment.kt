@@ -3,6 +3,7 @@ package com.example.e_suratpermintaan.presentation.navigation
 import android.app.Activity
 import android.content.Intent
 import android.os.Handler
+import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.KeyEvent
@@ -68,7 +69,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun doLogin() {
         binding.progressBarOverlay.root.visibility = VISIBLE
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             fcmPreference.getUserTokenId()?.let { userTokenId ->
                 disposable = authViewModel
                     .doLogin(
@@ -115,7 +116,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                         toastNotify(response.message)
                                         binding.progressBarOverlay.root.visibility = GONE
 
-                                        Handler().postDelayed({
+                                        Handler(Looper.getMainLooper()).postDelayed({
                                             val intent =
                                                 Intent(starterActivity, MainActivity::class.java)
                                             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP

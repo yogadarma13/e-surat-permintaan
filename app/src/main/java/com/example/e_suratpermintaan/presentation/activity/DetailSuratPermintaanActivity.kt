@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -325,7 +326,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler(Looper.getMainLooper()).postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
     }
 
     override fun handleError(error: Throwable) {
@@ -443,7 +444,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_BATAL))
                 initApiRequest()
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     finish()
                 }, 1000)
             }
@@ -454,7 +455,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_VERIFIKASI))
                 initApiRequest()
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     finish()
                 }, 1000)
             }

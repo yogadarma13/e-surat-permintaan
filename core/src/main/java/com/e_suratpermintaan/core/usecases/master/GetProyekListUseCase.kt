@@ -9,8 +9,8 @@ class GetProyekListUseCase(
     private val masterProyekRepository: MasterRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(id_user: String): Observable<MasterProyekResponse> =
-        masterProyekRepository.getProyekList(id_user)
-            .subscribeOn(schedulerProvider.io)
-            .observeOn(schedulerProvider.mainThread)
+//    fun invoke(id_user: String): Observable<MasterProyekResponse> =
+//        masterProyekRepository.getProyekList(id_user)
+//            .subscribeOn(schedulerProvider.io)
+//            .observeOn(schedulerProvider.mainThread)
 }

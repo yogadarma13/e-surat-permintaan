@@ -20,9 +20,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="q">
         <activity android:name=".presentation.activity.WebViewActivity" />
-        <activity android:name=".presentation.activity.EditSuratPermintaanActivity" />
-        <activity android:name=".presentation.activity.DetailHistoryActivity" />
-        <activity android:name=".presentation.activity.HistorySuratPermintaanActivity" />
+        <activity android:name=".presentation.activity.EditSuratPermintaanActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".presentation.activity.DetailHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".presentation.activity.HistorySuratPermintaanActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
@@ -41,21 +44,26 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".presentation.activity.NotifikasiActivity" />
-        <activity android:name=".presentation.activity.StarterActivity">
+        <activity android:name=".presentation.activity.NotifikasiActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".presentation.activity.StarterActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.activity.MainActivity">
+        <activity android:name=".presentation.activity.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.e-suratpermintaan.fcm" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.activity.DetailSuratPermintaanActivity" />
-        <activity android:name=".presentation.activity.ProfileActivity" />
+        <activity android:name=".presentation.activity.DetailSuratPermintaanActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".presentation.activity.ProfileActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

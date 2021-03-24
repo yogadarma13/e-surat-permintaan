@@ -7,11 +7,11 @@ import io.reactivex.rxjava3.core.Observable
 
 class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSource {
 
-    override fun getProyekList(id_user: String): Observable<MasterProyekResponse> =
-        networkApi.getMasterProyek(id_user)
+//    override fun getProyekList(idUser: String): Observable<MasterProyekResponse> =
+//        networkApi.getMasterProyek(idUser)
 
-    override fun getJenisList(id_user: String): Observable<MasterJenisResponse> =
-        networkApi.getMasterJenis(id_user)
+    override fun getJenisList(idUser: String): Observable<MasterJenisResponse> =
+        networkApi.getMasterJenisSP(idUser)
 
     override fun getCostCodeList(id: String): Observable<MasterCCResponse> =
         networkApi.getMasterCostCode(id)
@@ -22,17 +22,17 @@ class MasterDataSourceImpl(private val networkApi: NetworkApi) : MasterDataSourc
     override fun getUomList(id: String): Observable<MasterUOMResponse> =
         networkApi.getMasterUom(id)
 
-    override fun getStatusFilterOptionList(id_user: String): Observable<MasterStatusFilterOptionResponse> =
-        networkApi.getMasterStatusFilterOptionList(id_user)
+    override fun getStatusFilterOptionList(idUser: String): Observable<MasterStatusFilterOptionResponse> =
+        networkApi.getMasterStatusFilterOptionList(idUser)
 
-    override fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse> =
-        networkApi.getMasterJenisDataFilterOptionList()
+//    override fun getJenisDataFilterOptionList(): Observable<MasterJenisDataFilterOptionResponse> =
+//        networkApi.getMasterJenisDataFilterOptionList()
 
-    override fun getProyekFilterOptionList(id_user: String): Observable<MasterProyekFilterOptionResponse> =
-        networkApi.getMasterProyekFilterOptionList(id_user)
+    override fun getProyekFilterOptionList(idUser: String): Observable<MasterProyekFilterOptionResponse> =
+        networkApi.getMasterProyekFilterOptionList(idUser)
 
-    override fun getJenisPermintaanFilterOptionList(id_user: String): Observable<MasterJenisPermintaanFilterOptionResponse> =
-        networkApi.getMasterJenisFilterOptionList(id_user)
+    override fun getJenisPermintaanFilterOptionList(idUser: String): Observable<MasterJenisPermintaanFilterOptionResponse> =
+        networkApi.getMasterJenisFilterOptionList(idUser)
 
     override fun getPenugasanOptionList(): Observable<MasterPenugasanOptionResponse> =
         networkApi.getMasterPenugasanOptionList()

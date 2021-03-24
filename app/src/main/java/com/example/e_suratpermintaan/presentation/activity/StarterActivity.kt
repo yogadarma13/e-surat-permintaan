@@ -50,7 +50,7 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
 
         val observablePersyaratan = masterViewModel.getPersyaratanList("all")
 
-        val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
+//        val observableJenisDataFilter = masterViewModel.getJenisDataFilterOptionList()
 
         val observableStatusFilter = masterViewModel.getStatusFilterOptionList(idUser)
 
@@ -71,7 +71,7 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
         )
 
         val concat3 = Observable.concat(
-            observableJenisDataFilter.onErrorResumeNext { Observable.empty() },
+//            observableJenisDataFilter.onErrorResumeNext { Observable.empty() },
             observableStatusFilter.onErrorResumeNext { Observable.empty() },
             observableProyekFilter.onErrorResumeNext { Observable.empty() },
             observableJenisPermintaanFilter.onErrorResumeNext { Observable.empty() })
@@ -147,10 +147,10 @@ class StarterActivity : BaseActivity<ActivityStarterBinding>() {
             // Filter Option List
             // -----------------------------------------------------------
 
-            is MasterJenisDataFilterOptionResponse -> {
-                sharedMasterData.setJenisDataFilterOptionList(response.data)
-                Log.d("MYAPPSTARTER", "JENIS DATA FILTER RESPONSE")
-            }
+//            is MasterJenisDataFilterOptionResponse -> {
+//                sharedMasterData.setJenisDataFilterOptionList(response.data)
+//                Log.d("MYAPPSTARTER", "JENIS DATA FILTER RESPONSE")
+//            }
 
             is MasterStatusFilterOptionResponse -> {
                 sharedMasterData.setStatusFilterOptionList(response.data)

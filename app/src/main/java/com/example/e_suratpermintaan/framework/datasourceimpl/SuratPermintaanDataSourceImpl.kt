@@ -14,8 +14,13 @@ class SuratPermintaanDataSourceImpl(private val networkApi: NetworkApi) :
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> =
         networkApi.createSP(createSP)
 
-    override fun readAllData(idUser: String): Observable<DataAllResponse> =
-        networkApi.getDataAll(idUser)
+    override fun readAllData(
+        idUser: String,
+        idProyek: String,
+        idJenis: String,
+        idStatus: String
+    ): Observable<DataAllResponse> =
+        networkApi.getDataAll(idUser, idProyek, idJenis, idStatus)
 
     override fun readMyData(
         idUser: String,

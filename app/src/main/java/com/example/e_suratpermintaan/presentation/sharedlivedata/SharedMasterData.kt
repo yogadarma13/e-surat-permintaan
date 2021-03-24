@@ -17,8 +17,8 @@ class SharedMasterData {
 
     private var statusOptionList: MutableLiveData<List<DataMaster?>?> =
         MutableLiveData()
-    private var jenisDataOptionList: MutableLiveData<List<DataMaster?>?> =
-        MutableLiveData()
+//    private var jenisDataOptionList: MutableLiveData<List<DataMaster?>?> =
+//        MutableLiveData()
     private var proyekOptionList: MutableLiveData<List<DataMaster?>?>? =
         MutableLiveData()
     private var jenisPermintaanOptionList: MutableLiveData<List<DataMaster?>?>? =
@@ -69,12 +69,12 @@ class SharedMasterData {
         statusOptionList.value = list
     }
 
-    fun getJenisDataFilterOptionList(): MutableLiveData<List<DataMaster?>?> =
-        jenisDataOptionList
-
-    fun setJenisDataFilterOptionList(list: List<DataMaster?>?) {
-        jenisDataOptionList.value = list
-    }
+//    fun getJenisDataFilterOptionList(): MutableLiveData<List<DataMaster?>?> =
+//        jenisDataOptionList
+//
+//    fun setJenisDataFilterOptionList(list: List<DataMaster?>?) {
+//        jenisDataOptionList.value = list
+//    }
 
     fun getProyekFilterOptionList(): MutableLiveData<List<DataMaster?>?>? =
         proyekOptionList

@@ -26,8 +26,13 @@ class SuratPermintaanViewModel(
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> =
         addSuratPermintaanUseCase.invoke(createSP)
 
-    override fun readAllData(idUser: String): Observable<DataAllResponse> =
-        readAllDataSuratPermintaanUseCase.invoke(idUser)
+    override fun readAllData(
+        idUser: String,
+        idProyek: String,
+        idJenis: String,
+        idStatus: String
+    ): Observable<DataAllResponse> =
+        readAllDataSuratPermintaanUseCase.invoke(idUser, idProyek, idJenis, idStatus)
 
     override fun readMyData(
         idUser: String,

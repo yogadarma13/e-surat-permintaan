@@ -9,8 +9,8 @@ class GetJenisDataFilterOptionUseCase(
     private val masterProyekRepository: MasterRepository,
     private val schedulerProvider: SchedulerProvider
 ) {
-    fun invoke(): Observable<MasterJenisDataFilterOptionResponse> =
-        masterProyekRepository.getJenisDataFilterOptionList()
-            .subscribeOn(schedulerProvider.io)
-            .observeOn(schedulerProvider.mainThread)
+//    fun invoke(): Observable<MasterJenisDataFilterOptionResponse> =
+//        masterProyekRepository.getJenisDataFilterOptionList()
+//            .subscribeOn(schedulerProvider.io)
+//            .observeOn(schedulerProvider.mainThread)
 }

@@ -12,8 +12,13 @@ class SuratPermintaanRepository(private val dataSource: SuratPermintaanDataSourc
 
     override fun add(createSP: CreateSP): Observable<CreateSPResponse> = dataSource.add(createSP)
 
-    override fun readAllData(idUser: String): Observable<DataAllResponse> =
-        dataSource.readAllData(idUser)
+    override fun readAllData(
+        idUser: String,
+        idProyek: String,
+        idJenis: String,
+        idStatus: String
+    ): Observable<DataAllResponse> =
+        dataSource.readAllData(idUser, idProyek, idJenis, idStatus)
 
     override fun readMyData(
         idUser: String,

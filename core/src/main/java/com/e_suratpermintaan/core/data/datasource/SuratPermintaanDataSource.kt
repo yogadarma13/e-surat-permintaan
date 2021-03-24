@@ -9,7 +9,12 @@ import okhttp3.RequestBody
 interface SuratPermintaanDataSource {
     fun add(createSP: CreateSP): Observable<CreateSPResponse>
 
-    fun readAllData(idUser: String): Observable<DataAllResponse>
+    fun readAllData(
+        idUser: String,
+        idProyek: String,
+        idJenis: String,
+        idStatus: String
+    ): Observable<DataAllResponse>
 
     fun readMyData(
         idUser: String,
