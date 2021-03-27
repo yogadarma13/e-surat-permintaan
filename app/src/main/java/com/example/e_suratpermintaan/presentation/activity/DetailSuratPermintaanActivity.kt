@@ -24,10 +24,7 @@ import com.example.e_suratpermintaan.databinding.*
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
-import com.example.e_suratpermintaan.framework.utils.Directory
-import com.example.e_suratpermintaan.framework.utils.DownloadTask
-import com.example.e_suratpermintaan.framework.utils.FileName
-import com.example.e_suratpermintaan.framework.utils.Signature
+import com.example.e_suratpermintaan.framework.utils.*
 import com.example.e_suratpermintaan.presentation.activity.EditSuratPermintaanActivity.Companion.ID_SP_EDIT
 import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.ID_SP_HISTORY
 import com.example.e_suratpermintaan.presentation.activity.HistorySuratPermintaanActivity.Companion.JENIS_SP_HISTORY
@@ -35,6 +32,7 @@ import com.example.e_suratpermintaan.presentation.adapter.ItemSuratPermintaanAda
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
+import com.example.e_suratpermintaan.presentation.dialog.DownloadProgressDialog
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -52,6 +50,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaanBinding>() {
+
+    companion object {
+        private const val DOWNLOAD_PROGRESS_TAG = "DownloadProgress"
+    }
 
     private val sharedMasterData: SharedMasterData by inject()
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
@@ -230,10 +232,38 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 }
 
                 FileSuratPermintaanViewHolder.BTN_FILE -> {
-                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
-                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
-                        val downloadTask = DownloadTask(this, fileName)
-                        downloadTask.execute(data.dir)
+                    val path = DownloadPath.getDownloadPath(this)
+                    if (path != null) {
+                        val downloadProgressDialog = DownloadProgressDialog()
+                        downloadProgressDialog.show(
+                            this.supportFragmentManager,
+                            DOWNLOAD_PROGRESS_TAG
+                        )
+                        DownloadManager.download(
+                            data.dir!!,
+                            path,
+                            object : DownloadManager.Callback {
+                                override fun onDownloadStarted(totalLength: Long?) {
+
+                                }
+
+                                override fun onDownloadProgress(
+                                    totalLength: Long?,
+                                    downloadedLength: Long
+                                ) {
+                                    downloadProgressDialog.setProgress((downloadedLength * 100 / totalLength!!).toInt())
+                                }
+
+                                override fun onDownloadComplete(file: File) {
+                                    downloadProgressDialog.dismiss()
+                                    toastNotify("Download berhasil\nLokasi file di Penyimpanan/Download/E-Surat Permintaan")
+                                }
+
+                                override fun onDownloadError(e: Exception) {
+                                    downloadProgressDialog.dismiss()
+                                    toastNotify("Download gagal")
+                                }
+                            })
                     }
                 }
             }
@@ -274,7 +304,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
         binding.btnEdit.setOnClickListener {
             val intent = Intent(this, EditSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EDIT, idSp)
-            startActivityForResult(intent, LAUNCH_EDIT_ACTIVITY)
+            startActivity(intent)
         }
 
         binding.btnDelete.setOnClickListener {
@@ -548,18 +578,17 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
             )
             var fileTtd: File? = null
-            val partTtd: MultipartBody.Part?
             val ttdBitmap: Bitmap?
 
             if (!dialogAjukanSuratBinding.signaturePadAjukan.isEmpty) {
                 ttdBitmap = dialogAjukanSuratBinding.signaturePadAjukan.transparentSignatureBitmap
-                fileTtd = Signature().saveSignature(this, ttdBitmap)
+                fileTtd = Signature.saveSignature(this, ttdBitmap)
             }
 
             val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
             val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-            partTtd = if (fileTtd != null) {
+            val partTtd: MultipartBody.Part = if (fileTtd != null) {
                 val fileReqBody =
                     fileTtd.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("file", fileTtd.name, fileReqBody)
@@ -624,7 +653,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
             if (!dialogVerifikasiSuratBinding.signaturePadVerif.isEmpty) {
                 ttdBitmap =
                     dialogVerifikasiSuratBinding.signaturePadVerif.transparentSignatureBitmap
-                fileTtd = Signature().saveSignature(this, ttdBitmap)
+                fileTtd = Signature.saveSignature(this, ttdBitmap)
             }
 
             val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())

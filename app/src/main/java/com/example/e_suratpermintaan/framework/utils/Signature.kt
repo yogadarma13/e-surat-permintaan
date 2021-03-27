@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import java.io.*
 
-class Signature {
+object Signature {
 
     fun saveSignature(context: Context, ttdBitmap: Bitmap): File {
-        var fileTtd: File = File(context.cacheDir, "ttd")
+        val fileTtd: File = File(context.cacheDir, "ttd")
 
         fileTtd.createNewFile()
 

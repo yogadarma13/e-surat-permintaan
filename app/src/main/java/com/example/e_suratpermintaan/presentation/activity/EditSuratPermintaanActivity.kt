@@ -1,13 +1,14 @@
 package com.example.e_suratpermintaan.presentation.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.e_suratpermintaan.core.domain.entities.responses.*
@@ -19,14 +20,12 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.databinding.*
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
-import com.example.e_suratpermintaan.framework.utils.Directory
-import com.example.e_suratpermintaan.framework.utils.DownloadTask
-import com.example.e_suratpermintaan.framework.utils.FileName
-import com.example.e_suratpermintaan.framework.utils.FilePath
+import com.example.e_suratpermintaan.framework.utils.*
 import com.example.e_suratpermintaan.presentation.adapter.EditItemSuratPermintaanAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
+import com.example.e_suratpermintaan.presentation.dialog.DownloadProgressDialog
 import com.example.e_suratpermintaan.presentation.dialog.EditItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.PenugasanItemDialog
 import com.example.e_suratpermintaan.presentation.dialog.TambahItemDialog
@@ -52,11 +51,13 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
     companion object {
         const val ID_SP_EDIT = "id_sp"
         const val PICKFILE_REQUEST_CODE = 999
+        private const val DOWNLOAD_PROGRESS_TAG = "DownloadProgress"
     }
 
     private lateinit var alertDialogEdit: EditItemDialog
     private lateinit var alertDialogTambah: TambahItemDialog
     private lateinit var alertDialogPenugasan: PenugasanItemDialog
+    private lateinit var dialogTambahFileBinding: DialogTambahFileBinding
 
     private val suratPermintaanViewModel: SuratPermintaanViewModel by viewModel()
     private val itemSuratPermintaanViewModel: ItemSuratPermintaanViewModel by viewModel()
@@ -75,6 +76,21 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
     private lateinit var editItemSuratPermintaanAdapter: EditItemSuratPermintaanAdapter
     private lateinit var editFileSuratPermintaanAdapter: BaseAdapter<EditFileSuratPermintaanViewHolder, ItemFileLampiranRowBinding>
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                filePath = FilePath.getPath(this, uri)
+
+                if (filePath.isNullOrEmpty()) {
+                    filePath = "none"
+                } else {
+                    dialogTambahFileBinding.tvNamaFile.text =
+                        filePath!!.substring(filePath!!.lastIndexOf('/') + 1)
+                }
+                toastNotify(filePath)
+            }
+        }
 
     override fun getViewBinding(): ActivityEditSuratPermintaanBinding =
         ActivityEditSuratPermintaanBinding.inflate(layoutInflater)
@@ -273,10 +289,38 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                 }
 
                 EditFileSuratPermintaanViewHolder.BTN_FILE -> {
-                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
-                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
-                        val downloadTask = DownloadTask(this, fileName)
-                        downloadTask.execute(data.dir)
+                    val path = DownloadPath.getDownloadPath(this)
+                    if (path != null) {
+                        val downloadProgressDialog = DownloadProgressDialog()
+                        downloadProgressDialog.show(
+                            this.supportFragmentManager,
+                            DOWNLOAD_PROGRESS_TAG
+                        )
+                        DownloadManager.download(
+                            data.dir!!,
+                            path,
+                            object : DownloadManager.Callback {
+                                override fun onDownloadStarted(totalLength: Long?) {
+
+                                }
+
+                                override fun onDownloadProgress(
+                                    totalLength: Long?,
+                                    downloadedLength: Long
+                                ) {
+                                    downloadProgressDialog.setProgress((downloadedLength * 100 / totalLength!!).toInt())
+                                }
+
+                                override fun onDownloadComplete(file: File) {
+                                    downloadProgressDialog.dismiss()
+                                    toastNotify("Download berhasil\nLokasi file di Penyimpanan/Download/E-Surat Permintaan")
+                                }
+
+                                override fun onDownloadError(e: Exception) {
+                                    downloadProgressDialog.dismiss()
+                                    toastNotify("Download gagal")
+                                }
+                            })
                     }
                 }
             }
@@ -345,7 +389,9 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
     }
 
     private fun stopRefresh() {
-        Handler().postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.swipeRefreshLayout.isRefreshing = false
+        }, 850)
     }
 
     override fun handleError(error: Throwable) {
@@ -515,18 +561,18 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogTambahFileBinding = DialogTambahFileBinding.inflate(LayoutInflater.from(this))
+        dialogTambahFileBinding = DialogTambahFileBinding.inflate(LayoutInflater.from(this))
 
         dialogTambahFileBinding.btnPilihFile.setOnClickListener {
-            val selectFile = Intent(Intent.ACTION_GET_CONTENT)
-            selectFile.type = "application/pdf"
-            startActivityForResult(selectFile, PICKFILE_REQUEST_CODE)
+            getContent.launch("application/pdf")
         }
         dialogTambahFileBinding.btnTambahFile.setOnClickListener {
+
             if (filePath.equals("none") || filePath.isNullOrEmpty()) {
                 toastNotify("File tidak ditemukan")
                 return@setOnClickListener
             } else {
+                startRefresh()
                 try {
                     val file = File(filePath.toString())
 
@@ -543,6 +589,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                         fileLampiranViewModel.addFile(idSurat, keteranganFile, partLampiran)
                             .subscribe(this::handleResponse, this::handleError)
                 } catch (e: Exception) {
+                    stopRefresh()
                     toastNotify("File tidak ditemukan")
                 }
             }
@@ -559,19 +606,17 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
     private fun showDialogEditFile(keterangan: String, id_file: String) {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Edit File")
+                .setTitle(getString(R.string.btn_edit_file))
 
         val alertDialog = alertDialogBuilder.create()
 
-        val dialogTambahFileBinding = DialogTambahFileBinding.inflate(LayoutInflater.from(this))
+        dialogTambahFileBinding = DialogTambahFileBinding.inflate(LayoutInflater.from(this))
 
         dialogTambahFileBinding.etKeteranganFile.setText(keterangan)
         dialogTambahFileBinding.btnTambahFile.text = getString(R.string.btn_edit_file)
 
         dialogTambahFileBinding.btnPilihFile.setOnClickListener {
-            val selectFile = Intent(Intent.ACTION_GET_CONTENT)
-            selectFile.type = "application/pdf"
-            startActivityForResult(selectFile, PICKFILE_REQUEST_CODE)
+            getContent.launch("application/pdf")
         }
         dialogTambahFileBinding.btnTambahFile.setOnClickListener {
             val idFile = id_file.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -583,6 +628,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                 toastNotify("File tidak ditemukan")
                 filePath = null
             } else {
+                startRefresh()
                 partLampiran = if (filePath.isNullOrEmpty()) {
                     val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                     MultipartBody.Part.createFormData("file", "", fileReqBody)
@@ -606,20 +652,5 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
         alertDialog.setView(dialogTambahFileBinding.root)
         alertDialog.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICKFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val fileUri = data?.data
-            filePath = FilePath.getPath(this, fileUri as Uri)
-
-            if (filePath.isNullOrEmpty()) {
-                filePath = "none"
-            }
-            toastNotify(filePath)
-
-        }
     }
 }

@@ -19,6 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="q">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.e_suratpermintaan.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity android:name=".presentation.activity.WebViewActivity" />
         <activity android:name=".presentation.activity.EditSuratPermintaanActivity"
             android:screenOrientation="portrait"/>

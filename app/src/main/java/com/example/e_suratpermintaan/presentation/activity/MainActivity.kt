@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,9 +29,6 @@ import com.example.e_suratpermintaan.databinding.ActivityMainBinding
 import com.example.e_suratpermintaan.databinding.DialogAjukanSpBinding
 import com.example.e_suratpermintaan.databinding.DialogFilterSpBinding
 import com.example.e_suratpermintaan.databinding.ItemSuratPermintaanRowBinding
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_DETAIL_ACTIVITY
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_PROFILE_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_PROFILE_EDITED
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
@@ -91,6 +90,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
     private var spListState: Parcelable? = null
     private lateinit var spAdapter: BaseAdapter<MyDataViewHolder, ItemSuratPermintaanRowBinding>
 
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                when (result.data?.getStringExtra("status")) {
+                    STATUS_PROFILE_EDITED -> {
+                        initDetailProfileRequest()
+                    }
+                }
+            }
+        }
+
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -121,20 +131,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         ) {
             initApiRequest()
             EventBus.getDefault().removeStickyEvent(suratPermintaanDataChange)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == LAUNCH_EDIT_ACTIVITY) {
-                when (data?.getStringExtra("status")) {
-                    STATUS_PROFILE_EDITED -> {
-                        initDetailProfileRequest()
-                    }
-                }
-            }
         }
     }
 
@@ -244,7 +240,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             when (menuItem.itemId) {
                 R.id.detail_profile -> {
                     val intent = Intent(this@MainActivity, ProfileActivity::class.java)
-                    startActivityForResult(intent, LAUNCH_PROFILE_ACTIVITY)
+                    startForResult.launch(intent)
                 }
                 R.id.logout -> {
                     logout()
@@ -449,7 +445,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
             val data = item as DataSuratPermintaan
             val intent = Intent(this@MainActivity, DetailSuratPermintaanActivity::class.java)
             intent.putExtra(ID_SP_EXTRA_KEY, data.id.toString())
-            startActivityForResult(intent, LAUNCH_DETAIL_ACTIVITY)
+            startActivity(intent)
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {

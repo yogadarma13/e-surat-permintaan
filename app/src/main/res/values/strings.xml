@@ -95,7 +95,7 @@
     <string name="konfirmasi_simpan_text_message">Apakah file lampiran spesifikasi sudah diupload?</string>
     <string name="dialog_btn_simpan_data">Simpan Data</string>
     <string name="dialog_btn_tutup">Tutup</string>
-    <string name="btn_edit_file">Edit File</string>
+    <string name="btn_edit_file">Edit file</string>
     <string name="label_kategori">Kategori</string>
     <string name="label_jenis_barang">Jenis Barang</string>
     <string name="print_surat_permintaan">Cetak Surat Permintaan</string>
@@ -116,4 +116,13 @@
     <string name="note_empty_message">Tuliskan catatan terlebih dahulu</string>
     <string name="reset_text">Reset</string>
     <string name="filter_text">Filter</string>
+    <string name="downloading_text">Mendownload</string>
+    <string name="percentage_download">%d%%</string>
+    <string name="cancel_text">Batal</string>
+    <string name="add_text">Tambah</string>
+    <string name="description_file_text">Keterangan file</string>
+    <string name="filename_text">Nama File</string>
+    <string name="select_file_text">Pilih file</string>
+    <string name="camera_text">Kamera</string>
+    <string name="gallery_text">Galeri</string>
 </resources>

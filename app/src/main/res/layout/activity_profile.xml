@@ -279,7 +279,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tvLabelConfirmPassBaru" />
 
                     <TextView
-                        android:id="@+id/tvLabelTtd"
+                        android:id="@+id/tvLabelSignature"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
@@ -288,36 +288,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etConfirmPassBaruProfile" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintTtd"
+                    <ImageView
+                        android:id="@+id/imgSignature"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/border_transparant"
-                        app:layout_constraintTop_toBottomOf="@id/tvLabelTtd">
-
-                        <!--                    <TextView-->
-                        <!--                        android:id="@+id/tvTextNameTtd"-->
-                        <!--                        android:layout_width="wrap_content"-->
-                        <!--                        android:layout_height="wrap_content"-->
-                        <!--                        android:text="Silahkan upload TTD anda"-->
-                        <!--                        android:layout_marginBottom="8dp"-->
-                        <!--                        app:layout_constraintBottom_toTopOf="@+id/btnUploadTtd"-->
-                        <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--                        app:layout_constraintStart_toStartOf="parent" />-->
-
-                        <Button
-                            android:id="@+id/btnUploadTtd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="48dp"
-                            android:text="@string/upload_ttd_btn_text"
-                            android:textAllCaps="false"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:background="@drawable/background_dash"
+                        android:src="@drawable/ic_select_image"
+                        app:layout_constraintDimensionRatio="2:1"
+                        app:layout_constraintTop_toBottomOf="@id/tvLabelSignature" />
 
                     <Button
                         android:id="@+id/btnSimpanProfile"
@@ -329,7 +308,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/constraintTtd" />
+                        app:layout_constraintTop_toBottomOf="@id/imgSignature" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

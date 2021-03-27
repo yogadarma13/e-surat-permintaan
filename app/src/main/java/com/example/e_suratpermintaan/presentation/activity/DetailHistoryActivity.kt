@@ -10,22 +10,23 @@ import com.e_suratpermintaan.core.domain.entities.responses.MasterPersyaratanRes
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.databinding.ActivityDetailHistoryBinding
 import com.example.e_suratpermintaan.databinding.FileDownloadItemBinding
-import com.example.e_suratpermintaan.framework.utils.Directory
-import com.example.e_suratpermintaan.framework.utils.DownloadTask
-import com.example.e_suratpermintaan.framework.utils.FileName
+import com.example.e_suratpermintaan.framework.utils.*
 import com.example.e_suratpermintaan.presentation.adapter.DetailHistoryAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
+import com.example.e_suratpermintaan.presentation.dialog.DownloadProgressDialog
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileDownloadViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.MasterViewModel
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 class DetailHistoryActivity : BaseActivity<ActivityDetailHistoryBinding>() {
 
     companion object {
         const val DETAIL_HISTORY_SP = "detail_history_sp"
         const val JENIS_SP_DETAIL_HISTORY = "jenis_sp_detail_history"
+        private const val DOWNLOAD_PROGRESS_TAG = "DownloadProgress"
     }
 
     override fun getViewBinding(): ActivityDetailHistoryBinding =
@@ -142,11 +143,7 @@ class DetailHistoryActivity : BaseActivity<ActivityDetailHistoryBinding>() {
 
             when (actionString) {
                 FileDownloadViewHolder.BTN_FILE -> {
-                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
-                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
-                        val downloadTask = DownloadTask(this, fileName)
-                        downloadTask.execute(data.dir)
-                    }
+                    startDownload(data.dir!!)
                 }
             }
         }
@@ -156,15 +153,47 @@ class DetailHistoryActivity : BaseActivity<ActivityDetailHistoryBinding>() {
 
             when (actionString) {
                 FileDownloadViewHolder.BTN_FILE -> {
-                    val fileName = FileName.getFileNameFromURL(data.dir.toString())
-                    if (Directory.checkDirectoryAndFileExists(this, fileName)) {
-                        val downloadTask = DownloadTask(this, fileName)
-                        downloadTask.execute(data.dir)
-                    }
+                    startDownload(data.dir!!)
                 }
             }
         }
 
+    }
+
+    private fun startDownload(url: String) {
+        val path = DownloadPath.getDownloadPath(this)
+        if (path != null) {
+            val downloadProgressDialog = DownloadProgressDialog()
+            downloadProgressDialog.show(
+                this.supportFragmentManager,
+                DOWNLOAD_PROGRESS_TAG
+            )
+            DownloadManager.download(
+                url,
+                path,
+                object : DownloadManager.Callback {
+                    override fun onDownloadStarted(totalLength: Long?) {
+
+                    }
+
+                    override fun onDownloadProgress(
+                        totalLength: Long?,
+                        downloadedLength: Long
+                    ) {
+                        downloadProgressDialog.setProgress((downloadedLength * 100 / totalLength!!).toInt())
+                    }
+
+                    override fun onDownloadComplete(file: File) {
+                        downloadProgressDialog.dismiss()
+                        toastNotify("Download berhasil\nLokasi file di Penyimpanan/Download/E-Surat Permintaan")
+                    }
+
+                    override fun onDownloadError(e: Exception) {
+                        downloadProgressDialog.dismiss()
+                        toastNotify("Download gagal")
+                    }
+                })
+        }
     }
 
     private fun setDataDetailHistory() {

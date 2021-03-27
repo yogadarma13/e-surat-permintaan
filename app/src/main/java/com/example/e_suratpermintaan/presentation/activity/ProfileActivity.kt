@@ -5,11 +5,17 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.MenuItem
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
 import com.e_suratpermintaan.core.domain.entities.responses.ProfileResponse
@@ -18,10 +24,12 @@ import com.example.e_suratpermintaan.databinding.ActivityProfileBinding
 import com.example.e_suratpermintaan.databinding.DialogChooseSignatureProfileBinding
 import com.example.e_suratpermintaan.databinding.DialogSignaturePadProfileBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
+import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.STATUS_PROFILE_EDITED
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.FilePath
 import com.example.e_suratpermintaan.framework.utils.Signature
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
+import com.example.e_suratpermintaan.presentation.dialog.AddImageOptionDialog
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,20 +40,72 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
     companion object {
-        const val FILE_REQUEST_CODE = 123
         const val PHOTO_SIGNATURE_REQUEST_CODE = 124
+        private const val UPDATE_PROFILE_IMAGE_TAG = "UpdateProfileImage"
     }
 
     private val provileViewModel: ProfileViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var addImageOptionDialog: AddImageOptionDialog
+    private lateinit var currentPhotoPath: String
+
     private var id: String? = null
     private var filePath: String? = null
     private var fileTtd: File? = null
+
+    private val galleryResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (result.data != null) {
+                    val fileUri = result.data?.data
+
+                    Glide.with(this).load(fileUri).into(binding.imgFotoProfile)
+                    filePath = FilePath.getPath(this, fileUri as Uri)
+
+                    if (!filePath.isNullOrEmpty()) {
+                        toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                    }
+                }
+            }
+        }
+
+    private val cameraResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                filePath = currentPhotoPath
+                val fileUri = Uri.fromFile(File(filePath))
+                Glide.with(this).load(fileUri).into(binding.imgFotoProfile)
+
+                if (!filePath.isNullOrEmpty()) {
+                    toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                }
+            }
+        }
+
+    private val signatureResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val fileUri = result.data?.data
+                Glide.with(this).load(fileUri).into(binding.imgSignature)
+                val ttdPath: String? = FilePath.getPath(this, fileUri as Uri)
+
+                if (!ttdPath.isNullOrEmpty()) {
+                    toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                    fileTtd = File(ttdPath)
+                } else {
+                    toastNotify("File Tdak ditemukan")
+                }
+            }
+        }
+
 
     override fun getViewBinding(): ActivityProfileBinding =
         ActivityProfileBinding.inflate(layoutInflater)
@@ -55,6 +115,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
         id = profilePreference.getProfile()?.id
         progressDialog = ProgressDialog(this)
+        addImageOptionDialog = AddImageOptionDialog()
 
         init()
     }
@@ -74,15 +135,6 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initApiRequest() {
@@ -149,12 +201,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         }
 
         binding.imgFotoProfile.setOnClickListener {
-            val selectFile = Intent(Intent.ACTION_PICK)
-            selectFile.setType("image/*")
-            startActivityForResult(selectFile, FILE_REQUEST_CODE)
+            showAddImageOptionDialog()
         }
 
-        binding.btnUploadTtd.setOnClickListener {
+        binding.imgSignature.setOnClickListener {
             showDialogMethodOption()
         }
 
@@ -188,81 +238,57 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         binding.swipeRefreshLayout.isRefreshing = false
     }
 
-    private fun handleResponse(response: Any) {
-        when (response) {
-            is ProfileResponse -> {
-                var dataProfile: DataProfile? = DataProfile()
+    private fun showAddImageOptionDialog() {
+        addImageOptionDialog.onCameraButtonClick = {
+            openCamera()
+        }
 
-                response.data?.forEach {
-                    dataProfile = it
+        addImageOptionDialog.onGalleryButtonClick = {
+            openGallery()
+        }
+
+        addImageOptionDialog.show(supportFragmentManager, UPDATE_PROFILE_IMAGE_TAG)
+    }
+
+    private fun openCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(packageManager!!)?.also {
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    null
                 }
-
-                Glide.with(this).load(dataProfile?.fotoProfile).into(binding.imgFotoProfile)
-                binding.etNamaProfile.setText(dataProfile?.name)
-                binding.etEmailProfile.setText(dataProfile?.email)
-                binding.tvRoleProfile.text = dataProfile?.namaRole
-                binding.etDeskripsiProfile.setText(dataProfile?.desc)
-                binding.tvUsernameProfile.text = dataProfile?.username
-
-                binding.linearLayoutJenisProfile.removeAllViews()
-                dataProfile?.jenis?.forEach {
-                    val itemSimpleCheckboxBinding = ItemSimpleCheckboxBinding.inflate(
-                        LayoutInflater.from(this),
-                        binding.linearLayoutJenisProfile,
-                        false
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.e_suratpermintaan.fileprovider",
+                        it
                     )
-                    itemSimpleCheckboxBinding.checkbox.isChecked = true
-                    itemSimpleCheckboxBinding.checkbox.text = it?.jenis
-                    itemSimpleCheckboxBinding.checkbox.setOnCheckedChangeListener { _, checked ->
-                        itemSimpleCheckboxBinding.checkbox.isChecked = !checked
-                    }
-                    binding.linearLayoutJenisProfile.addView(itemSimpleCheckboxBinding.root)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    cameraResult.launch(takePictureIntent)
                 }
-
-                dismissSwipeRefreshLayout()
-            }
-
-            is EditProfileResponse -> {
-                toastNotify(response.message)
-                setResult(Activity.RESULT_OK, intent)
-
-                filePath = null
-                fileTtd = null
-                progressDialog.dismiss()
-                initApiRequest()
             }
         }
     }
 
-    override fun handleError(error: Throwable) {
-        super.handleError(error)
-        dismissSwipeRefreshLayout()
-        progressDialog.dismiss()
-
+    private fun openGallery() {
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        galleryResult.launch(galleryIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val fileUri = data?.data
-            filePath = FilePath.getPath(this, fileUri as Uri)
-
-            if (!filePath.isNullOrEmpty()) {
-                toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
-            }
-        }
-
-        if (requestCode == PHOTO_SIGNATURE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val fileUri = data?.data
-            val ttdPath: String? = FilePath.getPath(this, fileUri as Uri)
-
-            if (!ttdPath.isNullOrEmpty()) {
-                toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
-                fileTtd = File(ttdPath)
-            } else {
-                toastNotify("File Tdak ditemukan")
-            }
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir /* directory */
+        ).apply {
+            currentPhotoPath = absolutePath
         }
     }
 
@@ -282,9 +308,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         }
 
         dialogChooseSignatureProfileBinding.tvGetSignatureProfile.setOnClickListener {
-            val selectTtd = Intent(Intent.ACTION_PICK)
-            selectTtd.type = "image/*"
-            startActivityForResult(selectTtd, PHOTO_SIGNATURE_REQUEST_CODE)
+            val galleryIntent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+            signatureResult.launch(galleryIntent)
 
             alertDialog.hide()
         }
@@ -323,7 +351,8 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         dialogSignaturePadProfileBinding.btnSaveTtdProfile.setOnClickListener {
             val ttdBitmap =
                 dialogSignaturePadProfileBinding.signaturePadProfile.transparentSignatureBitmap
-            fileTtd = Signature().saveSignature(this, ttdBitmap)
+            Glide.with(this).load(ttdBitmap).into(binding.imgSignature)
+            fileTtd = Signature.saveSignature(this, ttdBitmap)
             if (fileTtd != null) {
                 toastNotify("Tanda tangan telah dibuat\nSilahkan menyimpan perubahan")
             }
@@ -336,5 +365,76 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
         alertDialog.setView(dialogSignaturePadProfileBinding.root)
         alertDialog.show()
+    }
+
+    private fun handleResponse(response: Any) {
+        when (response) {
+            is ProfileResponse -> {
+                var dataProfile: DataProfile? = DataProfile()
+
+                response.data?.forEach {
+                    dataProfile = it
+                }
+
+                Glide.with(this).load(dataProfile?.fotoProfile).apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_default_profile)
+                        .error(R.drawable.ic_default_profile)
+                ).into(binding.imgFotoProfile)
+
+                Glide.with(this).load(dataProfile?.fotoTtd).apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_select_image)
+                        .error(R.drawable.ic_select_image)
+                ).into(binding.imgSignature)
+
+                binding.etNamaProfile.setText(dataProfile?.name)
+                binding.etEmailProfile.setText(dataProfile?.email)
+                binding.tvRoleProfile.text = dataProfile?.namaRole
+                binding.etDeskripsiProfile.setText(dataProfile?.desc)
+                binding.tvUsernameProfile.text = dataProfile?.username
+
+                binding.linearLayoutJenisProfile.removeAllViews()
+                dataProfile?.jenis?.forEach {
+                    val itemSimpleCheckboxBinding = ItemSimpleCheckboxBinding.inflate(
+                        LayoutInflater.from(this),
+                        binding.linearLayoutJenisProfile,
+                        false
+                    )
+                    itemSimpleCheckboxBinding.checkbox.isChecked = true
+                    itemSimpleCheckboxBinding.checkbox.text = it?.jenis
+                    itemSimpleCheckboxBinding.checkbox.setOnCheckedChangeListener { _, checked ->
+                        itemSimpleCheckboxBinding.checkbox.isChecked = !checked
+                    }
+                    binding.linearLayoutJenisProfile.addView(itemSimpleCheckboxBinding.root)
+                }
+
+                dismissSwipeRefreshLayout()
+            }
+
+            is EditProfileResponse -> {
+                toastNotify(response.message)
+                setResult(Activity.RESULT_OK, intent.putExtra("status", STATUS_PROFILE_EDITED))
+
+                filePath = null
+                fileTtd = null
+                progressDialog.dismiss()
+                initApiRequest()
+            }
+        }
+    }
+
+    override fun handleError(error: Throwable) {
+        super.handleError(error)
+        dismissSwipeRefreshLayout()
+        progressDialog.dismiss()
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

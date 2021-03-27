@@ -1,30 +1,24 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.GravityCompat
-import com.bumptech.glide.Glide
 import com.e_suratpermintaan.core.domain.entities.responses.DataMaster
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.databinding.ActivityWebViewBinding
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_PROFILE_ACTIVITY
 import com.example.e_suratpermintaan.framework.sharedpreference.FCMPreference
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
@@ -60,7 +54,6 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
 
     private fun init() {
         setupTollbar()
-        setupNavigationDrawer()
 
         val client = CustomWebViewClient()
 
@@ -84,74 +77,85 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>() {
         setSupportActionBar(binding.toolbar)
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
     }
 
-    private fun setupNavigationDrawer() {
-        val menu: Menu = binding.navigationView.menu
-        val menuItemMasterData: MenuItem = menu.findItem(R.id.menuMasterData)
-        menuItemMasterData.isVisible = roleId == "0"
-        // Find our drawer view
-        drawerToggle = setupDrawerToggle()
+//    private fun setupNavigationDrawer() {
+//        val menu: Menu = binding.navigationView.menu
+//        val menuItemMasterData: MenuItem = menu.findItem(R.id.menuMasterData)
+//        menuItemMasterData.isVisible = roleId == "0"
+//        // Find our drawer view
+//        drawerToggle = setupDrawerToggle()
+//
+//        // Setup toggle to display hamburger icon with nice animation
+//        drawerToggle.isDrawerIndicatorEnabled = true
+//        drawerToggle.syncState()
+//
+//        // Tie DrawerLayout events to the ActionBarToggle
+//        binding.drawerLayout.addDrawerListener(drawerToggle)
+//
+//        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+//            when (menuItem.itemId) {
+//                R.id.detail_profile -> {
+//                    val intent = Intent(this, ProfileActivity::class.java)
+//                    startActivityForResult(intent, LAUNCH_PROFILE_ACTIVITY)
+//                }
+//                R.id.logout -> {
+//                    profilePreference.removeProfile()
+//                    fcmPreference.removeUserTokenId()
+//
+//                    finish()
+//                    startActivity(Intent(this, StarterActivity::class.java))
+//                }
+//                R.id.semua -> {
+//                    finish()
+//                }
+//                R.id.menungguVerifikasi -> {
+//                    finish()
+//                }
+//                R.id.masterData -> {
+//                }
+//            }
+//
+//            //This is for closing the drawer after acting on it
+//            binding.drawerLayout.closeDrawer(GravityCompat.START)
+//            true
+//        }
+//
+//        initNavHeaderProfile()
+//    }
+//
+//    private fun initNavHeaderProfile() {
+//        val headerView = binding.navigationView.getHeaderView(0)
+//        headerView.findViewById<TextView>(R.id.profileName).text =
+//            profilePreference.getProfile()?.name
+//        headerView.findViewById<TextView>(R.id.role).text = profilePreference.getProfile()?.namaRole
+//        headerView.findViewById<TextView>(R.id.email).text = profilePreference.getProfile()?.email
+//        Glide.with(this).load(profilePreference.getProfile()?.fotoProfile)
+//            .into(headerView.findViewById(R.id.circleImageView))
+//    }
+//
+//    private fun setupDrawerToggle(): ActionBarDrawerToggle {
+//        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
+//        // and will not render the hamburger icon without it.
+//        return ActionBarDrawerToggle(
+//            this,
+//            binding.drawerLayout,
+//            binding.toolbar,
+//            R.string.drawer_open,
+//            R.string.drawer_close
+//        )
+//    }
 
-        // Setup toggle to display hamburger icon with nice animation
-        drawerToggle.isDrawerIndicatorEnabled = true
-        drawerToggle.syncState()
-
-        // Tie DrawerLayout events to the ActionBarToggle
-        binding.drawerLayout.addDrawerListener(drawerToggle)
-
-        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.detail_profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivityForResult(intent, LAUNCH_PROFILE_ACTIVITY)
-                }
-                R.id.logout -> {
-                    profilePreference.removeProfile()
-                    fcmPreference.removeUserTokenId()
-
-                    finish()
-                    startActivity(Intent(this, StarterActivity::class.java))
-                }
-                R.id.semua -> {
-                    finish()
-                }
-                R.id.menungguVerifikasi -> {
-                    finish()
-                }
-                R.id.masterData -> {
-                }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
             }
-
-            //This is for closing the drawer after acting on it
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            true
         }
-
-        initNavHeaderProfile()
-    }
-
-    private fun initNavHeaderProfile() {
-        val headerView = binding.navigationView.getHeaderView(0)
-        headerView.findViewById<TextView>(R.id.profileName).text =
-            profilePreference.getProfile()?.name
-        headerView.findViewById<TextView>(R.id.role).text = profilePreference.getProfile()?.namaRole
-        headerView.findViewById<TextView>(R.id.email).text = profilePreference.getProfile()?.email
-        Glide.with(this).load(profilePreference.getProfile()?.fotoProfile)
-            .into(headerView.findViewById(R.id.circleImageView))
-    }
-
-    private fun setupDrawerToggle(): ActionBarDrawerToggle {
-        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
-        // and will not render the hamburger icon without it.
-        return ActionBarDrawerToggle(
-            this,
-            binding.drawerLayout,
-            binding.toolbar,
-            R.string.drawer_open,
-            R.string.drawer_close
-        )
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
