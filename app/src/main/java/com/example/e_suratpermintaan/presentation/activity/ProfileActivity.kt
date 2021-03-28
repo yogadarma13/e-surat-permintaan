@@ -1,7 +1,6 @@
 package com.example.e_suratpermintaan.presentation.activity
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +14,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.EditProfileResponse
@@ -30,6 +30,7 @@ import com.example.e_suratpermintaan.framework.utils.FilePath
 import com.example.e_suratpermintaan.framework.utils.Signature
 import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.dialog.AddImageOptionDialog
+import com.example.e_suratpermintaan.presentation.dialog.ProgressBarDialog
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -47,14 +48,14 @@ import java.util.*
 class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
     companion object {
-        const val PHOTO_SIGNATURE_REQUEST_CODE = 124
         private const val UPDATE_PROFILE_IMAGE_TAG = "UpdateProfileImage"
+        private const val PROGRESS_BAR_DIALOG_TAG = "ProgressBarDialogProfile"
     }
 
-    private val provileViewModel: ProfileViewModel by viewModel()
+    private val profileViewModel: ProfileViewModel by viewModel()
     private val profilePreference: ProfilePreference by inject()
-    private lateinit var progressDialog: ProgressDialog
     private lateinit var addImageOptionDialog: AddImageOptionDialog
+    private lateinit var progressBarDialog: ProgressBarDialog
     private lateinit var currentPhotoPath: String
 
     private var id: String? = null
@@ -71,7 +72,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
                     filePath = FilePath.getPath(this, fileUri as Uri)
 
                     if (!filePath.isNullOrEmpty()) {
-                        toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                        toastNotify(getString(R.string.success_select_photo_profile))
                     }
                 }
             }
@@ -81,11 +82,11 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 filePath = currentPhotoPath
-                val fileUri = Uri.fromFile(File(filePath))
+                val fileUri = Uri.fromFile(File(filePath!!))
                 Glide.with(this).load(fileUri).into(binding.imgFotoProfile)
 
                 if (!filePath.isNullOrEmpty()) {
-                    toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                    toastNotify(getString(R.string.success_select_photo_profile))
                 }
             }
         }
@@ -98,10 +99,10 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
                 val ttdPath: String? = FilePath.getPath(this, fileUri as Uri)
 
                 if (!ttdPath.isNullOrEmpty()) {
-                    toastNotify("Foto berhasil dipilih\nSilahkan menyimpan perubahan")
+                    toastNotify(getString(R.string.success_make_signature))
                     fileTtd = File(ttdPath)
                 } else {
-                    toastNotify("File Tdak ditemukan")
+                    toastNotify(getString(R.string.file_not_found))
                 }
             }
         }
@@ -114,7 +115,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         super.onCreate(savedInstanceState)
 
         id = profilePreference.getProfile()?.id
-        progressDialog = ProgressDialog(this)
+        progressBarDialog = ProgressBarDialog()
         addImageOptionDialog = AddImageOptionDialog()
 
         init()
@@ -138,16 +139,13 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
     }
 
     private fun initApiRequest() {
-        disposable = provileViewModel.getProfile(id.toString())
+        disposable = profileViewModel.getProfile(id.toString())
             .subscribe(this::handleResponse, this::handleError)
     }
 
     private fun setupListeners() {
         binding.btnSimpanProfile.setOnClickListener {
-            progressDialog.setTitle("Memperbaharui Profile")
-            progressDialog.setMessage("Mohon Tunggu...")
-            progressDialog.setCanceledOnTouchOutside(false)
-            progressDialog.show()
+            showProgressBar()
 
             val nama = binding.etNamaProfile.text.toString()
             val email = binding.etEmailProfile.text.toString()
@@ -157,7 +155,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
             val confirmPassBaru = binding.etConfirmPassBaruProfile.text.toString()
 
             if (passBaru != confirmPassBaru) {
-                toastNotify("Password baru tidak sama")
+                toastNotify(getString(R.string.new_password_not_same))
             } else {
                 val idUser = id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
                 val namaUser = nama.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -181,11 +179,12 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
                         fileTtd!!.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                     MultipartBody.Part.createFormData("ttd", fileTtd!!.name, ttdReqBody)
                 } else {
+
                     val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                     MultipartBody.Part.createFormData("ttd", "", fileReqBody)
                 }
 
-                disposable = provileViewModel.editProfile(
+                disposable = profileViewModel.editProfile(
                     idUser,
                     emailUser,
                     passLamaUser,
@@ -295,7 +294,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
     private fun showDialogMethodOption() {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Unggah Tanda Tangan")
+                .setTitle(getString(R.string.upload_signature))
 
         val alertDialog = alertDialogBuilder.create()
 
@@ -324,7 +323,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
     private fun showDialogSignaturePad() {
         val alertDialogBuilder =
             MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme)
-                .setTitle("Unggah Tanda Tangan")
+                .setTitle(getString(R.string.upload_signature))
 
         val alertDialog = alertDialogBuilder.create()
 
@@ -354,7 +353,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
             Glide.with(this).load(ttdBitmap).into(binding.imgSignature)
             fileTtd = Signature.saveSignature(this, ttdBitmap)
             if (fileTtd != null) {
-                toastNotify("Tanda tangan telah dibuat\nSilahkan menyimpan perubahan")
+                toastNotify(getString(R.string.success_make_signature))
             }
             alertDialog.hide()
         }
@@ -367,24 +366,33 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
         alertDialog.show()
     }
 
+    private fun showProgressBar() {
+        if (!progressBarDialog.isAdded) {
+            progressBarDialog.show(supportFragmentManager, PROGRESS_BAR_DIALOG_TAG)
+        }
+    }
+
+    private fun dismissProgressBar() {
+        progressBarDialog.dismiss()
+    }
+
     private fun handleResponse(response: Any) {
         when (response) {
             is ProfileResponse -> {
-                var dataProfile: DataProfile? = DataProfile()
-
-                response.data?.forEach {
-                    dataProfile = it
-                }
+                val dataProfile: DataProfile? = response.data?.get(0)
 
                 Glide.with(this).load(dataProfile?.fotoProfile).apply(
                     RequestOptions.placeholderOf(R.drawable.ic_default_profile)
                         .error(R.drawable.ic_default_profile)
                 ).into(binding.imgFotoProfile)
 
-                Glide.with(this).load(dataProfile?.fotoTtd).apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_select_image)
-                        .error(R.drawable.ic_select_image)
-                ).into(binding.imgSignature)
+                Glide.with(this).load(dataProfile?.fotoTtd.toString()).diskCacheStrategy(
+                    DiskCacheStrategy.NONE
+                )
+                    .skipMemoryCache(true).apply(
+                        RequestOptions.placeholderOf(R.drawable.ic_select_image)
+                            .error(R.drawable.ic_select_image)
+                    ).into(binding.imgSignature)
 
                 binding.etNamaProfile.setText(dataProfile?.name)
                 binding.etEmailProfile.setText(dataProfile?.email)
@@ -416,7 +424,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
 
                 filePath = null
                 fileTtd = null
-                progressDialog.dismiss()
+                dismissProgressBar()
                 initApiRequest()
             }
         }
@@ -425,7 +433,7 @@ class ProfileActivity : BaseActivity<ActivityProfileBinding>() {
     override fun handleError(error: Throwable) {
         super.handleError(error)
         dismissSwipeRefreshLayout()
-        progressDialog.dismiss()
+        dismissProgressBar()
 
     }
 

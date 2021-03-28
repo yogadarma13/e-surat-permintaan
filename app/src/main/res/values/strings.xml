@@ -125,4 +125,10 @@
     <string name="select_file_text">Pilih file</string>
     <string name="camera_text">Kamera</string>
     <string name="gallery_text">Galeri</string>
+    <string name="please_wait_test">Tunggu sebentar</string>
+    <string name="upload_signature">Unggah tanda tangan</string>
+    <string name="success_make_signature">Tanda tangan telah dibuat\nSilahkan menyimpan perubahan</string>
+    <string name="success_select_photo_profile">Foto berhasil dipilih\nSilahkan menyimpan perubahan</string>
+    <string name="file_not_found">File Tdak ditemukan</string>
+    <string name="new_password_not_same">Password baru tidak sama</string>
 </resources>

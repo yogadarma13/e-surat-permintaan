@@ -21,7 +21,6 @@ import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Compani
 import com.e_suratpermintaan.core.domain.pojos.SuratPermintaanDataChange.Companion.SP_VERIFIKASI
 import com.example.e_suratpermintaan.R
 import com.example.e_suratpermintaan.databinding.*
-import com.example.e_suratpermintaan.external.constants.ActivityResultConstants.LAUNCH_EDIT_ACTIVITY
 import com.example.e_suratpermintaan.external.constants.IntentExtraConstants.ID_SP_EXTRA_KEY
 import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreference
 import com.example.e_suratpermintaan.framework.utils.*
@@ -33,6 +32,7 @@ import com.example.e_suratpermintaan.presentation.base.BaseActivity
 import com.example.e_suratpermintaan.presentation.base.BaseAdapter
 import com.example.e_suratpermintaan.presentation.base.BaseViewHolder
 import com.example.e_suratpermintaan.presentation.dialog.DownloadProgressDialog
+import com.example.e_suratpermintaan.presentation.dialog.ProgressBarDialog
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewholders.usingbaseadapter.FileSuratPermintaanViewHolder
 import com.example.e_suratpermintaan.presentation.viewmodel.SuratPermintaanViewModel
@@ -53,6 +53,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
 
     companion object {
         private const val DOWNLOAD_PROGRESS_TAG = "DownloadProgress"
+        private const val PROGRESS_BAR_DIALOG_TAG = "ProgressBarDialogDetailSP"
     }
 
     private val sharedMasterData: SharedMasterData by inject()
@@ -71,6 +72,8 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
     private var jenisSP: String? = null
     private var alertDialog: AlertDialog? = null
 
+    private lateinit var progressBarDialog: ProgressBarDialog
+
     override fun getViewBinding(): ActivityDetailSuratPermintaanBinding =
         ActivityDetailSuratPermintaanBinding.inflate(layoutInflater)
 
@@ -79,6 +82,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
 
         idSp = intent.extras?.getString(ID_SP_EXTRA_KEY)
         itemSuratPermintaanAdapter = ItemSuratPermintaanAdapter()
+        progressBarDialog = ProgressBarDialog()
 
         idSp.let {
             dataProfile = profilePreference.getProfile()
@@ -279,11 +283,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                     .setTitle("Konfirmasi Pembatalan")
                     .setMessage("Apa anda yakin ingin membatalkan permintaan ini?")
                     .setPositiveButton("Batalkan") { _, _ ->
-                        binding.progressBarOverlay.root.visibility = View.VISIBLE
-                        window.setFlags(
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        )
+                        showProgressBar()
                         disposable = suratPermintaanViewModel.cancel(idUser, idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
@@ -313,11 +313,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                     .setTitle("Konfirmasi Penghapusan")
                     .setMessage("Apa anda yakin ingin menghapus permintaan ini?")
                     .setPositiveButton("Ya, Hapus") { _, _ ->
-                        binding.progressBarOverlay.root.visibility = View.VISIBLE
-                        window.setFlags(
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        )
+                        showProgressBar()
                         disposable = suratPermintaanViewModel.remove(idSp.toString())
                             .subscribe(this::handleResponse, this::handleError)
                     }.setNegativeButton("Tutup") { dialog, _ ->
@@ -356,15 +352,16 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
     }
 
     private fun stopRefresh() {
-        Handler(Looper.getMainLooper()).postDelayed({ binding.swipeRefreshLayout.isRefreshing = false }, 850)
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.swipeRefreshLayout.isRefreshing = false
+        }, 850)
     }
 
     override fun handleError(error: Throwable) {
         super.handleError(error)
 
         stopRefresh()
-        binding.progressBarOverlay.root.visibility = View.GONE
-        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        dismissProgressBar()
     }
 
     private fun handleResponse(response: Any) {
@@ -461,16 +458,14 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
             }
 
             is AjukanSPResponse -> {
-                binding.progressBarOverlay.root.visibility = View.GONE
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                dismissProgressBar()
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_AJUKAN))
                 initApiRequest()
             }
 
             is BatalkanSPResponse -> {
-                binding.progressBarOverlay.root.visibility = View.GONE
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                dismissProgressBar()
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_BATAL))
                 initApiRequest()
@@ -480,8 +475,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
             }
 
             is VerifikasiSPResponse -> {
-                binding.progressBarOverlay.root.visibility = View.GONE
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                dismissProgressBar()
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_VERIFIKASI))
                 initApiRequest()
@@ -491,8 +485,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
             }
 
             is DeleteSPResponse -> {
-                binding.progressBarOverlay.root.visibility = View.GONE
-                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                dismissProgressBar()
                 toastNotify(response.message)
                 EventBus.getDefault().postSticky(SuratPermintaanDataChange(SP_DELETED))
                 finish()
@@ -514,11 +507,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
             val catatan = dialogCatatanBinding.etCatatanTolak.text.toString()
 
             if (catatan.isNotEmpty()) {
-                binding.progressBarOverlay.root.visibility = View.VISIBLE
-                window.setFlags(
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                )
+                showProgressBar()
 
                 val userId = idUser.toRequestBody("text/plain".toMediaTypeOrNull())
                 val spId = idSp.toString().toRequestBody("text/plain".toMediaTypeOrNull())
@@ -528,8 +517,9 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 val fileReqBody = "".toRequestBody(MultipartBody.FORM)
                 val filePart = MultipartBody.Part.createFormData("file", "", fileReqBody)
 
-                disposable = suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
-                    .subscribe(this::handleResponse, this::handleError)
+                disposable =
+                    suratPermintaanViewModel.verifikasi(userId, spId, status, ctt, filePart)
+                        .subscribe(this::handleResponse, this::handleError)
 
                 alertDialog?.dismiss()
             } else {
@@ -572,11 +562,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
         }
 
         dialogAjukanSuratBinding.btnFixAjukan.setOnClickListener {
-            binding.progressBarOverlay.root.visibility = View.VISIBLE
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            )
+            showProgressBar()
             var fileTtd: File? = null
             val ttdBitmap: Bitmap?
 
@@ -642,11 +628,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
         }
 
         dialogVerifikasiSuratBinding.btnFixVerif.setOnClickListener {
-            binding.progressBarOverlay.root.visibility = View.VISIBLE
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            )
+            showProgressBar()
             var fileTtd: File? = null
             val ttdBitmap: Bitmap?
 
@@ -683,6 +665,16 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
 
         alertDialog?.setView(dialogVerifikasiSuratBinding.root)
         alertDialog?.show()
+    }
+
+    private fun showProgressBar() {
+        if (!progressBarDialog.isAdded) {
+            progressBarDialog.show(supportFragmentManager, PROGRESS_BAR_DIALOG_TAG)
+        }
+    }
+
+    private fun dismissProgressBar() {
+        progressBarDialog.dismiss()
     }
 
     override fun onDestroy() {

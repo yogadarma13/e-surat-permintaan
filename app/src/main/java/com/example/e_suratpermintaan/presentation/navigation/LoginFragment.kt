@@ -8,10 +8,6 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.e_suratpermintaan.core.domain.entities.requests.Login
 import com.e_suratpermintaan.core.domain.entities.responses.DataProfile
 import com.e_suratpermintaan.core.domain.entities.responses.LoginResponse
@@ -22,6 +18,7 @@ import com.example.e_suratpermintaan.framework.sharedpreference.ProfilePreferenc
 import com.example.e_suratpermintaan.presentation.activity.MainActivity
 import com.example.e_suratpermintaan.presentation.activity.StarterActivity
 import com.example.e_suratpermintaan.presentation.base.BaseFragment
+import com.example.e_suratpermintaan.presentation.dialog.ProgressBarDialog
 import com.example.e_suratpermintaan.presentation.sharedlivedata.SharedMasterData
 import com.example.e_suratpermintaan.presentation.viewmodel.AuthViewModel
 import com.example.e_suratpermintaan.presentation.viewmodel.ProfileViewModel
@@ -37,10 +34,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private val profilePreference: ProfilePreference by inject()
     private val fcmPreference: FCMPreference by inject()
 
+    private lateinit var progressBarDialog: ProgressBarDialog
+
 //    override fun layoutId(): Int = R.layout.fragment_login
 
     override fun onEnterAnimationEnd() {
         super.onEnterAnimationEnd()
+
+        progressBarDialog = ProgressBarDialog()
 
         binding.passwordSeek.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -68,13 +69,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
     private fun doLogin() {
-        binding.progressBarOverlay.root.visibility = VISIBLE
+        showProgressBar()
         Handler(Looper.getMainLooper()).postDelayed({
             fcmPreference.getUserTokenId()?.let { userTokenId ->
                 disposable = authViewModel
                     .doLogin(
                         Login(
-                            binding.etEmail.text.toString(),
+                            binding.etUsername.text.toString(),
                             binding.etPassword.text.toString(),
                             userTokenId
                         )
@@ -85,6 +86,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }, 850)
 
         closeKeyboard(activity as Activity)
+    }
+
+    private fun showProgressBar() {
+        if (!progressBarDialog.isAdded) {
+            progressBarDialog.show(childFragmentManager, tag)
+        }
+    }
+
+    private fun dismissProgressBar() {
+        progressBarDialog.dismiss()
     }
 
     private fun loginResponse(response: LoginResponse) {
@@ -110,11 +121,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             starterActivity.initUserDataDependentApiRequest()
                             sharedMasterData.isAllMasterObservableResponseComplete.observe(
                                 starterActivity,
-                                Observer { isIt ->
+                                { isIt ->
 
                                     if (isIt) {
                                         toastNotify(response.message)
-                                        binding.progressBarOverlay.root.visibility = GONE
+                                        dismissProgressBar()
 
                                         Handler(Looper.getMainLooper()).postDelayed({
                                             val intent =
@@ -134,7 +145,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                     },
                     { error ->
-                        binding.progressBarOverlay.root.visibility = GONE
+                        dismissProgressBar()
                         toastNotify(error.message.toString())
                     }
                 )
@@ -144,7 +155,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     override fun handleError(error: Throwable) {
         super.handleError(error)
 
-        binding.progressBarOverlay.root.visibility = GONE
+        dismissProgressBar()
     }
 
 }

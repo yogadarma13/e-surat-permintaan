@@ -62,7 +62,7 @@
                 android:layout_marginBottom="80dp"
                 android:text="@string/below_app_name_text"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/etEmail"
+                app:layout_constraintBottom_toTopOf="@+id/etUsername"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -71,7 +71,7 @@
 
 
             <EditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -110,7 +110,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etEmail"
+                app:layout_constraintTop_toBottomOf="@+id/etUsername"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:targetApi="m" />
 
@@ -140,14 +140,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-    <include
-        android:id="@+id/progressBarOverlay"
-        layout="@layout/layout_progressbar_with_text"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
