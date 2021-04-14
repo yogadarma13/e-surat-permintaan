@@ -1,6 +1,5 @@
 package com.example.e_suratpermintaan.presentation.activity
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -50,7 +49,6 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
 
     companion object {
         const val ID_SP_EDIT = "id_sp"
-        const val PICKFILE_REQUEST_CODE = 999
         private const val DOWNLOAD_PROGRESS_TAG = "DownloadProgress"
     }
 
@@ -289,7 +287,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
                 }
 
                 EditFileSuratPermintaanViewHolder.BTN_FILE -> {
-                    val path = DownloadPath.getDownloadPath(this)
+                    val path = DownloadPath.getDownloadPath()
                     if (path != null) {
                         val downloadProgressDialog = DownloadProgressDialog()
                         downloadProgressDialog.show(
@@ -407,6 +405,7 @@ class EditSuratPermintaanActivity : BaseActivity<ActivityEditSuratPermintaanBind
             is PenugasanItemSPResponse -> {
                 toastNotify(response.message)
                 initApiRequest()
+                EventBus.getDefault().postSticky(SuratPermintaanDataChange(ITEM_EDITED))
             }
 
             is CreateItemSPResponse -> {

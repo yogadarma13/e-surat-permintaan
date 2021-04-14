@@ -165,6 +165,7 @@
             android:id="@+id/btnSimpanEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorBlue"
             android:paddingHorizontal="32dp"
             android:paddingVertical="12dp"
             android:text="@string/save_btn_text"

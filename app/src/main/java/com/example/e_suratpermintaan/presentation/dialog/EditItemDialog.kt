@@ -334,54 +334,54 @@ class EditItemDialog(
         val keterangan = dialogRootView.formKeterangan.etKeterangan.text.toString()
 
         val kodePekerjaanValue =
-            allKodePekerjaan?.find { it?.option == kodePekerjaan.trim() }?.value
-        val kategoriValue = allKategori?.find { it?.option == kategori.trim() }?.value
-        val satuanValue = allSatuan?.find { it?.option == satuan.trim() }?.value
+            allKodePekerjaan?.find { it?.option == kodePekerjaan.trim() }?.value ?: ""
+        val kategoriValue = allKategori?.find { it?.option == kategori.trim() }?.value ?: ""
+        val satuanValue = allSatuan?.find { it?.option == satuan.trim() }?.value ?: ""
 
-        if (kodePekerjaanValue.isNullOrEmpty()) dialogRootView.etKodePekerjaan.error =
-            "Pilih sesuai pilihan" else dialogRootView.etKodePekerjaan.error = null
+//        if (kodePekerjaanValue.isNullOrEmpty()) dialogRootView.etKodePekerjaan.error =
+//            "Pilih sesuai pilihan" else dialogRootView.etKodePekerjaan.error = null
+//
+//        if (kategoriValue.isNullOrEmpty()) dialogRootView.etKategori.error =
+//            "Pilih sesuai pilihan" else dialogRootView.etKategori.error = null
+//
+//        if (satuanValue == null) dialogRootView.etSatuan.error =
+//            "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
+//
+//        if (dialogRootView.etKodePekerjaan.error != null || dialogRootView.etKategori.error != null || dialogRootView.etSatuan.error != null) {
+//            activity.toastNotify("Lengkapi data terlebih dahulu")
+//        } else {
+        val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
+            .setTitle("Perbarui Item")
+            .setMessage("Apakah Anda yakin ingin memperbarui item?")
+            .setPositiveButton("Ya") { _, _ ->
+                val updateItemSP = UpdateItemSP(
+                    kodeSp,
+                    kodePekerjaanValue,
+                    jenisBarang,
+                    satuanValue,
+                    volume,
+                    fungsi,
+                    target,
+                    keterangan,
+                    kapasitas,
+                    merk,
+                    waktuPemakaian,
+                    waktuPelaksanaan,
+                    persyaratanList,
+                    statusPenugasanValue,
+                    dataProfile.id!!,
+                    selectedItemId,
+                    kategoriValue
+                )
+                activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
+                    .subscribe(this::handleResponse, this::handleError)
 
-        if (kategoriValue.isNullOrEmpty()) dialogRootView.etKategori.error =
-            "Pilih sesuai pilihan" else dialogRootView.etKategori.error = null
+                alertDialogEdit.hide()
 
-        if (satuanValue == null) dialogRootView.etSatuan.error =
-            "Pilih sesuai pilihan" else dialogRootView.etSatuan.error = null
+            }.create()
 
-        if (dialogRootView.etKodePekerjaan.error != null || dialogRootView.etKategori.error != null || dialogRootView.etSatuan.error != null) {
-            activity.toastNotify("Lengkapi data terlebih dahulu")
-        } else {
-            val confirmationDialog = MaterialAlertDialogBuilder(activity, R.style.AlertDialogTheme)
-                .setTitle("Perbarui Item")
-                .setMessage("Apakah Anda yakin ingin memperbarui item?")
-                .setPositiveButton("Ya") { _, _ ->
-                    val updateItemSP = UpdateItemSP(
-                        kodeSp,
-                        kodePekerjaanValue!!,
-                        jenisBarang,
-                        satuanValue!!,
-                        volume,
-                        fungsi,
-                        target,
-                        keterangan,
-                        kapasitas,
-                        merk,
-                        waktuPemakaian,
-                        waktuPelaksanaan,
-                        persyaratanList,
-                        statusPenugasanValue,
-                        dataProfile.id!!,
-                        selectedItemId,
-                        kategoriValue!!
-                    )
-                    activity.disposable = itemSuratPermintaanViewModel.editItem(updateItemSP)
-                        .subscribe(this::handleResponse, this::handleError)
-
-                    alertDialogEdit.hide()
-
-                }.create()
-
-            confirmationDialog.show()
-        }
+        confirmationDialog.show()
+//        }
     }
 
     private fun preventKeyboardFromPushingViews(dialog: Dialog?) {
@@ -495,7 +495,7 @@ class EditItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKodePekerjaan.isFocused) {
-                    dialogRootView.etKodePekerjaan.error = null
+//                    dialogRootView.etKodePekerjaan.error = null
                     ccAdapter.filter.filter(s)
                     dialogRootView.rvKodePekerjaan.visibility = View.VISIBLE
                 }
@@ -511,7 +511,7 @@ class EditItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etKategori.isFocused) {
-                    dialogRootView.etKategori.error = null
+//                    dialogRootView.etKategori.error = null
                     kategoriAdapter.filter.filter(s)
                     dialogRootView.rvKategori.visibility = View.VISIBLE
                 }
@@ -553,7 +553,7 @@ class EditItemDialog(
 
             override fun afterTextChanged(s: Editable?) {
                 if (dialogRootView.etSatuan.isFocused) {
-                    dialogRootView.etSatuan.error = null
+//                    dialogRootView.etSatuan.error = null
                     uomAdapter.filter.filter(s)
                     dialogRootView.rvSatuan.visibility = View.VISIBLE
                 }

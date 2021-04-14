@@ -26,18 +26,6 @@ data class MasterProyekFilterOptionResponse(
     val status: Boolean? = null
 )
 
-data class MasterJenisDataFilterOptionResponse(
-
-    @field:SerializedName("data")
-    val data: List<DataMaster?>? = null,
-
-    @field:SerializedName("message")
-    val message: String? = null,
-
-    @field:SerializedName("status")
-    val status: Boolean? = null
-)
-
 data class MasterStatusFilterOptionResponse(
 
     @field:SerializedName("data")
@@ -71,14 +59,3 @@ data class MasterStatusPenugasanOptionResponse(
     @field:SerializedName("status")
     val status: Boolean? = null
 )
-//
-//data class DataMasterOption(
-//
-//    @field:SerializedName("option")
-//    val option: String? = null,
-//
-//    @field:SerializedName("value")
-//    val value: String? = null
-//){
-//	override fun toString(): String = option.toString()
-//}

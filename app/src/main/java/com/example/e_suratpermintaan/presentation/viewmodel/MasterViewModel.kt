@@ -6,20 +6,17 @@ import com.e_suratpermintaan.core.domain.entities.responses.*
 import com.e_suratpermintaan.core.usecases.master.*
 import com.e_suratpermintaan.core.usecases.master.optionlist.GetPenugasanOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.GetStatusPenugasanOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisDataFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisPermintaanFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetProyekFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetStatusFilterOptionUseCase
 import io.reactivex.rxjava3.core.Observable
 
 class MasterViewModel(
-//    private val getProyekListUseCase: GetProyekListUseCase,
     private val getJenisListUseCase: GetJenisListUseCase,
     private val getCostCodeListUseCase: GetCostCodeListUseCase,
     private val getPersyaratanListUseCase: GetPersyaratanListUseCase,
     private val getUomListUseCase: GetUomListUseCase,
     private val getMasterStatusFilterOptionUseCase: GetStatusFilterOptionUseCase,
-//    private val getMasterJenisDataFilterOptionUseCase: GetJenisDataFilterOptionUseCase,
     private val getMasterProyekFilterOptionUseCase: GetProyekFilterOptionUseCase,
     private val getMasterJenisPermintaanFilterOptionUseCase: GetJenisPermintaanFilterOptionUseCase,
     private val getMasterPenugasanOptionUseCase: GetPenugasanOptionUseCase,
@@ -27,9 +24,6 @@ class MasterViewModel(
     private val getKodePekerjaanListUseCase: GetKodePekerjaanListUseCase,
     private val getItemCodeListUseCase: GetItemCodeListUseCase
 ) : ViewModel(), MasterDataSource {
-
-//    override fun getProyekList(idUser: String): Observable<MasterProyekResponse> =
-//        getProyekListUseCase.invoke(idUser)
 
     override fun getJenisList(idUser: String): Observable<MasterJenisResponse> =
         getJenisListUseCase.invoke(idUser)

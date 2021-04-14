@@ -27,29 +27,3 @@ data class DataMasterPersyaratan(
 
     var isChecked: Boolean = false
 )
-//
-//data class DataMasterPersyaratan(
-//
-//	@field:SerializedName("nama")
-//	val nama: String? = null,
-//
-//	@field:SerializedName("updated_at")
-//	val updatedAt: String? = null,
-//
-//	@field:SerializedName("kode")
-//	val kode: String? = null,
-//
-//	@field:SerializedName("created_at")
-//	val createdAt: String? = null,
-//
-//	@field:SerializedName("id")
-//	val id: String? = null,
-//
-//	@field:SerializedName("created_by")
-//	val createdBy: String? = null,
-//
-//	@field:SerializedName("status")
-//	var status: String? = null,
-//
-//	var isChecked: Boolean = false
-//)

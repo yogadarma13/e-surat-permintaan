@@ -236,7 +236,7 @@ class DetailSuratPermintaanActivity : BaseActivity<ActivityDetailSuratPermintaan
                 }
 
                 FileSuratPermintaanViewHolder.BTN_FILE -> {
-                    val path = DownloadPath.getDownloadPath(this)
+                    val path = DownloadPath.getDownloadPath()
                     if (path != null) {
                         val downloadProgressDialog = DownloadProgressDialog()
                         downloadProgressDialog.show(

@@ -289,7 +289,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), AppBarLayout.OnOffsetC
         headerView.findViewById<TextView>(R.id.profileName).text =
             profilePreference.getProfile()?.name
         headerView.findViewById<TextView>(R.id.role).text = profilePreference.getProfile()?.namaRole
-        headerView.findViewById<TextView>(R.id.email).text = profilePreference.getProfile()?.email
+        headerView.findViewById<TextView>(R.id.username).text = profilePreference.getProfile()?.username
         Glide.with(this).load(profilePreference.getProfile()?.fotoProfile)
             .into(headerView.findViewById(R.id.circleImageView))
     }

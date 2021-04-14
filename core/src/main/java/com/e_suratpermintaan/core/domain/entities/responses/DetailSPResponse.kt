@@ -205,6 +205,9 @@ data class ItemsDetailSP(
 	@field:SerializedName("tombol_rollback_item")
 	val tombolRollbackItem: Int? = null,
 
+	@field:SerializedName("keterangan_penugasan")
+	val keteranganPenugasan: Int? = null,
+
 	@field:SerializedName("kategori")
 	val kategori: String? = null,
 

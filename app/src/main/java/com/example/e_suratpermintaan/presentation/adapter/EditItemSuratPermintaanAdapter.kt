@@ -19,7 +19,6 @@ import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpaBinding
 import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpbBinding
 import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpsBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
-import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 
 class EditItemSuratPermintaanAdapter :
@@ -183,10 +182,7 @@ class EditItemSuratPermintaanAdapter :
             binding.tvStatusPenugasanDetailSPA.text = data.penugasan
             binding.tvProcessByPenugasanDetailSPA.text = data.processBy
 
-            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                    RoleConstants.GA
-                )
-            ) {
+            if (data.keteranganPenugasan == 1) {
                 binding.labelPenugasanSPA.visibility = View.VISIBLE
                 binding.labelStatusPenugasanSPA.visibility = View.VISIBLE
                 binding.tvPenugasanDetailSPA.visibility = View.VISIBLE
@@ -312,10 +308,7 @@ class EditItemSuratPermintaanAdapter :
             binding.tvStatusPenugasanDetailSPB.text = data.penugasan
             binding.tvProcessByPenugasanDetailSPB.text = data.processBy
 
-            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                    RoleConstants.GA
-                )
-            ) {
+            if (data.keteranganPenugasan == 1) {
                 binding.labelPenugasanSPB.visibility = View.VISIBLE
                 binding.labelStatusPenugasanSPB.visibility = View.VISIBLE
                 binding.tvPenugasanDetailSPB.visibility = View.VISIBLE
@@ -440,14 +433,16 @@ class EditItemSuratPermintaanAdapter :
             binding.tvStatusPenugasanDetailSPS.text = data.penugasan
             binding.tvProcessByPenugasanDetailSPS.text = data.processBy
 
-            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                    RoleConstants.GA
-                )
-            ) {
+            if (data.keteranganPenugasan == 1) {
                 binding.labelPenugasanSPS.visibility = View.VISIBLE
                 binding.labelStatusPenugasanSPS.visibility = View.VISIBLE
                 binding.tvPenugasanDetailSPS.visibility = View.VISIBLE
                 binding.tvStatusPenugasanDetailSPS.visibility = View.VISIBLE
+            } else {
+                binding.labelPenugasanSPS.visibility = View.GONE
+                binding.labelStatusPenugasanSPS.visibility = View.GONE
+                binding.tvPenugasanDetailSPS.visibility = View.GONE
+                binding.tvStatusPenugasanDetailSPS.visibility = View.GONE
             }
 
 

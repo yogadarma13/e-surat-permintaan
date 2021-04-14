@@ -32,9 +32,8 @@ object DownloadManager {
             downloadDir.mkdirs()
 
             val filenameExtension = url.substring(url.lastIndexOf('/') + 1)
-            val filenameSplit = filenameExtension.split(".")
-            val filename =
-                "${filenameSplit.first()}_${System.currentTimeMillis() / 1000}.${filenameSplit.last()}"
+            val initialNumber = System.currentTimeMillis().toString().takeLast(3)
+            val filename = "${initialNumber}_${filenameExtension}"
 
             val file = File(downloadDir, filename)
 

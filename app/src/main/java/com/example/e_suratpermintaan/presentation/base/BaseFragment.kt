@@ -2,7 +2,6 @@ package com.example.e_suratpermintaan.presentation.base
 
 import android.app.Activity
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -81,20 +80,8 @@ abstract class BaseFragment<B : ViewBinding>(private val inflate: InflateFragmen
         inflater: LayoutInflater,
         container: ViewGroup?
     ): View? {
-        if (rootView == null) {
-            // Inflate the layout for this fragment
-            _binding = inflate.invoke(inflater, container, false)
-            rootView = binding.root
-            Log.d("MYAPP", "CREATE NEW ROOTVIEW")
-        } else {
-            // Do not inflate the layout again.
-            // The returned View of onCreateView will be added into the fragment.
-            // However it is not allowed to be added twice even if the parent is same.
-            // So we must remove rootView from the existing parent view group
-            // (it will be added back).
-            (rootView?.parent as? ViewGroup)?.removeView(rootView)
-            Log.d("MYAPP", "USE EXISTING ROOTVIEW")
-        }
+        _binding = inflate.invoke(inflater, container, false)
+        rootView = binding.root
 
         return rootView
     }

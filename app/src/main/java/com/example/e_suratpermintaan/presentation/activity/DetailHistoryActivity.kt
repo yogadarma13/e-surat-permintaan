@@ -161,7 +161,7 @@ class DetailHistoryActivity : BaseActivity<ActivityDetailHistoryBinding>() {
     }
 
     private fun startDownload(url: String) {
-        val path = DownloadPath.getDownloadPath(this)
+        val path = DownloadPath.getDownloadPath()
         if (path != null) {
             val downloadProgressDialog = DownloadProgressDialog()
             downloadProgressDialog.show(

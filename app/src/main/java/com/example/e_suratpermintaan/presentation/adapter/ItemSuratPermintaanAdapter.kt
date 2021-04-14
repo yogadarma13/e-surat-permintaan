@@ -19,7 +19,6 @@ import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpaBinding
 import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpbBinding
 import com.example.e_suratpermintaan.databinding.ItemDetailHistorySpsBinding
 import com.example.e_suratpermintaan.databinding.ItemSimpleCheckboxBinding
-import com.example.e_suratpermintaan.external.constants.RoleConstants
 import com.example.e_suratpermintaan.framework.utils.animations.SlideAnimation
 
 class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapter.ViewHolder>() {
@@ -108,11 +107,7 @@ class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapt
             binding.tvStatusPenugasanDetailSPA.text = data.penugasan
             binding.tvProcessByPenugasanDetailSPA.text = data.processBy
 
-            // 3 -> CC  |  7 -> IT  |  8 -> GA
-            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                    RoleConstants.GA
-                )
-            ) {
+            if (data.keteranganPenugasan == 1) {
                 binding.labelPenugasanSPA.visibility = View.VISIBLE
                 binding.labelStatusPenugasanSPA.visibility = View.VISIBLE
                 binding.tvPenugasanDetailSPA.visibility = View.VISIBLE
@@ -180,11 +175,7 @@ class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapt
             binding.tvStatusPenugasanDetailSPB.text = data.penugasan
             binding.tvProcessByPenugasanDetailSPB.text = data.processBy
 
-            // 3 -> CC  |  7 -> IT  |  8 -> GA
-            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                    RoleConstants.GA
-                )
-            ) {
+            if (data.keteranganPenugasan == 1) {
                 binding.labelPenugasanSPB.visibility = View.VISIBLE
                 binding.labelStatusPenugasanSPB.visibility = View.VISIBLE
                 binding.tvPenugasanDetailSPB.visibility = View.VISIBLE
@@ -251,11 +242,7 @@ class ItemSuratPermintaanAdapter : RecyclerView.Adapter<ItemSuratPermintaanAdapt
             binding.tvStatusPenugasanDetailSPS.text = data.penugasan
             binding.tvProcessByPenugasanDetailSPS.text = data.processBy
 
-            // 3 -> CC  |  7 -> IT  |  8 -> GA
-            if (idRole.equals(RoleConstants.CC) || idRole.equals(RoleConstants.IT) || idRole.equals(
-                    RoleConstants.GA
-                )
-            ) {
+            if (data.keteranganPenugasan == 1) {
                 binding.labelPenugasanSPS.visibility = View.VISIBLE
                 binding.labelStatusPenugasanSPS.visibility = View.VISIBLE
                 binding.tvPenugasanDetailSPS.visibility = View.VISIBLE

@@ -10,7 +10,6 @@ import com.e_suratpermintaan.core.usecases.itemsuratpermintaan.*
 import com.e_suratpermintaan.core.usecases.master.*
 import com.e_suratpermintaan.core.usecases.master.optionlist.GetPenugasanOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.GetStatusPenugasanOptionUseCase
-import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisDataFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetJenisPermintaanFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetProyekFilterOptionUseCase
 import com.e_suratpermintaan.core.usecases.master.optionlist.filter.GetStatusFilterOptionUseCase
@@ -145,12 +144,6 @@ val useCaseModule = module {
     }
     single {
         GetStatusFilterOptionUseCase(
-            get() as MasterRepository,
-            get() as SchedulerProvider
-        )
-    }
-    single {
-        GetJenisDataFilterOptionUseCase(
             get() as MasterRepository,
             get() as SchedulerProvider
         )
